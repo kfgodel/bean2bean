@@ -15,22 +15,6 @@
 		</encoder>
 	</appender>
   
-  	<!-- Output a archivo de logueo limitado a 1Mb -->
-	<appender name="ROLLING_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-	    <file>${catalina.base}/logs/digitalizacion-server.log</file>
-		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-	      <fileNamePattern>${catalina.base}/logs/digitalizacion-server.%i.log</fileNamePattern>
-	      <minIndex>1</minIndex>
-	      <maxIndex>10</maxIndex>
-	    </rollingPolicy>
-		
-		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-	     		<maxFileSize>1MB</maxFileSize>
-	   	</triggeringPolicy>
-	    <encoder>
-	      <pattern>[%-23d{ISO8601}] %-5p %-120m  | %-40c | [%t] at %C\(%F:%L\) Running:\(%12r\)%n</pattern>
-	    </encoder>
-	</appender>
 	
 	<logger name="net.sf.kfgodel.bean2bean" level="DEBUG" />
 	
