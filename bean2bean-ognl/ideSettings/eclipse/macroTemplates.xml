@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><templates><template autoinsert="true" context="java" deleted="false" description="Define el metodo estatico de instanciacion" enabled="true" name="create">public static ${enclosing_type} create(${arguments}){&#13;
+	${enclosing_type} ${name:new_name} = new ${enclosing_type}();&#13;
+	${cursor}&#13;
+	return ${name};&#13;
+}</template><template autoinsert="true" context="java" deleted="false" description="Declaracion de un atributo por su nombre para usar con Reflection" enabled="true" name="field">public static final String ${nombre:field}_FIELD = "${nombre:field}";&#13;
+</template></templates>
