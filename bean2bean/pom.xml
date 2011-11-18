@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.sf.kfgodel</groupId>
 	<artifactId>bean2bean</artifactId>
-	<version>1.0.3-SNAPSHOT</version>
+	<version>1.0</version>
 	<description>Proyecto para transformacion de beans usando annotations y conversion entre tipos de datos</description>
 
     <scm>
@@ -92,6 +92,20 @@
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>1.2.15</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>jms</artifactId>
+					<groupId>javax.jms</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jmxtools</artifactId>
+					<groupId>com.sun.jdmk</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jmxri</artifactId>
+					<groupId>com.sun.jmx</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<!-- Add this if you want to be able to convert to/from JSON strings -->
