@@ -5,19 +5,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.sf.kfgodel</groupId>
 	<artifactId>bean2bean</artifactId>
-	<version>1.0</version>
+	<version>1.0-SNAPSHOT</version>
 	<description>Proyecto para transformacion de beans usando annotations y conversion entre tipos de datos</description>
-
-    <scm>
-        <connection>scm:svn:https://bean2bean.svn.sourceforge.net/svnroot/bean2bean/Bean2Bean/trunk</connection>
-        <developerConnection>scm:svn:https://bean2bean.svn.sourceforge.net/svnroot/bean2bean/Bean2Bean/trunk</developerConnection>
-        <tag>HEAD</tag>
-        <url>https://bean2bean.svn.sourceforge.net/svnroot/bean2bean/Bean2Bean/trunk</url>
-    </scm>
 
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.jdk>1.5</project.jdk>
 	</properties>
 
 	<build>
@@ -31,6 +25,12 @@
 							<manifest>
 								<addClasspath>true</addClasspath>
 							</manifest>
+							<manifestEntries>
+								<Build-JVM>${java.vm.name} - ${java.vm.vendor}</Build-JVM>
+								<Build-OS>${os.name} - Version: ${os.version}</Build-OS>
+								<Application-Name>${project.name}</Application-Name>
+								<Application-Version>${project.version}</Application-Version>
+							</manifestEntries>
 						</archive>
 					</configuration>
 				</plugin>
@@ -74,7 +74,7 @@
 	</pluginRepositories>
 	
 	<dependencies>
-		<!-- Mandatory dependencies -->
+	
 		<dependency>
 			<!-- Needed for basic type conversions -->
 			<groupId>com.opensymphony</groupId>
@@ -87,26 +87,38 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		
+		<!-- Logging -->
 		<dependency>
-			<!-- Needed to log -->
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.15</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>jms</artifactId>
-					<groupId>javax.jms</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>jmxtools</artifactId>
-					<groupId>com.sun.jdmk</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>jmxri</artifactId>
-					<groupId>com.sun.jmx</groupId>
-				</exclusion>
-			</exclusions>
+			<!-- Facade para todo lo que es logueo -->
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.6.1</version>
 		</dependency>
+		<dependency>
+			<!-- Implementación nativa de slf4j -->
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+			<version>0.9.28</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>0.9.28</version>
+		</dependency>
+		<dependency>
+			<!-- Adapter que las llamadas a commons-logging pasen por Slf4j-->
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+		<dependency>
+			<!-- Adapter que las llamadas a log4j pasen por Slf4j-->
+			<groupId>org.slf4j</groupId>
+			<artifactId>log4j-over-slf4j</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+		
 		<dependency>
 			<!-- Add this if you want to be able to convert to/from JSON strings -->
 			<groupId>com.sdicons.jsontools</groupId>

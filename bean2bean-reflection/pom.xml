@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.sf.kfgodel</groupId>
 	<artifactId>bean2bean-reflection</artifactId>
-	<version>0.8</version>
+	<version>0.8-SNAPSHOT</version>
 	<description>Proyecto para transformacion de beans usando annotation y conversion entre tipos de datos</description>
 
     <scm>
@@ -71,7 +71,7 @@
 		<dependency>
 			<groupId>net.sf.kfgodel</groupId>
 			<artifactId>bean2bean</artifactId>
-			<version>1.0</version>
+			<version>1.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<!-- Add this if you want to be able to convert to/from JSON strings -->
