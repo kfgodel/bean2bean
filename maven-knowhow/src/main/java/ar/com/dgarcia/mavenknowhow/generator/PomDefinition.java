@@ -17,7 +17,11 @@ import java.util.List;
 import org.apache.maven.model.Build;
 import org.apache.maven.model.Model;
 
+import ar.com.dgarcia.mavenknowhow.dependencies.Junit;
+import ar.com.dgarcia.mavenknowhow.dependencies.Slf4jLogging;
 import ar.com.dgarcia.mavenknowhow.helpers.Plugins;
+
+import com.google.common.collect.Lists;
 
 /**
  * Esta clase representa la definición del POM a partir del cual se puede generar el POM real.<br>
@@ -44,8 +48,26 @@ public class PomDefinition {
 	 * Define los parámetros del POM que son comunes a todos los proyectos que genero
 	 */
 	private void defineBasicConfiguration() {
+		defineBasicPomDefinitions();
 		defineBasicProperties();
 		defineBasicBuildPlugins();
+		defineBasicDependencies();
+	}
+
+	/**
+	 * Define el packaging por defecto
+	 */
+	private void defineBasicPomDefinitions() {
+		mavenModel.setPackaging("jar");
+		mavenModel.setModelVersion("4.0.0");
+	}
+
+	/**
+	 * Define las dependencias básicas para todo proyecto
+	 */
+	private void defineBasicDependencies() {
+		final List<ProjectDependency> basicDependencies = Lists.newArrayList(Slf4jLogging.create(), Junit.create());
+		addDependencies(basicDependencies);
 	}
 
 	/**

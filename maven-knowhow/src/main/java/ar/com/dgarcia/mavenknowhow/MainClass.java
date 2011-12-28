@@ -18,9 +18,6 @@ import java.util.List;
 
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
-import ar.com.dgarcia.mavenknowhow.dependencies.Guava;
-import ar.com.dgarcia.mavenknowhow.dependencies.MavenModel;
-import ar.com.dgarcia.mavenknowhow.dependencies.Slf4jLogging;
 import ar.com.dgarcia.mavenknowhow.generator.PomDefinition;
 import ar.com.dgarcia.mavenknowhow.generator.PomGenerator;
 import ar.com.dgarcia.mavenknowhow.generator.ProjectDependency;
@@ -35,18 +32,14 @@ import com.google.common.collect.Lists;
 public class MainClass {
 
 	public static void main(final String[] args) throws FileNotFoundException, IOException, XmlPullParserException {
-		// final Model model = new MavenXpp3Reader().read(new FileReader(new File(
-		// "G:\\Java\\Workspaces\\Activo\\maven-knowhow\\pom.xml")));
-		// System.out.println(model);
-
-		final String destinationDirPath = "G:\\Java\\Workspaces\\Activo\\maven-knowhow\\test";
+		final String destinationDirPath = "G:\\Java\\Workspaces\\Activo\\gtalkclient";
 		final String groupId = "ar.dgarcia";
-		final String artifactIdId = "testArtifact";
-		final String versionId = "v1";
-		final String projectName = "nombre";
-		final String projectDescription = "description";
-		final List<ProjectDependency> dependencies = Lists.<ProjectDependency> newArrayList(MavenModel.create(),
-				Guava.create(), Slf4jLogging.create());
+		final String artifactIdId = "gtalkclient";
+		final String versionId = "0.1-SNAPSHOT";
+		final String projectName = "Gtalk-Client Simple";
+		final String projectDescription = "Cliente para Gtalk que se maneja practicamente identificando los usuarios con el mail.\n"
+				+ "Sirve para enviar y recibir mensajes como texto";
+		final List<ProjectDependency> dependencies = Lists.<ProjectDependency> newArrayList();
 
 		final PomDefinition definition = PomDefinition.create(groupId, artifactIdId, versionId);
 		definition.setProjectName(projectName);
