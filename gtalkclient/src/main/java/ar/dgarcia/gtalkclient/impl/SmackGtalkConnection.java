@@ -118,26 +118,11 @@ public class SmackGtalkConnection implements GtalkConnection {
 	 */
 	@Override
 	public void sendMessageTo(final String destinationUser, final String messageBody) {
-		// final ChatManager chatManager = userConnection.getChatManager();
-		// final MessageListener chatListener = new MessageListener() {
-		// @Override
-		// public void processMessage(final Chat chat, final Message message) {
-		//
-		// }
-		// };
-		// final Chat createdChat = chatManager.createChat(destinationUser, chatListener);
-		// try {
-		// createdChat.sendMessage(messageBody);
-		// } catch (final XMPPException e) {
-		// throw new GtalkClientException("Fallo el envio de un mensaje por chat", e);
-		// }
-		// createdChat.removeMessageListener(chatListener);
 		final Message xmppMessage = new Message();
 		xmppMessage.setFrom(userConnection.getUser());
 		xmppMessage.setTo(destinationUser);
 		xmppMessage.setBody(messageBody);
 		xmppMessage.setType(Message.Type.chat);
-		xmppMessage.setThread("1");
 		userConnection.sendPacket(xmppMessage);
 	}
 

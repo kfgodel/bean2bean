@@ -22,7 +22,6 @@ import net.gaia.util.WaitBarrier;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import ar.dgarcia.gtalkclient.api.GtalkConnection;
@@ -50,7 +49,6 @@ public class GtalkApiTests {
 		server.closeConnections();
 	}
 
-	@Ignore
 	@Test
 	public void deberiaPermitirConectarseConElServidorDeGtalkConUsuarioValido() {
 		final GtalkConnection connection = server.openConnectionAs(EscenariosTests.VALID_USER_1,
@@ -59,7 +57,6 @@ public class GtalkApiTests {
 				connection.isConnected());
 	}
 
-	@Ignore
 	@Test
 	public void deberiaInformarErrorAlConectarseConUsuarioInvalido() {
 		try {
@@ -70,7 +67,6 @@ public class GtalkApiTests {
 		}
 	}
 
-	@Ignore
 	@Test
 	public void deberiaPermitirCerrarLaConexion() {
 		final GtalkConnection connection = server.openConnectionAs(EscenariosTests.VALID_USER_1,
@@ -79,7 +75,6 @@ public class GtalkApiTests {
 		Assert.assertFalse("Debería indicar que está desconectado", connection.isConnected());
 	}
 
-	@Ignore
 	@Test
 	public void deberiaPermitirAbrirDosConexionesConUsuariosDistintos() {
 		final GtalkConnection connection1 = server.openConnectionAs(EscenariosTests.VALID_USER_1,
@@ -91,7 +86,7 @@ public class GtalkApiTests {
 	}
 
 	@Test
-	public void deberiaPermitirEnviarMensajeDesdeUnUsuarioYRecibirloDesdeOtro() {
+	public void deberiaPermitirEnviarMensajeDesdeUnUsuarioYRecibirloDesdeOtro() throws InterruptedException {
 		final GtalkConnection connection1 = server.openConnectionAs(EscenariosTests.VALID_USER_1,
 				EscenariosTests.VALID_PASS_1, null);
 		final AtomicReference<String> receivedMessage = new AtomicReference<String>();
@@ -105,11 +100,21 @@ public class GtalkApiTests {
 					}
 				});
 		Assert.assertTrue("El segundo está conectado", connection2.isConnected());
-		Assert.assertTrue("El primero ve a la segundo como conectado",
+		// Debemos esperar que el segundo aparezca conectado para el primero, de manera que el
+		// mensaje llegue
+		for (int i = 0; i < 100; i++) {
+			if (!connection1.isContactPresent(EscenariosTests.VALID_USER_2)) {
+				Thread.sleep(100);
+			} else {
+				// Ya está conectado!
+				break;
+			}
+		}
+		Assert.assertTrue("El primero debería ver al segundo como conectado",
 				connection1.isContactPresent(EscenariosTests.VALID_USER_2));
 
 		final String sendedMessage = "Mensaje de prueba";
-		connection1.sendMessageTo(EscenariosTests.VALID_PASS_2, sendedMessage);
+		connection1.sendMessageTo(EscenariosTests.VALID_USER_2, sendedMessage);
 
 		// Lamentablemente tenemos que esperar que el mensaje llegue de verdad
 		lockDelMensaje.waitForReleaseUpTo(TimeMagnitude.of(10, TimeUnit.SECONDS));
@@ -117,7 +122,6 @@ public class GtalkApiTests {
 		Assert.assertEquals("Deberíamos haber recibido el mensaje que mandamos", sendedMessage, receivedMessage.get());
 	}
 
-	@Ignore
 	@Test
 	public void deberiaPermitirConocerTodosLosContactosDeUnUsuarioComoMails() {
 		final GtalkConnection connection1 = server.openConnectionAs(EscenariosTests.VALID_USER_1,
@@ -128,7 +132,6 @@ public class GtalkApiTests {
 	}
 
 	@Test
-	@Ignore
 	public void deberiaPermitirSaberSiUnContactoEstaConectado() {
 		final GtalkConnection connection1 = server.openConnectionAs(EscenariosTests.VALID_USER_1,
 				EscenariosTests.VALID_PASS_1, null);

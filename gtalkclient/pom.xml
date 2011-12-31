@@ -76,7 +76,7 @@ Sirve para enviar y recibir mensajes como texto</description>
 		<version>3.1.0</version>
 	</dependency>
 	
-	<!-- Para debug de los mensajes  
+	<!-- Para debug de los mensajes   
 	<dependency>
 		<groupId>jivesoftware</groupId>
 		<artifactId>smackx-debug</artifactId>
