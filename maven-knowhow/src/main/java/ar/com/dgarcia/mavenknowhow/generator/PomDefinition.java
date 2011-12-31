@@ -17,6 +17,7 @@ import java.util.List;
 import org.apache.maven.model.Build;
 import org.apache.maven.model.Model;
 
+import ar.com.dgarcia.mavenknowhow.dependencies.Guava;
 import ar.com.dgarcia.mavenknowhow.dependencies.Junit;
 import ar.com.dgarcia.mavenknowhow.dependencies.Slf4jLogging;
 import ar.com.dgarcia.mavenknowhow.helpers.Plugins;
@@ -66,7 +67,8 @@ public class PomDefinition {
 	 * Define las dependencias básicas para todo proyecto
 	 */
 	private void defineBasicDependencies() {
-		final List<ProjectDependency> basicDependencies = Lists.newArrayList(Slf4jLogging.create(), Junit.create());
+		final List<ProjectDependency> basicDependencies = Lists.newArrayList(Guava.create(), Slf4jLogging.create(),
+				Junit.create());
 		addDependencies(basicDependencies);
 	}
 
