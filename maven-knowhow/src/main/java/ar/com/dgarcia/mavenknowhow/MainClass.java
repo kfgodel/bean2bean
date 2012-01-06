@@ -18,6 +18,7 @@ import java.util.List;
 
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
+import ar.com.dgarcia.mavenknowhow.dependencies.Agents;
 import ar.com.dgarcia.mavenknowhow.generator.PomDefinition;
 import ar.com.dgarcia.mavenknowhow.generator.PomGenerator;
 import ar.com.dgarcia.mavenknowhow.generator.ProjectDependency;
@@ -32,14 +33,13 @@ import com.google.common.collect.Lists;
 public class MainClass {
 
 	public static void main(final String[] args) throws FileNotFoundException, IOException, XmlPullParserException {
-		final String destinationDirPath = "G:\\Java\\Workspaces\\Activo\\gtalkclient";
+		final String destinationDirPath = "G:\\Java\\Workspaces\\Activo\\ikaripc-console";
 		final String groupId = "ar.dgarcia";
-		final String artifactIdId = "gtalkclient";
+		final String artifactIdId = "ikaripc-console";
 		final String versionId = "0.1-SNAPSHOT";
-		final String projectName = "Gtalk-Client Simple";
-		final String projectDescription = "Cliente para Gtalk que se maneja practicamente identificando los usuarios con el mail.\n"
-				+ "Sirve para enviar y recibir mensajes como texto";
-		final List<ProjectDependency> dependencies = Lists.<ProjectDependency> newArrayList();
+		final String projectName = "IkariPC Console";
+		final String projectDescription = "Agentes para la comunicación a través de la consola";
+		final List<ProjectDependency> dependencies = Lists.<ProjectDependency> newArrayList(Agents.create());
 
 		final PomDefinition definition = PomDefinition.create(groupId, artifactIdId, versionId);
 		definition.setProjectName(projectName);
