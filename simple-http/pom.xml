@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>ar.dgarcia	</groupId>
   <artifactId>simple-http</artifactId>
-  <version>1.0</version>
+  <version>1.0-SNAPSHOT</version>
   <name>Simple Http client</name>
   <description>Cliente muy simple para http basado en el de apache</description>
   <build>
@@ -53,6 +53,22 @@
     </plugins>
   </build>
   <dependencies>
+ 
+ 	<!-- Cliente http de apache --> 
+   	<dependency>
+  		<groupId>org.apache.httpcomponents</groupId>
+  		<artifactId>httpclient</artifactId>
+  		<version>4.1.1</version>
+  	</dependency>
+  	<!-- Herramientas para manejar IO facilmente -->
+  	<dependency>
+  		<groupId>org.apache.commons</groupId>
+  		<artifactId>commons-io</artifactId>
+  		<version>1.3.2</version>
+  	</dependency>
+  
+  
+  
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
