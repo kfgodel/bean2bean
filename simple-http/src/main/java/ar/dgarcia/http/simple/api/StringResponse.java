@@ -28,6 +28,15 @@ public class StringResponse {
 	private String content;
 	public static final String content_FIELD = "content";
 
+	/**
+	 * Indica si esta respuesta fue correcta según el que responde
+	 * 
+	 * @return true si el status de esta respuesta es 200
+	 */
+	public boolean hasOkStatus() {
+		return HttpProtocol.HTTP_OK_STATUS == status;
+	}
+
 	public int getStatus() {
 		return status;
 	}
