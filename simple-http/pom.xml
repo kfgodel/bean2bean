@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>ar.dgarcia</groupId>
   <artifactId>simple-http</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0</version>
   <name>Simple Http client</name>
   <description>Cliente muy simple para http basado en el de apache</description>
   <build>
