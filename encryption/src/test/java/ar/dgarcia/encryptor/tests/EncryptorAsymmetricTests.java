@@ -12,12 +12,15 @@
  */
 package ar.dgarcia.encryptor.tests;
 
+import javax.crypto.BadPaddingException;
+
 import junit.framework.Assert;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import ar.dgarcia.encryptor.api.CryptoKey;
+import ar.dgarcia.encryptor.api.FailedCryptException;
 import ar.dgarcia.encryptor.api.GeneratedKeys;
 import ar.dgarcia.encryptor.api.TextEncryptor;
 import ar.dgarcia.encryptor.impl.RSATextEncryptor;
@@ -108,11 +111,13 @@ public class EncryptorAsymmetricTests {
 		final String encrypted = encryptor.encrypt(textoOrginal, encriptionKey);
 
 		// Desencriptamos con la pública
-		final String decrypted = encryptor.decrypt(encrypted, encriptionKey);
-
-		// Verificamos que le texto no sea el original
-		Assert.assertNotNull(decrypted);
-		Assert.assertFalse(textoOrginal.equals(decrypted));
+		try {
+			encryptor.decrypt(encrypted, encriptionKey);
+			Assert.fail("No debería ejecutar normalmente");
+		} catch (final FailedCryptException e) {
+			// Es la excepción correcta
+			Assert.assertTrue("Debería indicar badpadding como causa", e.getCause() instanceof BadPaddingException);
+		}
 	}
 
 	@Test
@@ -126,12 +131,42 @@ public class EncryptorAsymmetricTests {
 
 		// Desencriptamos con otra clave privada
 		final GeneratedKeys otherKeys = encryptor.generateKeys();
-		final CryptoKey decriptionKey = otherKeys.getDecriptionKey();
-		final String decrypted = encryptor.decrypt(encrypted, decriptionKey);
+		final CryptoKey otherDecriptionKey = otherKeys.getDecriptionKey();
 
-		// Verificamos que le texto no sea el original
-		Assert.assertNotNull(decrypted);
-		Assert.assertFalse(textoOrginal.equals(decrypted));
+		try {
+			encryptor.decrypt(encrypted, otherDecriptionKey);
+			Assert.fail("No debería ejecutar normalmente");
+		} catch (final FailedCryptException e) {
+			// Es la excepción correcta
+			Assert.assertTrue("Debería indicar badpadding como causa", e.getCause() instanceof BadPaddingException);
+		}
 	}
 
+	@Test
+	public void deberiaPermitirSerializarLaClavePublica() {
+		// Generamos la clave publica original
+		final GeneratedKeys keys = encryptor.generateKeys();
+		final CryptoKey encriptionKey = keys.getEncriptionKey();
+
+		// A partir de la original generamos una copia
+		final String serializedEncriptionKey = encryptor.serialize(encriptionKey);
+		final CryptoKey copiedEncriptionKey = encryptor.deserialize(serializedEncriptionKey);
+
+		// Verificamos que no sea la misma instancia
+		Assert.assertNotSame("Deberían ser claves distintas", encriptionKey, copiedEncriptionKey);
+
+		// Encriptamos con la publica original
+		final String textoOrginal = "Hola mundo";
+		final String encrypted = encryptor.encrypt(textoOrginal, encriptionKey);
+
+		// Encriptamos con la copia
+		final String encryptedWithCopy = encryptor.encrypt(textoOrginal, copiedEncriptionKey);
+
+		// Desencriptamos con la privada en ambos casos
+		final String decrypted = encryptor.decrypt(encrypted, keys.getDecriptionKey());
+		final String decryptedFromCopy = encryptor.decrypt(encryptedWithCopy, keys.getDecriptionKey());
+		// Verificamos que le texto desencriptado debería ser igual
+		Assert.assertEquals("Los textos deberían ser iguales", decrypted, decryptedFromCopy);
+
+	}
 }

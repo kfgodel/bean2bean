@@ -12,11 +12,16 @@
  */
 package ar.dgarcia.encryptor.impl;
 
+import java.math.BigInteger;
 import java.security.InvalidKeyException;
 import java.security.Key;
+import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.RSAPrivateKeySpec;
+import java.security.spec.RSAPublicKeySpec;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -27,6 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ar.dgarcia.encryptor.api.CryptoKey;
+import ar.dgarcia.encryptor.api.FailedCryptException;
 import ar.dgarcia.encryptor.api.GeneratedKeys;
 import ar.dgarcia.encryptor.api.TextEncryptor;
 
@@ -37,6 +43,11 @@ import ar.dgarcia.encryptor.api.TextEncryptor;
  */
 public class RSATextEncryptor implements TextEncryptor {
 	/**
+	 * Caracter usado para separar los valores al serializar
+	 */
+	private static final String NUMBER_SEPARATOR = "|";
+
+	/**
 	 * Constante que identifica el algoritmo utilizado
 	 */
 	private static final String RSA_ALGORITHM = "RSA";
@@ -44,6 +55,8 @@ public class RSATextEncryptor implements TextEncryptor {
 	private static final Logger LOG = LoggerFactory.getLogger(RSATextEncryptor.class);
 
 	private KeyPairGenerator keyGenerator;
+
+	private KeyFactory keyFactory;
 
 	private ByteArrayRepresenter representer;
 
@@ -53,9 +66,14 @@ public class RSATextEncryptor implements TextEncryptor {
 		try {
 			encryptor.keyGenerator = KeyPairGenerator.getInstance(RSA_ALGORITHM);
 		} catch (final NoSuchAlgorithmException e) {
-			throw new RuntimeException("No se encontró el algoritmo RSA para encriptado");
+			throw new RuntimeException("No se encontró el algoritmo RSA para encriptado", e);
 		}
 		encryptor.keyGenerator.initialize(2048);
+		try {
+			encryptor.keyFactory = KeyFactory.getInstance(RSA_ALGORITHM);
+		} catch (final NoSuchAlgorithmException e) {
+			throw new RuntimeException("No se encontró el algoritmo RSA para encriptado", e);
+		}
 		encryptor.representer = ByteArrayRepresenter.create();
 		return encryptor;
 	}
@@ -66,11 +84,31 @@ public class RSATextEncryptor implements TextEncryptor {
 	public GeneratedKeys generateKeys() {
 		final KeyPair kp = keyGenerator.genKeyPair();
 
+		// Creamos la versión propia de la clave publica
 		final Key publicKey = kp.getPublic();
-		final CryptoKey encriptionKey = RsaCryptoKey.create(publicKey);
+		RSAPublicKeySpec publicKeySpec;
+		try {
+			publicKeySpec = keyFactory.getKeySpec(publicKey, RSAPublicKeySpec.class);
+		} catch (final InvalidKeySpecException e) {
+			throw new RuntimeException("La keyFactory rechaza el tipo de especificacion de clave pedido", e);
+		}
+		final BigInteger publicModulus = publicKeySpec.getModulus();
+		final BigInteger publicExponent = publicKeySpec.getPublicExponent();
+		final CryptoKey encriptionKey = RsaCryptoKey.create(publicKey, publicModulus, publicExponent, true);
 
+		// Creamos la versión propia de la clave privada
 		final Key privateKey = kp.getPrivate();
-		final CryptoKey decriptionKey = RsaCryptoKey.create(privateKey);
+		RSAPrivateKeySpec privateKeySpec;
+		try {
+			privateKeySpec = keyFactory.getKeySpec(privateKey, RSAPrivateKeySpec.class);
+		} catch (final InvalidKeySpecException e) {
+			throw new RuntimeException("La keyFactory rechaza el tipo de especificacion de clave pedido", e);
+		}
+		final BigInteger privateModulus = privateKeySpec.getModulus();
+		final BigInteger privateExponent = privateKeySpec.getPrivateExponent();
+		final CryptoKey decriptionKey = RsaCryptoKey.create(privateKey, privateModulus, privateExponent, false);
+
+		// Devolvemos las claves generadas
 		final GeneratedKeys clavesGeneradas = GeneratedKeys.create(encriptionKey, decriptionKey);
 		LOG.debug("Generadas nuevas keys[{}]", clavesGeneradas);
 		return clavesGeneradas;
@@ -116,15 +154,17 @@ public class RSATextEncryptor implements TextEncryptor {
 		try {
 			cipher.init(cipherMode, javaKey);
 		} catch (final InvalidKeyException e) {
-			throw new RuntimeException("La clave generada no es aceptada por RSA", e);
+			throw new RuntimeException("La clave usada no es aceptada por RSA", e);
 		}
 		byte[] outputData;
 		try {
 			outputData = cipher.doFinal(inputData);
 		} catch (final IllegalBlockSizeException e) {
-			throw new RuntimeException("RSA rechaza el tamaño de bloque. WTF?!", e);
+			throw new FailedCryptException(
+					"El tamaño de bloque no es correcto para RSA. Probablemente el texto pasado no está encriptado", e);
 		} catch (final BadPaddingException e) {
-			throw new RuntimeException("Hay un problema con el padding", e);
+			throw new FailedCryptException(
+					"No coinciden los espacios con padding. Probablemente la clave es incorrecta", e);
 		}
 		return outputData;
 	}
@@ -143,5 +183,50 @@ public class RSATextEncryptor implements TextEncryptor {
 		final String decryptedString = new String(decryptedData);
 		LOG.debug("Desencriptado de [{}] en [{}]", encrypted, decryptedString);
 		return decryptedString;
+	}
+
+	/**
+	 * @see ar.dgarcia.encryptor.api.TextEncryptor#serialize(ar.dgarcia.encryptor.api.CryptoKey)
+	 */
+	public String serialize(final CryptoKey key) {
+		if (!(key instanceof RsaCryptoKey)) {
+			throw new IllegalArgumentException("Este encriptor sólo admite claves RSA");
+		}
+		final RsaCryptoKey rsaKey = (RsaCryptoKey) key;
+		final StringBuilder builder = new StringBuilder();
+		builder.append(rsaKey.isPublicKey());
+		builder.append(NUMBER_SEPARATOR);
+		builder.append(rsaKey.getModulus());
+		builder.append(NUMBER_SEPARATOR);
+		builder.append(rsaKey.getExponent());
+		return builder.toString();
+	}
+
+	/**
+	 * @see ar.dgarcia.encryptor.api.TextEncryptor#deserialize(java.lang.String)
+	 */
+	public CryptoKey deserialize(final String serializedEncriptionKey) {
+		final String[] parts = serializedEncriptionKey.split("\\|");
+		if (parts.length != 3) {
+			throw new IllegalArgumentException("La cadena pasada no puede ser interpretada como clave serializada");
+		}
+		final boolean isPublic = Boolean.valueOf(parts[0]);
+		final BigInteger keyModulus = new BigInteger(parts[1]);
+		final BigInteger keyExponent = new BigInteger(parts[2]);
+
+		final Key generatedKey;
+		try {
+			if (isPublic) {
+				final RSAPublicKeySpec rsaPublicKeySpec = new RSAPublicKeySpec(keyModulus, keyExponent);
+				generatedKey = keyFactory.generatePublic(rsaPublicKeySpec);
+			} else {
+				final RSAPrivateKeySpec rsaPrivateKeySpec = new RSAPrivateKeySpec(keyModulus, keyExponent);
+				generatedKey = keyFactory.generatePrivate(rsaPrivateKeySpec);
+			}
+		} catch (final InvalidKeySpecException e) {
+			throw new RuntimeException("La keyFactory rechaza el tipo de especificacion de clave generada", e);
+		}
+		final CryptoKey rsaKey = RsaCryptoKey.create(generatedKey, keyModulus, keyExponent, isPublic);
+		return rsaKey;
 	}
 }

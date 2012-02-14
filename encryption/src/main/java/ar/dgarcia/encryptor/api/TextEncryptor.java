@@ -32,8 +32,10 @@ public interface TextEncryptor {
 	 * @param unencrypted
 	 *            Texto sin encriptar
 	 * @return El texto encriptado con el algoritmo de este {@link TextEncryptor} y la clave pasada
+	 * @throws FailedCryptException
+	 *             Si se produjo un error con la encriptación (probablemente una clave incorrecta)
 	 */
-	String encrypt(String unencrypted, CryptoKey encriptionKey);
+	String encrypt(String unencrypted, CryptoKey encriptionKey) throws FailedCryptException;
 
 	/**
 	 * Crea una versión desencriptada del texto pasado
@@ -44,7 +46,27 @@ public interface TextEncryptor {
 	 *            La clave para utilizar en la desencripción
 	 * @return El texto desencriptado utilizando el algoritmo de este {@link TextEncryptor} y la
 	 *         clave pasada
+	 * @throws FailedCryptException
+	 *             Si se produjo un error con la encriptación (probablemente una clave incorrecta)
 	 */
-	String decrypt(String encrypted, CryptoKey decriptionKey);
+	String decrypt(String encrypted, CryptoKey decriptionKey) throws FailedCryptException;
+
+	/**
+	 * Crea una versión persistible de la clave pasada
+	 * 
+	 * @param encriptionKey
+	 *            La clave a serializar como String
+	 * @return El texto que representa y permite obtener la clave pasada
+	 */
+	String serialize(CryptoKey encriptionKey);
+
+	/**
+	 * Crea una versión deserializada de la clave pasada
+	 * 
+	 * @param serializedEncriptionKey
+	 *            El texto que representa la clave
+	 * @return La clave regenerada
+	 */
+	CryptoKey deserialize(String serializedEncriptionKey);
 
 }

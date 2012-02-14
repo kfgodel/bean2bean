@@ -12,6 +12,7 @@
  */
 package ar.dgarcia.encryptor.impl;
 
+import java.math.BigInteger;
 import java.security.Key;
 
 import ar.dgarcia.encryptor.api.CryptoKey;
@@ -28,13 +29,34 @@ public class RsaCryptoKey implements CryptoKey {
 	private Key internalKey;
 	public static final String internalKey_FIELD = "internalKey";
 
+	private BigInteger modulus;
+	public static final String modulus_FIELD = "modulus";
+
+	private BigInteger exponent;
+	public static final String exponent_FIELD = "exponent";
+
+	private boolean isPublicKey;
+	public static final String isPublicKey_FIELD = "isPublicKey";
+
 	public Key getInternalKey() {
 		return internalKey;
 	}
 
-	public static RsaCryptoKey create(final Key javaKey) {
+	public BigInteger getModulus() {
+		return modulus;
+	}
+
+	public BigInteger getExponent() {
+		return exponent;
+	}
+
+	public static RsaCryptoKey create(final Key javaKey, final BigInteger keyModulus, final BigInteger keyExponent,
+			final boolean isPublic) {
 		final RsaCryptoKey key = new RsaCryptoKey();
 		key.internalKey = javaKey;
+		key.modulus = keyModulus;
+		key.exponent = keyExponent;
+		key.isPublicKey = isPublic;
 		return key;
 	}
 
@@ -43,6 +65,12 @@ public class RsaCryptoKey implements CryptoKey {
 	 */
 	@Override
 	public String toString() {
-		return Objects.toStringHelper(this).add(internalKey_FIELD, internalKey).toString();
+		return Objects.toStringHelper(this).add(isPublicKey_FIELD, isPublicKey).add(modulus_FIELD, modulus)
+				.add(exponent_FIELD, exponent).toString();
 	}
+
+	public boolean isPublicKey() {
+		return isPublicKey;
+	}
+
 }
