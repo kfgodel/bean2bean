@@ -184,5 +184,10 @@ public class EncryptorAsymmetricTests {
 		final String textoEncriptado = encryptor.encrypt(textoLargo, encriptionKey);
 
 		Assert.assertFalse("El texto debería estar encriptado", textoLargo.equals(textoEncriptado));
+
+		final CryptoKey decriptionKey = keys.getDecriptionKey();
+		final String textoDesencriptado = encryptor.decrypt(textoEncriptado, decriptionKey);
+
+		Assert.assertEquals("Debería ser el mismo texto largo", textoLargo, textoDesencriptado);
 	}
 }
