@@ -48,6 +48,12 @@ public class StringRequest {
 	}
 
 	public void setUrl(final String url) {
+		if (!url.startsWith("http")) {
+			// Si después permitimos otro tipo de protocolos habría que sacar está excepción
+			throw new IllegalArgumentException(
+					"La URL debe empezar con http o https, sino el cliente apache no sabe cual es el esquema de: "
+							+ url);
+		}
 		this.baseUrl = url;
 	}
 
@@ -63,14 +69,8 @@ public class StringRequest {
 	}
 
 	public static StringRequest create(final String url) {
-		if (!url.startsWith("http")) {
-			// Si después permitimos otro tipo de protocolos habría que sacar está excepción
-			throw new IllegalArgumentException(
-					"La URL debe empezar con http o https, sino el cliente apache no sabe cual es el esquema de: "
-							+ url);
-		}
 		final StringRequest request = new StringRequest();
-		request.baseUrl = url;
+		request.setUrl(url);
 		return request;
 	}
 

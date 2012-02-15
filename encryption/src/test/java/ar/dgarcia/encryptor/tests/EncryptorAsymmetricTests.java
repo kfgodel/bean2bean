@@ -167,6 +167,22 @@ public class EncryptorAsymmetricTests {
 		final String decryptedFromCopy = encryptor.decrypt(encryptedWithCopy, keys.getDecriptionKey());
 		// Verificamos que le texto desencriptado debería ser igual
 		Assert.assertEquals("Los textos deberían ser iguales", decrypted, decryptedFromCopy);
+	}
 
+	/**
+	 * Debido a cómo funciona el algoritmo RSA los bloques de texto están limitados en tamaño según
+	 * la cantidad de bits elegidos.<br>
+	 * Tiene que ser posible saltear ese obstáculo
+	 */
+	@Test
+	public void deberiaPermitirEncriptarTextosMásGrandesQue245Bytes() {
+		// Generamos la clave
+		final GeneratedKeys keys = encryptor.generateKeys();
+		final CryptoKey encriptionKey = keys.getEncriptionKey();
+
+		final String textoLargo = "{\"sessionId\":-1,\"mensajes\":[{\"contenido\":{\"valor\":\"{\\\"tags\\\":[\\\"TagParaPrueba\\\"]}\",\"tipoContenido\":\"vortex.metamensaje.AgregarTags\"},\"identificacion\":{\"timestamp\":1329273790137,\"hashDelContenido\":\"145f5e3\",\"idDelEmisor\":\"e63f2735c4eb3712\",\"numeroDeSecuencia\":0},\"tagsDestino\":[\"CHE\"]}]}";
+		final String textoEncriptado = encryptor.encrypt(textoLargo, encriptionKey);
+
+		Assert.assertFalse("El texto debería estar encriptado", textoLargo.equals(textoEncriptado));
 	}
 }
