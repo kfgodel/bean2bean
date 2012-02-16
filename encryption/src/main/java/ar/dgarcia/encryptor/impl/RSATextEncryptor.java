@@ -35,6 +35,8 @@ import ar.dgarcia.encryptor.api.CryptoKey;
 import ar.dgarcia.encryptor.api.FailedCryptException;
 import ar.dgarcia.encryptor.api.GeneratedKeys;
 import ar.dgarcia.encryptor.api.TextEncryptor;
+import ar.dgarcia.encryptor.impl.blocks.RsaBlockComposer;
+import ar.dgarcia.encryptor.impl.blocks.RsaBlockDecomposer;
 
 /**
  * Esta clase representa el encriptador de textos usando RSA para las claves publicas y privadas
@@ -42,6 +44,15 @@ import ar.dgarcia.encryptor.api.TextEncryptor;
  * @author D. García
  */
 public class RSATextEncryptor implements TextEncryptor {
+	/**
+	 * Tamaño del bloque encriptado en bytes
+	 */
+	private static final int ENCRYPTED_BLOCK_SIZE = 256;
+	/**
+	 * Cantidad de bytes usables del bloque
+	 */
+	private static final int MAX_UNENCRYPTED_BLOCK_SIZE = ENCRYPTED_BLOCK_SIZE - 11;
+
 	/**
 	 * Caracter usado para separar los valores al serializar
 	 */
@@ -61,14 +72,15 @@ public class RSATextEncryptor implements TextEncryptor {
 	private ByteArrayRepresenter representer;
 
 	public static RSATextEncryptor create() {
-		LOG.debug("Creando encriptador RSA de 2048 bits");
+		LOG.debug("Creando encriptador RSA de {} bytes", ENCRYPTED_BLOCK_SIZE);
 		final RSATextEncryptor encryptor = new RSATextEncryptor();
 		try {
 			encryptor.keyGenerator = KeyPairGenerator.getInstance(RSA_ALGORITHM);
 		} catch (final NoSuchAlgorithmException e) {
 			throw new RuntimeException("No se encontró el algoritmo RSA para encriptado", e);
 		}
-		encryptor.keyGenerator.initialize(2048);
+		final int blockSizeInBits = ENCRYPTED_BLOCK_SIZE * 8;
+		encryptor.keyGenerator.initialize(blockSizeInBits);
 		try {
 			encryptor.keyFactory = KeyFactory.getInstance(RSA_ALGORITHM);
 		} catch (final NoSuchAlgorithmException e) {
@@ -142,6 +154,64 @@ public class RSATextEncryptor implements TextEncryptor {
 	 * @return El resultado como array de bytes
 	 */
 	private byte[] processWithCipher(final int cipherMode, final byte[] inputData, final RsaCryptoKey rsaKey) {
+		final Cipher cipher = createCipher(cipherMode, rsaKey);
+		int inputBlockSize;
+		int ouputBlockSize;
+
+		if (cipherMode == Cipher.ENCRYPT_MODE) {
+			// El input debe ser partido en bloques de datos
+			inputBlockSize = MAX_UNENCRYPTED_BLOCK_SIZE;
+			ouputBlockSize = ENCRYPTED_BLOCK_SIZE;
+		} else {
+			// El input debe ser partido en bloques encriptados
+			inputBlockSize = ENCRYPTED_BLOCK_SIZE;
+			ouputBlockSize = MAX_UNENCRYPTED_BLOCK_SIZE;
+		}
+		final RsaBlockDecomposer arrayDecomposer = RsaBlockDecomposer.create(inputData, inputBlockSize);
+		final int expectedBlocks = arrayDecomposer.getTotalBlocks();
+		final RsaBlockComposer arrayComposer = RsaBlockComposer.create(expectedBlocks, ouputBlockSize);
+		for (int i = 0; i < expectedBlocks; i++) {
+			final byte[] inputBlock = arrayDecomposer.getNextBlock();
+			final byte[] outputBlock = doCryptProcess(inputBlock, cipher);
+			arrayComposer.putNextBlock(outputBlock);
+		}
+		final byte[] result = arrayComposer.getResult();
+		return result;
+	}
+
+	/**
+	 * Realiza el encriptado o desencriptado según el cipher pasado
+	 * 
+	 * @param inputData
+	 *            Los datos de entrada
+	 * @param cipher
+	 *            El cipher a utilizar
+	 * @return El array con los resultados
+	 */
+	private byte[] doCryptProcess(final byte[] inputData, final Cipher cipher) {
+		byte[] outputData;
+		try {
+			outputData = cipher.doFinal(inputData);
+		} catch (final IllegalBlockSizeException e) {
+			throw new FailedCryptException(
+					"El tamaño de bloque no es correcto para RSA. Probablemente el texto pasado no está encriptado", e);
+		} catch (final BadPaddingException e) {
+			throw new FailedCryptException(
+					"No coinciden los espacios con padding. Probablemente la clave es incorrecta", e);
+		}
+		return outputData;
+	}
+
+	/**
+	 * Crea un cipher para procesar los bytes en encriptado o desencriptado
+	 * 
+	 * @param cipherMode
+	 *            El modo de operación del cipher
+	 * @param rsaKey
+	 *            La clave que debe utilizar
+	 * @return El cipher creado
+	 */
+	private Cipher createCipher(final int cipherMode, final RsaCryptoKey rsaKey) {
 		final Key javaKey = rsaKey.getInternalKey();
 		Cipher cipher;
 		try {
@@ -156,17 +226,7 @@ public class RSATextEncryptor implements TextEncryptor {
 		} catch (final InvalidKeyException e) {
 			throw new RuntimeException("La clave usada no es aceptada por RSA", e);
 		}
-		byte[] outputData;
-		try {
-			outputData = cipher.doFinal(inputData);
-		} catch (final IllegalBlockSizeException e) {
-			throw new FailedCryptException(
-					"El tamaño de bloque no es correcto para RSA. Probablemente el texto pasado no está encriptado", e);
-		} catch (final BadPaddingException e) {
-			throw new FailedCryptException(
-					"No coinciden los espacios con padding. Probablemente la clave es incorrecta", e);
-		}
-		return outputData;
+		return cipher;
 	}
 
 	/**

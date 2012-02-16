@@ -30,7 +30,7 @@ import ar.dgarcia.encryptor.impl.RSATextEncryptor;
  * 
  * @author D. García
  */
-public class EncryptorAsymmetricTests {
+public class AsymmetricEncryptorTests {
 
 	private TextEncryptor encryptor;
 
@@ -75,11 +75,21 @@ public class EncryptorAsymmetricTests {
 		final CryptoKey encriptionKey = keys.getEncriptionKey();
 
 		// Encriptamos con la clave publica
-		final String textoOrginal = "Hola mundo";
-		final String encrypted = encryptor.encrypt(textoOrginal, encriptionKey);
+		String textoOrginal = "Hola mundo";
+		String encrypted = encryptor.encrypt(textoOrginal, encriptionKey);
 
 		// Verificamos que el texto sea distinto
 		Assert.assertNotNull(encrypted);
+		Assert.assertFalse("No debería ser el mismo texto", textoOrginal.equals(encrypted));
+
+		// Otro texto corto
+		textoOrginal = "1";
+		encrypted = encryptor.encrypt(textoOrginal, encriptionKey);
+		Assert.assertFalse("No debería ser el mismo texto", textoOrginal.equals(encrypted));
+
+		// Un texto más largo
+		textoOrginal = "123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890";
+		encrypted = encryptor.encrypt(textoOrginal, encriptionKey);
 		Assert.assertFalse("No debería ser el mismo texto", textoOrginal.equals(encrypted));
 	}
 
