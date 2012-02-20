@@ -32,8 +32,8 @@ public class SourcePlugin extends BuildPlugin {
 
 		final PluginExecution attachExecution = new PluginExecution();
 		attachExecution.setId("attach-source");
-		attachExecution.addGoal("jar");
-		attachExecution.addGoal("test-jar");
+		attachExecution.setPhase("verify");
+		attachExecution.addGoal("jar-no-fork");
 		plugin.addExecution(attachExecution);
 	}
 
