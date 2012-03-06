@@ -27,7 +27,6 @@ import net.sf.kfgodel.bean2bean.conversion.TypeConverter;
 import net.sf.kfgodel.bean2bean.exceptions.CannotConvertException;
 import net.sf.kfgodel.dgarcia.lang.reflection.ReflectionUtils;
 
-
 /**
  * Esta clase sabe como convertir entre arrays y colecciones de elementos
  * 
@@ -39,7 +38,7 @@ import net.sf.kfgodel.dgarcia.lang.reflection.ReflectionUtils;
 public class ArrayCollectionConverter implements GeneralTypeConverter<Object, Collection> {
 
 	/**
-	 * Conversor al que se le delegaran las conversiones basicas
+	 * Conversor al que se le delegarán las conversiones básicas
 	 */
 	private TypeConverter baseConverter;
 
@@ -47,7 +46,7 @@ public class ArrayCollectionConverter implements GeneralTypeConverter<Object, Co
 		return baseConverter;
 	}
 
-	public void setBaseConverter(TypeConverter baseConverter) {
+	public void setBaseConverter(final TypeConverter baseConverter) {
 		this.baseConverter = baseConverter;
 	}
 
@@ -60,27 +59,26 @@ public class ArrayCollectionConverter implements GeneralTypeConverter<Object, Co
 	 * @see net.sf.kfgodel.bean2bean.conversion.GeneralTypeConverter#convertFrom(java.lang.Object,
 	 *      java.lang.reflect.Type, java.lang.annotation.Annotation[])
 	 */
-	public Collection convertFrom(Object value, Type expectedType, Annotation[] contextAnnotations) {
+	public Collection convertFrom(final Object value, final Type expectedType, final Annotation[] contextAnnotations) {
 		if (expectedType == null) {
 			throw new CannotConvertException("Cannot make conversion. Expected type was not defined", value,
 					expectedType);
 		}
-		Class<?> collectionClass = ReflectionUtils.degenerify(expectedType);
+		final Class<?> collectionClass = ReflectionUtils.degenerify(expectedType);
 		if (collectionClass == null) {
 			throw new CannotConvertException("Cannot determine collecion class for expected type", value,
 					collectionClass);
 		}
-		Type elementType = ReflectionUtils.getElementTypeParameterFrom(expectedType);
-		int arrayLength = Array.getLength(value);
+		final Type elementType = ReflectionUtils.getElementTypeParameterFrom(expectedType);
+		final int arrayLength = Array.getLength(value);
 		Collection destinationCol;
 		try {
 			destinationCol = Collection2CollectionConverter.instantiate(collectionClass, arrayLength);
-		}
-		catch (CouldNotInstanstiateException e) {
+		} catch (final CouldNotInstanstiateException e) {
 			throw new CannotConvertException("Couldn't instatiante a collection", value, expectedType, e);
 		}
 		for (int i = 0; i < arrayLength; i++) {
-			Object sourceElement = Array.get(value, i);
+			final Object sourceElement = Array.get(value, i);
 			Object elementToAdd = sourceElement;
 			if (elementType != null) {
 				elementToAdd = this.getBaseConverter().convertValue(sourceElement, elementType);
@@ -101,24 +99,24 @@ public class ArrayCollectionConverter implements GeneralTypeConverter<Object, Co
 	 * @see net.sf.kfgodel.bean2bean.conversion.GeneralTypeConverter#convertTo(java.lang.reflect.Type,
 	 *      java.lang.Object, java.lang.annotation.Annotation[])
 	 */
-	public Object convertTo(Type expectedType, Collection value, Annotation[] contextAnnotations) {
+	public Object convertTo(final Type expectedType, final Collection value, final Annotation[] contextAnnotations) {
 		if (expectedType == null) {
 			throw new CannotConvertException("Cannot make conversion. Expected type was not defined", value,
 					expectedType);
 		}
-		Class<?> arrayClass = ReflectionUtils.degenerify(expectedType);
+		final Class<?> arrayClass = ReflectionUtils.degenerify(expectedType);
 		if (arrayClass == null) {
 			throw new CannotConvertException("Cannot determine array class for expecte type", value, arrayClass);
 		}
-		Class<?> elementType = arrayClass.getComponentType();
+		final Class<?> elementType = arrayClass.getComponentType();
 		if (elementType == null) {
 			throw new CannotConvertException("Expected type should be an array[" + expectedType + "]", value,
 					expectedType);
 		}
-		Object createdArray = Array.newInstance(elementType, value.size());
+		final Object createdArray = Array.newInstance(elementType, value.size());
 		int i = 0;
-		for (Object sourceElement : value) {
-			Object elementToAdd = this.getBaseConverter().convertValue(sourceElement, elementType);
+		for (final Object sourceElement : value) {
+			final Object elementToAdd = this.getBaseConverter().convertValue(sourceElement, elementType);
 			;
 			Array.set(createdArray, i, elementToAdd);
 			i++;
@@ -126,8 +124,8 @@ public class ArrayCollectionConverter implements GeneralTypeConverter<Object, Co
 		return createdArray;
 	}
 
-	public static ArrayCollectionConverter create(TypeConverter baseConverter) {
-		ArrayCollectionConverter converter = new ArrayCollectionConverter();
+	public static ArrayCollectionConverter create(final TypeConverter baseConverter) {
+		final ArrayCollectionConverter converter = new ArrayCollectionConverter();
 		converter.setBaseConverter(baseConverter);
 		return converter;
 	}
@@ -136,11 +134,11 @@ public class ArrayCollectionConverter implements GeneralTypeConverter<Object, Co
 	 * @see net.sf.kfgodel.bean2bean.conversion.GeneralTypeConverter#acceptsConversionFrom(java.lang.Class,
 	 *      java.lang.reflect.Type, java.lang.Object)
 	 */
-	public boolean acceptsConversionFrom(Class<?> sourceType, Type expectedType, Object sourceObject) {
+	public boolean acceptsConversionFrom(final Class<?> sourceType, final Type expectedType, final Object sourceObject) {
 		if (!sourceType.isArray()) {
 			return false;
 		}
-		Class<?> expectedClass = ReflectionUtils.degenerify(expectedType);
+		final Class<?> expectedClass = ReflectionUtils.degenerify(expectedType);
 		if (!Collection.class.isAssignableFrom(expectedClass)) {
 			return false;
 		}
@@ -155,11 +153,11 @@ public class ArrayCollectionConverter implements GeneralTypeConverter<Object, Co
 	 * @see net.sf.kfgodel.bean2bean.conversion.GeneralTypeConverter#acceptsConversionTo(java.lang.reflect.Type,
 	 *      java.lang.Class, java.lang.Object)
 	 */
-	public boolean acceptsConversionTo(Type expectedType, Class<?> sourceType, Object sourceObject) {
+	public boolean acceptsConversionTo(final Type expectedType, final Class<?> sourceType, final Object sourceObject) {
 		if (!Collection.class.isAssignableFrom(sourceType)) {
 			return false;
 		}
-		Class<?> expectedClass = ReflectionUtils.degenerify(expectedType);
+		final Class<?> expectedClass = ReflectionUtils.degenerify(expectedType);
 		if (!expectedClass.isArray()) {
 			return false;
 		}
