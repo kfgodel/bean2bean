@@ -33,6 +33,7 @@ import net.sf.kfgodel.bean2bean.conversion.DefaultTypeConverter;
 import net.sf.kfgodel.bean2bean.exceptions.CannotConvertException;
 import net.sf.kfgodel.bean2bean.testbeans.BeanTester;
 import net.sf.kfgodel.bean2bean.testbeans.ConverterBeanTemplate;
+import net.sf.kfgodel.bean2bean.testbeans.NonAnnotatedBean;
 import net.sf.kfgodel.bean2bean.testbeans.PlainPrimitiveBean;
 import net.sf.kfgodel.bean2bean.testbeans.SourceBean;
 import net.sf.kfgodel.bean2bean.testbeans.TipoEnumerado;
@@ -43,7 +44,6 @@ import net.sf.kfgodel.dgarcia.testing.CodeThatShouldFail;
 
 import org.junit.Test;
 import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
-
 
 /**
  * Esta clase testea la injection del bean2bean con spring. Basicamente testea lo mismo que
@@ -68,7 +68,7 @@ public class SpringInjectionTest extends AbstractDependencyInjectionSpringContex
 		return bean2bean;
 	}
 
-	public void setBean2bean(Bean2Bean bean2bean) {
+	public void setBean2bean(final Bean2Bean bean2bean) {
 		this.bean2bean = bean2bean;
 	}
 
@@ -76,7 +76,7 @@ public class SpringInjectionTest extends AbstractDependencyInjectionSpringContex
 		return converter;
 	}
 
-	public void setConverter(DefaultTypeConverter converter) {
+	public void setConverter(final DefaultTypeConverter converter) {
 		this.converter = converter;
 	}
 
@@ -96,8 +96,8 @@ public class SpringInjectionTest extends AbstractDependencyInjectionSpringContex
 	 * @param expectedValue
 	 *            Valor esperado de la conversion
 	 */
-	private void checkConversion(Object sourceValue, Type expectedType, Object expectedValue) {
-		Object converted = getConverter().convertValue(sourceValue, expectedType);
+	private void checkConversion(final Object sourceValue, final Type expectedType, final Object expectedValue) {
+		final Object converted = getConverter().convertValue(sourceValue, expectedType);
 		Assert.equals(expectedValue, converted);
 	}
 
@@ -107,7 +107,7 @@ public class SpringInjectionTest extends AbstractDependencyInjectionSpringContex
 	 * @return El bean creado
 	 */
 	private SourceBean createSourceBean() {
-		SourceBean rootBean = new SourceBean();
+		final SourceBean rootBean = new SourceBean();
 		rootBean.setObjetoDouble(1d);
 		rootBean.setObjetoFloat(2f);
 		rootBean.setObjetoInteger(3);
@@ -117,7 +117,7 @@ public class SpringInjectionTest extends AbstractDependencyInjectionSpringContex
 		rootBean.setPrimitivoInteger(7);
 		rootBean.setObjetoEnum(TipoEnumerado.NORTE);
 
-		SourceBean secondBean = new SourceBean();
+		final SourceBean secondBean = new SourceBean();
 		secondBean.setObjetoDouble(8d);
 		secondBean.setObjetoFloat(9f);
 		secondBean.setObjetoInteger(10);
@@ -141,7 +141,7 @@ public class SpringInjectionTest extends AbstractDependencyInjectionSpringContex
 	 * @return El bean para testing
 	 */
 	private BeanTester<SourceBean> createTransformedBean() {
-		TransformedPrimitiveBean transformedPrimitiveBean = new TransformedPrimitiveBean();
+		final TransformedPrimitiveBean transformedPrimitiveBean = new TransformedPrimitiveBean();
 		transformedPrimitiveBean.setObjetoDouble(1d);
 		// El valor de float debe coincidir con el del string por que
 		// ambos asignan a la misma propiedad destino
@@ -162,47 +162,46 @@ public class SpringInjectionTest extends AbstractDependencyInjectionSpringContex
 	 *            nombre con el que se identifica el atributo
 	 * @return EL tipo generico del atributo
 	 */
-	private Type getTypeForFieldOfTemplate(String nombreAtributo) {
+	private Type getTypeForFieldOfTemplate(final String nombreAtributo) {
 		try {
-			Field declaredField = ConverterBeanTemplate.class.getDeclaredField(nombreAtributo);
+			final Field declaredField = ConverterBeanTemplate.class.getDeclaredField(nombreAtributo);
 			return declaredField.getGenericType();
-		}
-		catch (SecurityException e) {
+		} catch (final SecurityException e) {
 			throw new RuntimeException(e);
-		}
-		catch (NoSuchFieldException e) {
+		} catch (final NoSuchFieldException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
 	@Test
 	public void testArray2ArrayConversion() {
-		Integer[] integers = new Integer[] { 1, -1, 0, 8 };
-		Integer[] converted = getConverter().convertValueToClass(Integer[].class, integers);
+		final Integer[] integers = new Integer[] { 1, -1, 0, 8 };
+		final Integer[] converted = getConverter().convertValueToClass(Integer[].class, integers);
 		Assert.same(integers, converted);
 
 		Object[] objetos = getConverter().convertValueToClass(Object[].class, integers);
 		Assert.same(integers, objetos);
 
-		int[] esperados = new int[] { 1, -1, 0, 8 };
+		final int[] esperados = new int[] { 1, -1, 0, 8 };
 		checkConversion(integers, int[].class, esperados);
 
 		String[] cadenas = new String[] { "1", "-1", "0", "8" };
 		checkConversion(integers, String[].class, cadenas);
 
-		objetos = new Object[] { createTransformedBean() };
-		cadenas = new String[] { "{\"formateado\":null,\"jsonString\":\"4\",\"objetoDouble\":1.0,\"objetoFloat\":4.0,\"objetoInteger\":3,\"objetoString\":\"4\",\"primitivoDouble\":5.0,\"primitivoFloat\":6.0,\"primitivoInteger\":7}" };
+		objetos = new Object[] { NonAnnotatedBean.create("string1", 1L), NonAnnotatedBean.create("string2", 2L) };
+		cadenas = new String[] { "{\"longValue\":1,\"stringValue\":\"string1\"}",
+				"{\"longValue\":2,\"stringValue\":\"string2\"}" };
 		checkConversion(objetos, String[].class, cadenas);
 
-		int[][] arrayDeArraysDeEnteros = new int[][] { { 1, 2, 3 }, { 4, 5, 6 } };
-		String[] arrayDeStrings = new String[] { "[1,2,3]", "[4,5,6]" };
+		final int[][] arrayDeArraysDeEnteros = new int[][] { { 1, 2, 3 }, { 4, 5, 6 } };
+		final String[] arrayDeStrings = new String[] { "[1,2,3]", "[4,5,6]" };
 		checkConversion(arrayDeArraysDeEnteros, String[].class, arrayDeStrings);
 	}
 
 	@Test
 	public void testArray2ListConversion() {
-		Integer[] integers = new Integer[] { 1, -1, 0, 8 };
-		List<Integer> collection = Arrays.asList(integers);
+		final Integer[] integers = new Integer[] { 1, -1, 0, 8 };
+		final List<Integer> collection = Arrays.asList(integers);
 		checkConversion(integers, List.class, collection);
 	}
 
@@ -215,7 +214,7 @@ public class SpringInjectionTest extends AbstractDependencyInjectionSpringContex
 
 	@Test
 	public void testBadInteger2EnumConversion() {
-		CodeThatShouldFail codigo = new CodeThatShouldFail() {
+		final CodeThatShouldFail codigo = new CodeThatShouldFail() {
 			public void doTheFaultyThing() {
 				checkConversion(new Integer(-1), TipoEnumerado.class, null);
 			}
@@ -225,7 +224,7 @@ public class SpringInjectionTest extends AbstractDependencyInjectionSpringContex
 
 	@Test
 	public void testBadString2ArrayConversion() {
-		CodeThatShouldFail code = new CodeThatShouldFail() {
+		final CodeThatShouldFail code = new CodeThatShouldFail() {
 			public void doTheFaultyThing() {
 				checkConversion("[1,3.14,9223372036854775807]", Double[].class,
 						new Number[] { 1, 3.14d, Long.MAX_VALUE });
@@ -236,7 +235,7 @@ public class SpringInjectionTest extends AbstractDependencyInjectionSpringContex
 
 	@Test
 	public void testBadString2EnumConversion() {
-		CodeThatShouldFail codigo = new CodeThatShouldFail() {
+		final CodeThatShouldFail codigo = new CodeThatShouldFail() {
 			public void doTheFaultyThing() {
 				checkConversion("Lala", TipoEnumerado.class, null);
 			}
@@ -246,7 +245,7 @@ public class SpringInjectionTest extends AbstractDependencyInjectionSpringContex
 
 	@Test
 	public void testBadString2IntegerConversion() {
-		CodeThatShouldFail code = new CodeThatShouldFail() {
+		final CodeThatShouldFail code = new CodeThatShouldFail() {
 			public void doTheFaultyThing() {
 				checkConversion("3.14", Integer.class, 3);
 			}
@@ -281,8 +280,8 @@ public class SpringInjectionTest extends AbstractDependencyInjectionSpringContex
 
 	@Test
 	public void testInteger2IntegerConversion() {
-		Integer entero = new Integer(267);
-		Object converted = getConverter().convertValue(entero, Integer.class);
+		final Integer entero = new Integer(267);
+		final Object converted = getConverter().convertValue(entero, Integer.class);
 		Assert.same(entero, converted);
 	}
 
@@ -293,20 +292,20 @@ public class SpringInjectionTest extends AbstractDependencyInjectionSpringContex
 
 	@Test
 	public void testList2ArrayConversion() {
-		ArrayList<String> listaStrings = new ArrayList<String>();
+		final ArrayList<String> listaStrings = new ArrayList<String>();
 		listaStrings.add("1");
 		listaStrings.add("2");
 		listaStrings.add("3");
 		listaStrings.add("4");
-		String[] arrayStrings = new String[] { "1", "2", "3", "4" };
+		final String[] arrayStrings = new String[] { "1", "2", "3", "4" };
 		checkConversion(listaStrings, String[].class, arrayStrings);
-		int[] arrayInts = new int[] { 1, 2, 3, 4 };
+		final int[] arrayInts = new int[] { 1, 2, 3, 4 };
 		checkConversion(listaStrings, int[].class, arrayInts);
 	}
 
 	@Test
 	public void testList2ListConversion() {
-		ArrayList<String> listaStrings = new ArrayList<String>();
+		final ArrayList<String> listaStrings = new ArrayList<String>();
 		listaStrings.add("1");
 		listaStrings.add("22");
 		listaStrings.add("3");
@@ -319,7 +318,7 @@ public class SpringInjectionTest extends AbstractDependencyInjectionSpringContex
 		converted = getConverter().convertValue(listaStrings, expectedType);
 		Assert.same(listaStrings, converted);
 
-		LinkedList<Integer> listaEnteros = new LinkedList<Integer>();
+		final LinkedList<Integer> listaEnteros = new LinkedList<Integer>();
 		listaEnteros.add(1);
 		listaEnteros.add(22);
 		listaEnteros.add(3);
@@ -333,21 +332,21 @@ public class SpringInjectionTest extends AbstractDependencyInjectionSpringContex
 
 	@Test
 	public void testList2SetConversion() {
-		ArrayList<String> listaStrings = new ArrayList<String>();
+		final ArrayList<String> listaStrings = new ArrayList<String>();
 		listaStrings.add("A");
 		listaStrings.add("B");
 		listaStrings.add("B");
 		listaStrings.add("A");
-		HashSet<String> setEsperado = new HashSet<String>(listaStrings);
+		final HashSet<String> setEsperado = new HashSet<String>(listaStrings);
 		checkConversion(listaStrings, Set.class, setEsperado);
 
-		Type expectedType = getTypeForFieldOfTemplate("setAny");
+		final Type expectedType = getTypeForFieldOfTemplate("setAny");
 		checkConversion(listaStrings, expectedType, setEsperado);
 	}
 
 	@Test
 	public void testMap2StringConversion() {
-		LinkedHashMap<String, Integer> map = new LinkedHashMap<String, Integer>();
+		final LinkedHashMap<String, Integer> map = new LinkedHashMap<String, Integer>();
 		map.put("1", 1);
 		map.put("3", 3);
 		map.put("8", 9);
@@ -365,26 +364,26 @@ public class SpringInjectionTest extends AbstractDependencyInjectionSpringContex
 
 	@Test
 	public void testPlain2SourceConversion() {
-		BeanTester<SourceBean> transformedBean = createTransformedBean();
-		SourceBean converted = getConverter().convertValueToClass(SourceBean.class, transformedBean);
+		final BeanTester<SourceBean> transformedBean = createTransformedBean();
+		final SourceBean converted = getConverter().convertValueToClass(SourceBean.class, transformedBean);
 		transformedBean.compareWithDestinationBean(converted);
 	}
 
 	@Test
 	public void testSet2ListConversion() {
-		HashSet<String> set = new HashSet<String>();
+		final HashSet<String> set = new HashSet<String>();
 		set.add("A");
 		set.add("B");
 		set.add("B");
 		set.add("A");
-		ArrayList<String> lista = new ArrayList<String>(set);
+		final ArrayList<String> lista = new ArrayList<String>(set);
 		checkConversion(set, List.class, lista);
 	}
 
 	@Test
 	public void testSource2PlainConversion() {
-		SourceBean sourceBean = createSourceBean();
-		PlainPrimitiveBean converted = getConverter().convertValueToClass(PlainPrimitiveBean.class, sourceBean);
+		final SourceBean sourceBean = createSourceBean();
+		final PlainPrimitiveBean converted = getConverter().convertValueToClass(PlainPrimitiveBean.class, sourceBean);
 		converted.compareWithDestinationBean(sourceBean);
 	}
 
@@ -407,11 +406,11 @@ public class SpringInjectionTest extends AbstractDependencyInjectionSpringContex
 
 	@Test
 	public void testString2MapConversion() {
-		LinkedHashMap<String, Integer> map = new LinkedHashMap<String, Integer>();
+		final LinkedHashMap<String, Integer> map = new LinkedHashMap<String, Integer>();
 		map.put("1", 1);
 		map.put("3", 3);
 		map.put("8", 9);
-		Type expectedType = ReflectionUtils.getParametricType(LinkedHashMap.class, String.class, Integer.class);
+		final Type expectedType = ReflectionUtils.getParametricType(LinkedHashMap.class, String.class, Integer.class);
 		checkConversion("{\"1\":1,\"3\":3,\"8\":9}", expectedType, map);
 	}
 

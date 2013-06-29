@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.sf.kfgodel</groupId>
 	<artifactId>bean2bean</artifactId>
-	<version>1.0.3</version>
+	<version>1.0.6-SNAPSHOT</version>
 	<description>Proyecto para transformacion de beans usando annotations y conversion entre tipos de datos</description>
 
     <scm>
@@ -74,6 +74,7 @@
 	</pluginRepositories>
 	
 	<dependencies>
+	
 		<!-- Mandatory dependencies -->
 		<dependency>
 			<!-- Needed for basic type conversions -->
@@ -87,12 +88,37 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		
+		<!-- Logging -->
 		<dependency>
-			<!-- Needed to log -->
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.15</version>
+			<!-- Facade para todo lo que es logueo -->
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.6.1</version>
 		</dependency>
+		<dependency>
+			<!-- Implementación nativa de slf4j -->
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+			<version>0.9.28</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>0.9.28</version>
+		</dependency>
+		<dependency>
+			<!-- Adapter que las llamadas a commons-logging pasen por Slf4j-->
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+		<dependency>
+			<!-- Adapter que las llamadas a log4j pasen por Slf4j-->
+			<groupId>org.slf4j</groupId>
+			<artifactId>log4j-over-slf4j</artifactId>
+			<version>1.6.1</version>
+		</dependency>		
 		<dependency>
 			<!-- Add this if you want to be able to convert to/from JSON strings -->
 			<groupId>com.sdicons.jsontools</groupId>
@@ -155,7 +181,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.4</version>
+			<version>4.11</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -163,12 +189,24 @@
 			<artifactId>spring</artifactId>
 			<version>2.0.6</version>
 			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+		          <groupId>commons-logging</groupId>
+		          <artifactId>commons-logging</artifactId>
+		        </exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-mock</artifactId>
 			<version>2.0.6</version>
 			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+		          <groupId>commons-logging</groupId>
+		          <artifactId>commons-logging</artifactId>
+		        </exclusion>
+			</exclusions>
 		</dependency>
 	    	
 	    	
