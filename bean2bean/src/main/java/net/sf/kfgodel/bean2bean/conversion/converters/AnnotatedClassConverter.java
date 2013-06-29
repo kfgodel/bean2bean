@@ -100,7 +100,7 @@ public class AnnotatedClassConverter implements GeneralTypeConverter<Object, Obj
 	 *            Tipo a comprobar por annotations
 	 * @return true si la clase esta annotada y es convertible
 	 */
-	private boolean isAnnotatedClassWith(final Class<?> checkedType, final Class<? extends Annotation>... annotations) {
+	private boolean isAnnotatedClass(final Class<?> checkedType, final Class<? extends Annotation>... annotations) {
 		final Iterator<Field> allFields = ReflectionUtils.getAllFieldsOf(checkedType);
 		final AnnotatedCondition siEstaAnotado = AnnotatedCondition.create(annotations);
 		final ConditionalIterator<Field> iteradorAtributosAnotados = ConditionalIterator.createFrom(siEstaAnotado,
@@ -147,14 +147,12 @@ public class AnnotatedClassConverter implements GeneralTypeConverter<Object, Obj
 	 */
 	@SuppressWarnings("unchecked")
 	public boolean acceptsConversionFrom(final Class<?> sourceType, final Type expectedType, final Object sourceObject) {
-		final Class<?> destinationType = ReflectionUtils.degenerify(expectedType);
-		if (destinationType == null) {
+		final Class<?> destinationClass = ReflectionUtils.degenerify(expectedType);
+		if (destinationClass == null) {
 			return false;
 		}
-		if (isUnhandledType(sourceType)) {
-			return false;
-		}
-		return isAnnotatedClassWith(destinationType, CopyFrom.class, CopyFromAndTo.class);
+		boolean isAnnotatedDestination = isAnnotatedClass(destinationClass, CopyFrom.class, CopyFromAndTo.class);
+		return isAnnotatedDestination;
 	}
 
 	/**
@@ -163,11 +161,8 @@ public class AnnotatedClassConverter implements GeneralTypeConverter<Object, Obj
 	 */
 	@SuppressWarnings("unchecked")
 	public boolean acceptsConversionTo(final Type expectedType, final Class<?> sourceType, final Object sourceObject) {
-		final Class<?> destinationType = ReflectionUtils.degenerify(expectedType);
-		if (isUnhandledType(destinationType)) {
-			return false;
-		}
-		return isAnnotatedClassWith(sourceType, CopyTo.class, CopyFromAndTo.class);
+		boolean isAnnotatedSource = isAnnotatedClass(sourceType, CopyTo.class, CopyFromAndTo.class);
+		return isAnnotatedSource;
 	}
 
 }

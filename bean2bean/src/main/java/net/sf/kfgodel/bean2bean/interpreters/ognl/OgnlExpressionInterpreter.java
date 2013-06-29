@@ -25,7 +25,6 @@ import net.sf.kfgodel.bean2bean.exceptions.MissingPropertyException;
 import net.sf.kfgodel.bean2bean.instantiation.ObjectFactory;
 import net.sf.kfgodel.bean2bean.interpreters.ExpressionInterpreter;
 import net.sf.kfgodel.dgarcia.lang.reflection.ReflectionUtils;
-
 import ognl.NoSuchPropertyException;
 import ognl.Ognl;
 import ognl.OgnlException;
@@ -41,11 +40,10 @@ public class OgnlExpressionInterpreter implements ExpressionInterpreter {
 	 * @see net.sf.kfgodel.bean2bean.interpreters.ExpressionInterpreter#precompile(String,
 	 *      ObjectFactory)
 	 */
-	public Object precompile(String expression, ObjectFactory objectFactory) {
+	public Object precompile(final String expression, final ObjectFactory objectFactory) {
 		try {
 			return Ognl.parseExpression(expression);
-		}
-		catch (OgnlException e) {
+		} catch (final OgnlException e) {
 			throw new BadMappingException("Expression[\"" + expression + "\"] is not a valid OGNL expression", e);
 		}
 	}
@@ -53,8 +51,8 @@ public class OgnlExpressionInterpreter implements ExpressionInterpreter {
 	/**
 	 * @see net.sf.kfgodel.bean2bean.interpreters.ExpressionInterpreter#generateGetterContextFrom(java.lang.Object)
 	 */
-	public Object generateGetterContextFrom(Object sourceObject) {
-		Map<String, Object> contexto = new HashMap<String, Object>();
+	public Object generateGetterContextFrom(final Object sourceObject) {
+		final Map<String, Object> contexto = new HashMap<String, Object>();
 		contexto.put(OgnlConstants.OBJETO_ORIGEN, sourceObject);
 		return contexto;
 	}
@@ -63,17 +61,17 @@ public class OgnlExpressionInterpreter implements ExpressionInterpreter {
 	 * @see net.sf.kfgodel.bean2bean.interpreters.ExpressionInterpreter#evaluateGetterOn(java.lang.Object,
 	 *      java.lang.Object, java.lang.Object)
 	 */
-	public Object evaluateGetterOn(Object source, Object expression, Object context) throws MissingPropertyException {
+	public Object evaluateGetterOn(final Object source, final Object expression, final Object context)
+			throws MissingPropertyException {
 		try {
 			@SuppressWarnings("unchecked")
-			Map<String, Object> contexto = (Map) context;
-			Object value = Ognl.getValue(expression, contexto, source);
+			final Map<String, Object> contexto = (Map) context;
+			final Object value = Ognl.getValue(expression, contexto, source);
 			return value;
-		}
-		catch (NoSuchPropertyException e) {
-			throw new MissingPropertyException("OGNL couldn't access the property", e);
-		}
-		catch (OgnlException e) {
+		} catch (final NoSuchPropertyException e) {
+			throw new MissingPropertyException("OGNL couldn't access the property [" + e.getMessage()
+					+ "]. Only public properties are available to OGNL", e);
+		} catch (final OgnlException e) {
 			throw new BadMappingException("OGNL error with expression[" + expression + "] on object[" + source
 					+ "], context:[" + context + "]", e);
 		}
@@ -82,12 +80,11 @@ public class OgnlExpressionInterpreter implements ExpressionInterpreter {
 	/**
 	 * @see net.sf.kfgodel.bean2bean.interpreters.ExpressionInterpreter#evaluate(java.lang.String)
 	 */
-	public Object evaluate(String expression) {
+	public Object evaluate(final String expression) {
 		try {
-			Object value = Ognl.getValue(expression, null);
+			final Object value = Ognl.getValue(expression, null);
 			return value;
-		}
-		catch (OgnlException e) {
+		} catch (final OgnlException e) {
 			throw new BadMappingException("OGNL error evaluating expression[" + expression + "]", e);
 		}
 	}
@@ -96,8 +93,8 @@ public class OgnlExpressionInterpreter implements ExpressionInterpreter {
 	 * @see net.sf.kfgodel.bean2bean.interpreters.ExpressionInterpreter#generateSetterContextFor(java.lang.Object,
 	 *      java.lang.Object)
 	 */
-	public Object generateSetterContextFor(Object destination, Object value) {
-		Map<String, Object> contexto = new HashMap<String, Object>();
+	public Object generateSetterContextFor(final Object destination, final Object value) {
+		final Map<String, Object> contexto = new HashMap<String, Object>();
 		contexto.put(OgnlConstants.OBJETO_DESTINO, destination);
 		contexto.put(OgnlConstants.VALOR, value);
 		return contexto;
@@ -107,23 +104,21 @@ public class OgnlExpressionInterpreter implements ExpressionInterpreter {
 	 * @see net.sf.kfgodel.bean2bean.interpreters.ExpressionInterpreter#makeAssignmentOn(java.lang.Object,
 	 *      java.lang.Object, java.lang.Object, java.lang.Object)
 	 */
-	public void makeAssignmentOn(Object destination, Object expression, Object context, Object value) {
+	public void makeAssignmentOn(final Object destination, final Object expression, final Object context,
+			final Object value) {
 		try {
 			@SuppressWarnings("unchecked")
-			Map<String, Object> contexto = (Map) context;
+			final Map<String, Object> contexto = (Map) context;
 			if (ReflectionUtils.isPropertyChain(expression.toString())) {
 				// Si es un path de propiedades, se puede asignar
 				Ognl.setValue(expression, contexto, destination, value);
-			}
-			else {
+			} else {
 				// Si no, solo se evalua la exresion
 				Ognl.getValue(expression, contexto, destination);
 			}
-		}
-		catch (NoSuchPropertyException e) {
+		} catch (final NoSuchPropertyException e) {
 			throw new MissingPropertyException("OGNL could not find the property", e);
-		}
-		catch (OgnlException e) {
+		} catch (final OgnlException e) {
 			throw new BadMappingException("OGNL error with expression[" + expression + "] on object[" + destination
 					+ "] and value[" + value + "], context:[" + context + "]", e);
 		}

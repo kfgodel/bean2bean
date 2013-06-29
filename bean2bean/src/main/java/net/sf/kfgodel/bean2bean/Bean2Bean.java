@@ -53,9 +53,9 @@ public class Bean2Bean {
 	private TypeConverter typeConverter;
 
 	/**
-	 * Creates a new instance of destinationType using sourceBean as a data source.<br> {@link CopyTo}
-	 * annotations present on sourceBean will be used to map properties from sourceBean to created
-	 * bean.<br>
+	 * Creates a new instance of destinationType using sourceBean as a data source.<br>
+	 * {@link CopyTo} annotations present on sourceBean will be used to map properties from
+	 * sourceBean to created bean.<br>
 	 * 
 	 * @param <T>
 	 *            Expected object type
@@ -65,8 +65,8 @@ public class Bean2Bean {
 	 *            Object used as a data source and its class as a property mapping definition
 	 * @return Created object with mapped values on its properties
 	 */
-	public <T> T convertTo(Class<T> destinationType, Object sourceBean) {
-		BeanCreationTask<T> creationTask = BeanCreationTask.createFor(sourceBean, destinationType,
+	public <T> T convertTo(final Class<T> destinationType, final Object sourceBean) {
+		final BeanCreationTask<T> creationTask = BeanCreationTask.createFor(sourceBean, destinationType,
 				PopulationType.METADATA_READ_FROM_SOURCE_TYPE, getTypeConverter());
 		return processTask(creationTask);
 	}
@@ -80,8 +80,8 @@ public class Bean2Bean {
 	 * @param destinationBean
 	 *            Object whose properties annotated with {@link CopyFrom} will be populated
 	 */
-	public void copyPropertiesFrom(Object sourceBean, Object destinationBean) {
-		BeanPopulationTask<Object> populationTask = BeanPopulationTask.createFor(destinationBean, sourceBean,
+	public void copyPropertiesFrom(final Object sourceBean, final Object destinationBean) {
+		final BeanPopulationTask<Object> populationTask = BeanPopulationTask.createFor(destinationBean, sourceBean,
 				PopulationType.METADATA_READ_FROM_DESTINATION_TYPE, getTypeConverter());
 		processTask(populationTask);
 	}
@@ -95,16 +95,16 @@ public class Bean2Bean {
 	 * @param sourceBean
 	 *            Object with source data and annotations that tell how to do the copying
 	 */
-	public void copyPropertiesTo(Object destinationBean, Object sourceBean) {
-		BeanPopulationTask<Object> populationTask = BeanPopulationTask.createFor(destinationBean, sourceBean,
+	public void copyPropertiesTo(final Object destinationBean, final Object sourceBean) {
+		final BeanPopulationTask<Object> populationTask = BeanPopulationTask.createFor(destinationBean, sourceBean,
 				PopulationType.METADATA_READ_FROM_SOURCE_TYPE, getTypeConverter());
 		processTask(populationTask);
 	}
 
 	/**
-	 * Creates a new instance of destinationType based on data from the sourceBean.<br> {@link CopyFrom}
-	 * annotations on the destinationType will be used to map property values from the sourceBean to
-	 * the created instance.<br>
+	 * Creates a new instance of destinationType based on data from the sourceBean.<br>
+	 * {@link CopyFrom} annotations on the destinationType will be used to map property values from
+	 * the sourceBean to the created instance.<br>
 	 * Crea un bean del tipo especificado a partir del objeto pasado desde el cual se tomaran los
 	 * 
 	 * @param <T>
@@ -116,8 +116,8 @@ public class Bean2Bean {
 	 *            defining the propery mappings
 	 * @return Created instance with values mapped from sourceBean
 	 */
-	public <T> T createFrom(Object sourceBean, Class<T> destinationType) {
-		BeanCreationTask<T> creationTask = BeanCreationTask.createFor(sourceBean, destinationType,
+	public <T> T createFrom(final Object sourceBean, final Class<T> destinationType) {
+		final BeanCreationTask<T> creationTask = BeanCreationTask.createFor(sourceBean, destinationType,
 				PopulationType.METADATA_READ_FROM_DESTINATION_TYPE, getTypeConverter());
 		return processTask(creationTask);
 	}
@@ -132,7 +132,7 @@ public class Bean2Bean {
 	/**
 	 * Sets the {@link TypeConverter} used in type conversion while creating or copying properties
 	 */
-	public void setTypeConverter(TypeConverter typeConverter) {
+	public void setTypeConverter(final TypeConverter typeConverter) {
 		this.typeConverter = typeConverter;
 	}
 
@@ -144,8 +144,8 @@ public class Bean2Bean {
 	 *            Conversor de tipos
 	 * @return El nuevo constructor de TOs
 	 */
-	public static Bean2Bean create(TypeConverter converter) {
-		Bean2Bean beaner = new Bean2Bean();
+	public static Bean2Bean create(final TypeConverter converter) {
+		final Bean2Bean beaner = new Bean2Bean();
 		beaner.typeConverter = converter;
 		return beaner;
 	}
@@ -157,7 +157,7 @@ public class Bean2Bean {
 	 * @return El procesador creado
 	 */
 	private static BeanTaskProcessor createActiveProcessor() {
-		BeanTaskProcessor taskProcessor = BeanTaskProcessor.create();
+		final BeanTaskProcessor taskProcessor = BeanTaskProcessor.create();
 		activeProcessorVariable.set(taskProcessor);
 		return taskProcessor;
 	}
@@ -194,28 +194,27 @@ public class Bean2Bean {
 	 *            Tarea de creacion que tiene los parametros para crear la instancia
 	 * @return La isntancia creada del tipo indicado
 	 */
-	private static <T> T processTask(Task<T> pendingTask) {
+	private static <T> T processTask(final Task<T> pendingTask) {
 
 		BeanTaskProcessor activeProcessor = getActiveProcessor();
-		boolean isFirstExecutionCall = (activeProcessor == null);
+		final boolean isFirstExecutionCall = (activeProcessor == null);
 
 		// Si se prouce una excepcion, se debe eliminar el procesador activo
 		try {
 			if (activeProcessor == null) {
 				activeProcessor = createActiveProcessor();
-			}
-			else {
+			} else {
 				// Si es una llamada anidada existe la posibilidad de que esta tarea ya
 				// haya sido resuelta por una anterior
-				Task<T> alreadyResolvedTask = activeProcessor.getTaskLike(pendingTask);
+				final Task<T> alreadyResolvedTask = activeProcessor.getTaskLike(pendingTask);
 				if (alreadyResolvedTask != null) {
-					T alreadyCreatedBean = alreadyResolvedTask.getResult();
+					final T alreadyCreatedBean = alreadyResolvedTask.getResult();
 					return alreadyCreatedBean;
 				}
 			}
 
 			if (pendingTask instanceof BeanCreationTask<?>) {
-				BeanCreationTask<T> creationTask = (BeanCreationTask<T>) pendingTask;
+				final BeanCreationTask<T> creationTask = (BeanCreationTask<T>) pendingTask;
 				// En este punto la tarea es completamente nueva, sea anidada o no
 				// se debe crear el nuevo bean anticipadamente para cortar llamadas recursivas
 				creationTask.prepareResult();
@@ -229,8 +228,7 @@ public class Bean2Bean {
 			}
 
 			return pendingTask.getResult();
-		}
-		finally {
+		} finally {
 			if (isFirstExecutionCall) {
 				// Despues de resolver las tareas se debe eliminar el procesador
 				removeActiveProcessor();
@@ -243,6 +241,15 @@ public class Bean2Bean {
 	 */
 	private static void removeActiveProcessor() {
 		activeProcessorVariable.set(null);
+	}
+
+	/**
+	 * Elimina la referencia a la instancia singleton de manera que pueda ser garbage collected.<br>
+	 * También elimina la referencia al default type converter
+	 */
+	public static void clearInstance() {
+		instance = null;
+		DefaultTypeConverter.clearInstance();
 	}
 
 }

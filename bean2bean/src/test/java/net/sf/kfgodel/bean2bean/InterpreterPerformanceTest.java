@@ -18,6 +18,7 @@
 package net.sf.kfgodel.bean2bean;
 
 import junit.framework.Assert;
+import net.sf.kfgodel.bean2bean.exceptions.BadMappingException;
 import net.sf.kfgodel.bean2bean.testbeans.performance.Groovy_Nested2Nested_Calls;
 import net.sf.kfgodel.bean2bean.testbeans.performance.Groovy_Nested2Nested_FieldPrivate;
 import net.sf.kfgodel.bean2bean.testbeans.performance.Groovy_Nested2Nested_FieldPublic;
@@ -71,8 +72,8 @@ import net.sf.kfgodel.dgarcia.lang.reflection.ReflectionUtils;
 import org.junit.Before;
 import org.junit.Test;
 
-
 /**
+ * Esta clase prueba la performace de las operaciones con distintos interpretes
  * 
  * @author D. Garcia
  */
@@ -93,7 +94,8 @@ public class InterpreterPerformanceTest {
 	// Non 2 Non
 	// --------------------
 
-	@Test
+	// OGNL no soporta privados
+	@Test(expected = BadMappingException.class)
 	public void testOgnl_Non2Non_fieldPrivate() {
 		runSeveralTestsFor(Ognl_NoN2Non_FieldPrivate.class);
 	}
@@ -158,7 +160,8 @@ public class InterpreterPerformanceTest {
 	// Nested 2 Non
 	// --------------------
 
-	@Test
+	// OGNL no soporta privados
+	@Test(expected = BadMappingException.class)
 	public void testOgnl_Nested2Non_fieldPrivate() {
 		runSeveralTestsFor(Ognl_Nested2Non_FieldPrivate.class);
 	}
@@ -223,7 +226,8 @@ public class InterpreterPerformanceTest {
 	// Non 2 Nested
 	// --------------------
 
-	@Test
+	// OGNL no soporta privados
+	@Test(expected = BadMappingException.class)
 	public void testOgnl_Non2Nested_fieldPrivate() {
 		runSeveralTestsFor(Ognl_NoN2Nested_FieldPrivate.class);
 	}
@@ -288,7 +292,8 @@ public class InterpreterPerformanceTest {
 	// Nested 2 Nested
 	// --------------------
 
-	@Test
+	// OGNL no soporta privados
+	@Test(expected = BadMappingException.class)
 	public void testOgnl_Nested2Nested_fieldPrivate() {
 		runSeveralTestsFor(Ognl_Nested2Nested_FieldPrivate.class);
 	}
@@ -369,15 +374,15 @@ public class InterpreterPerformanceTest {
 	/**
 	 * Runs the conversion several times to measure time for the selected class.<br>
 	 * The test creates an original bean makes a conversion using CopyFrom annotations, and the
-	 * converts it again to a final Bean using CopyTo annotation.<br> {@link #TEST_COUNT} determines how
-	 * many times the process is done
+	 * converts it again to a final Bean using CopyTo annotation.<br>
+	 * {@link #TEST_COUNT} determines how many times the process is done
 	 */
-	private void runSeveralTestsFor(Class<? extends PerformanceTestBean> testedClass) {
-		PerformanceTestBean originalBean = ReflectionUtils.createInstance(testedClass);
-		String value = "Move me";
+	private void runSeveralTestsFor(final Class<? extends PerformanceTestBean> testedClass) {
+		final PerformanceTestBean originalBean = ReflectionUtils.createInstance(testedClass);
+		final String value = "Move me";
 		originalBean.prepareValue(value);
 		for (int i = 0; i < TEST_COUNT; i++) {
-			PerformanceTestBean intermediate = bean2Bean.createFrom(originalBean, testedClass);
+			final PerformanceTestBean intermediate = bean2Bean.createFrom(originalBean, testedClass);
 			Assert.assertNotSame("Should be a different bean", originalBean, intermediate);
 			Assert.assertEquals("Intermediate bean should have the value", value, intermediate.getDestinationValue());
 		}

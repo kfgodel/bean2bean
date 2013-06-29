@@ -28,7 +28,6 @@ import net.sf.kfgodel.bean2bean.interpreters.natives.ReflectionExpressionInterpr
 import net.sf.kfgodel.bean2bean.interpreters.ognl.OgnlConstants;
 import net.sf.kfgodel.bean2bean.interpreters.ognl.OgnlExpressionInterpreter;
 
-
 /**
  * This enum declares all the available languages to parse expressions in annotations {@link CopyTo}
  * and {@link CopyFrom}. Each language has its weak an strong points.<br>
@@ -42,11 +41,11 @@ public enum InterpreterType {
 	 * variables in the context
 	 */
 	OGNL {
+		@Override
 		public ExpressionInterpreter getInterpreter() {
 			try {
 				return new OgnlExpressionInterpreter();
-			}
-			catch (NoClassDefFoundError e) {
+			} catch (final NoClassDefFoundError e) {
 				throw new RuntimeException("Cannot create OGNL interpreter. Is OGNL dependency in the project?", e);
 			}
 		}
@@ -56,13 +55,20 @@ public enum InterpreterType {
 	 * to access variables in the context
 	 */
 	GROOVY {
+		@Override
 		public ExpressionInterpreter getInterpreter() {
 			try {
 				return GroovyExpressionInterpreter.create();
-			}
-			catch (NoClassDefFoundError e) {
+			} catch (final NoClassDefFoundError e) {
 				throw new RuntimeException("Cannot create Groovy interpreter. Is Groovy dependency in the project?", e);
 			}
+		}
+
+		@Override
+		public void initialize() {
+			// Para inicializar sólo basta con evaluar una expresión cualquiera
+			final ExpressionInterpreter interpreter = getInterpreter();
+			interpreter.evaluate("this");
 		}
 	},
 	/**
@@ -88,4 +94,11 @@ public enum InterpreterType {
 	 * @return El interprete de las expresiones
 	 */
 	public abstract ExpressionInterpreter getInterpreter();
+
+	/**
+	 * Inicializa este interprete de manera que su estado esté preparado para evaluar las
+	 * expresiones rápidamente
+	 */
+	public void initialize() {
+	}
 }

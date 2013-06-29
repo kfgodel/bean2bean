@@ -5,13 +5,19 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.sf.kfgodel</groupId>
 	<artifactId>bean2bean</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0.6-SNAPSHOT</version>
 	<description>Proyecto para transformacion de beans usando annotations y conversion entre tipos de datos</description>
+
+    <scm>
+        <connection>scm:svn:https://bean2bean.svn.sourceforge.net/svnroot/bean2bean/Bean2Bean/trunk</connection>
+        <developerConnection>scm:svn:https://bean2bean.svn.sourceforge.net/svnroot/bean2bean/Bean2Bean/trunk</developerConnection>
+        <tag>HEAD</tag>
+        <url>https://bean2bean.svn.sourceforge.net/svnroot/bean2bean/Bean2Bean/trunk</url>
+    </scm>
 
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.jdk>1.5</project.jdk>
 	</properties>
 
 	<build>
@@ -25,12 +31,6 @@
 							<manifest>
 								<addClasspath>true</addClasspath>
 							</manifest>
-							<manifestEntries>
-								<Build-JVM>${java.vm.name} - ${java.vm.vendor}</Build-JVM>
-								<Build-OS>${os.name} - Version: ${os.version}</Build-OS>
-								<Application-Name>${project.name}</Application-Name>
-								<Application-Version>${project.version}</Application-Version>
-							</manifestEntries>
 						</archive>
 					</configuration>
 				</plugin>
@@ -75,6 +75,7 @@
 	
 	<dependencies>
 	
+		<!-- Mandatory dependencies -->
 		<dependency>
 			<!-- Needed for basic type conversions -->
 			<groupId>com.opensymphony</groupId>
@@ -117,8 +118,7 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>log4j-over-slf4j</artifactId>
 			<version>1.6.1</version>
-		</dependency>
-		
+		</dependency>		
 		<dependency>
 			<!-- Add this if you want to be able to convert to/from JSON strings -->
 			<groupId>com.sdicons.jsontools</groupId>
@@ -181,7 +181,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.4</version>
+			<version>4.11</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -189,12 +189,24 @@
 			<artifactId>spring</artifactId>
 			<version>2.0.6</version>
 			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+		          <groupId>commons-logging</groupId>
+		          <artifactId>commons-logging</artifactId>
+		        </exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-mock</artifactId>
 			<version>2.0.6</version>
 			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+		          <groupId>commons-logging</groupId>
+		          <artifactId>commons-logging</artifactId>
+		        </exclusion>
+			</exclusions>
 		</dependency>
 	    	
 	    	

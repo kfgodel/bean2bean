@@ -54,7 +54,6 @@ import net.sf.kfgodel.dgarcia.lang.reflection.iterators.SuperTypeIterator;
 
 import org.apache.log4j.Logger;
 
-
 /**
  * Esta clase define la funcionalidad para convertir entre distintos tipos de datos. <br>
  * Esta clase agrega funcionalidad y puntos de extension a los conversores de XWork y Ognl.
@@ -95,7 +94,7 @@ public class DefaultTypeConverter implements TypeConverter {
 	 * @see net.sf.kfgodel.bean2bean.conversion.TypeConverter#convertValue(java.lang.Object,
 	 *      java.lang.reflect.Type)
 	 */
-	public <T> T convertValue(Object value, Type expectedType) throws CannotConvertException {
+	public <T> T convertValue(final Object value, final Type expectedType) throws CannotConvertException {
 		return this.<T> convertValue(value, expectedType, null);
 	}
 
@@ -104,7 +103,7 @@ public class DefaultTypeConverter implements TypeConverter {
 	 *      java.lang.reflect.Type, java.lang.annotation.Annotation[])
 	 */
 	@SuppressWarnings("unchecked")
-	public <T> T convertValue(Object sourceValue, Type expectedType, Annotation[] contextAnnotations) {
+	public <T> T convertValue(final Object sourceValue, final Type expectedType, final Annotation[] contextAnnotations) {
 		if (sourceValue == null) {
 			if (logger.isDebugEnabled()) {
 				logger.debug("Returned null without conversion");
@@ -114,12 +113,12 @@ public class DefaultTypeConverter implements TypeConverter {
 		if (expectedType == null) {
 			throw new IllegalArgumentException("Expected Type shouldn't be null");
 		}
-		Class<?> sourceType = sourceValue.getClass();
+		final Class<?> sourceType = sourceValue.getClass();
 		if (logger.isDebugEnabled()) {
 			logger.debug("Converting from <" + sourceType + "> to <" + expectedType + ">: [" + sourceValue + "]");
 		}
 
-		TypeConverterCall foundConverterCall = findConverterFor(sourceType, expectedType, sourceValue);
+		final TypeConverterCall foundConverterCall = findConverterFor(sourceType, expectedType, sourceValue);
 		if (foundConverterCall == null) {
 			throw new CannotConvertException("There's no registered converter for [" + sourceValue + "] to ["
 					+ expectedType + "]", sourceValue, expectedType);
@@ -127,7 +126,7 @@ public class DefaultTypeConverter implements TypeConverter {
 		if (logger.isDebugEnabled()) {
 			logger.debug("Elected converter: [" + foundConverterCall + "]");
 		}
-		T convertedValue = (T) foundConverterCall.convertValue(sourceValue, expectedType, contextAnnotations);
+		final T convertedValue = (T) foundConverterCall.convertValue(sourceValue, expectedType, contextAnnotations);
 		if (logger.isDebugEnabled()) {
 			logger.debug("Converted value: " + convertedValue);
 		}
@@ -145,18 +144,19 @@ public class DefaultTypeConverter implements TypeConverter {
 	 *            Value to convert
 	 * @return The converter call to invoke a conversion, or null if no converter is found
 	 */
-	private TypeConverterCall findConverterFor(Class<?> sourceType, Type expectedType, Object sourceValue) {
+	private TypeConverterCall findConverterFor(final Class<?> sourceType, final Type expectedType,
+			final Object sourceValue) {
 		TypeConverterCall foundConverterCall = getCachedConverterFor(sourceType, expectedType);
 		if (foundConverterCall != null) {
 			// We will use a cached one!
 			return foundConverterCall;
 		}
-		SpecializedTypeConverter<Object, ?> specializedConverter = getSpecializedConverterFor(sourceType, expectedType);
+		final SpecializedTypeConverter<Object, ?> specializedConverter = getSpecializedConverterFor(sourceType,
+				expectedType);
 		if (specializedConverter != null) {
 			foundConverterCall = new SpecializedConverterCall(specializedConverter);
-		}
-		else {
-			for (GeneralTypeConverter<Object, Object> converter : getGeneralConverters()) {
+		} else {
+			for (final GeneralTypeConverter<Object, Object> converter : getGeneralConverters()) {
 				if (converter.acceptsConversionFrom(sourceType, expectedType, sourceValue)) {
 					foundConverterCall = new GeneralConverterFromCall(converter);
 					break;
@@ -183,7 +183,8 @@ public class DefaultTypeConverter implements TypeConverter {
 	 * @param foundConverterCall
 	 *            Converter call to invoke for the conversion
 	 */
-	private void cacheConverterFor(Class<?> sourceType, Type expectedType, TypeConverterCall foundConverterCall) {
+	private void cacheConverterFor(final Class<?> sourceType, final Type expectedType,
+			final TypeConverterCall foundConverterCall) {
 		if (converterCallCache == null) {
 			converterCallCache = new DoubleKeyHashMap<Class<?>, Type, TypeConverterCall>();
 		}
@@ -199,11 +200,11 @@ public class DefaultTypeConverter implements TypeConverter {
 	 *            Type to convert to
 	 * @return A cached converter used previuosly or null
 	 */
-	private TypeConverterCall getCachedConverterFor(Class<?> sourceType, Type expectedType) {
+	private TypeConverterCall getCachedConverterFor(final Class<?> sourceType, final Type expectedType) {
 		if (converterCallCache == null) {
 			return null;
 		}
-		TypeConverterCall cachedCall = converterCallCache.get(sourceType, expectedType);
+		final TypeConverterCall cachedCall = converterCallCache.get(sourceType, expectedType);
 		return cachedCall;
 	}
 
@@ -211,17 +212,17 @@ public class DefaultTypeConverter implements TypeConverter {
 	 * @see net.sf.kfgodel.bean2bean.conversion.TypeConverter#convertValueToClass(java.lang.Class,
 	 *      java.lang.Object)
 	 */
-	public <T> T convertValueToClass(Class<T> expectedClass, Object value) throws CannotConvertException {
-		Type expectedType = expectedClass;
+	public <T> T convertValueToClass(final Class<T> expectedClass, final Object value) throws CannotConvertException {
+		final Type expectedType = expectedClass;
 		@SuppressWarnings("unchecked")
-		T convertedValue = (T) convertValue(value, expectedType);
+		final T convertedValue = (T) convertValue(value, expectedType);
 		return convertedValue;
 	}
 
 	/**
 	 * @see net.sf.kfgodel.bean2bean.conversion.TypeConverter#getGeneralConverterByName(java.lang.String)
 	 */
-	public GeneralTypeConverter<Object, Object> getGeneralConverterByName(String name) {
+	public GeneralTypeConverter<Object, Object> getGeneralConverterByName(final String name) {
 		return this.getGeneralRegistry().get(name);
 	}
 
@@ -239,7 +240,7 @@ public class DefaultTypeConverter implements TypeConverter {
 	/**
 	 * @see net.sf.kfgodel.bean2bean.conversion.TypeConverter#getSpecializedConverterByName(java.lang.String)
 	 */
-	public SpecializedTypeConverter<Object, Object> getSpecializedConverterByName(String name) {
+	public SpecializedTypeConverter<Object, Object> getSpecializedConverterByName(final String name) {
 		return this.getSpecializedRegistry().get(name);
 	}
 
@@ -261,14 +262,15 @@ public class DefaultTypeConverter implements TypeConverter {
 	 * @return El conversor que permite realizar la conversion entre los tipos indicados o null si
 	 *         no existe ninguno.
 	 */
-	private SpecializedTypeConverter<Object, ?> getSpecializedConverterFor(Class<?> sourceType, Type expectedType) {
-		Iterator<Type> destinationHierarchyIterator = SuperTypeIterator.createFor(expectedType);
+	private SpecializedTypeConverter<Object, ?> getSpecializedConverterFor(final Class<?> sourceType,
+			final Type expectedType) {
+		final Iterator<Type> destinationHierarchyIterator = SuperTypeIterator.createFor(expectedType);
 		while (destinationHierarchyIterator.hasNext()) {
-			Type destinationHierarchyType = destinationHierarchyIterator.next();
-			Iterator<Class<?>> sourceHierarchyIterator = SuperTypeIterator.createFor(sourceType);
+			final Type destinationHierarchyType = destinationHierarchyIterator.next();
+			final Iterator<Class<?>> sourceHierarchyIterator = SuperTypeIterator.createFor(sourceType);
 			while (sourceHierarchyIterator.hasNext()) {
-				Class<?> sourceHierarchyType = sourceHierarchyIterator.next();
-				SpecializedTypeConverter<Object, ?> converter = this.getSpecializedConverters().get(
+				final Class<?> sourceHierarchyType = sourceHierarchyIterator.next();
+				final SpecializedTypeConverter<Object, ?> converter = this.getSpecializedConverters().get(
 						sourceHierarchyType, destinationHierarchyType);
 				if (converter != null) {
 					return converter;
@@ -296,8 +298,8 @@ public class DefaultTypeConverter implements TypeConverter {
 	/**
 	 * @see net.sf.kfgodel.bean2bean.conversion.TypeConverter#registerGeneralConverter(net.sf.kfgodel.bean2bean.conversion.GeneralTypeConverter)
 	 */
-	public void registerGeneralConverter(GeneralTypeConverter<?, ?> converter) {
-		String className = converter.getClass().getName();
+	public void registerGeneralConverter(final GeneralTypeConverter<?, ?> converter) {
+		final String className = converter.getClass().getName();
 		registerGeneralConverter(className, converter);
 	}
 
@@ -305,9 +307,9 @@ public class DefaultTypeConverter implements TypeConverter {
 	 * @see net.sf.kfgodel.bean2bean.conversion.TypeConverter#registerGeneralConverter(java.lang.String,
 	 *      net.sf.kfgodel.bean2bean.conversion.GeneralTypeConverter)
 	 */
-	public void registerGeneralConverter(String name, GeneralTypeConverter<?, ?> converter) {
+	public void registerGeneralConverter(final String name, final GeneralTypeConverter<?, ?> converter) {
 		@SuppressWarnings("unchecked")
-		GeneralTypeConverter<Object, Object> converter2 = (GeneralTypeConverter<Object, Object>) converter;
+		final GeneralTypeConverter<Object, Object> converter2 = (GeneralTypeConverter<Object, Object>) converter;
 		this.getGeneralRegistry().put(name, converter2);
 		invalidateCache();
 	}
@@ -326,9 +328,9 @@ public class DefaultTypeConverter implements TypeConverter {
 	 * @see net.sf.kfgodel.bean2bean.conversion.TypeConverter#registerSpecializedConverterFor(java.lang.Class,
 	 *      java.lang.reflect.Type, net.sf.kfgodel.bean2bean.conversion.SpecializedTypeConverter)
 	 */
-	public <S> void registerSpecializedConverterFor(Class<S> sourceType, Type destinationType,
-			SpecializedTypeConverter<? super S, ?> converter) {
-		String className = converter.getClass().getName();
+	public <S> void registerSpecializedConverterFor(final Class<S> sourceType, final Type destinationType,
+			final SpecializedTypeConverter<? super S, ?> converter) {
+		final String className = converter.getClass().getName();
 		registerSpecializedConverterFor(className, sourceType, destinationType, converter);
 	}
 
@@ -338,10 +340,11 @@ public class DefaultTypeConverter implements TypeConverter {
 	 *      net.sf.kfgodel.bean2bean.conversion.SpecializedTypeConverter)
 	 */
 	@SuppressWarnings("unchecked")
-	public <S> void registerSpecializedConverterFor(String name, Class<S> sourceType, Type destinationType,
-			SpecializedTypeConverter<? super S, ?> converter) {
+	public <S> void registerSpecializedConverterFor(final String name, final Class<S> sourceType,
+			final Type destinationType, final SpecializedTypeConverter<? super S, ?> converter) {
 
-		SpecializedTypeConverter<Object, ?> converter2 = (SpecializedTypeConverter) converter;
+		@SuppressWarnings("rawtypes")
+		final SpecializedTypeConverter<Object, ?> converter2 = (SpecializedTypeConverter) converter;
 		this.getSpecializedConverters().put(sourceType, destinationType, converter2);
 		this.getSpecializedRegistry().put(name, (SpecializedTypeConverter<Object, Object>) converter);
 		invalidateCache();
@@ -353,14 +356,14 @@ public class DefaultTypeConverter implements TypeConverter {
 	 * @param instancia
 	 *            Instancia a inicializar
 	 */
-	public static void defaultInitialization(TypeConverter instancia) {
+	public static void defaultInitialization(final TypeConverter instancia) {
 		instancia.setObjectFactory(EmptyConstructorObjectFactory.create());
 
 		// Conversores para enums
 		instancia.registerSpecializedConverterFor(Enum.class, String.class, Enum2StringConverter.create());
 		instancia.registerSpecializedConverterFor(String.class, Enum.class, String2EnumConverter.create());
 		instancia.registerSpecializedConverterFor(Number.class, Enum.class, Number2EnumConverter.create());
-		Enum2NumberConverter enum2NumberConverter = Enum2NumberConverter.create();
+		final Enum2NumberConverter enum2NumberConverter = Enum2NumberConverter.create();
 		instancia.registerSpecializedConverterFor(Enum.class, Number.class, enum2NumberConverter);
 		instancia.registerSpecializedConverterFor("Enum2intConverter", Enum.class, Integer.TYPE, enum2NumberConverter);
 
@@ -368,8 +371,8 @@ public class DefaultTypeConverter implements TypeConverter {
 		instancia.registerSpecializedConverterFor(String.class, Number.class, String2NumberConverter.create());
 
 		// Conversor para colecciones
-		instancia.registerSpecializedConverterFor(Collection.class, Collection.class, Collection2CollectionConverter
-				.create(instancia));
+		instancia.registerSpecializedConverterFor(Collection.class, Collection.class,
+				Collection2CollectionConverter.create(instancia));
 
 		// Conversor para TOs
 		instancia.registerGeneralConverter(AnnotatedClassConverter.create(null));
@@ -390,13 +393,11 @@ public class DefaultTypeConverter implements TypeConverter {
 		JsonStringObjectConverter jsonConverter = null;
 		try {
 			jsonConverter = JsonStringObjectConverter.create();
-		}
-		catch (NoClassDefFoundError e) {
+		} catch (final NoClassDefFoundError e) {
 			if (!"com/sdicons/json/mapper/MapperException".equals(e.getMessage())) {
 				// JSon no fue agregado como dependencia
 				throw new RuntimeException("JSON converter could not be created for default TypeConverter");
-			}
-			else {
+			} else {
 				if (logger.isInfoEnabled()) {
 					logger.info("JsonStringObjectConverter skipped, JSON dependency not found");
 				}
@@ -414,7 +415,7 @@ public class DefaultTypeConverter implements TypeConverter {
 	}
 
 	public static DefaultTypeConverter create() {
-		DefaultTypeConverter converter = new DefaultTypeConverter();
+		final DefaultTypeConverter converter = new DefaultTypeConverter();
 		return converter;
 	}
 
@@ -427,22 +428,21 @@ public class DefaultTypeConverter implements TypeConverter {
 	 *            Una lista de registraciones para realizar en este conversor de tipos
 	 */
 	@SuppressWarnings("unchecked")
-	public void setBulkConverters(List<?> converterRegistrations) {
-		for (Object object : converterRegistrations) {
+	public void setBulkConverters(final List<?> converterRegistrations) {
+		for (final Object object : converterRegistrations) {
 			if (object instanceof SpecializedConverterRegistration) {
-				SpecializedConverterRegistration registration = (SpecializedConverterRegistration) object;
+				@SuppressWarnings("rawtypes")
+				final SpecializedConverterRegistration registration = (SpecializedConverterRegistration) object;
 				this.registerSpecializedConverterFor(registration.getRegistrationName(), registration.getSourceType(),
 						registration.getDestinationType(), registration.getConverter());
-			}
-			else if (object instanceof GeneralConverterRegistration) {
-				GeneralConverterRegistration registration = (GeneralConverterRegistration) object;
+			} else if (object instanceof GeneralConverterRegistration) {
+				final GeneralConverterRegistration registration = (GeneralConverterRegistration) object;
 				this.registerGeneralConverter(registration.getNameRegistration(), registration.getConverter());
-			}
-			else if (object instanceof GeneralTypeConverter) {
-				GeneralTypeConverter converter = (GeneralTypeConverter) object;
+			} else if (object instanceof GeneralTypeConverter) {
+				@SuppressWarnings("rawtypes")
+				final GeneralTypeConverter converter = (GeneralTypeConverter) object;
 				this.registerGeneralConverter(converter);
-			}
-			else {
+			} else {
 				throw new IllegalArgumentException("Object is not a valid converter: " + object);
 			}
 		}
@@ -456,7 +456,7 @@ public class DefaultTypeConverter implements TypeConverter {
 		return instance;
 	}
 
-	public static void setInstance(TypeConverter instance) {
+	public static void setInstance(final TypeConverter instance) {
 		DefaultTypeConverter.instance = instance;
 	}
 
@@ -464,8 +464,14 @@ public class DefaultTypeConverter implements TypeConverter {
 		return objectFactory;
 	}
 
-	public void setObjectFactory(ObjectFactory objectFactory) {
+	public void setObjectFactory(final ObjectFactory objectFactory) {
 		this.objectFactory = objectFactory;
 	}
 
+	/**
+	 * Elimina la referencia al singleton de manera que pueda ser garbage collected
+	 */
+	public static void clearInstance() {
+		instance = null;
+	}
 }
