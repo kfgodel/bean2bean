@@ -109,7 +109,7 @@ public class GeneralPopulationInstruction implements PopulationInstruction {
 				expectedType = destination.getClass();
 			}
 			throw new CannotConvertException("Couldn't convert value from[" + source + "] to [" + destination
-					+ "]. Catched a " + e.getClass().getName() + ": " + e.getMessage(), source, expectedType);
+					+ "]. Catched a " + e.getClass().getName() + ": " + e.getMessage(), source, expectedType, e);
 		}
 		try {
 			this.getSetterInstruction().applyOn(destination, convertedValue);
