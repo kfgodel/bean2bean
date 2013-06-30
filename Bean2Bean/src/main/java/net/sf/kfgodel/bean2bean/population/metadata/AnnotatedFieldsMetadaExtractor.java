@@ -142,7 +142,8 @@ public class AnnotatedFieldsMetadaExtractor implements ClassPopulationMetadataEx
 	}
 
 	/**
-	 * @see net.sf.kfgodel.bean2bean.population.metadata.ClassPopulationMetadataExtractor#getMetadataFor(java.lang.Class, net.sf.kfgodel.bean2bean.population.PopulationType)
+	 * @see net.sf.kfgodel.bean2bean.population.metadata.ClassPopulationMetadataExtractor#getMetadataFor(java.lang.Class,
+	 *      net.sf.kfgodel.bean2bean.population.PopulationType)
 	 */
 	public ClassPopulationMetadata getMetadataFor(final Class<?> metadataClass, final PopulationType populationType) {
 		final Map<Class<?>, ClassPopulationMetadata> metadataPerClass = getMetadataPerClass(populationType);
@@ -162,10 +163,10 @@ public class AnnotatedFieldsMetadaExtractor implements ClassPopulationMetadataEx
 	 * @return El mapa de instrucciones por clase (sera creado uno nuevo si no existe)
 	 */
 	private Map<Class<?>, ClassPopulationMetadata> getMetadataPerClass(final PopulationType populationType) {
-		Map<Class<?>, ClassPopulationMetadata> metadataPerClass = metadataPerPopulationType.get(populationType);
+		Map<Class<?>, ClassPopulationMetadata> metadataPerClass = getMetadataPerPopulationType().get(populationType);
 		if (metadataPerClass == null) {
 			metadataPerClass = new HashMap<Class<?>, ClassPopulationMetadata>();
-			metadataPerPopulationType.put(populationType, metadataPerClass);
+			getMetadataPerPopulationType().put(populationType, metadataPerClass);
 		}
 		return metadataPerClass;
 	}
@@ -251,8 +252,15 @@ public class AnnotatedFieldsMetadaExtractor implements ClassPopulationMetadataEx
 
 	public static ClassPopulationMetadataExtractor create() {
 		final AnnotatedFieldsMetadaExtractor extractor = new AnnotatedFieldsMetadaExtractor();
-		extractor.metadataPerPopulationType = new EnumMap<PopulationType, Map<Class<?>, ClassPopulationMetadata>>(
-				PopulationType.class);
 		return extractor;
 	}
+
+	private Map<PopulationType, Map<Class<?>, ClassPopulationMetadata>> getMetadataPerPopulationType() {
+		if (metadataPerPopulationType == null) {
+			metadataPerPopulationType = new EnumMap<PopulationType, Map<Class<?>, ClassPopulationMetadata>>(
+					PopulationType.class);
+		}
+		return metadataPerPopulationType;
+	}
+
 }
