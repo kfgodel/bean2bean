@@ -22,9 +22,6 @@ import java.util.NoSuchElementException;
 
 import net.sf.kfgodel.dgarcia.lang.iterators.PreSizedIterator;
 import net.sf.kfgodel.dgarcia.lang.iterators.ResetableIterator;
-import net.sf.kfgodel.dgarcia.usercomm.msgs.ErroneousExecution;
-import net.sf.kfgodel.dgarcia.usercomm.msgs.ErrorType;
-
 
 /**
  * Esta clase representa un iterador de un rango de numeros enteros. Mediante este iterador se puede
@@ -68,11 +65,11 @@ public class IntegerRangeIterator implements PreSizedIterator<Integer>, Resetabl
 	 * @see net.sf.kfgodel.dgarcia.lang.iterators.PreSizedIterator#size()
 	 */
 	public int size() throws UnsupportedOperationException {
-		int absoluteRange = Math.abs(lastNumber - firstNumber);
-		int stepSize = Math.abs(delta);
-		int phase = (stepSize - 1);
-		int relativeRange = absoluteRange + phase;
-		int steps = relativeRange / stepSize;
+		final int absoluteRange = Math.abs(lastNumber - firstNumber);
+		final int stepSize = Math.abs(delta);
+		final int phase = (stepSize - 1);
+		final int relativeRange = absoluteRange + phase;
+		final int steps = relativeRange / stepSize;
 		return steps;
 	}
 
@@ -137,16 +134,16 @@ public class IntegerRangeIterator implements PreSizedIterator<Integer>, Resetabl
 	 *            Tama�o del paso para llegar desde uno a otro numero (siempre un numero positivo)
 	 * @return El iterador de los numeros
 	 */
-	public static IntegerRangeIterator create(int firstNumber, int lastNumber, int delta) {
+	public static IntegerRangeIterator create(final int firstNumber, final int lastNumber, int delta)
+			throws IllegalArgumentException {
 		if (delta <= 0) {
-			ErroneousExecution.hasHappened("Delta cannot be less or equals to 0: " + delta,
-					ErrorType.CONTRACT_VIOLATION);
+			throw new IllegalArgumentException("Delta cannot be less or equals to 0: " + delta);
 		}
 		if (firstNumber > lastNumber) {
 			delta *= -1;
 		}
 
-		IntegerRangeIterator iterator = new IntegerRangeIterator();
+		final IntegerRangeIterator iterator = new IntegerRangeIterator();
 		iterator.firstNumber = firstNumber;
 		iterator.current = firstNumber;
 		iterator.delta = delta;
@@ -165,7 +162,7 @@ public class IntegerRangeIterator implements PreSizedIterator<Integer>, Resetabl
 	 *            Limite de la iteracion no incluido en ella
 	 * @return El iterador de los numeros
 	 */
-	public static IntegerRangeIterator create(int firstNumber, int lastNumber) {
+	public static IntegerRangeIterator create(final int firstNumber, final int lastNumber) {
 		return create(firstNumber, lastNumber, 1);
 	}
 

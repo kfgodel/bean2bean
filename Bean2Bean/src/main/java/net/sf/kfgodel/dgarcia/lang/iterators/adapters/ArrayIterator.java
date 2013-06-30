@@ -20,8 +20,6 @@ package net.sf.kfgodel.dgarcia.lang.iterators.adapters;
 import net.sf.kfgodel.dgarcia.lang.iterators.PreSizedIterator;
 import net.sf.kfgodel.dgarcia.lang.iterators.ResetableIterator;
 import net.sf.kfgodel.dgarcia.lang.iterators.typed.IntegerRangeIterator;
-import net.sf.kfgodel.dgarcia.usercomm.msgs.ErroneousExecution;
-import net.sf.kfgodel.dgarcia.usercomm.msgs.ErrorType;
 
 /**
  * Esta clase permite iterar los elementos de un array. La iteracion puede realizarse en forma
@@ -52,7 +50,7 @@ public class ArrayIterator<E> implements PreSizedIterator<E>, ResetableIterator<
 	 *            Array a recorrer
 	 * @return El iterador del array creado
 	 */
-	public static <E> ArrayIterator<E> create(E[] array) {
+	public static <E> ArrayIterator<E> create(final E[] array) {
 		return create(array, 0, array.length);
 	}
 
@@ -69,26 +67,27 @@ public class ArrayIterator<E> implements PreSizedIterator<E>, ResetableIterator<
 	 *            Indice en el que debe detenerse la iteracion (exclusivo). Si este valor es menor
 	 *            que el primero, se recorrera el array en sentido inverso
 	 * @return El iterador del array
+	 * @throws IllegalArgumentException
+	 *             Si los parametros no respetan el contrato
 	 */
-	public static <E> ArrayIterator<E> create(E[] array, int firstIndex, int lastIndex) {
+	public static <E> ArrayIterator<E> create(final E[] array, final int firstIndex, final int lastIndex)
+			throws IllegalArgumentException {
 		if (array == null) {
-			ErroneousExecution.hasHappened("Array cannot be null", ErrorType.CONTRACT_VIOLATION);
+			throw new IllegalArgumentException("Array cannot be null");
 		}
 		if (firstIndex < 0) {
-			ErroneousExecution.hasHappened("First index cannot be less than 0", ErrorType.CONTRACT_VIOLATION);
+			throw new IllegalArgumentException("First index cannot be less than 0");
 		}
 		if (firstIndex > array.length) {
-			ErroneousExecution.hasHappened("First index cannot be lesser or bigger than array length",
-					ErrorType.CONTRACT_VIOLATION);
+			throw new IllegalArgumentException("First index cannot be lesser or bigger than array length");
 		}
 		if (lastIndex < -1) {
-			ErroneousExecution.hasHappened("Second index cannot be less than -1", ErrorType.CONTRACT_VIOLATION);
+			throw new IllegalArgumentException("Second index cannot be less than -1");
 		}
 		if (lastIndex > array.length) {
-			ErroneousExecution.hasHappened("Second index cannot be bigger than array length",
-					ErrorType.CONTRACT_VIOLATION);
+			throw new IllegalArgumentException("Second index cannot be bigger than array length");
 		}
-		ArrayIterator<E> iterador = new ArrayIterator<E>();
+		final ArrayIterator<E> iterador = new ArrayIterator<E>();
 		iterador.array = array;
 		iterador.integerIterator = IntegerRangeIterator.create(firstIndex, lastIndex);
 		return iterador;
@@ -144,11 +143,11 @@ public class ArrayIterator<E> implements PreSizedIterator<E>, ResetableIterator<
 	 *            Elemento a guardar
 	 * @return El elemento anterior
 	 */
-	public E replace(E elemento) {
+	public E replace(final E elemento) {
 		if (currentIndex == UNASSIGNED_VALUE) {
 			throw new IllegalStateException("Cannot replace a value that wasn't asked for first");
 		}
-		E anterior = this.array[currentIndex];
+		final E anterior = this.array[currentIndex];
 		this.array[currentIndex] = elemento;
 		return anterior;
 	}
