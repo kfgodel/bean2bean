@@ -27,13 +27,13 @@ import net.sf.kfgodel.bean2bean.annotations.CopyTo;
 import net.sf.kfgodel.bean2bean.annotations.MissingPropertyAction;
 import net.sf.kfgodel.bean2bean.conversion.GeneralTypeConverter;
 import net.sf.kfgodel.bean2bean.exceptions.BadMappingException;
+import net.sf.kfgodel.bean2bean.instantiation.ObjectFactory;
 import net.sf.kfgodel.bean2bean.metadata.ExpressionDeclaration;
 import net.sf.kfgodel.bean2bean.metadata.PropertyMappingDeclaration;
 import net.sf.kfgodel.bean2bean.population.conversion.TypeConverterCall;
 import net.sf.kfgodel.bean2bean.population.instructions.PopulationInstruction;
 import net.sf.kfgodel.bean2bean.population.metadata.AnnotatedFieldsMetadaExtractor;
 import net.sf.kfgodel.bean2bean.tasks.BeanPopulationTask;
-
 
 /**
  * Este enum representa los dos tipos de populacion aplicables en la copia de datos de un bean a
@@ -57,30 +57,31 @@ public enum PopulationType {
 		 *            Instancia del annotation con los datos
 		 * @return La informacion del mapeo
 		 */
-		protected PropertyMappingDeclaration readMappingFrom(Annotation[] annotations) {
-			CopyTo copyToAnnotation = (CopyTo) annotations[0];
+		@Override
+		protected PropertyMappingDeclaration readMappingFrom(final Annotation[] annotations) {
+			final CopyTo copyToAnnotation = (CopyTo) annotations[0];
 			if (copyToAnnotation == null) {
 				// User didn't use specific annotation
 				return readLocal2RemoteMappingFrom((CopyFromAndTo) annotations[1]);
 			}
 
-			ExpressionDeclaration setterDeclaration = ExpressionDeclaration.create(copyToAnnotation.value(),
+			final ExpressionDeclaration setterDeclaration = ExpressionDeclaration.create(copyToAnnotation.value(),
 					copyToAnnotation.setterInterpreter());
-			ExpressionDeclaration getterDeclaration = ExpressionDeclaration.create(copyToAnnotation.getter(),
+			final ExpressionDeclaration getterDeclaration = ExpressionDeclaration.create(copyToAnnotation.getter(),
 					copyToAnnotation.getterInterpreter());
-			ExpressionDeclaration expectedTypeDeclaration = ExpressionDeclaration.create(copyToAnnotation
-					.expectedType(), copyToAnnotation.typeInterpreter());
+			final ExpressionDeclaration expectedTypeDeclaration = ExpressionDeclaration.create(
+					copyToAnnotation.expectedType(), copyToAnnotation.typeInterpreter());
 
-			Class<? extends Annotation>[] contextAnnotations = copyToAnnotation.contextAnnotations();
-			MissingPropertyAction whenMissing = copyToAnnotation.whenMissing();
-			String useConversor = copyToAnnotation.useConversor();
-			PropertyMappingDeclaration mappingDeclaration = PropertyMappingDeclaration.create(getterDeclaration,
+			final Class<? extends Annotation>[] contextAnnotations = copyToAnnotation.contextAnnotations();
+			final MissingPropertyAction whenMissing = copyToAnnotation.whenMissing();
+			final String useConversor = copyToAnnotation.useConversor();
+			final PropertyMappingDeclaration mappingDeclaration = PropertyMappingDeclaration.create(getterDeclaration,
 					expectedTypeDeclaration, setterDeclaration, whenMissing, useConversor, contextAnnotations, this);
 			return mappingDeclaration;
 		}
 
 		@Override
-		public Class<?> getMetadataClassFor(BeanPopulationTask<?> populationTask) {
+		public Class<?> getMetadataClassFor(final BeanPopulationTask<?> populationTask) {
 			return populationTask.getSourceBean().getClass();
 		}
 
@@ -91,7 +92,7 @@ public enum PopulationType {
 		}
 
 		@Override
-		public TypeConverterCall getRelatedValueConverter(GeneralTypeConverter<?, ?> generalConverter) {
+		public TypeConverterCall getRelatedValueConverter(final GeneralTypeConverter<?, ?> generalConverter) {
 			return new TypeConverterCall.GeneralConverterToCall(generalConverter);
 		}
 	},
@@ -108,30 +109,31 @@ public enum PopulationType {
 		 *            Anotacion con los datos de configuracion
 		 * @return El mapeo interpretado
 		 */
-		protected PropertyMappingDeclaration readMappingFrom(Annotation[] annotations) {
-			CopyFrom copyFromAnnotation = (CopyFrom) annotations[0];
+		@Override
+		protected PropertyMappingDeclaration readMappingFrom(final Annotation[] annotations) {
+			final CopyFrom copyFromAnnotation = (CopyFrom) annotations[0];
 			if (copyFromAnnotation == null) {
 				// User didn't use specific annotation
 				return readRemote2LocalMappingFrom((CopyFromAndTo) annotations[1]);
 			}
 
-			ExpressionDeclaration getterDeclaration = ExpressionDeclaration.create(copyFromAnnotation.value(),
+			final ExpressionDeclaration getterDeclaration = ExpressionDeclaration.create(copyFromAnnotation.value(),
 					copyFromAnnotation.getterInterpreter());
-			ExpressionDeclaration expectedTypeDeclaration = ExpressionDeclaration.create(copyFromAnnotation
-					.expectedType(), copyFromAnnotation.typeInterpreter());
-			ExpressionDeclaration setterDeclaration = ExpressionDeclaration.create(copyFromAnnotation.setter(),
+			final ExpressionDeclaration expectedTypeDeclaration = ExpressionDeclaration.create(
+					copyFromAnnotation.expectedType(), copyFromAnnotation.typeInterpreter());
+			final ExpressionDeclaration setterDeclaration = ExpressionDeclaration.create(copyFromAnnotation.setter(),
 					copyFromAnnotation.setterInterpreter());
 
-			Class<? extends Annotation>[] contextAnnotations = copyFromAnnotation.contextAnnotations();
-			MissingPropertyAction whenMissing = copyFromAnnotation.whenMissing();
-			String useConversor = copyFromAnnotation.useConversor();
-			PropertyMappingDeclaration mappingDeclaration = PropertyMappingDeclaration.create(getterDeclaration,
+			final Class<? extends Annotation>[] contextAnnotations = copyFromAnnotation.contextAnnotations();
+			final MissingPropertyAction whenMissing = copyFromAnnotation.whenMissing();
+			final String useConversor = copyFromAnnotation.useConversor();
+			final PropertyMappingDeclaration mappingDeclaration = PropertyMappingDeclaration.create(getterDeclaration,
 					expectedTypeDeclaration, setterDeclaration, whenMissing, useConversor, contextAnnotations, this);
 			return mappingDeclaration;
 		}
 
 		@Override
-		public Class<?> getMetadataClassFor(BeanPopulationTask<?> populationTask) {
+		public Class<?> getMetadataClassFor(final BeanPopulationTask<?> populationTask) {
 			return populationTask.getPopulatedBean().getClass();
 		}
 
@@ -142,7 +144,7 @@ public enum PopulationType {
 		}
 
 		@Override
-		public TypeConverterCall getRelatedValueConverter(GeneralTypeConverter<?, ?> generalConverter) {
+		public TypeConverterCall getRelatedValueConverter(final GeneralTypeConverter<?, ?> generalConverter) {
 			return new TypeConverterCall.GeneralConverterFromCall(generalConverter);
 		}
 	};
@@ -165,25 +167,25 @@ public enum PopulationType {
 	 *            The user configured annotation
 	 * @return The property mapping data
 	 */
-	protected PropertyMappingDeclaration readLocal2RemoteMappingFrom(CopyFromAndTo annotation) {
+	protected PropertyMappingDeclaration readLocal2RemoteMappingFrom(final CopyFromAndTo annotation) {
 		// Declaration used for user non-specified declarations
-		ExpressionDeclaration defaultDeclaration = ExpressionDeclaration.create(annotation.value(), annotation
-				.valueInterpreter());
+		final ExpressionDeclaration defaultDeclaration = ExpressionDeclaration.create(annotation.value(),
+				annotation.valueInterpreter());
 
-		ExpressionDeclaration setterDeclaration = ExpressionDeclaration.create(annotation.remoteSetter(), annotation
-				.remoteSetterInterpreter());
+		final ExpressionDeclaration setterDeclaration = ExpressionDeclaration.create(annotation.remoteSetter(),
+				annotation.remoteSetterInterpreter());
 		fillDefaultsIn(setterDeclaration, defaultDeclaration);
 
-		ExpressionDeclaration getterDeclaration = ExpressionDeclaration.create(annotation.localGetter(), annotation
-				.localGetterInterpreter());
+		final ExpressionDeclaration getterDeclaration = ExpressionDeclaration.create(annotation.localGetter(),
+				annotation.localGetterInterpreter());
 
-		ExpressionDeclaration expectedTypeDeclaration = ExpressionDeclaration.create(annotation.remoteExpectedType(),
-				annotation.remoteTypeInterpreter());
+		final ExpressionDeclaration expectedTypeDeclaration = ExpressionDeclaration.create(
+				annotation.remoteExpectedType(), annotation.remoteTypeInterpreter());
 
-		Class<? extends Annotation>[] contextAnnotations = annotation.contextAnnotations();
-		MissingPropertyAction whenMissing = annotation.whenMissing();
-		String useConversor = annotation.local2remoteConversor();
-		PropertyMappingDeclaration mappingDeclaration = PropertyMappingDeclaration.create(getterDeclaration,
+		final Class<? extends Annotation>[] contextAnnotations = annotation.contextAnnotations();
+		final MissingPropertyAction whenMissing = annotation.whenMissing();
+		final String useConversor = annotation.local2remoteConversor();
+		final PropertyMappingDeclaration mappingDeclaration = PropertyMappingDeclaration.create(getterDeclaration,
 				expectedTypeDeclaration, setterDeclaration, whenMissing, useConversor, contextAnnotations, this);
 		return mappingDeclaration;
 	}
@@ -196,25 +198,25 @@ public enum PopulationType {
 	 *            The user configured annotation
 	 * @return The property mapping data
 	 */
-	protected PropertyMappingDeclaration readRemote2LocalMappingFrom(CopyFromAndTo annotation) {
+	protected PropertyMappingDeclaration readRemote2LocalMappingFrom(final CopyFromAndTo annotation) {
 		// Declaration used for user non-specified declarations
-		ExpressionDeclaration defaultDeclaration = ExpressionDeclaration.create(annotation.value(), annotation
-				.valueInterpreter());
+		final ExpressionDeclaration defaultDeclaration = ExpressionDeclaration.create(annotation.value(),
+				annotation.valueInterpreter());
 
-		ExpressionDeclaration setterDeclaration = ExpressionDeclaration.create(annotation.localSetter(), annotation
-				.localSetterInterpreter());
+		final ExpressionDeclaration setterDeclaration = ExpressionDeclaration.create(annotation.localSetter(),
+				annotation.localSetterInterpreter());
 
-		ExpressionDeclaration getterDeclaration = ExpressionDeclaration.create(annotation.remoteGetter(), annotation
-				.remoteGetterInterpreter());
+		final ExpressionDeclaration getterDeclaration = ExpressionDeclaration.create(annotation.remoteGetter(),
+				annotation.remoteGetterInterpreter());
 		fillDefaultsIn(getterDeclaration, defaultDeclaration);
 
-		ExpressionDeclaration expectedTypeDeclaration = ExpressionDeclaration.create(annotation.localExpectedType(),
-				annotation.localTypeInterpreter());
+		final ExpressionDeclaration expectedTypeDeclaration = ExpressionDeclaration.create(
+				annotation.localExpectedType(), annotation.localTypeInterpreter());
 
-		Class<? extends Annotation>[] contextAnnotations = annotation.contextAnnotations();
-		MissingPropertyAction whenMissing = annotation.whenMissing();
-		String useConversor = annotation.remote2LocalConversor();
-		PropertyMappingDeclaration mappingDeclaration = PropertyMappingDeclaration.create(getterDeclaration,
+		final Class<? extends Annotation>[] contextAnnotations = annotation.contextAnnotations();
+		final MissingPropertyAction whenMissing = annotation.whenMissing();
+		final String useConversor = annotation.remote2LocalConversor();
+		final PropertyMappingDeclaration mappingDeclaration = PropertyMappingDeclaration.create(getterDeclaration,
 				expectedTypeDeclaration, setterDeclaration, whenMissing, useConversor, contextAnnotations, this);
 		return mappingDeclaration;
 	}
@@ -225,7 +227,8 @@ public enum PopulationType {
 	 * @param overridedDeclaration
 	 * @param defaultDeclaration
 	 */
-	private void fillDefaultsIn(ExpressionDeclaration overridedDeclaration, ExpressionDeclaration defaultDeclaration) {
+	private void fillDefaultsIn(final ExpressionDeclaration overridedDeclaration,
+			final ExpressionDeclaration defaultDeclaration) {
 		if (overridedDeclaration.isEmpty()) {
 			overridedDeclaration.setExpressionValue(defaultDeclaration.getExpressionValue());
 			overridedDeclaration.setInterpreterType(defaultDeclaration.getInterpreterType());
@@ -241,18 +244,18 @@ public enum PopulationType {
 	 * @param mappingDeclaration
 	 *            Mapeo a completar
 	 */
-	private void fillImplicitValuesFor(Field field, PropertyMappingDeclaration mappingDeclaration) {
+	private void fillImplicitValuesFor(final Field field, final PropertyMappingDeclaration mappingDeclaration) {
 		// Si no se indica getter, se usa la propiedad origen como referencia
-		ExpressionDeclaration getterExpression = mappingDeclaration.getGetterExpression();
+		final ExpressionDeclaration getterExpression = mappingDeclaration.getGetterExpression();
 		fillImplicitExpression(field, getterExpression);
 
 		// Si no se indica setter, se usa la propiedad origen como referencia de la propiedad
 		// destino
-		ExpressionDeclaration setterExpression = mappingDeclaration.getSetterExpression();
+		final ExpressionDeclaration setterExpression = mappingDeclaration.getSetterExpression();
 		fillImplicitExpression(field, setterExpression);
 
 		// Levanto los annotations del atributo
-		Annotation[] relatedAnnotations = AnnotatedFieldsMetadaExtractor.extractContextAnnotationsFrom(field,
+		final Annotation[] relatedAnnotations = AnnotatedFieldsMetadaExtractor.extractContextAnnotationsFrom(field,
 				mappingDeclaration.getRelatedAnnotationTypes());
 		mappingDeclaration.setRelatedAnnotations(relatedAnnotations);
 	}
@@ -266,10 +269,10 @@ public enum PopulationType {
 	 * @param checkedExpression
 	 *            Expresion controlada
 	 */
-	private void fillImplicitExpression(Field field, ExpressionDeclaration checkedExpression) {
+	private void fillImplicitExpression(final Field field, final ExpressionDeclaration checkedExpression) {
 		if ("".equals(checkedExpression.getExpressionValue())) {
 			// Si está vacia la reemplazamos por el atributo
-			String expressionValue = field.getName();
+			final String expressionValue = field.getName();
 			checkedExpression.setExpressionValue(expressionValue);
 		}
 	}
@@ -283,14 +286,14 @@ public enum PopulationType {
 	 *            Tipo de anotacion a extraer
 	 * @return El annotation con los valores de configuracion
 	 */
-	protected Annotation[] extractEnsuringAnnotationsFrom(Field field, Class<? extends Annotation>[] classes) {
+	protected Annotation[] extractEnsuringAnnotationsFrom(final Field field, final Class<? extends Annotation>[] classes) {
 
 		boolean atLeastOneFound = false;
 
-		Annotation[] annotations = new Annotation[classes.length];
+		final Annotation[] annotations = new Annotation[classes.length];
 		for (int i = 0; i < classes.length; i++) {
-			Class<? extends Annotation> annotationType = classes[i];
-			Annotation annotation = field.getAnnotation(annotationType);
+			final Class<? extends Annotation> annotationType = classes[i];
+			final Annotation annotation = field.getAnnotation(annotationType);
 			if (annotation != null) {
 				atLeastOneFound = true;
 			}
@@ -315,18 +318,19 @@ public enum PopulationType {
 	 * 
 	 * @param field
 	 *            Atributo desde el cual se creara la instruccion
+	 * @param objectFactory
+	 *            Factory para crear instancias durante las populaciones
 	 * @return La instruccion de populacion creada
 	 */
-	public PopulationInstruction createInstructionFor(Field field) {
-		Annotation[] annotations = extractEnsuringAnnotationsFrom(field, getMetadataAnnotationTypes());
-		PropertyMappingDeclaration mappingDeclaration = readMappingFrom(annotations);
+	public PopulationInstruction createInstructionFor(final Field field, final ObjectFactory objectFactory) {
+		final Annotation[] annotations = extractEnsuringAnnotationsFrom(field, getMetadataAnnotationTypes());
+		final PropertyMappingDeclaration mappingDeclaration = readMappingFrom(annotations);
 		fillImplicitValuesFor(field, mappingDeclaration);
 		try {
-			PopulationInstruction instruction = AnnotatedFieldsMetadaExtractor
-					.createPopulationInstructionFor(mappingDeclaration);
+			final PopulationInstruction instruction = AnnotatedFieldsMetadaExtractor.createPopulationInstructionFor(
+					mappingDeclaration, objectFactory);
 			return instruction;
-		}
-		catch (CannotCreateConversionInstructionException e) {
+		} catch (final CannotCreateConversionInstructionException e) {
 			throw new BadMappingException("Invalid metadata on field[" + field + "] review your annotation "
 					+ Arrays.toString(annotations), e);
 		}

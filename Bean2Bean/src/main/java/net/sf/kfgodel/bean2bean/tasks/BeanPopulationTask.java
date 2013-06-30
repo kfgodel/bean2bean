@@ -22,6 +22,7 @@ import java.util.LinkedList;
 
 import net.sf.kfgodel.bean2bean.conversion.TypeConverter;
 import net.sf.kfgodel.bean2bean.exceptions.BadMappingException;
+import net.sf.kfgodel.bean2bean.instantiation.ObjectFactory;
 import net.sf.kfgodel.bean2bean.metadata.ClassPopulationMetadata;
 import net.sf.kfgodel.bean2bean.population.PopulationType;
 import net.sf.kfgodel.bean2bean.population.instructions.PopulationInstruction;
@@ -163,8 +164,9 @@ public class BeanPopulationTask<T> implements Task<T> {
 	 */
 	public void prepareTask() {
 		final Class<?> metadataClass = this.getPopulationType().getMetadataClassFor(this);
+		ObjectFactory objectFactory = getTypeConverter().getObjectFactory();
 		final ClassPopulationMetadata classMetadata = metadataExtractor.getMetadataFor(metadataClass,
-				this.getPopulationType());
+				this.getPopulationType(), objectFactory);
 		final Iterator<PopulationInstruction> instructions = classMetadata.getPopulationInstructions().iterator();
 		while (instructions.hasNext()) {
 			final PopulationInstruction instruction = instructions.next();

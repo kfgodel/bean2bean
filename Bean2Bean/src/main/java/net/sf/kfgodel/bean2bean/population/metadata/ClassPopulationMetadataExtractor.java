@@ -15,6 +15,7 @@ package net.sf.kfgodel.bean2bean.population.metadata;
 import net.sf.kfgodel.bean2bean.annotations.CopyFrom;
 import net.sf.kfgodel.bean2bean.annotations.CopyFromAndTo;
 import net.sf.kfgodel.bean2bean.annotations.CopyTo;
+import net.sf.kfgodel.bean2bean.instantiation.ObjectFactory;
 import net.sf.kfgodel.bean2bean.metadata.ClassPopulationMetadata;
 import net.sf.kfgodel.bean2bean.population.PopulationType;
 
@@ -37,8 +38,11 @@ public interface ClassPopulationMetadataExtractor {
 	 *            Clase anotada que define como realizar la populacion
 	 * @param populationType
 	 *            Tipo de populacion que se realizara, hacia o desde esa clase
+	 * @param objectFactory
+	 *            Factory de instancias para crear cuando son necesarias
 	 * @return Conjunto de instrucciones para realizar la populacion indicada
 	 */
-	ClassPopulationMetadata getMetadataFor(Class<?> metadataClass, PopulationType populationType);
+	ClassPopulationMetadata getMetadataFor(final Class<?> metadataClass, final PopulationType populationType,
+			ObjectFactory objectFactory);
 
 }

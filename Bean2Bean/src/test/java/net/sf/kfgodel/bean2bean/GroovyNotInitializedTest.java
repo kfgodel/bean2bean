@@ -16,6 +16,7 @@ import junit.framework.Assert;
 import net.sf.kfgodel.bean2bean.testbeans.GroovyInitBean;
 
 import org.apache.log4j.Logger;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -26,18 +27,23 @@ import org.junit.Test;
 public class GroovyNotInitializedTest {
 	private static final Logger logger = Logger.getLogger(GroovyInitializedTest.class);
 
+	private Bean2Bean bean2Bean;
+
+	@Before
+	public void createBean2Bean() {
+		bean2Bean = Bean2Bean.createDefaultInstance();
+	}
+
 	/**
 	 * This test cannot be run with others as it relies on groovy engine not beeing initialized
 	 */
 	@Test
 	public void itShouldTakeLongerTheFirstTimeIfNotInitialized() {
 		final GroovyInitBean source = GroovyInitBean.create("un texto");
-		// Eliminamos la instancia actual para forzar la inicialización
-		final Bean2Bean bean2bean = Bean2Bean.getInstance();
 
 		// Medimos cuanto tarda en resolver la expresión
 		final long startTime = System.currentTimeMillis();
-		bean2bean.createFrom(source, GroovyInitBean.class);
+		bean2Bean.createFrom(source, GroovyInitBean.class);
 		final long endTime = System.currentTimeMillis();
 		final long elapsed = endTime - startTime;
 

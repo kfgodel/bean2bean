@@ -26,6 +26,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.sf.kfgodel.bean2bean.Bean2Bean;
 import net.sf.kfgodel.bean2bean.conversion.converters.AnnotatedClassConverter;
 import net.sf.kfgodel.bean2bean.conversion.converters.ArrayArrayConverter;
 import net.sf.kfgodel.bean2bean.conversion.converters.ArrayCollectionConverter;
@@ -63,15 +64,6 @@ import org.apache.log4j.Logger;
  * @author D. Garcia
  */
 public class DefaultTypeConverter implements TypeConverter {
-
-	/**
-	 * Singleton de esta clase
-	 */
-	private static TypeConverter instance;
-
-	/**
-	 * Logger para el output
-	 */
 	private static final Logger logger = Logger.getLogger(DefaultTypeConverter.class);
 
 	private Map<String, GeneralTypeConverter<Object, Object>> generalRegistry;
@@ -355,8 +347,10 @@ public class DefaultTypeConverter implements TypeConverter {
 	 * 
 	 * @param instancia
 	 *            Instancia a inicializar
+	 * @param bean2Bean
+	 *            Instancia de bean2bean a la que se le delega las conversiones reflexivas
 	 */
-	public static void defaultInitialization(final TypeConverter instancia) {
+	public static void defaultInitialization(final TypeConverter instancia, final Bean2Bean bean2Bean) {
 		instancia.setObjectFactory(EmptyConstructorObjectFactory.create());
 
 		// Conversores para enums
@@ -375,7 +369,7 @@ public class DefaultTypeConverter implements TypeConverter {
 				Collection2CollectionConverter.create(instancia));
 
 		// Conversor para TOs
-		instancia.registerGeneralConverter(AnnotatedClassConverter.create(null));
+		instancia.registerGeneralConverter(AnnotatedClassConverter.create(bean2Bean));
 
 		// Conversor para arrays
 		instancia.registerGeneralConverter(ArrayCollectionConverter.create(instancia));
@@ -414,6 +408,11 @@ public class DefaultTypeConverter implements TypeConverter {
 		instancia.registerGeneralConverter(FormatterConverter.create());
 	}
 
+	/**
+	 * Crea un converter vacío sin subconversores
+	 * 
+	 * @return La nueva instancia creada
+	 */
 	public static DefaultTypeConverter create() {
 		final DefaultTypeConverter converter = new DefaultTypeConverter();
 		return converter;
@@ -448,18 +447,6 @@ public class DefaultTypeConverter implements TypeConverter {
 		}
 	}
 
-	public static TypeConverter getInstance() {
-		if (instance == null) {
-			instance = new DefaultTypeConverter();
-			defaultInitialization(instance);
-		}
-		return instance;
-	}
-
-	public static void setInstance(final TypeConverter instance) {
-		DefaultTypeConverter.instance = instance;
-	}
-
 	public ObjectFactory getObjectFactory() {
 		return objectFactory;
 	}
@@ -468,10 +455,4 @@ public class DefaultTypeConverter implements TypeConverter {
 		this.objectFactory = objectFactory;
 	}
 
-	/**
-	 * Elimina la referencia al singleton de manera que pueda ser garbage collected
-	 */
-	public static void clearInstance() {
-		instance = null;
-	}
 }

@@ -25,8 +25,8 @@ import net.sf.kfgodel.bean2bean.Bean2Bean;
 import net.sf.kfgodel.dgarcia.lang.reflection.ReflectionUtils;
 import net.sf.kfgodel.dgarcia.lang.reflection.iterators.SuperTypeIterator;
 
+import org.junit.Before;
 import org.junit.Test;
-
 
 /**
  * This class is a simple test to demonstrate the capabilities of Bean2Bean
@@ -34,10 +34,16 @@ import org.junit.Test;
  * @author D. Garcia
  */
 public class TutorialExampleTest {
+	private Bean2Bean bean2Bean;
+
+	@Before
+	public void createBean2Bean() {
+		bean2Bean = Bean2Bean.createDefaultInstance();
+	}
 
 	@Test
 	public void testCopyFrom() {
-		Food spicyCrispy = new Food();
+		final Food spicyCrispy = new Food();
 		spicyCrispy.setServingSizeGrams(178d);
 		spicyCrispy.setCalories(478);
 		spicyCrispy.setTotalFat(25);
@@ -50,9 +56,9 @@ public class TutorialExampleTest {
 		spicyCrispy.setSugarGrams(0d);
 		spicyCrispy.setProteinGrams(38d);
 
-		FoodDto nutritionFact = Bean2Bean.getInstance().createFrom(spicyCrispy, FoodDto.class);
+		final FoodDto nutritionFact = bean2Bean.createFrom(spicyCrispy, FoodDto.class);
 
-		Food converted = Bean2Bean.getInstance().convertTo(Food.class, nutritionFact);
+		final Food converted = bean2Bean.convertTo(Food.class, nutritionFact);
 
 		System.out.println(converted);
 	}
@@ -60,10 +66,10 @@ public class TutorialExampleTest {
 	@Test
 	public void testConverterAccess() {
 
-		Type setString = ReflectionUtils.getParametricType(Map.class, String.class, Object.class);
-		Iterator<Type> iterator = SuperTypeIterator.createFor(setString);
+		final Type setString = ReflectionUtils.getParametricType(Map.class, String.class, Object.class);
+		final Iterator<Type> iterator = SuperTypeIterator.createFor(setString);
 		while (iterator.hasNext()) {
-			Type type = (Type) iterator.next();
+			final Type type = iterator.next();
 			System.out.println(type);
 		}
 	}

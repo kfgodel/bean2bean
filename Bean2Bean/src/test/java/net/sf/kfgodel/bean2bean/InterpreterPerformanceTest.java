@@ -87,7 +87,7 @@ public class InterpreterPerformanceTest {
 
 	@Before
 	public void prepare() {
-		bean2Bean = Bean2Bean.getInstance();
+		bean2Bean = Bean2Bean.createDefaultInstance();
 	}
 
 	// --------------------

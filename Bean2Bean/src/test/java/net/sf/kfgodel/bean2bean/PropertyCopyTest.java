@@ -27,8 +27,8 @@ import net.sf.kfgodel.bean2bean.testbeans.SourceBean;
 import net.sf.kfgodel.bean2bean.testbeans.TipoEnumerado;
 import net.sf.kfgodel.bean2bean.testbeans.TransformedPrimitiveBean;
 
+import org.junit.Before;
 import org.junit.Test;
-
 
 /**
  * Este test prueba la copia de atributos entre instancias existentes
@@ -39,6 +39,13 @@ import org.junit.Test;
  */
 public class PropertyCopyTest {
 
+	private Bean2Bean bean2Bean;
+
+	@Before
+	public void createBean2Bean() {
+		bean2Bean = Bean2Bean.createDefaultInstance();
+	}
+
 	/**
 	 * Comprueba la creacion del tipo indicado utilizando al propio bean creado para el chequeo de
 	 * los datos
@@ -46,25 +53,24 @@ public class PropertyCopyTest {
 	 * @param destinationType
 	 *            Tipo de bean a crear desde el {@link SourceBean}
 	 */
-	private <T extends BeanTester<SourceBean>> void checkFromCopy(Class<T> destinationType) {
+	private <T extends BeanTester<SourceBean>> void checkFromCopy(final Class<T> destinationType) {
 		T emptyBean;
 		try {
 			emptyBean = destinationType.getConstructor().newInstance();
-		}
-		catch (Exception e) {
+		} catch (final Exception e) {
 			throw new RuntimeException(e);
 		}
-		SourceBean sourceBean = this.createSourceBean();
-		Bean2Bean.getInstance().copyPropertiesFrom(sourceBean, emptyBean);
+		final SourceBean sourceBean = this.createSourceBean();
+		bean2Bean.copyPropertiesFrom(sourceBean, emptyBean);
 		emptyBean.compareWithSourceBean(sourceBean);
 	}
 
 	/**
 	 * Comprueba la creacion de la instancia source a partir de la instancia pasada
 	 */
-	private void checkToCopy(BeanTester<SourceBean> templateBean) {
-		SourceBean emptyBean = new SourceBean();
-		Bean2Bean.getInstance().copyPropertiesTo(emptyBean, templateBean);
+	private void checkToCopy(final BeanTester<SourceBean> templateBean) {
+		final SourceBean emptyBean = new SourceBean();
+		bean2Bean.copyPropertiesTo(emptyBean, templateBean);
 		templateBean.compareWithDestinationBean(emptyBean);
 	}
 
@@ -74,11 +80,11 @@ public class PropertyCopyTest {
 	 * @return El bean con referencias circulares a otros beans
 	 */
 	private BeanTester<SourceBean> createCollectionBean() {
-		CollectionBean secondBean = new CollectionBean();
+		final CollectionBean secondBean = new CollectionBean();
 		secondBean.setNombre("secondBean");
 		secondBean.setListaObjetos(Arrays.asList(secondBean));
 
-		CollectionBean rootBean = new CollectionBean();
+		final CollectionBean rootBean = new CollectionBean();
 		rootBean.setNombre("rootBean");
 		rootBean.setListaObjetos(Arrays.asList(rootBean, secondBean));
 		return rootBean;
@@ -90,7 +96,7 @@ public class PropertyCopyTest {
 	 * @return El bean para utilizar en los testeos
 	 */
 	private BeanTester<SourceBean> createEnumeratedBean() {
-		EnumerationBean enumerationBean = new EnumerationBean();
+		final EnumerationBean enumerationBean = new EnumerationBean();
 		enumerationBean.setEnumerado(TipoEnumerado.NORTE);
 		enumerationBean.setCodigoEnum(enumerationBean.getEnumerado().getCodigo());
 		enumerationBean.setEnumeradoPorName(enumerationBean.getEnumerado().name());
@@ -104,7 +110,7 @@ public class PropertyCopyTest {
 	 * @return El bean creado
 	 */
 	private PlainPrimitiveBean createPlainBean() {
-		PlainPrimitiveBean plainBean = new PlainPrimitiveBean();
+		final PlainPrimitiveBean plainBean = new PlainPrimitiveBean();
 		plainBean.setObjetoDouble(2d);
 		plainBean.setObjetoFloat(3f);
 		plainBean.setObjetoInteger(4);
@@ -121,7 +127,7 @@ public class PropertyCopyTest {
 	 * @return El bean creado
 	 */
 	private SourceBean createSourceBean() {
-		SourceBean rootBean = new SourceBean();
+		final SourceBean rootBean = new SourceBean();
 		rootBean.setObjetoDouble(1d);
 		rootBean.setObjetoFloat(2f);
 		rootBean.setObjetoInteger(3);
@@ -131,7 +137,7 @@ public class PropertyCopyTest {
 		rootBean.setPrimitivoInteger(7);
 		rootBean.setObjetoEnum(TipoEnumerado.NORTE);
 
-		SourceBean secondBean = new SourceBean();
+		final SourceBean secondBean = new SourceBean();
 		secondBean.setObjetoDouble(8d);
 		secondBean.setObjetoFloat(9f);
 		secondBean.setObjetoInteger(10);
@@ -155,7 +161,7 @@ public class PropertyCopyTest {
 	 * @return El bean para testing
 	 */
 	private BeanTester<SourceBean> createTransformedBean() {
-		TransformedPrimitiveBean transformedPrimitiveBean = new TransformedPrimitiveBean();
+		final TransformedPrimitiveBean transformedPrimitiveBean = new TransformedPrimitiveBean();
 		transformedPrimitiveBean.setObjetoDouble(1d);
 		// El valor de float debe coincidir con el del string por que
 		// ambos asignan a la misma propiedad destino
@@ -248,7 +254,7 @@ public class PropertyCopyTest {
 	 */
 	@Test
 	public void testMissingToPropertyCopy() {
-		PlainPrimitiveBean origen = this.createPlainBean();
+		final PlainPrimitiveBean origen = this.createPlainBean();
 		origen.setNeverCopied(212L);
 		this.checkToCopy(origen);
 	}

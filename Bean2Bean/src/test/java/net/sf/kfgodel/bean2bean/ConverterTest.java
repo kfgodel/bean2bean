@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.sf.kfgodel.bean2bean.conversion.DefaultTypeConverter;
+import net.sf.kfgodel.bean2bean.conversion.TypeConverter;
 import net.sf.kfgodel.bean2bean.exceptions.CannotConvertException;
 import net.sf.kfgodel.bean2bean.testbeans.BeanTester;
 import net.sf.kfgodel.bean2bean.testbeans.ConverterBeanTemplate;
@@ -41,6 +41,7 @@ import net.sf.kfgodel.dgarcia.lang.reflection.ReflectionUtils;
 import net.sf.kfgodel.dgarcia.testing.Assert;
 import net.sf.kfgodel.dgarcia.testing.CodeThatShouldFail;
 
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -51,6 +52,16 @@ import org.junit.Test;
  * @author D. Garcia
  */
 public class ConverterTest {
+
+	private Bean2Bean bean2Bean;
+	private TypeConverter converter;
+
+	@Before
+	public void createConverter() {
+		bean2Bean = Bean2Bean.createDefaultInstance();
+		converter = bean2Bean.getTypeConverter();
+	}
+
 	/**
 	 * Verifica la conversion esperada
 	 * 
@@ -62,7 +73,7 @@ public class ConverterTest {
 	 *            Valor esperado de la conversion
 	 */
 	private void checkConversion(final Object sourceValue, final Type expectedType, final Object expectedValue) {
-		final Object converted = DefaultTypeConverter.getInstance().convertValue(sourceValue, expectedType);
+		final Object converted = converter.convertValue(sourceValue, expectedType);
 		Assert.equals(expectedValue, converted);
 	}
 
@@ -141,10 +152,10 @@ public class ConverterTest {
 	@Test
 	public void testArray2ArrayConversion() {
 		final Integer[] integers = new Integer[] { 1, -1, 0, 8 };
-		final Integer[] converted = DefaultTypeConverter.getInstance().convertValueToClass(Integer[].class, integers);
+		final Integer[] converted = converter.convertValueToClass(Integer[].class, integers);
 		Assert.same(integers, converted);
 
-		Object[] objetos = DefaultTypeConverter.getInstance().convertValueToClass(Object[].class, integers);
+		Object[] objetos = converter.convertValueToClass(Object[].class, integers);
 		Assert.same(integers, objetos);
 
 		final int[] esperados = new int[] { 1, -1, 0, 8 };
@@ -246,7 +257,7 @@ public class ConverterTest {
 	@Test
 	public void testInteger2IntegerConversion() {
 		final Integer entero = new Integer(267);
-		final Object converted = DefaultTypeConverter.getInstance().convertValue(entero, Integer.class);
+		final Object converted = converter.convertValue(entero, Integer.class);
 		Assert.same(entero, converted);
 	}
 
@@ -276,11 +287,11 @@ public class ConverterTest {
 		listaStrings.add("3");
 		listaStrings.add("922337203");
 		Type expectedType = ReflectionUtils.getParametricType(List.class, String.class);
-		Object converted = DefaultTypeConverter.getInstance().convertValue(listaStrings, expectedType);
+		Object converted = converter.convertValue(listaStrings, expectedType);
 		Assert.same(listaStrings, converted);
 
 		expectedType = ReflectionUtils.getParametricType(List.class, Object.class);
-		converted = DefaultTypeConverter.getInstance().convertValue(listaStrings, expectedType);
+		converted = converter.convertValue(listaStrings, expectedType);
 		Assert.same(listaStrings, converted);
 
 		final LinkedList<Integer> listaEnteros = new LinkedList<Integer>();
@@ -330,8 +341,7 @@ public class ConverterTest {
 	@Test
 	public void testPlain2SourceConversion() {
 		final BeanTester<SourceBean> transformedBean = createTransformedBean();
-		final SourceBean converted = DefaultTypeConverter.getInstance().convertValueToClass(SourceBean.class,
-				transformedBean);
+		final SourceBean converted = converter.convertValueToClass(SourceBean.class, transformedBean);
 		transformedBean.compareWithDestinationBean(converted);
 	}
 
@@ -349,8 +359,7 @@ public class ConverterTest {
 	@Test
 	public void testSource2PlainConversion() {
 		final SourceBean sourceBean = createSourceBean();
-		final PlainPrimitiveBean converted = DefaultTypeConverter.getInstance().convertValueToClass(
-				PlainPrimitiveBean.class, sourceBean);
+		final PlainPrimitiveBean converted = converter.convertValueToClass(PlainPrimitiveBean.class, sourceBean);
 		converted.compareWithDestinationBean(sourceBean);
 	}
 

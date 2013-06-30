@@ -18,10 +18,11 @@
 package net.sf.kfgodel.bean2bean;
 
 import net.sf.kfgodel.bean2bean.annotations.CopyFromAndTo;
-import net.sf.kfgodel.bean2bean.conversion.DefaultTypeConverter;
+import net.sf.kfgodel.bean2bean.conversion.TypeConverter;
 import net.sf.kfgodel.bean2bean.inv.ClaseConDatos;
 import net.sf.kfgodel.bean2bean.testbeans.copyfromto.ClaseEspejo;
 
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -31,31 +32,40 @@ import org.junit.Test;
  */
 public class CopyFromAndToTest {
 
+	private Bean2Bean bean2Bean;
+	private TypeConverter converter;
+
+	@Before
+	public void createConverter() {
+		bean2Bean = Bean2Bean.createDefaultInstance();
+		converter = bean2Bean.getTypeConverter();
+	}
+
 	@Test
 	public void testCreationFromAnnotation() {
 		final ClaseConDatos datos = ClaseConDatos.create();
-		final ClaseEspejo populable = Bean2Bean.getInstance().createFrom(datos, ClaseEspejo.class);
+		final ClaseEspejo populable = bean2Bean.createFrom(datos, ClaseEspejo.class);
 		populable.verificarContra(datos);
 	}
 
 	@Test
 	public void testConversionFromAnnotation() {
 		final ClaseConDatos datos = ClaseConDatos.create();
-		final ClaseEspejo populable = DefaultTypeConverter.getInstance().convertValue(datos, ClaseEspejo.class);
+		final ClaseEspejo populable = converter.convertValue(datos, ClaseEspejo.class);
 		populable.verificarContra(datos);
 	}
 
 	@Test
 	public void testCreationToAnnotation() {
 		final ClaseEspejo populadora = ClaseEspejo.create();
-		final ClaseConDatos populada = Bean2Bean.getInstance().convertTo(ClaseConDatos.class, populadora);
+		final ClaseConDatos populada = bean2Bean.convertTo(ClaseConDatos.class, populadora);
 		populadora.verificarContra(populada);
 	}
 
 	@Test
 	public void testConversionToAnnotation() {
 		final ClaseEspejo populadora = ClaseEspejo.create();
-		final ClaseConDatos populada = DefaultTypeConverter.getInstance().convertValue(populadora, ClaseConDatos.class);
+		final ClaseConDatos populada = converter.convertValue(populadora, ClaseConDatos.class);
 		populadora.verificarContra(populada);
 	}
 

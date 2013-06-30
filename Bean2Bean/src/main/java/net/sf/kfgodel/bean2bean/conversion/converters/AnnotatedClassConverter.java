@@ -47,11 +47,15 @@ public class AnnotatedClassConverter implements GeneralTypeConverter<Object, Obj
 	 */
 	private Bean2Bean beanGenerator;
 
-	public Bean2Bean getBeanGenerator() {
+	public Bean2Bean safeGetBeanGenerator() {
 		if (beanGenerator == null) {
-			// Si no se definió por inyección, se obtiene el default
-			beanGenerator = Bean2Bean.getInstance();
+			throw new IllegalStateException("There's no instance of bean2bean defined for the " + getClass()
+					+ " instance, and we need one to do the conversions");
 		}
+		return beanGenerator;
+	}
+
+	public Bean2Bean getBeanGenerator() {
 		return beanGenerator;
 	}
 
@@ -73,7 +77,8 @@ public class AnnotatedClassConverter implements GeneralTypeConverter<Object, Obj
 			throw new CannotConvertException("Passed-in argument type[" + expectedType
 					+ "] does not match expected type", value, expectedType);
 		}
-		return this.getBeanGenerator().createFrom(value, annotatedClass);
+		Object convertedValue = this.safeGetBeanGenerator().createFrom(value, annotatedClass);
+		return convertedValue;
 	}
 
 	/**
@@ -90,7 +95,8 @@ public class AnnotatedClassConverter implements GeneralTypeConverter<Object, Obj
 			throw new CannotConvertException("Can not get a class instance from expected type[" + expectedType + "]",
 					value, expectedType);
 		}
-		return this.getBeanGenerator().convertTo(unAnnotatedClass, value);
+		Object convertedValue = this.safeGetBeanGenerator().convertTo(unAnnotatedClass, value);
+		return convertedValue;
 	}
 
 	/**
@@ -151,7 +157,7 @@ public class AnnotatedClassConverter implements GeneralTypeConverter<Object, Obj
 		if (destinationClass == null) {
 			return false;
 		}
-		boolean isAnnotatedDestination = isAnnotatedClass(destinationClass, CopyFrom.class, CopyFromAndTo.class);
+		final boolean isAnnotatedDestination = isAnnotatedClass(destinationClass, CopyFrom.class, CopyFromAndTo.class);
 		return isAnnotatedDestination;
 	}
 
@@ -161,7 +167,7 @@ public class AnnotatedClassConverter implements GeneralTypeConverter<Object, Obj
 	 */
 	@SuppressWarnings("unchecked")
 	public boolean acceptsConversionTo(final Type expectedType, final Class<?> sourceType, final Object sourceObject) {
-		boolean isAnnotatedSource = isAnnotatedClass(sourceType, CopyTo.class, CopyFromAndTo.class);
+		final boolean isAnnotatedSource = isAnnotatedClass(sourceType, CopyTo.class, CopyFromAndTo.class);
 		return isAnnotatedSource;
 	}
 

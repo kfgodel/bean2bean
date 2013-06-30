@@ -99,10 +99,12 @@ public class AnnotatedFieldsMetadaExtractor implements ClassPopulationMetadataEx
 	 *            annotations para realizar la populacion
 	 * @param populationType
 	 *            Tipo de populacion a realizar
+	 * @param objectFactory
+	 *            Factory para crear instancias en de los scripts
 	 * @return El conjunto de instrucciones
 	 */
 	private static ClassPopulationMetadata createMetadataFor(final Class<?> metadataClass,
-			final PopulationType populationType) {
+			final PopulationType populationType, final ObjectFactory objectFactory) {
 		final Iterator<Field> allFields = ReflectionUtils.getAllFieldsOf(metadataClass);
 		final AnnotatedCondition anotadosConInstrucciones = AnnotatedCondition.create(populationType
 				.getMetadataAnnotationTypes());
@@ -112,7 +114,7 @@ public class AnnotatedFieldsMetadaExtractor implements ClassPopulationMetadataEx
 		final List<PopulationInstruction> instructions = new ArrayList<PopulationInstruction>();
 		while (annotatedFields.hasNext()) {
 			final Field field = annotatedFields.next();
-			final PopulationInstruction instruction = populationType.createInstructionFor(field);
+			final PopulationInstruction instruction = populationType.createInstructionFor(field, objectFactory);
 			instructions.add(instruction);
 		}
 		final ClassPopulationMetadata metadata = ClassPopulationMetadata.create(metadataClass, instructions);
@@ -142,14 +144,16 @@ public class AnnotatedFieldsMetadaExtractor implements ClassPopulationMetadataEx
 	}
 
 	/**
+	 * @param objectFactory
 	 * @see net.sf.kfgodel.bean2bean.population.metadata.ClassPopulationMetadataExtractor#getMetadataFor(java.lang.Class,
 	 *      net.sf.kfgodel.bean2bean.population.PopulationType)
 	 */
-	public ClassPopulationMetadata getMetadataFor(final Class<?> metadataClass, final PopulationType populationType) {
+	public ClassPopulationMetadata getMetadataFor(final Class<?> metadataClass, final PopulationType populationType,
+			final ObjectFactory objectFactory) {
 		final Map<Class<?>, ClassPopulationMetadata> metadataPerClass = getMetadataPerClass(populationType);
 		ClassPopulationMetadata metadata = metadataPerClass.get(metadataClass);
 		if (metadata == null) {
-			metadata = createMetadataFor(metadataClass, populationType);
+			metadata = createMetadataFor(metadataClass, populationType, objectFactory);
 			metadataPerClass.put(metadataClass, metadata);
 		}
 		return metadata;
@@ -230,14 +234,14 @@ public class AnnotatedFieldsMetadaExtractor implements ClassPopulationMetadataEx
 	 * 
 	 * @param mapping
 	 *            Objeto que contiene los datos del mapeo
+	 * @param objectFactory
+	 *            Factory para crear instancias necesarias en los scripts
 	 * @return La instrucción creada para popular
 	 * @throws CannotCreateConversionInstructionException
 	 *             Si la conversion no pudo determinarse
 	 */
-	public static PopulationInstruction createPopulationInstructionFor(final PropertyMappingDeclaration mapping)
-			throws CannotCreateConversionInstructionException {
-		// This object factory may be null. It's used to create missing beans on a property chain
-		final ObjectFactory objectFactory = mapping.getActionWhenMissing().getFactoryForMissingObjects();
+	public static PopulationInstruction createPopulationInstructionFor(final PropertyMappingDeclaration mapping,
+			final ObjectFactory objectFactory) throws CannotCreateConversionInstructionException {
 		final GetterInstruction getterInstruction = ScriptedInstruction.createFor(mapping.getGetterExpression(),
 				objectFactory);
 		final ConversionInstruction conversionInstruction = createConversionInstructionFor(mapping, objectFactory);

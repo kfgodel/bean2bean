@@ -106,16 +106,6 @@
 				<!-- Conversor opcional usado por nombre  -->
 				<bean class="net.sf.kfgodel.bean2bean.conversion.converters.FormatterConverter" />
 				
-				<!-- Testea el conversor no estandar -->
-				<bean class="net.sf.kfgodel.bean2bean.conversion.spring.SpecializedConverterRegistration">
-					<property name="sourceType" value="java.lang.Object" />
-					<property name="destinationType" value="java.lang.Class" />
-					<property name="converter" >
-						<bean class="net.sf.kfgodel.bean2bean.testconverter.SpecializedTestConverter" />
-					</property>
-				</bean>
-				
-				
 			</list>
 		</property>
 	</bean>              

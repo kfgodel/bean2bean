@@ -17,12 +17,9 @@
  */
 package net.sf.kfgodel.bean2bean.annotations;
 
-import net.sf.kfgodel.bean2bean.Bean2Bean;
-import net.sf.kfgodel.bean2bean.conversion.TypeConverter;
 import net.sf.kfgodel.bean2bean.exceptions.BadMappingException;
 import net.sf.kfgodel.bean2bean.exceptions.MissingPropertyException;
 import net.sf.kfgodel.bean2bean.exceptions.StopPopulationException;
-import net.sf.kfgodel.bean2bean.instantiation.ObjectFactory;
 import net.sf.kfgodel.bean2bean.population.setting.SetterInstruction;
 
 /**
@@ -38,7 +35,7 @@ public enum MissingPropertyAction {
 	 */
 	THROW_ERROR {
 		@Override
-		public Object dealWithMissingPropertyOnGetter(MissingPropertyException e) {
+		public Object dealWithMissingPropertyOnGetter(final MissingPropertyException e) {
 			throw new BadMappingException("Cannot get the value from the source bean: " + e.getMessage(), e);
 		}
 	},
@@ -47,13 +44,14 @@ public enum MissingPropertyAction {
 	 */
 	TREAT_AS_NULL {
 		@Override
-		public Object dealWithMissingPropertyOnConversion(MissingPropertyException arg0) throws StopPopulationException {
+		public Object dealWithMissingPropertyOnConversion(final MissingPropertyException arg0)
+				throws StopPopulationException {
 			throw new StopPopulationException();
 		}
 
 		@Override
-		public void dealWithMissingPropertyOnSetter(MissingPropertyException arg0, SetterInstruction arg1,
-				Object destination) throws StopPopulationException {
+		public void dealWithMissingPropertyOnSetter(final MissingPropertyException arg0, final SetterInstruction arg1,
+				final Object destination) throws StopPopulationException {
 			throw new StopPopulationException();
 		}
 	},
@@ -63,23 +61,16 @@ public enum MissingPropertyAction {
 	 */
 	CREATE_MISSING_INSTANCES {
 		@Override
-		public Object dealWithMissingPropertyOnGetter(MissingPropertyException e) throws StopPopulationException {
+		public Object dealWithMissingPropertyOnGetter(final MissingPropertyException e) throws StopPopulationException {
 			throw e;
 		}
 
 		@Override
-		public void dealWithMissingPropertyOnSetter(MissingPropertyException e, SetterInstruction setterInstruction,
-				Object destination) throws StopPopulationException {
+		public void dealWithMissingPropertyOnSetter(final MissingPropertyException e,
+				final SetterInstruction setterInstruction, final Object destination) throws StopPopulationException {
 			throw e;
 		}
 
-		@Override
-		public ObjectFactory getFactoryForMissingObjects() {
-			Bean2Bean bean2bean = Bean2Bean.getInstance();
-			TypeConverter typeConverter = bean2bean.getTypeConverter();
-			ObjectFactory objectFactory = typeConverter.getObjectFactory();
-			return objectFactory;
-		}
 	};
 
 	/**
@@ -89,7 +80,7 @@ public enum MissingPropertyAction {
 	 *            Excpecion que describe el error ocurrido con la propiedad faltante
 	 * @return El valor que reemplaza al faltante
 	 */
-	public Object dealWithMissingPropertyOnGetter(MissingPropertyException e) throws StopPopulationException {
+	public Object dealWithMissingPropertyOnGetter(final MissingPropertyException e) throws StopPopulationException {
 		return null;
 	}
 
@@ -101,7 +92,7 @@ public enum MissingPropertyAction {
 	 * @return El valor que corresponde al tipo esperado de la conversion que reemplazaria al que no
 	 *         se pudo convertir
 	 */
-	public Object dealWithMissingPropertyOnConversion(MissingPropertyException e) throws StopPopulationException {
+	public Object dealWithMissingPropertyOnConversion(final MissingPropertyException e) throws StopPopulationException {
 		throw e;
 	}
 
@@ -113,20 +104,10 @@ public enum MissingPropertyAction {
 	 * @param setterInstruction
 	 *            Instruccion realizada para la asignacion
 	 */
-	public void dealWithMissingPropertyOnSetter(MissingPropertyException e, SetterInstruction setterInstruction,
-			Object destination) throws StopPopulationException {
+	public void dealWithMissingPropertyOnSetter(final MissingPropertyException e,
+			final SetterInstruction setterInstruction, final Object destination) throws StopPopulationException {
 		throw new BadMappingException("Indicated property[" + setterInstruction.getOriginalExpression()
 				+ "] was not found on destination bean: " + destination, e);
-	}
-
-	/**
-	 * Defines which {@link ObjectFactory} should be used for instantianting missing beans in
-	 * property chains according to this action
-	 * 
-	 * @return null if this action doesn't handle missing object
-	 */
-	public ObjectFactory getFactoryForMissingObjects() {
-		return null;
 	}
 
 }

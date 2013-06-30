@@ -22,8 +22,8 @@ import net.sf.kfgodel.bean2bean.inv.ClasePopulada;
 import net.sf.kfgodel.bean2bean.inv.GroovyClasePopulable;
 import net.sf.kfgodel.bean2bean.inv.GroovyClasePopuladora;
 
+import org.junit.Before;
 import org.junit.Test;
-
 
 /**
  * Esta clase testea los diferentes usos de la API para indicar como popular los beans
@@ -32,17 +32,24 @@ import org.junit.Test;
  */
 public class GroovyPopulationTest {
 
+	private Bean2Bean bean2Bean;
+
+	@Before
+	public void createBean2Bean() {
+		bean2Bean = Bean2Bean.createDefaultInstance();
+	}
+
 	@Test
 	public void testCopyFromAnnotation() {
-		ClaseConDatos datos = ClaseConDatos.create();
-		GroovyClasePopulable populable = Bean2Bean.getInstance().createFrom(datos, GroovyClasePopulable.class);
+		final ClaseConDatos datos = ClaseConDatos.create();
+		final GroovyClasePopulable populable = bean2Bean.createFrom(datos, GroovyClasePopulable.class);
 		populable.verificarContra(datos);
 	}
 
 	@Test
 	public void testCopyToAnnotation() {
-		GroovyClasePopuladora populadora = GroovyClasePopuladora.create();
-		ClasePopulada populada = Bean2Bean.getInstance().convertTo(ClasePopulada.class, populadora);
+		final GroovyClasePopuladora populadora = GroovyClasePopuladora.create();
+		final ClasePopulada populada = bean2Bean.convertTo(ClasePopulada.class, populadora);
 		populadora.verificarContra(populada);
 	}
 

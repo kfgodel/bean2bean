@@ -45,11 +45,6 @@ public class Bean2Bean {
 	private static final ThreadLocal<BeanTaskProcessor> activeProcessorVariable = new ThreadLocal<BeanTaskProcessor>();
 
 	/**
-	 * Singleton
-	 */
-	private static Bean2Bean instance;
-
-	/**
 	 * Conversor utilizado para la transformacion de tipos al popular
 	 */
 	private TypeConverter typeConverter;
@@ -175,15 +170,16 @@ public class Bean2Bean {
 	}
 
 	/**
-	 * Getter for the singleton instance of this class.
+	 * Crea una instancia default con los conversores básicos definidos
 	 * 
-	 * @return The only instance you should use
+	 * @return La instancia creada
 	 */
-	public static synchronized Bean2Bean getInstance() {
-		if (instance == null) {
-			instance = Bean2Bean.create(DefaultTypeConverter.getInstance());
-		}
-		return instance;
+	public static Bean2Bean createDefaultInstance() {
+		final DefaultTypeConverter converter = DefaultTypeConverter.create();
+		final Bean2Bean defaultInstance = create(converter);
+		// Definimos los conversores básicos
+		DefaultTypeConverter.defaultInitialization(converter, defaultInstance);
+		return defaultInstance;
 	}
 
 	/**
@@ -249,15 +245,6 @@ public class Bean2Bean {
 	 */
 	private static void removeActiveProcessor() {
 		activeProcessorVariable.set(null);
-	}
-
-	/**
-	 * Elimina la referencia a la instancia singleton de manera que pueda ser garbage collected.<br>
-	 * También elimina la referencia al default type converter
-	 */
-	public static void clearInstance() {
-		instance = null;
-		DefaultTypeConverter.clearInstance();
 	}
 
 	public ClassPopulationMetadataExtractor getMetadataExtractor() {
