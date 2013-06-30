@@ -21,10 +21,10 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 import net.sf.kfgodel.bean2bean.annotations.CopyFrom;
 import net.sf.kfgodel.bean2bean.annotations.CopyFromAndTo;
@@ -67,7 +67,6 @@ public class AnnotatedFieldsMetadaExtractor implements ClassPopulationMetadataEx
 	/**
 	 * Mapa de metada de populacion por tipo de populacion y por clase
 	 */
-	// TODO: Usar softreference si hay problemas de memoria
 	private Map<PopulationType, Map<Class<?>, ClassPopulationMetadata>> metadataPerPopulationType;
 
 	/**
@@ -169,10 +168,19 @@ public class AnnotatedFieldsMetadaExtractor implements ClassPopulationMetadataEx
 	private Map<Class<?>, ClassPopulationMetadata> getMetadataPerClass(final PopulationType populationType) {
 		Map<Class<?>, ClassPopulationMetadata> metadataPerClass = getMetadataPerPopulationType().get(populationType);
 		if (metadataPerClass == null) {
-			metadataPerClass = new HashMap<Class<?>, ClassPopulationMetadata>();
+			metadataPerClass = createMetadataCacheMap();
 			getMetadataPerPopulationType().put(populationType, metadataPerClass);
 		}
 		return metadataPerClass;
+	}
+
+	/**
+	 * Crea el mapa utilizado como cache o referencia de la metada por cada clase
+	 * 
+	 * @return El mapa creado para la metadata de un tipo de populacion
+	 */
+	private Map<Class<?>, ClassPopulationMetadata> createMetadataCacheMap() {
+		return new WeakHashMap<Class<?>, ClassPopulationMetadata>();
 	}
 
 	/**
