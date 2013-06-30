@@ -19,9 +19,10 @@ package net.sf.kfgodel.bean2bean.population.conversion;
 
 import java.lang.reflect.Type;
 
+import net.sf.kfgodel.bean2bean.exceptions.AttributeException;
+import net.sf.kfgodel.bean2bean.exceptions.TypeExtractionFailedException;
 import net.sf.kfgodel.bean2bean.instantiation.ObjectFactory;
 import net.sf.kfgodel.bean2bean.interpreters.natives.PropertyChain;
-
 
 /**
  * Esta clase obtiene el tipo de dato esperado, de recorrer el path de propiedades hacia la
@@ -37,12 +38,17 @@ public class PropertyChainTypeExtractor implements ExpectedTypeExtractor {
 	/**
 	 * @see net.sf.kfgodel.bean2bean.population.conversion.ExpectedTypeExtractor#extractExpectedTypeFrom(java.lang.Object)
 	 */
-	public Type extractExpectedTypeFrom(Object destination) {
-		return this.propertyChain.getAssignableFromType(destination);
+	public Type extractExpectedTypeFrom(final Object destination) throws TypeExtractionFailedException {
+		try {
+			return this.propertyChain.getAssignableTypeFrom(destination);
+		} catch (final AttributeException e) {
+			throw new TypeExtractionFailedException("Failed to extract expected type from property chain["
+					+ this.propertyChain + "] on instance[" + destination + "]", e);
+		}
 	}
 
-	public static PropertyChainTypeExtractor create(String propertyName, ObjectFactory objectFactory) {
-		PropertyChainTypeExtractor extractor = new PropertyChainTypeExtractor();
+	public static PropertyChainTypeExtractor create(final String propertyName, final ObjectFactory objectFactory) {
+		final PropertyChainTypeExtractor extractor = new PropertyChainTypeExtractor();
 		extractor.propertyChain = PropertyChain.create(propertyName, objectFactory);
 		return extractor;
 	}
@@ -52,7 +58,7 @@ public class PropertyChainTypeExtractor implements ExpectedTypeExtractor {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder(this.getClass().getSimpleName());
+		final StringBuilder builder = new StringBuilder(this.getClass().getSimpleName());
 		builder.append("[ ");
 		builder.append(this.propertyChain);
 		builder.append(" ]");

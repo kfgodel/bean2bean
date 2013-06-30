@@ -19,8 +19,8 @@ package net.sf.kfgodel.bean2bean.instantiation;
 
 import java.lang.reflect.Type;
 
+import net.sf.kfgodel.bean2bean.exceptions.FailedInstantiationException;
 import net.sf.kfgodel.dgarcia.lang.reflection.ReflectionUtils;
-
 
 /**
  * This class uses reflection and the empty (niladic) constructor to create new instances for the
@@ -33,21 +33,22 @@ public class EmptyConstructorObjectFactory implements ObjectFactory {
 	/**
 	 * @see net.sf.kfgodel.bean2bean.instantiation.ObjectFactory#instantiate(java.lang.reflect.Type)
 	 */
-	public <T> T instantiate(Type expectedType) {
+	public <T> T instantiate(final Type expectedType) throws FailedInstantiationException {
 		if (expectedType == null) {
-			throw new IllegalArgumentException("Cannot create an instance for expected type[null]");
+			throw new IllegalArgumentException("Cannot create an instance for expected type[" + expectedType + "]");
 		}
 		@SuppressWarnings("unchecked")
-		Class<T> expectedClass = (Class<T>) ReflectionUtils.degenerify(expectedType);
+		final Class<T> expectedClass = (Class<T>) ReflectionUtils.degenerify(expectedType);
 		if (expectedClass == null) {
-			throw new RuntimeException("Cannot determine concrete class for expected type[" + expectedClass + "]");
+			throw new FailedInstantiationException("Cannot determine concrete class for expected type[" + expectedType
+					+ "]");
 		}
-		T created = ReflectionUtils.createInstance(expectedClass);
+		final T created = ReflectionUtils.createInstance(expectedClass);
 		return created;
 	}
 
 	public static EmptyConstructorObjectFactory create() {
-		EmptyConstructorObjectFactory factory = new EmptyConstructorObjectFactory();
+		final EmptyConstructorObjectFactory factory = new EmptyConstructorObjectFactory();
 		return factory;
 	}
 }

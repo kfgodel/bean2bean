@@ -21,6 +21,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 
+import net.sf.kfgodel.bean2bean.exceptions.AttributeException;
+
 /**
  * This class represents implements an attribute using the field of a class
  * 

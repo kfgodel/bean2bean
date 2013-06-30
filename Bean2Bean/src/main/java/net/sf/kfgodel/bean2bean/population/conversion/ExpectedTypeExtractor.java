@@ -19,6 +19,8 @@ package net.sf.kfgodel.bean2bean.population.conversion;
 
 import java.lang.reflect.Type;
 
+import net.sf.kfgodel.bean2bean.exceptions.TypeExtractionFailedException;
+
 /**
  * Esta interfaz representa un exctrator del tipo deseado de una conversion, el cual sabe como
  * obtener el tipo esperado a partir de una instancia
@@ -35,6 +37,8 @@ public interface ExpectedTypeExtractor {
 	 *            Objeto sobre el que se asignara el valor
 	 * @return El tipo esperado de la conversion para que sea compatible en la asignacion sobre el
 	 *         objeto pasado
+	 * @throws TypeExtractionFailedException
+	 *             Si se produce un error navegando los objetos para definir el tipo esperado
 	 */
-	Type extractExpectedTypeFrom(Object destination);
+	Type extractExpectedTypeFrom(Object destination) throws TypeExtractionFailedException;
 }

@@ -26,10 +26,10 @@ import net.sf.kfgodel.bean2bean.conversion.SpecializedTypeConverter;
 import net.sf.kfgodel.bean2bean.conversion.TypeConverter;
 import net.sf.kfgodel.bean2bean.exceptions.CannotConvertException;
 import net.sf.kfgodel.bean2bean.exceptions.MissingPropertyException;
+import net.sf.kfgodel.bean2bean.exceptions.TypeExtractionFailedException;
 import net.sf.kfgodel.bean2bean.population.PopulationType;
 import net.sf.kfgodel.bean2bean.population.conversion.TypeConverterCall.GenericConverterCall;
 import net.sf.kfgodel.bean2bean.population.conversion.TypeConverterCall.SpecializedConverterCall;
-
 
 /**
  * Esta clase representa la instruccion de Conversion del valor obtenido tomada desde el annotation
@@ -55,11 +55,11 @@ public class GeneralConversionInstruction implements ConversionInstruction {
 		return typeExtractor;
 	}
 
-	public void setTypeExtractor(ExpectedTypeExtractor typeExtractor) {
+	public void setTypeExtractor(final ExpectedTypeExtractor typeExtractor) {
 		this.typeExtractor = typeExtractor;
 	}
 
-	public TypeConverterCall getValueConverter(TypeConverter baseConverter) {
+	public TypeConverterCall getValueConverter(final TypeConverter baseConverter) {
 		if (valueConverter == null) {
 			valueConverter = obtainValueConverterFrom(baseConverter);
 		}
@@ -76,17 +76,17 @@ public class GeneralConversionInstruction implements ConversionInstruction {
 	 *            Valor a converitr
 	 * @return El conversor correspondiente
 	 */
-	private TypeConverterCall obtainValueConverterFrom(TypeConverter baseConverter) {
+	private TypeConverterCall obtainValueConverterFrom(final TypeConverter baseConverter) {
 		if ("".equals(getConversorName())) {
 			return new GenericConverterCall(baseConverter);
 		}
-		SpecializedTypeConverter<Object, Object> specializedConverter = baseConverter
+		final SpecializedTypeConverter<Object, Object> specializedConverter = baseConverter
 				.getSpecializedConverterByName(getConversorName());
 		if (specializedConverter != null) {
 			return new SpecializedConverterCall(specializedConverter);
 		}
 
-		GeneralTypeConverter<Object, Object> generalConverter = baseConverter
+		final GeneralTypeConverter<Object, Object> generalConverter = baseConverter
 				.getGeneralConverterByName(getConversorName());
 		if (generalConverter != null) {
 			return getPopulationType().getRelatedValueConverter(generalConverter);
@@ -94,7 +94,7 @@ public class GeneralConversionInstruction implements ConversionInstruction {
 		return null;
 	}
 
-	public void setValueConverter(TypeConverterCall valueConverter) {
+	public void setValueConverter(final TypeConverterCall valueConverter) {
 		this.valueConverter = valueConverter;
 	}
 
@@ -102,7 +102,7 @@ public class GeneralConversionInstruction implements ConversionInstruction {
 		return conversorName;
 	}
 
-	public void setConversorName(String conversorName) {
+	public void setConversorName(final String conversorName) {
 		this.conversorName = conversorName;
 	}
 
@@ -110,7 +110,7 @@ public class GeneralConversionInstruction implements ConversionInstruction {
 		return contextAnnotations;
 	}
 
-	public void setContextAnnotations(Annotation[] contextAnnotations) {
+	public void setContextAnnotations(final Annotation[] contextAnnotations) {
 		this.contextAnnotations = contextAnnotations;
 	}
 
@@ -118,21 +118,21 @@ public class GeneralConversionInstruction implements ConversionInstruction {
 	 * @see net.sf.kfgodel.bean2bean.population.conversion.ConversionInstruction#applyOn(java.lang.Object,
 	 *      net.sf.kfgodel.bean2bean.conversion.TypeConverter)
 	 */
-	public Object applyOn(Object originalValue, TypeConverter typeConverter, Object destination)
-			throws MissingPropertyException {
-		Type expectedType = this.getTypeExtractor().extractExpectedTypeFrom(destination);
-		TypeConverterCall selectedConverterCall = this.getValueConverter(typeConverter);
+	public Object applyOn(final Object originalValue, final TypeConverter typeConverter, final Object destination)
+			throws MissingPropertyException, TypeExtractionFailedException {
+		final Type expectedType = this.getTypeExtractor().extractExpectedTypeFrom(destination);
+		final TypeConverterCall selectedConverterCall = this.getValueConverter(typeConverter);
 		if (selectedConverterCall == null) {
 			throw new CannotConvertException("A converter was not found for the name[" + getConversorName() + "]",
 					originalValue, expectedType);
 		}
-		Object converted = selectedConverterCall.convertValue(originalValue, expectedType, contextAnnotations);
+		final Object converted = selectedConverterCall.convertValue(originalValue, expectedType, contextAnnotations);
 		return converted;
 	}
 
-	public static GeneralConversionInstruction create(ExpectedTypeExtractor typeExtractor, Annotation[] annotations,
-			String alternativeConversor, PopulationType populationType) {
-		GeneralConversionInstruction instruction = new GeneralConversionInstruction();
+	public static GeneralConversionInstruction create(final ExpectedTypeExtractor typeExtractor,
+			final Annotation[] annotations, final String alternativeConversor, final PopulationType populationType) {
+		final GeneralConversionInstruction instruction = new GeneralConversionInstruction();
 		instruction.setContextAnnotations(annotations);
 		instruction.setTypeExtractor(typeExtractor);
 		instruction.setConversorName(alternativeConversor);
@@ -140,7 +140,7 @@ public class GeneralConversionInstruction implements ConversionInstruction {
 		return instruction;
 	}
 
-	public void setPopulationType(PopulationType populationType) {
+	public void setPopulationType(final PopulationType populationType) {
 		this.populationType = populationType;
 	}
 
@@ -153,7 +153,7 @@ public class GeneralConversionInstruction implements ConversionInstruction {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder(getClass().getSimpleName());
+		final StringBuilder builder = new StringBuilder(getClass().getSimpleName());
 		builder.append("[ extractor:");
 		builder.append(getTypeExtractor());
 		builder.append(", converter:");

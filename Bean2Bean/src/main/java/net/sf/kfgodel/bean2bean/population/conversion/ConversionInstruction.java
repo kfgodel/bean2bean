@@ -19,6 +19,7 @@ package net.sf.kfgodel.bean2bean.population.conversion;
 
 import net.sf.kfgodel.bean2bean.conversion.TypeConverter;
 import net.sf.kfgodel.bean2bean.exceptions.MissingPropertyException;
+import net.sf.kfgodel.bean2bean.exceptions.TypeExtractionFailedException;
 
 /**
  * Esta instruccion indica como convertir el valor al tipo esperado
@@ -39,7 +40,12 @@ public interface ConversionInstruction {
 	 *            Objeto sobre el que se hara la asignacion que permite obtener informacion
 	 *            adicional para la conversion
 	 * @return El valor convertido
+	 * @throws MissingPropertyException
+	 *             Si la propiedad necesaria para aplicar la conversion no está disponible
+	 * @throws TypeExtractionFailedException
+	 *             Si se produce un error navegando los objetos para definir el tipo esperado
 	 */
-	Object applyOn(Object value, TypeConverter typeConverter, Object destination) throws MissingPropertyException;
+	Object applyOn(Object value, TypeConverter typeConverter, Object destination) throws MissingPropertyException,
+			TypeExtractionFailedException;
 
 }

@@ -58,7 +58,7 @@ public class PropertyCopyTest {
 		try {
 			emptyBean = destinationType.getConstructor().newInstance();
 		} catch (final Exception e) {
-			throw new RuntimeException(e);
+			throw new FailedTestException(e);
 		}
 		final SourceBean sourceBean = this.createSourceBean();
 		bean2Bean.copyPropertiesFrom(sourceBean, emptyBean);

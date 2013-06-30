@@ -18,6 +18,7 @@
 package net.sf.kfgodel.bean2bean.population.instructions;
 
 import net.sf.kfgodel.bean2bean.conversion.TypeConverter;
+import net.sf.kfgodel.bean2bean.exceptions.CannotConvertException;
 import net.sf.kfgodel.bean2bean.population.conversion.ConversionInstruction;
 import net.sf.kfgodel.bean2bean.population.getting.GetterInstruction;
 import net.sf.kfgodel.bean2bean.population.setting.SetterInstruction;
@@ -56,6 +57,8 @@ public interface PopulationInstruction {
 	 *            Objeto sobre el que se aplicara el setter
 	 * @param typeConverter
 	 *            Conversor de tipo para la conversion
+	 * @throws CannotConvertException
+	 *             Si existe un error en la conversion
 	 */
 	void applyOn(Object source, Object destination, TypeConverter typeConverter);
 

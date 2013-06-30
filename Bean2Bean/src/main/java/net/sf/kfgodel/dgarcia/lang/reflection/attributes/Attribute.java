@@ -19,6 +19,8 @@ package net.sf.kfgodel.dgarcia.lang.reflection.attributes;
 
 import java.lang.reflect.Type;
 
+import net.sf.kfgodel.bean2bean.exceptions.AttributeException;
+
 /**
  * This class represents an object attribute. A name to enclose Field or getter/setter that can be
  * used to get or set a value from an object
@@ -30,14 +32,18 @@ public interface Attribute {
 	/**
 	 * Returns the generified type that can be setted on this attribute. Can be the field type or
 	 * the setter parameter type for this object attribute
+	 * 
+	 * @throws AttributeException
+	 *             If there's a problem accesing the attribute type
 	 */
-	Type getAssignableType();
+	Type getAssignableType() throws AttributeException;
 
 	/**
 	 * Returns the generified type that can be returned from this attribute. Can be the field type
 	 * or getter return type for this object attribute
+	 * @throws AttributeException If ther's a problem infering returned type for this kind of attribute
 	 */
-	Type getReturnedType();
+	Type getReturnedType() throws AttributeException;
 
 	/**
 	 * Assigns the passed value to the destination object in the attribute represented by this
@@ -47,6 +53,9 @@ public interface Attribute {
 	 *            Object whose attribute is going to change
 	 * @param value
 	 *            Value to assign in the property
+	 * @throws AttributeException
+	 *             If there's a security restriction or the object instance is invalid for this
+	 *             attribute
 	 */
 	void setValueOn(Object destination, Object value) throws AttributeException;
 
@@ -55,6 +64,9 @@ public interface Attribute {
 	 * 
 	 * @param destination
 	 *            Object to get the value from
+	 * @throws AttributeException
+	 *             If there's a security restriction or the object instance is invalid for this
+	 *             attribute
 	 */
 	Object getValueFrom(Object destination) throws AttributeException;
 

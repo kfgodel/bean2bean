@@ -22,6 +22,7 @@ import java.lang.reflect.Method;
 
 import net.sf.kfgodel.bean2bean.annotations.CopyFrom;
 import net.sf.kfgodel.bean2bean.annotations.CopyTo;
+import net.sf.kfgodel.bean2bean.exceptions.MissingDependencyException;
 import net.sf.kfgodel.bean2bean.interpreters.groovy.GroovyConstants;
 import net.sf.kfgodel.bean2bean.interpreters.groovy.GroovyExpressionInterpreter;
 import net.sf.kfgodel.bean2bean.interpreters.natives.ReflectionExpressionInterpreter;
@@ -46,7 +47,8 @@ public enum InterpreterType {
 			try {
 				return new OgnlExpressionInterpreter();
 			} catch (final NoClassDefFoundError e) {
-				throw new RuntimeException("Cannot create OGNL interpreter. Is OGNL dependency in the project?", e);
+				throw new MissingDependencyException(
+						"Cannot create OGNL interpreter. Is OGNL dependency in the project?", e);
 			}
 		}
 	},
@@ -60,7 +62,8 @@ public enum InterpreterType {
 			try {
 				return GroovyExpressionInterpreter.create();
 			} catch (final NoClassDefFoundError e) {
-				throw new RuntimeException("Cannot create Groovy interpreter. Is Groovy dependency in the project?", e);
+				throw new MissingDependencyException(
+						"Cannot create Groovy interpreter. Is Groovy dependency in the project?", e);
 			}
 		}
 

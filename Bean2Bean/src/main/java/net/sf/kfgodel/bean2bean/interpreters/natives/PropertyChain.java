@@ -20,12 +20,12 @@ package net.sf.kfgodel.bean2bean.interpreters.natives;
 import java.lang.reflect.Type;
 import java.util.Arrays;
 
+import net.sf.kfgodel.bean2bean.exceptions.AttributeException;
 import net.sf.kfgodel.bean2bean.exceptions.MissingPropertyException;
 import net.sf.kfgodel.bean2bean.instantiation.ObjectFactory;
 import net.sf.kfgodel.dgarcia.java.lang.ParOrdenado;
 import net.sf.kfgodel.dgarcia.lang.reflection.ReflectionUtils;
 import net.sf.kfgodel.dgarcia.lang.reflection.attributes.Attribute;
-
 
 /**
  * This class represents an property chain expression to access a value or to set one
@@ -49,11 +49,11 @@ public class PropertyChain {
 	 * @throws IllegalArgumentException
 	 *             If the expression used is not a valir property chain
 	 */
-	public static PropertyChain create(String originalExpression, ObjectFactory objectFactory) {
+	public static PropertyChain create(final String originalExpression, final ObjectFactory objectFactory) {
 		if (!ReflectionUtils.isPropertyChain(originalExpression)) {
 			throw new IllegalArgumentException("[" + originalExpression + "] is not a property chain sequence");
 		}
-		PropertyChain expression = new PropertyChain();
+		final PropertyChain expression = new PropertyChain();
 		expression.propertyNames = originalExpression.split("\\.");
 		expression.objectFactory = objectFactory;
 		return expression;
@@ -68,15 +68,18 @@ public class PropertyChain {
 	 * @param value
 	 *            Value to assign
 	 * @throws MissingPropertyException
-	 *             If a property is not faoun on passed object or a value is null in middle chain
+	 *             If a property is not found on passed object or a value is null in middle chain
+	 * @throws AttributeException
+	 *             If there's a security restriction or invalid instance sequence
 	 */
-	public void setValueOn(Object rootObject, Object value) throws MissingPropertyException {
+	public void setValueOn(final Object rootObject, final Object value) throws MissingPropertyException,
+			AttributeException {
 		if (rootObject == null) {
 			throw new IllegalArgumentException("Destination object shouldn't be null");
 		}
-		ParOrdenado<Object, Attribute> lastChainLink = getLastPropertyLinkFrom(rootObject);
-		Object currentObject = lastChainLink.getPrimero();
-		Attribute attribute = lastChainLink.getSegundo();
+		final ParOrdenado<Object, Attribute> lastChainLink = getLastPropertyLinkFrom(rootObject);
+		final Object currentObject = lastChainLink.getPrimero();
+		final Attribute attribute = lastChainLink.getSegundo();
 		attribute.setValueOn(currentObject, value);
 	}
 
@@ -87,15 +90,18 @@ public class PropertyChain {
 	 * @param rootObject
 	 *            Object to start from
 	 * @return The last property chain link
+	 * @throws AttributeException
+	 *             If there's a security restriction or invalid value while traversing the property
+	 *             chain
 	 */
-	private ParOrdenado<Object, Attribute> getLastPropertyLinkFrom(Object rootObject) {
+	private ParOrdenado<Object, Attribute> getLastPropertyLinkFrom(final Object rootObject) throws AttributeException {
 		Object currentObject = rootObject;
 		Attribute attribute = null;
 		for (int i = 0; i < propertyNames.length; i++) {
 			attribute = getCachedAttributes()[i];
 			if (attribute == null || !attribute.isApplicableOn(currentObject)) {
-				String propertyName = propertyNames[i];
-				Class<? extends Object> currentClass = currentObject.getClass();
+				final String propertyName = propertyNames[i];
+				final Class<? extends Object> currentClass = currentObject.getClass();
 				attribute = ReflectionUtils.lookupAttribute(propertyName, currentClass);
 				getCachedAttributes()[i] = attribute;
 			}
@@ -112,12 +118,11 @@ public class PropertyChain {
 			if (nextObject == null) {
 				// There's a null value in the chain. Do we have a factory to complete the chain?
 				if (objectFactory != null) {
-					Type nextObjectType = attribute.getAssignableType();
-					Object missingValue = objectFactory.instantiate(nextObjectType);
+					final Type nextObjectType = attribute.getAssignableType();
+					final Object missingValue = objectFactory.instantiate(nextObjectType);
 					attribute.setValueOn(currentObject, missingValue);
 					nextObject = missingValue;
-				}
-				else {
+				} else {
 					throw new MissingPropertyException("Property[" + propertyNames[i] + "] is null in class["
 							+ currentObject.getClass() + "] from object[" + rootObject
 							+ "] while traversing property chain" + Arrays.toString(propertyNames));
@@ -125,7 +130,7 @@ public class PropertyChain {
 			}
 			currentObject = nextObject;
 		}
-		ParOrdenado<Object, Attribute> lastChainLink = ParOrdenado.create(currentObject, attribute);
+		final ParOrdenado<Object, Attribute> lastChainLink = ParOrdenado.create(currentObject, attribute);
 		return lastChainLink;
 	}
 
@@ -136,16 +141,19 @@ public class PropertyChain {
 	 *            Object to start navigation
 	 * @return The last value of the property chain
 	 * @throws MissingPropertyException
-	 *             If a property is not faoun on passed object or a value is null in middle chain
+	 *             If a property is not found on passed object or a value is null in middle chain
+	 * @throws AttributeException
+	 *             If there's a security restriction or the object instance is invalid for this
+	 *             attribute
 	 */
-	public Object getValueFrom(Object rootObject) throws MissingPropertyException {
+	public Object getValueFrom(final Object rootObject) throws MissingPropertyException, AttributeException {
 		if (rootObject == null) {
 			throw new IllegalArgumentException("Source object shouldn't be null");
 		}
-		ParOrdenado<Object, Attribute> lastChainLink = getLastPropertyLinkFrom(rootObject);
-		Object currentObject = lastChainLink.getPrimero();
-		Attribute attribute = lastChainLink.getSegundo();
-		Object lastValue = attribute.getValueFrom(currentObject);
+		final ParOrdenado<Object, Attribute> lastChainLink = getLastPropertyLinkFrom(rootObject);
+		final Object currentObject = lastChainLink.getPrimero();
+		final Attribute attribute = lastChainLink.getSegundo();
+		final Object lastValue = attribute.getValueFrom(currentObject);
 		return lastValue;
 	}
 
@@ -161,7 +169,7 @@ public class PropertyChain {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder(this.getClass().getSimpleName());
+		final StringBuilder builder = new StringBuilder(this.getClass().getSimpleName());
 		builder.append(Arrays.toString(this.propertyNames));
 		builder.append(", factory: ");
 		builder.append(this.objectFactory);
@@ -174,9 +182,13 @@ public class PropertyChain {
 	 * 
 	 * @param rootObject
 	 *            Object to use as the root of the property chain
+	 * @throws AttributeException
+	 *             If there's a security restriction or invalid instance in the chain sequence
 	 */
-	public Type getAssignableFromType(Object rootObject) {
-		ParOrdenado<Object, Attribute> lastPropertyLinkFrom = getLastPropertyLinkFrom(rootObject);
-		return lastPropertyLinkFrom.getSegundo().getAssignableType();
+	public Type getAssignableTypeFrom(final Object rootObject) throws AttributeException {
+		final ParOrdenado<Object, Attribute> lastPropertyLink = getLastPropertyLinkFrom(rootObject);
+		final Attribute lastAttribute = lastPropertyLink.getSegundo();
+		final Type lastAssignableType = lastAttribute.getAssignableType();
+		return lastAssignableType;
 	}
 }

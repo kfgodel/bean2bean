@@ -143,9 +143,9 @@ public class ConverterTest {
 			final Field declaredField = ConverterBeanTemplate.class.getDeclaredField(nombreAtributo);
 			return declaredField.getGenericType();
 		} catch (final SecurityException e) {
-			throw new RuntimeException(e);
+			throw new FailedTestException(e);
 		} catch (final NoSuchFieldException e) {
-			throw new RuntimeException(e);
+			throw new FailedTestException(e);
 		}
 	}
 

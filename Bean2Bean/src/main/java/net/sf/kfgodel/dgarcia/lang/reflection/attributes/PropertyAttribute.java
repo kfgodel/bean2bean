@@ -22,6 +22,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 
+import net.sf.kfgodel.bean2bean.exceptions.AttributeException;
+
 /**
  * This class implements the attribute using the getter/setter method pair for a class
  * 
@@ -44,12 +46,12 @@ public class PropertyAttribute implements Attribute {
 	 * @throws IllegalArgumentException
 	 *             if getter is null
 	 */
-	public static PropertyAttribute create(Method getterMethod, Method setterMethod) {
+	public static PropertyAttribute create(final Method getterMethod, final Method setterMethod) {
 		if (getterMethod == null && setterMethod == null) {
 			throw new IllegalArgumentException("Getter and setter cannot be both null");
 		}
 
-		PropertyAttribute attribute = new PropertyAttribute();
+		final PropertyAttribute attribute = new PropertyAttribute();
 		attribute.getter = getterMethod;
 		if (setterMethod != null && setterMethod.getGenericParameterTypes().length != 1) {
 			throw new IllegalArgumentException("Setter method[" + setterMethod + "] should have only one argument");
@@ -63,19 +65,19 @@ public class PropertyAttribute implements Attribute {
 	 */
 	public Type getAssignableType() {
 		if (setter == null) {
-			throw new RuntimeException("Cannot determine assignable Type for bean property[" + getter
+			throw new AttributeException("Cannot determine assignable Type for bean property[" + getter
 					+ "]. It doesn't have a setter method to infer Type");
 		}
-		Type[] genericParameterTypes = setter.getGenericParameterTypes();
+		final Type[] genericParameterTypes = setter.getGenericParameterTypes();
 		return genericParameterTypes[0];
 	}
 
 	/**
 	 * @see net.sf.kfgodel.dgarcia.lang.reflection.attributes.Attribute#getReturnedType()
 	 */
-	public Type getReturnedType() {
+	public Type getReturnedType() throws AttributeException {
 		if (getter == null) {
-			throw new RuntimeException("Cannot determine returned Type for bean property[" + setter
+			throw new AttributeException("Cannot determine returned Type for bean property[" + setter
 					+ "]. It doesn't have a getter method to infer Type");
 		}
 		return getter.getGenericReturnType();
@@ -86,7 +88,7 @@ public class PropertyAttribute implements Attribute {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder(this.getClass().getSimpleName());
+		final StringBuilder builder = new StringBuilder(this.getClass().getSimpleName());
 		builder.append("[ getter:");
 		builder.append(getter);
 		builder.append(", setter:");
@@ -98,22 +100,19 @@ public class PropertyAttribute implements Attribute {
 	/**
 	 * @see net.sf.kfgodel.dgarcia.lang.reflection.attributes.Attribute#getValueFrom(java.lang.Object)
 	 */
-	public Object getValueFrom(Object destination) throws AttributeException {
+	public Object getValueFrom(final Object destination) throws AttributeException {
 		if (getter == null) {
-			throw new RuntimeException("Attribute[" + setter + "] doesn't have a getter method");
+			throw new AttributeException("Attribute[" + setter + "] doesn't have a getter method");
 		}
 		try {
-			Object currentValue = getter.invoke(destination);
+			final Object currentValue = getter.invoke(destination);
 			return currentValue;
-		}
-		catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			throw new AttributeException("Cannot get value from[" + destination + "] using getter[" + getter + "]", e);
-		}
-		catch (IllegalAccessException e) {
+		} catch (final IllegalAccessException e) {
 			throw new AttributeException("Illegal access to get value from[" + destination + "] using getter[" + getter
 					+ "]", e);
-		}
-		catch (InvocationTargetException e) {
+		} catch (final InvocationTargetException e) {
 			throw new AttributeException("Internal error while getting value from[" + destination + "] on getter["
 					+ getter + "]", e);
 		}
@@ -123,22 +122,19 @@ public class PropertyAttribute implements Attribute {
 	 * @see net.sf.kfgodel.dgarcia.lang.reflection.attributes.Attribute#setValueOn(java.lang.Object,
 	 *      java.lang.Object)
 	 */
-	public void setValueOn(Object destination, Object value) throws AttributeException {
+	public void setValueOn(final Object destination, final Object value) throws AttributeException {
 		if (setter == null) {
-			throw new RuntimeException("Attribute[" + getter + "] doesn't have a setter method");
+			throw new AttributeException("Attribute[" + getter + "] doesn't have a setter method");
 		}
 		try {
 			setter.invoke(destination, value);
-		}
-		catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			throw new AttributeException("Cannot set value[" + value + "] on[" + destination + "] using setter["
 					+ setter + "]", e);
-		}
-		catch (IllegalAccessException e) {
+		} catch (final IllegalAccessException e) {
 			throw new AttributeException("Illegal access to set value on[" + destination + "] using setter[" + setter
 					+ "]", e);
-		}
-		catch (InvocationTargetException e) {
+		} catch (final InvocationTargetException e) {
 			throw new AttributeException("Internal error while setting value[" + value + "] to[" + destination
 					+ "] on setter[" + setter + "]", e);
 		}
@@ -147,11 +143,11 @@ public class PropertyAttribute implements Attribute {
 	/**
 	 * @see net.sf.kfgodel.dgarcia.lang.reflection.attributes.Attribute#isApplicableOn(java.lang.Object)
 	 */
-	public boolean isApplicableOn(Object currentObject) {
+	public boolean isApplicableOn(final Object currentObject) {
 		if (currentObject == null) {
 			// Only static methods can be used with null
 			if (getter != null) {
-				boolean isStaticGetter = Modifier.isStatic(getter.getModifiers());
+				final boolean isStaticGetter = Modifier.isStatic(getter.getModifiers());
 				if (!isStaticGetter) {
 					// Cannot use instance getter with null instance
 					return false;
@@ -159,7 +155,7 @@ public class PropertyAttribute implements Attribute {
 			}
 			// If setter does not exist, then is applicable. Otherwise must be static too
 			if (setter != null) {
-				boolean isStaticSetter = Modifier.isStatic(setter.getModifiers());
+				final boolean isStaticSetter = Modifier.isStatic(setter.getModifiers());
 				if (!isStaticSetter) {
 					// Cannot use instance setter with null instance
 					return false;
@@ -168,10 +164,11 @@ public class PropertyAttribute implements Attribute {
 			}
 			return true;
 		}
-		Class<? extends Object> objectClass = currentObject.getClass();
+		final Class<? extends Object> objectClass = currentObject.getClass();
 		if (getter != null) {
-			Class<?> getterClass = getter.getDeclaringClass();
-			boolean isGetterApplicable = getterClass.equals(objectClass) || getterClass.isAssignableFrom(objectClass);
+			final Class<?> getterClass = getter.getDeclaringClass();
+			final boolean isGetterApplicable = getterClass.equals(objectClass)
+					|| getterClass.isAssignableFrom(objectClass);
 			if (!isGetterApplicable) {
 				// Cannot use getter on other instance types
 				return false;
@@ -179,8 +176,9 @@ public class PropertyAttribute implements Attribute {
 		}
 		// If setter doesn't exist then this is applicable. Otherwise classes should be checked
 		if (setter != null) {
-			Class<?> setterClass = setter.getDeclaringClass();
-			boolean isSetterApplicable = setterClass.equals(objectClass) || setterClass.isAssignableFrom(objectClass);
+			final Class<?> setterClass = setter.getDeclaringClass();
+			final boolean isSetterApplicable = setterClass.equals(objectClass)
+					|| setterClass.isAssignableFrom(objectClass);
 			if (!isSetterApplicable) {
 				// Cannot use setter on other instance types
 				return false;

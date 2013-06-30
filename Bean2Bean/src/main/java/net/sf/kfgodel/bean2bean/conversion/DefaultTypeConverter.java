@@ -43,6 +43,7 @@ import net.sf.kfgodel.bean2bean.conversion.converters.WrappedXWorkConverter;
 import net.sf.kfgodel.bean2bean.conversion.spring.GeneralConverterRegistration;
 import net.sf.kfgodel.bean2bean.conversion.spring.SpecializedConverterRegistration;
 import net.sf.kfgodel.bean2bean.exceptions.CannotConvertException;
+import net.sf.kfgodel.bean2bean.exceptions.MissingDependencyException;
 import net.sf.kfgodel.bean2bean.instantiation.EmptyConstructorObjectFactory;
 import net.sf.kfgodel.bean2bean.instantiation.ObjectFactory;
 import net.sf.kfgodel.bean2bean.population.conversion.TypeConverterCall;
@@ -388,9 +389,9 @@ public class DefaultTypeConverter implements TypeConverter {
 		try {
 			jsonConverter = JsonStringObjectConverter.create();
 		} catch (final NoClassDefFoundError e) {
-			if (!"com/sdicons/json/mapper/MapperException".equals(e.getMessage())) {
-				// JSon no fue agregado como dependencia
-				throw new RuntimeException("JSON converter could not be created for default TypeConverter");
+			if (!"com/fasterxml/jackson/databind/ObjectMapper".equals(e.getMessage())) {
+				// Es un error que no conocemos
+				throw new MissingDependencyException("There's a missing class creating JSON converter", e);
 			} else {
 				if (logger.isInfoEnabled()) {
 					logger.info("JsonStringObjectConverter skipped, JSON dependency not found");

@@ -17,10 +17,14 @@
  */
 package net.sf.kfgodel.bean2bean.population.instructions;
 
+import javax.lang.model.type.NullType;
+
 import net.sf.kfgodel.bean2bean.annotations.MissingPropertyAction;
 import net.sf.kfgodel.bean2bean.conversion.TypeConverter;
+import net.sf.kfgodel.bean2bean.exceptions.CannotConvertException;
 import net.sf.kfgodel.bean2bean.exceptions.MissingPropertyException;
 import net.sf.kfgodel.bean2bean.exceptions.StopPopulationException;
+import net.sf.kfgodel.bean2bean.exceptions.TypeExtractionFailedException;
 import net.sf.kfgodel.bean2bean.population.conversion.ConversionInstruction;
 import net.sf.kfgodel.bean2bean.population.getting.GetterInstruction;
 import net.sf.kfgodel.bean2bean.population.setting.SetterInstruction;
@@ -45,7 +49,7 @@ public class GeneralPopulationInstruction implements PopulationInstruction {
 		return getterInstruction;
 	}
 
-	public void setGetterInstruction(GetterInstruction getterInstruction) {
+	public void setGetterInstruction(final GetterInstruction getterInstruction) {
 		this.getterInstruction = getterInstruction;
 	}
 
@@ -53,7 +57,7 @@ public class GeneralPopulationInstruction implements PopulationInstruction {
 		return conversionInstruction;
 	}
 
-	public void setConversionInstruction(ConversionInstruction conversionInstruction) {
+	public void setConversionInstruction(final ConversionInstruction conversionInstruction) {
 		this.conversionInstruction = conversionInstruction;
 	}
 
@@ -61,14 +65,14 @@ public class GeneralPopulationInstruction implements PopulationInstruction {
 		return setterInstruction;
 	}
 
-	public void setSetterInstruction(SetterInstruction setterInstruction) {
+	public void setSetterInstruction(final SetterInstruction setterInstruction) {
 		this.setterInstruction = setterInstruction;
 	}
 
-	public static GeneralPopulationInstruction create(GetterInstruction getterInstruction,
-			ConversionInstruction conversionInstruction, SetterInstruction setterInstruction,
-			MissingPropertyAction action) {
-		GeneralPopulationInstruction instruction = new GeneralPopulationInstruction();
+	public static GeneralPopulationInstruction create(final GetterInstruction getterInstruction,
+			final ConversionInstruction conversionInstruction, final SetterInstruction setterInstruction,
+			final MissingPropertyAction action) {
+		final GeneralPopulationInstruction instruction = new GeneralPopulationInstruction();
 		instruction.setGetterInstruction(getterInstruction);
 		instruction.setConversionInstruction(conversionInstruction);
 		instruction.setSetterInstruction(setterInstruction);
@@ -80,37 +84,39 @@ public class GeneralPopulationInstruction implements PopulationInstruction {
 	 * @see net.sf.kfgodel.bean2bean.population.instructions.PopulationInstruction#applyOn(java.lang.Object,
 	 *      java.lang.Object, net.sf.kfgodel.bean2bean.conversion.TypeConverter)
 	 */
-	public void applyOn(Object source, Object destination, TypeConverter typeConverter) {
+	public void applyOn(final Object source, final Object destination, final TypeConverter typeConverter) {
 		Object value;
 		try {
 			value = this.getGetterInstruction().applyOn(source);
-		}
-		catch (MissingPropertyException e) {
+		} catch (final MissingPropertyException e) {
 			// Puede estar configurado para asignar null si no existe la propiedad origen
 			value = this.getMissingPropertyAction().dealWithMissingPropertyOnGetter(e);
 		}
 		Object convertedValue;
 		try {
 			convertedValue = this.getConversionInstruction().applyOn(value, typeConverter, destination);
-		}
-		catch (MissingPropertyException e) {
+		} catch (final MissingPropertyException e) {
 			try {
 				convertedValue = this.getMissingPropertyAction().dealWithMissingPropertyOnConversion(e);
-			}
-			catch (StopPopulationException e1) {
+			} catch (final StopPopulationException e1) {
 				// Esta configurado para que no se produzca un error si no existe la propiedad
 				// destino
 				return;
 			}
+		} catch (final TypeExtractionFailedException e) {
+			Class<?> expectedType = NullType.class;
+			if (destination != null) {
+				expectedType = destination.getClass();
+			}
+			throw new CannotConvertException("Couldn't convert value from[" + source + "] to [" + destination
+					+ "]. Catched a " + e.getClass().getName() + ": " + e.getMessage(), source, expectedType);
 		}
 		try {
 			this.getSetterInstruction().applyOn(destination, convertedValue);
-		}
-		catch (MissingPropertyException e) {
+		} catch (final MissingPropertyException e) {
 			try {
 				this.getMissingPropertyAction().dealWithMissingPropertyOnSetter(e, getSetterInstruction(), destination);
-			}
-			catch (StopPopulationException e1) {
+			} catch (final StopPopulationException e1) {
 				// Esta configurado para que no se produzca un error si no existe la propiedad
 				// destino
 				return;
@@ -122,7 +128,7 @@ public class GeneralPopulationInstruction implements PopulationInstruction {
 		return missingPropertyAction;
 	}
 
-	public void setMissingPropertyAction(MissingPropertyAction missingPropertyAction) {
+	public void setMissingPropertyAction(final MissingPropertyAction missingPropertyAction) {
 		this.missingPropertyAction = missingPropertyAction;
 	}
 
@@ -131,7 +137,7 @@ public class GeneralPopulationInstruction implements PopulationInstruction {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder(getClass().getSimpleName());
+		final StringBuilder builder = new StringBuilder(getClass().getSimpleName());
 		builder.append("[ getter:[");
 		builder.append(getGetterInstruction());
 		builder.append("], setter:[");

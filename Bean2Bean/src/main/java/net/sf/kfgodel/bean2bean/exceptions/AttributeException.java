@@ -1,5 +1,5 @@
 /**
- * Created on: 25/02/2010 10:54:59 by: Dario L. Garcia
+ * Created on: 21/02/2010 23:15:20 by: Dario L. Garcia
  * 
  * <a rel="license" href="http://creativecommons.org/licenses/by/2.5/ar/"><img
  * alt="Creative Commons License" style="border-width:0"
@@ -15,28 +15,24 @@
  * href="https://bean2bean.svn.sourceforge.net/svnroot/bean2bean"
  * rel="dc:source">bean2bean.svn.sourceforge.net</a>
  */
-package net.sf.kfgodel.bean2bean.instantiation;
+package net.sf.kfgodel.bean2bean.exceptions;
 
-import java.lang.reflect.Type;
-
-import net.sf.kfgodel.bean2bean.exceptions.FailedInstantiationException;
+import net.sf.kfgodel.dgarcia.lang.reflection.attributes.Attribute;
 
 /**
- * This interface serves as an extension point to create instances for needed types
+ * This class is an exception raised when using {@link Attribute} in a bad way
  * 
  * @author D. Garcia
  */
-public interface ObjectFactory {
+public class AttributeException extends RuntimeException {
+	private static final long serialVersionUID = 2532244763906423855L;
 
-	/**
-	 * Creates a new instance for expected type
-	 * 
-	 * @param expectedType
-	 *            Type for the new instance
-	 * @return Created instance, ready to use
-	 * @throws FailedInstantiationException
-	 *             If there's an error creating a new instance from the type
-	 */
-	public <T> T instantiate(Type expectedType) throws FailedInstantiationException;
+	public AttributeException(final String message, final Exception e) {
+		super(message, e);
+	}
+
+	public AttributeException(final String message) {
+		super(message);
+	}
 
 }

@@ -19,6 +19,8 @@ package net.sf.kfgodel.dgarcia.lang.reflection.attributes;
 
 import java.lang.reflect.Type;
 
+import net.sf.kfgodel.bean2bean.exceptions.AttributeException;
+
 /**
  * This class represents a mixed attribute where only getter or setter is available, while the other
  * operation has to be made using direct access to the field.<br>
@@ -34,14 +36,14 @@ public class MixedAttribute implements Attribute {
 	/**
 	 * @see net.sf.kfgodel.dgarcia.lang.reflection.attributes.Attribute#getAssignableType()
 	 */
-	public Type getAssignableType() {
+	public Type getAssignableType() throws AttributeException {
 		return setterAttribute.getAssignableType();
 	}
 
 	/**
 	 * @see net.sf.kfgodel.dgarcia.lang.reflection.attributes.Attribute#getReturnedType()
 	 */
-	public Type getReturnedType() {
+	public Type getReturnedType() throws AttributeException {
 		return getterAttribute.getReturnedType();
 	}
 
@@ -49,21 +51,21 @@ public class MixedAttribute implements Attribute {
 	 * @see net.sf.kfgodel.dgarcia.lang.reflection.attributes.Attribute#setValueOn(java.lang.Object,
 	 *      java.lang.Object)
 	 */
-	public void setValueOn(Object destination, Object value) throws AttributeException {
+	public void setValueOn(final Object destination, final Object value) throws AttributeException {
 		setterAttribute.setValueOn(destination, value);
 	}
 
 	/**
 	 * @see net.sf.kfgodel.dgarcia.lang.reflection.attributes.Attribute#getValueFrom(java.lang.Object)
 	 */
-	public Object getValueFrom(Object destination) throws AttributeException {
+	public Object getValueFrom(final Object destination) throws AttributeException {
 		return getterAttribute.getValueFrom(destination);
 	}
 
 	/**
 	 * @see net.sf.kfgodel.dgarcia.lang.reflection.attributes.Attribute#isApplicableOn(java.lang.Object)
 	 */
-	public boolean isApplicableOn(Object currentObject) {
+	public boolean isApplicableOn(final Object currentObject) {
 		return getterAttribute.isApplicableOn(currentObject) && setterAttribute.isApplicableOn(currentObject);
 	}
 
@@ -77,14 +79,14 @@ public class MixedAttribute implements Attribute {
 	 *            Attribute to use for setting values
 	 * @return Created mixed attribute to access objects value
 	 */
-	public static MixedAttribute create(Attribute getterAttribute, Attribute setterAttribute) {
+	public static MixedAttribute create(final Attribute getterAttribute, final Attribute setterAttribute) {
 		if (getterAttribute == null) {
 			throw new IllegalArgumentException("Getter attribute cannot be null in mixed attribute");
 		}
 		if (setterAttribute == null) {
 			throw new IllegalArgumentException("Setter attribute cannot be null in mixed attribute");
 		}
-		MixedAttribute attribute = new MixedAttribute();
+		final MixedAttribute attribute = new MixedAttribute();
 		attribute.getterAttribute = getterAttribute;
 		attribute.setterAttribute = setterAttribute;
 		return attribute;
@@ -95,7 +97,7 @@ public class MixedAttribute implements Attribute {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder(this.getClass().getSimpleName());
+		final StringBuilder builder = new StringBuilder(this.getClass().getSimpleName());
 		builder.append("[ getter:");
 		builder.append(getterAttribute);
 		builder.append(", setter:");

@@ -17,6 +17,7 @@
  */
 package net.sf.kfgodel.bean2bean.interpreters;
 
+import net.sf.kfgodel.bean2bean.exceptions.AttributeException;
 import net.sf.kfgodel.bean2bean.exceptions.MissingPropertyException;
 import net.sf.kfgodel.bean2bean.instantiation.ObjectFactory;
 
@@ -65,8 +66,12 @@ public interface ExpressionInterpreter {
 	 * @return El valor devuelto por la expresión
 	 * @throws MissingPropertyException
 	 *             Si falta una propiedad para llegar al valor
+	 * @throws AttributeException
+	 *             If there's a security restriction or the object instance is invalid for this
+	 *             attribute
 	 */
-	Object evaluateGetterOn(Object source, Object expression, Object context) throws MissingPropertyException;
+	Object evaluateGetterOn(Object source, Object expression, Object context) throws MissingPropertyException,
+			AttributeException;
 
 	/**
 	 * Evalua la expresion general pasada devolviendo su resultado. Este metodo es un punto de
@@ -101,7 +106,12 @@ public interface ExpressionInterpreter {
 	 *            Contexto del lenguaje para utilizar por el interprete
 	 * @param value
 	 *            Valor a realizar la asignacion
+	 * @throws MissingPropertyException
+	 *             If there's a missing property while making the assignment
+	 * @throws AttributeException
+	 *             If there's a security restriction or invalid instance sequence
 	 */
-	void makeAssignmentOn(Object destination, Object expression, Object context, Object value);
+	void makeAssignmentOn(Object destination, Object expression, Object context, Object value)
+			throws MissingPropertyException, AttributeException;
 
 }

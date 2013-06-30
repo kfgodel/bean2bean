@@ -202,7 +202,7 @@ public class BeanCreationTask<R> implements Task<R> {
 		final TypeConverter usedTypeConverter = getTypeConverter();
 		final ObjectFactory objectFactory = usedTypeConverter.getObjectFactory();
 		if (objectFactory == null) {
-			throw new RuntimeException("Configuration error: No object factory was found for TypeConverter["
+			throw new IllegalStateException("Configuration error: No object factory was found for TypeConverter["
 					+ usedTypeConverter + "]");
 		}
 		// Esta ida y vuelta de casteos es necesario para el compilador de maven

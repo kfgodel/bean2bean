@@ -90,7 +90,10 @@ public class JsonStringObjectConverter implements GeneralTypeConverter<String, O
 	}
 
 	public static JsonStringObjectConverter create() {
-		return new JsonStringObjectConverter();
+		final JsonStringObjectConverter converter = new JsonStringObjectConverter();
+		// Forzamos la inicializacion para que tire error en este momento
+		converter.getTextualizer();
+		return converter;
 	}
 
 	/**
