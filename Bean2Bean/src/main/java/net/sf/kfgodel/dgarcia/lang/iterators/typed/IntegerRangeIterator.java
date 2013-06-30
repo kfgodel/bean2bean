@@ -134,19 +134,20 @@ public class IntegerRangeIterator implements PreSizedIterator<Integer>, Resetabl
 	 *            Tama�o del paso para llegar desde uno a otro numero (siempre un numero positivo)
 	 * @return El iterador de los numeros
 	 */
-	public static IntegerRangeIterator create(final int firstNumber, final int lastNumber, int delta)
+	public static IntegerRangeIterator create(final int firstNumber, final int lastNumber, final int delta)
 			throws IllegalArgumentException {
 		if (delta <= 0) {
 			throw new IllegalArgumentException("Delta cannot be less or equals to 0: " + delta);
 		}
+		int correctedDelta = delta;
 		if (firstNumber > lastNumber) {
-			delta *= -1;
+			correctedDelta *= -1;
 		}
 
 		final IntegerRangeIterator iterator = new IntegerRangeIterator();
 		iterator.firstNumber = firstNumber;
 		iterator.current = firstNumber;
-		iterator.delta = delta;
+		iterator.delta = correctedDelta;
 		iterator.lastNumber = lastNumber;
 		return iterator;
 	}

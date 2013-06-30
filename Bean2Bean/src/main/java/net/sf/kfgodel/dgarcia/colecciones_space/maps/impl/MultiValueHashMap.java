@@ -28,7 +28,6 @@ import java.util.Map.Entry;
 
 import net.sf.kfgodel.dgarcia.colecciones_space.maps.MultiValueMap;
 
-
 /**
  * @author D. Garcia
  * 
@@ -111,7 +110,7 @@ public class MultiValueHashMap<K, V> extends HashMap<K, Collection<V>> implement
 	 * @param collectionCreator
 	 *            creador de colleciones
 	 */
-	public MultiValueHashMap(CollectionCreator<V> collectionCreator) {
+	public MultiValueHashMap(final CollectionCreator<V> collectionCreator) {
 		this.collectionCreator = collectionCreator;
 	}
 
@@ -119,9 +118,9 @@ public class MultiValueHashMap<K, V> extends HashMap<K, Collection<V>> implement
 	 * @see net.sf.kfgodel.dgarcia.colecciones_space.maps.MultiValueMap#allValues()
 	 */
 	public Collection<V> allValues() {
-		ArrayList<V> todos = new ArrayList<V>();
-		Collection<Collection<V>> valores = this.values();
-		for (Collection<V> list : valores) {
+		final ArrayList<V> todos = new ArrayList<V>();
+		final Collection<Collection<V>> valores = this.values();
+		for (final Collection<V> list : valores) {
 			todos.addAll(list);
 		}
 		return todos;
@@ -131,9 +130,9 @@ public class MultiValueHashMap<K, V> extends HashMap<K, Collection<V>> implement
 	 * @see java.util.HashMap#containsValue(java.lang.Object)
 	 */
 	@Override
-	public boolean containsValue(Object value) {
-		Collection<Collection<V>> valores = this.values();
-		for (Collection<V> list : valores) {
+	public boolean containsValue(final Object value) {
+		final Collection<Collection<V>> valores = this.values();
+		for (final Collection<V> list : valores) {
 			if (list.contains(value)) {
 				return true;
 			}
@@ -147,8 +146,8 @@ public class MultiValueHashMap<K, V> extends HashMap<K, Collection<V>> implement
 	 * @param mapa
 	 *            Mapa contenedor de las asociaciones
 	 */
-	public void putAllValues(Map<? extends K, ? extends V> mapa) {
-		for (Entry<? extends K, ? extends V> entry : mapa.entrySet()) {
+	public void putAllValues(final Map<? extends K, ? extends V> mapa) {
+		for (final Entry<? extends K, ? extends V> entry : mapa.entrySet()) {
 			this.putValue(entry.getKey(), entry.getValue());
 		}
 	}
@@ -162,7 +161,7 @@ public class MultiValueHashMap<K, V> extends HashMap<K, Collection<V>> implement
 	 * @see java.util.Map
 	 * @see net.sf.kfgodel.dgarcia.colecciones_space.maps.MultiValueMap#putValue(Object, Object)
 	 */
-	public Collection<V> putValue(K key, V value) {
+	public Collection<V> putValue(final K key, final V value) {
 		Collection<V> coleccion = this.get(key);
 		if (coleccion == null) {
 			coleccion = this.collectionCreator.createCollection();
@@ -175,8 +174,8 @@ public class MultiValueHashMap<K, V> extends HashMap<K, Collection<V>> implement
 	/**
 	 * @see net.sf.kfgodel.dgarcia.colecciones_space.maps.MultiValueMap#removeValue(Object, Object)
 	 */
-	public V removeValue(K key, V value) {
-		Collection<V> coleccion = this.get(key);
+	public V removeValue(final K key, final V value) {
+		final Collection<V> coleccion = this.get(key);
 		if (coleccion == null) {
 			return null;
 		}
@@ -190,16 +189,6 @@ public class MultiValueHashMap<K, V> extends HashMap<K, Collection<V>> implement
 	}
 
 	/**
-	 * Indica la cantidad de keys distintas utilizadas
-	 * 
-	 * @see java.util.HashMap#size()
-	 */
-	@Override
-	public int size() {
-		return super.size();
-	}
-
-	/**
 	 * Indica la cantidad de values en este map
 	 * 
 	 * @return La cantidad de values
@@ -207,7 +196,7 @@ public class MultiValueHashMap<K, V> extends HashMap<K, Collection<V>> implement
 	 */
 	public int sizeValues() {
 		int size = 0;
-		for (Collection<V> list : this.values()) {
+		for (final Collection<V> list : this.values()) {
 			size += list.size();
 		}
 		return size;
@@ -216,12 +205,12 @@ public class MultiValueHashMap<K, V> extends HashMap<K, Collection<V>> implement
 	/**
 	 * @see net.sf.kfgodel.dgarcia.colecciones_space.maps.MultiValueMap#getKeysOf(java.lang.Object)
 	 */
-	public Collection<K> getKeysOf(V value) {
-		ArrayList<K> keys = new ArrayList<K>();
-		Iterator<Entry<K, Collection<V>>> entryIterator = this.entrySet().iterator();
+	public Collection<K> getKeysOf(final V value) {
+		final ArrayList<K> keys = new ArrayList<K>();
+		final Iterator<Entry<K, Collection<V>>> entryIterator = this.entrySet().iterator();
 		while (entryIterator.hasNext()) {
-			Entry<K, Collection<V>> entry = entryIterator.next();
-			Collection<V> valuesForKey = entry.getValue();
+			final Entry<K, Collection<V>> entry = entryIterator.next();
+			final Collection<V> valuesForKey = entry.getValue();
 			if (valuesForKey.contains(value)) {
 				keys.add(entry.getKey());
 			}

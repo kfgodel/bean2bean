@@ -32,7 +32,6 @@ import net.sf.kfgodel.bean2bean.conversion.TypeConverter;
 import net.sf.kfgodel.bean2bean.exceptions.CannotConvertException;
 import net.sf.kfgodel.dgarcia.lang.reflection.ReflectionUtils;
 
-
 /**
  * Esta clase sabe como convertir de una coleccion a otra utilizando la parametrizacion de sus
  * elementos para realizar la conversion de cada elemento. Si ninguna conversion es necesaria, se
@@ -61,7 +60,7 @@ public class Collection2CollectionConverter implements SpecializedTypeConverter<
 		return baseConverter;
 	}
 
-	public void setBaseConverter(TypeConverter baseConverter) {
+	public void setBaseConverter(final TypeConverter baseConverter) {
 		this.baseConverter = baseConverter;
 	}
 
@@ -77,24 +76,23 @@ public class Collection2CollectionConverter implements SpecializedTypeConverter<
 	 * @see net.sf.kfgodel.bean2bean.conversion.SpecializedTypeConverter#convertTo(java.lang.reflect.Type,
 	 *      java.lang.Object, java.lang.annotation.Annotation[])
 	 */
-	public Collection convertTo(Type expectedType, Collection sourceObject, Annotation[] contextAnnotations)
-			throws CannotConvertException {
+	public Collection convertTo(final Type expectedType, final Collection sourceObject,
+			final Annotation[] contextAnnotations) throws CannotConvertException {
 		if (expectedType == null) {
 			throw new CannotConvertException("Cannot make conversion. Expected type was not defined", sourceObject,
 					expectedType);
 		}
-		Class<?> expectedClass = ReflectionUtils.degenerify(expectedType);
+		final Class<?> expectedClass = ReflectionUtils.degenerify(expectedType);
 		Collection destinationCol;
 		try {
 			destinationCol = instantiate(expectedClass, sourceObject.size());
-		}
-		catch (CouldNotInstanstiateException e) {
+		} catch (final CouldNotInstanstiateException e) {
 			throw new CannotConvertException("Couldn't instantiate a collection", sourceObject, expectedType, e);
 		}
 
 		boolean conversionWasNeeded = false;
-		Type elementType = ReflectionUtils.getElementTypeParameterFrom(expectedType);
-		for (Object sourceElement : sourceObject) {
+		final Type elementType = ReflectionUtils.getElementTypeParameterFrom(expectedType);
+		for (final Object sourceElement : sourceObject) {
 			Object elementToAdd = sourceElement;
 			if (elementType != null) {
 				elementToAdd = this.getBaseConverter().convertValue(sourceElement, elementType);
@@ -110,8 +108,8 @@ public class Collection2CollectionConverter implements SpecializedTypeConverter<
 		return destinationCol;
 	}
 
-	public static Collection2CollectionConverter create(TypeConverter baseConverter) {
-		Collection2CollectionConverter converter = new Collection2CollectionConverter();
+	public static Collection2CollectionConverter create(final TypeConverter baseConverter) {
+		final Collection2CollectionConverter converter = new Collection2CollectionConverter();
 		converter.setBaseConverter(baseConverter);
 		return converter;
 	}
@@ -127,44 +125,47 @@ public class Collection2CollectionConverter implements SpecializedTypeConverter<
 	 * @throws CannotConvertException
 	 *             Si la coleccion no pudo ser instanciada
 	 */
-	public static Collection instantiate(Class<?> expectedClass, int size) throws CouldNotInstanstiateException {
-		if (expectedClass.equals(Set.class)) {
+	public static Collection<?> instantiate(final Class<?> expectedClass, final int size)
+			throws CouldNotInstanstiateException {
+		if (expectedClass.equals(Set.class) || expectedClass.equals(HashSet.class)) {
 			return new HashSet(size);
 		}
-		if (expectedClass.equals(HashSet.class)) {
-			return new HashSet(size);
-		}
-		if (expectedClass.equals(List.class)) {
+		if (expectedClass.equals(List.class) || expectedClass.equals(ArrayList.class)) {
 			return new ArrayList(size);
 		}
-		if (expectedClass.equals(ArrayList.class)) {
-			return new ArrayList(size);
-		}
+		final Collection<?> created = createByReflection(expectedClass);
+		return created;
+	}
+
+	/**
+	 * Crea la colección usando reflection para el constructor vacío
+	 * 
+	 * @param expectedClass
+	 *            El tipo esperado de la clase
+	 * @return La instancia creada con el constructor vacío
+	 * @throws CouldNotInstanstiateException
+	 *             Si se produce un error al instanciar
+	 */
+	private static Collection<?> createByReflection(final Class<?> expectedClass) throws CouldNotInstanstiateException {
 		try {
-			Constructor<?> constructor = expectedClass.getConstructor();
+			final Constructor<?> constructor = expectedClass.getConstructor();
 			constructor.setAccessible(true);
-			Object newInstance = constructor.newInstance();
-			return (Collection) newInstance;
-		}
-		catch (SecurityException e) {
+			final Object newInstance = constructor.newInstance();
+			return (Collection<?>) newInstance;
+		} catch (final SecurityException e) {
 			throw new CouldNotInstanstiateException("Cannot instantiate the collection beacause a security constraint["
 					+ expectedClass + "]", e);
-		}
-		catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			throw new CouldNotInstanstiateException("Empty constructor should no generate this exception["
 					+ expectedClass + "]", e);
-		}
-		catch (NoSuchMethodException e) {
+		} catch (final NoSuchMethodException e) {
 			throw new CouldNotInstanstiateException("There's no empty constructor for class[" + expectedClass + "]", e);
-		}
-		catch (InstantiationException e) {
+		} catch (final InstantiationException e) {
 			throw new CouldNotInstanstiateException("Class[" + expectedClass + "] is not instantiable", e);
-		}
-		catch (IllegalAccessException e) {
+		} catch (final IllegalAccessException e) {
 			throw new CouldNotInstanstiateException("Empty constructor from [" + expectedClass
 					+ "] is not accesible from this converter", e);
-		}
-		catch (InvocationTargetException e) {
+		} catch (final InvocationTargetException e) {
 			throw new CouldNotInstanstiateException("An inner exception occured when using empty constructor from ["
 					+ expectedClass + "]", e);
 		}

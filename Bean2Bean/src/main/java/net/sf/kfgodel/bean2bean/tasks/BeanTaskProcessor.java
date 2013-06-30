@@ -1,7 +1,7 @@
 /**
  * Created on 23/12/2007 00:23:51 Copyright (C) 2007 Dario L. Garcia
  * 
- *<a rel="license" href="http://creativecommons.org/licenses/by/2.5/ar/"><img
+ * <a rel="license" href="http://creativecommons.org/licenses/by/2.5/ar/"><img
  * alt="Creative Commons License" style="border-width:0"
  * src="http://i.creativecommons.org/l/by/2.5/ar/88x31.png" /></a><br />
  * <span xmlns:dc="http://purl.org/dc/elements/1.1/"
@@ -17,12 +17,12 @@
  */
 package net.sf.kfgodel.bean2bean.tasks;
 
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
 import net.sf.kfgodel.tasks.Task;
-
 
 /**
  * Esta clase representa el procesador de tareas de beans que permite resolver en forma iterativa la
@@ -35,7 +35,7 @@ import net.sf.kfgodel.tasks.Task;
 public class BeanTaskProcessor {
 
 	private Map<Task<?>, Task<?>> registeredTasks;
-	private LinkedList<Task<?>> tareasPendientes;
+	private Deque<Task<?>> tareasPendientes;
 
 	/**
 	 * Agrega la tarea pasada para ser resuelta por este procesador. Si la tarea ya existe como
@@ -44,7 +44,7 @@ public class BeanTaskProcessor {
 	 * @param tarea
 	 *            Tarea a resolver
 	 */
-	public void addTask(Task<?> tarea) {
+	public void addTask(final Task<?> tarea) {
 		if (this.getTareasPendientes().contains(tarea)) {
 			// Se detecto un ciclo por que la tarea depende de si misma
 			tarea.cycleDetected();
@@ -60,7 +60,7 @@ public class BeanTaskProcessor {
 		return registeredTasks;
 	}
 
-	private LinkedList<Task<?>> getTareasPendientes() {
+	private Deque<Task<?>> getTareasPendientes() {
 		return tareasPendientes;
 	}
 
@@ -75,7 +75,7 @@ public class BeanTaskProcessor {
 	 * @return Una tarea pendiente, o resuelta, o null si no se registro ninguna
 	 */
 	@SuppressWarnings("unchecked")
-	public <T> Task<T> getTaskLike(Task<T> referenceTask) {
+	public <T> Task<T> getTaskLike(final Task<T> referenceTask) {
 		return (Task<T>) this.getRegisteredTasks().get(referenceTask);
 	}
 
@@ -84,10 +84,10 @@ public class BeanTaskProcessor {
 	 */
 	public void processTasks() {
 		while (!this.getTareasPendientes().isEmpty()) {
-			Task<?> nextTask = this.getTareasPendientes().getFirst();
+			final Task<?> nextTask = this.getTareasPendientes().getFirst();
 			// Si tiene subtareas, se prepararan primero las subtareas
 			if (nextTask.hasPendingSubTasks()) {
-				Task<?> subtask = nextTask.getNextSubTask();
+				final Task<?> subtask = nextTask.getNextSubTask();
 				this.addTask(subtask);
 				continue;
 			}
@@ -102,14 +102,14 @@ public class BeanTaskProcessor {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder(this.getClass().getSimpleName());
+		final StringBuilder builder = new StringBuilder(this.getClass().getSimpleName());
 		builder.append(" ");
 		builder.append(this.getTareasPendientes());
 		return builder.toString();
 	}
 
 	public static BeanTaskProcessor create() {
-		BeanTaskProcessor beanTaskProcessor = new BeanTaskProcessor();
+		final BeanTaskProcessor beanTaskProcessor = new BeanTaskProcessor();
 		beanTaskProcessor.registeredTasks = new HashMap<Task<?>, Task<?>>();
 		beanTaskProcessor.tareasPendientes = new LinkedList<Task<?>>();
 		return beanTaskProcessor;

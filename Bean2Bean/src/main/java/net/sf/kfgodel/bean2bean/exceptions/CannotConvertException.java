@@ -20,7 +20,7 @@ package net.sf.kfgodel.bean2bean.exceptions;
 import java.lang.reflect.Type;
 
 /**
- * Esta excepcion es producida por un intento de conversion que no pudo ser realizada por no tener
+ * Esta excepción es producida por un intento de conversion que no pudo ser realizada por no tener
  * un conversor para hacerlo
  * 
  * @version 1.0
@@ -29,12 +29,12 @@ import java.lang.reflect.Type;
  */
 public class CannotConvertException extends RuntimeException {
 	private static final long serialVersionUID = 5387253448233098465L;
-	private Type expectedType;
-	private Object value;
-	private Object errorDescription;
+	private final Type expectedType;
+	private final Object value;
+	private final Object errorDescription;
 
 	/**
-	 * Crea una excepcion indicando el valor que no se pudo convertir y el tipo esperado de la
+	 * Crea una excepción indicando el valor que no se pudo convertir y el tipo esperado de la
 	 * conversion
 	 * 
 	 * @param value
@@ -42,8 +42,8 @@ public class CannotConvertException extends RuntimeException {
 	 * @param genericType
 	 *            Tipo esperado
 	 */
-	public CannotConvertException(Object value, Type genericType) {
-		this("Can not convert[" + value + "] to [" + genericType + "]", value, genericType);
+	public CannotConvertException(final Object value, final Type genericType) {
+		this("Cannot convert[" + value + "] to [" + genericType + "]", value, genericType);
 	}
 
 	/**
@@ -57,7 +57,7 @@ public class CannotConvertException extends RuntimeException {
 	 * @param expectedType
 	 *            tipo esperado
 	 */
-	public CannotConvertException(String message, Object sourceObject, Type expectedType) {
+	public CannotConvertException(final String message, final Object sourceObject, final Type expectedType) {
 		super(message);
 		this.value = sourceObject;
 		this.expectedType = expectedType;
@@ -77,9 +77,12 @@ public class CannotConvertException extends RuntimeException {
 	 * @param e
 	 *            Error que impidio la conversion
 	 */
-	public CannotConvertException(String message, Object sourceObject, Type expectedType, Throwable e) {
+	public CannotConvertException(final String message, final Object sourceObject, final Type expectedType,
+			final Throwable e) {
 		super(message, e);
-		this.errorDescription = e;
+		this.value = sourceObject;
+		this.expectedType = expectedType;
+		this.errorDescription = message;
 	}
 
 	/**
@@ -92,11 +95,14 @@ public class CannotConvertException extends RuntimeException {
 	 * @param expectedType
 	 *            Tipo esperado
 	 * @param errorDescription
-	 *            Descripci�n compleja del error
+	 *            Descripción compleja del error
 	 */
-	public CannotConvertException(String message, Object sourceObject, Type expectedType, Object errorDescription) {
+	public CannotConvertException(final String message, final Object sourceObject, final Type expectedType,
+			final Object errorDescription) {
 		super(message);
 		this.errorDescription = errorDescription;
+		this.value = sourceObject;
+		this.expectedType = expectedType;
 	}
 
 	public Type getExpectedType() {

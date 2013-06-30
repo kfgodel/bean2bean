@@ -57,7 +57,7 @@ public class ReflectionExpressionInterpreter implements ExpressionInterpreter {
 			expression = (PropertyChain) storedExpression;
 		} catch (final ClassCastException e) {
 			throw new FailedAssumptionException("Precompiled expression[" + storedExpression
-					+ "] for reflection interpreter should be a " + PropertyChain.class.getSimpleName());
+					+ "] for reflection interpreter should be a " + PropertyChain.class.getSimpleName(), e);
 		}
 		final Object currentValue = expression.getValueFrom(source);
 		return currentValue;
@@ -90,7 +90,7 @@ public class ReflectionExpressionInterpreter implements ExpressionInterpreter {
 			expression = (PropertyChain) storedExpression;
 		} catch (final ClassCastException e) {
 			throw new FailedAssumptionException("Precompiled expression[" + storedExpression
-					+ "] for reflection interpreter should be a " + PropertyChain.class.getSimpleName());
+					+ "] for reflection interpreter should be a " + PropertyChain.class.getSimpleName(), e);
 		}
 		expression.setValueOn(destination, value);
 	}

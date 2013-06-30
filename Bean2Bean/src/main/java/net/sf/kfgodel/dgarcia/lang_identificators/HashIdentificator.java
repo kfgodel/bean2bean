@@ -42,9 +42,11 @@ public class HashIdentificator extends AbstractIdentificator<Object> {
 	 *            Una instancia o null
 	 * @return El discriminante
 	 */
-	public long discriminator(Object object) {
-		if (object == null)
+	@Override
+	public long discriminator(final Object object) {
+		if (object == null) {
 			return 0;
+		}
 		return object.hashCode();
 	}
 }

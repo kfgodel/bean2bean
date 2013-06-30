@@ -15,6 +15,7 @@
  */
 package net.sf.kfgodel.tasks;
 
+import java.util.Deque;
 import java.util.LinkedList;
 
 /**
@@ -33,14 +34,14 @@ import java.util.LinkedList;
  */
 public class AntiCyclicTaskProcesor<R> {
 
-	private LinkedList<Task<R>> tareasAbiertasPendientes;
+	private Deque<Task<R>> tareasAbiertasPendientes;
 
 	/**
 	 * Devuelve la lisa de tareas que estan pendiente de resolucion
 	 * 
 	 * @return Una lista ordenada de tareas donde la primera es la proxima a resolver
 	 */
-	protected LinkedList<Task<R>> getTareasAbiertasPendientes() {
+	protected Deque<Task<R>> getTareasAbiertasPendientes() {
 		return this.tareasAbiertasPendientes;
 	}
 
@@ -52,13 +53,13 @@ public class AntiCyclicTaskProcesor<R> {
 	 *            Tarea a procesar
 	 * @return El resultado de la tarea procesada
 	 */
-	public R process(Task<R> newTask) {
+	public R process(final Task<R> newTask) {
 		this.startTask(newTask);
 		while (!this.getTareasAbiertasPendientes().isEmpty()) {
-			Task<R> nextTask = this.getTareasAbiertasPendientes().getFirst();
+			final Task<R> nextTask = this.getTareasAbiertasPendientes().getFirst();
 			// Si tiene subtareas, se procesan primero las subtareas
 			if (nextTask.hasPendingSubTasks()) {
-				Task<R> subtask = nextTask.getNextSubTask();
+				final Task<R> subtask = nextTask.getNextSubTask();
 				this.startTask(subtask);
 				continue;
 			}
@@ -75,7 +76,7 @@ public class AntiCyclicTaskProcesor<R> {
 	 * @param newTask
 	 *            Tarea a comenzar
 	 */
-	private void startTask(Task<R> newTask) {
+	private void startTask(final Task<R> newTask) {
 		if (this.getTareasAbiertasPendientes().contains(newTask)) {
 			// Se detecto un ciclo por que la tarea depende de si misma
 			newTask.cycleDetected();
@@ -94,7 +95,7 @@ public class AntiCyclicTaskProcesor<R> {
 	 * @return El procesador de las tareas
 	 */
 	public static <R> AntiCyclicTaskProcesor<R> create() {
-		AntiCyclicTaskProcesor<R> antiCyclicTaskProcesor = new AntiCyclicTaskProcesor<R>();
+		final AntiCyclicTaskProcesor<R> antiCyclicTaskProcesor = new AntiCyclicTaskProcesor<R>();
 		antiCyclicTaskProcesor.tareasAbiertasPendientes = new LinkedList<Task<R>>();
 		return antiCyclicTaskProcesor;
 	}

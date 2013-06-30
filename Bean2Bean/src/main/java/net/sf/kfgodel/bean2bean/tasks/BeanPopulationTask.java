@@ -17,6 +17,7 @@
  */
 package net.sf.kfgodel.bean2bean.tasks;
 
+import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -47,7 +48,7 @@ public class BeanPopulationTask<T> implements Task<T> {
 	/**
 	 * Sub tareas de populacion de atributos
 	 */
-	private LinkedList<PropertyPopulationTask> populationTasks;
+	private Deque<PropertyPopulationTask> populationTasks;
 	/**
 	 * Tipo de metadata de la populacion
 	 */
@@ -118,7 +119,7 @@ public class BeanPopulationTask<T> implements Task<T> {
 	/**
 	 * @return the populationTasks
 	 */
-	public LinkedList<PropertyPopulationTask> getPopulationTasks() {
+	public Deque<PropertyPopulationTask> getPopulationTasks() {
 		if (populationTasks == null) {
 			populationTasks = new LinkedList<PropertyPopulationTask>();
 		}
@@ -164,7 +165,7 @@ public class BeanPopulationTask<T> implements Task<T> {
 	 */
 	public void prepareTask() {
 		final Class<?> metadataClass = this.getPopulationType().getMetadataClassFor(this);
-		ObjectFactory objectFactory = getTypeConverter().getObjectFactory();
+		final ObjectFactory objectFactory = getTypeConverter().getObjectFactory();
 		final ClassPopulationMetadata classMetadata = metadataExtractor.getMetadataFor(metadataClass,
 				this.getPopulationType(), objectFactory);
 		final Iterator<PopulationInstruction> instructions = classMetadata.getPopulationInstructions().iterator();

@@ -117,7 +117,6 @@ public class ArrayCollectionConverter implements GeneralTypeConverter<Object, Co
 		int i = 0;
 		for (final Object sourceElement : value) {
 			final Object elementToAdd = this.getBaseConverter().convertValue(sourceElement, elementType);
-			;
 			Array.set(createdArray, i, elementToAdd);
 			i++;
 		}

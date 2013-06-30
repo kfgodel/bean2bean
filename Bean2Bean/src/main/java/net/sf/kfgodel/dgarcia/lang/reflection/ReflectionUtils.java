@@ -415,10 +415,11 @@ public class ReflectionUtils {
 			throw new IllegalArgumentException("Root class cannot be null");
 		}
 		final String camelizedName = Character.toUpperCase(attributeName.charAt(0)) + attributeName.substring(1);
-		final String getterName = "get" + camelizedName;
-		final String setterName = "set" + camelizedName;
 
+		final String getterName = "get" + camelizedName;
 		final Method getterMethod = lookupMethod(getterName, rootClass);
+
+		final String setterName = "set" + camelizedName;
 		final Method setterMethod = lookupMethod(setterName, rootClass);
 		// Si es un bean property, cortamos acá, podemos usar getter y setter
 		if (getterMethod != null && setterMethod != null) {
@@ -455,7 +456,7 @@ public class ReflectionUtils {
 			return MixedAttribute.create(fieldAttribute, partialProperty);
 		}
 
-		// No hubo caso, usamos el acceso directo al atributo
+		// No hubo caso, usamos el acceso directo al field
 		return fieldAttribute;
 	}
 
@@ -465,25 +466,26 @@ public class ReflectionUtils {
 	 * 
 	 * @param propertyChain
 	 *            Secuencia de propiedades a buscar
-	 * @param startingType
+	 * @param currentType
 	 *            Clases por la que se comienza la busqueda
 	 * @return El field o method que corresponde con la propiedad final o null si no se encontró
 	 *         ninguna
 	 * @throws Si
 	 *             se produce un error al navegar los atributos
 	 */
-	public static Attribute lookupNestedAttribute(final String propertyChain, Class<?> startingType)
+	public static Attribute lookupNestedAttribute(final String propertyChain, final Class<?> startingType)
 			throws AttributeException {
 		final String[] propertyNames = propertyChain.split("\\.");
 		Attribute foundAttribute = null;
+		Class<?> currentType = startingType;
 		for (final String propertyName : propertyNames) {
-			foundAttribute = lookupAttribute(propertyName, startingType);
+			foundAttribute = lookupAttribute(propertyName, currentType);
 			if (foundAttribute == null) {
 				// No podemos seguir avanzando
 				return null;
 			}
 			final Type genericType = foundAttribute.getReturnedType();
-			startingType = degenerify(genericType);
+			currentType = degenerify(genericType);
 		}
 		return foundAttribute;
 	}

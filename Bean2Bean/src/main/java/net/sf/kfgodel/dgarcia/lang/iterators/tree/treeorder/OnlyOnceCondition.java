@@ -18,9 +18,9 @@
 package net.sf.kfgodel.dgarcia.lang.iterators.tree.treeorder;
 
 import java.util.HashSet;
+import java.util.Set;
 
 import net.sf.kfgodel.dgarcia.lang.closures.Condition;
-
 
 /**
  * Esta clase representa una condicion que permite saber si una instancia ha sido repetida m�s de
@@ -37,7 +37,7 @@ public class OnlyOnceCondition<T> implements Condition<T> {
 	 * Conjunto de elementos ya analizados por esta condicion que permite determinar si existe un
 	 * repetido
 	 */
-	private final HashSet<T> alreadyDetected = new HashSet<T>();
+	private final Set<T> alreadyDetected = new HashSet<T>();
 
 	/**
 	 * Indica si esta condicion es cumplida por el elemento pasado.
@@ -47,7 +47,7 @@ public class OnlyOnceCondition<T> implements Condition<T> {
 	 * @return false si ya se verifico este elemento anteriormente
 	 * @see net.sf.kfgodel.dgarcia.lang.closures.Condition#isMetBy(java.lang.Object)
 	 */
-	public boolean isMetBy(T element) {
+	public boolean isMetBy(final T element) {
 		if (this.alreadyDetected.contains(element)) {
 			return false;
 		}

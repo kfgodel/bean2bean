@@ -51,7 +51,7 @@ public class String2NumberConverter implements SpecializedTypeConverter<String, 
 	private Number bestFitConversionFrom(final String sourceObject, final Type expectedType)
 			throws CannotConvertException {
 		try {
-			final Integer integer = new Integer(sourceObject);
+			final Integer integer = Integer.valueOf(sourceObject);
 			if (integer.toString().equals(sourceObject)) {
 				return integer;
 			}
@@ -142,7 +142,7 @@ public class String2NumberConverter implements SpecializedTypeConverter<String, 
 		} catch (final NumberFormatException e) {
 			throw new CannotConvertException(
 					"Can not convert[" + sourceObject + "] to a number [" + expectedType + "]", sourceObject,
-					expectedType);
+					expectedType, e);
 		} catch (final IllegalArgumentException e) {
 			throw new CannotConvertException("This exception should not rise", sourceObject, expectedType, e);
 		} catch (final NoSuchMethodException e) {

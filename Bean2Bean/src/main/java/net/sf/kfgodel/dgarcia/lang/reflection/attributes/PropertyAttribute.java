@@ -146,25 +146,22 @@ public class PropertyAttribute implements Attribute {
 	public boolean isApplicableOn(final Object currentObject) {
 		if (currentObject == null) {
 			// Only static methods can be used with null
-			if (getter != null) {
-				final boolean isStaticGetter = Modifier.isStatic(getter.getModifiers());
-				if (!isStaticGetter) {
-					// Cannot use instance getter with null instance
-					return false;
-				}
-			}
-			// If setter does not exist, then is applicable. Otherwise must be static too
-			if (setter != null) {
-				final boolean isStaticSetter = Modifier.isStatic(setter.getModifiers());
-				if (!isStaticSetter) {
-					// Cannot use instance setter with null instance
-					return false;
-				}
-				return isStaticSetter;
-			}
-			return true;
+			return isApplicableAsStaticAttribute();
 		}
 		final Class<? extends Object> objectClass = currentObject.getClass();
+		final boolean isApplicable = isApplicableFromGetterAndSetter(objectClass);
+		return isApplicable;
+	}
+
+	/**
+	 * Indica si este atributo es aplicable al tipo del objeto pasado desde el setter y getter de
+	 * este atributo. Si el getter no es aplicable ya no se evalua el getter
+	 * 
+	 * @param objectClass
+	 *            E ltipo a evaluar
+	 * @return false si el getter no es aplicable, o si el setter existe y no es aplicable
+	 */
+	private boolean isApplicableFromGetterAndSetter(final Class<? extends Object> objectClass) {
 		if (getter != null) {
 			final Class<?> getterClass = getter.getDeclaringClass();
 			final boolean isGetterApplicable = getterClass.equals(objectClass)
@@ -183,6 +180,32 @@ public class PropertyAttribute implements Attribute {
 				// Cannot use setter on other instance types
 				return false;
 			}
+		}
+		return true;
+	}
+
+	/**
+	 * Indica si este atributo es aplicable como un atributo estático que no requiere instancia
+	 * concreta
+	 * 
+	 * @return true si este atributo representa un valor estático
+	 */
+	private boolean isApplicableAsStaticAttribute() {
+		if (getter != null) {
+			final boolean isStaticGetter = Modifier.isStatic(getter.getModifiers());
+			if (!isStaticGetter) {
+				// Cannot use instance getter with null instance
+				return false;
+			}
+		}
+		// If setter does not exist, then is applicable. Otherwise must be static too
+		if (setter != null) {
+			final boolean isStaticSetter = Modifier.isStatic(setter.getModifiers());
+			if (!isStaticSetter) {
+				// Cannot use instance setter with null instance
+				return false;
+			}
+			return isStaticSetter;
 		}
 		return true;
 	}

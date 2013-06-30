@@ -24,7 +24,6 @@ import net.sf.kfgodel.bean2bean.conversion.SpecializedTypeConverter;
 import net.sf.kfgodel.bean2bean.exceptions.CannotConvertException;
 import net.sf.kfgodel.dgarcia.lang.reflection.ReflectionUtils;
 
-
 /**
  * Esta clase sabe como convertir de String a enum
  * 
@@ -48,13 +47,13 @@ public class String2EnumConverter implements SpecializedTypeConverter<String, En
 	 * @see net.sf.kfgodel.bean2bean.conversion.SpecializedTypeConverter#convertTo(java.lang.reflect.Type,
 	 *      java.lang.Object, java.lang.annotation.Annotation[])
 	 */
-	public Enum convertTo(Type expectedType, String sourceObject, Annotation[] contextAnnotations)
+	public Enum convertTo(final Type expectedType, final String sourceObject, final Annotation[] contextAnnotations)
 			throws CannotConvertException {
 		if (expectedType == null) {
 			throw new CannotConvertException("Cannot make conversion. Expected type was not defined", sourceObject,
 					expectedType);
 		}
-		Class<Enum> enumClass = (Class<Enum>) ReflectionUtils.degenerify(expectedType);
+		final Class<Enum> enumClass = (Class<Enum>) ReflectionUtils.degenerify(expectedType);
 		if (enumClass == null) {
 			throw new CannotConvertException("Expected type is not an Enum[" + expectedType + "]", sourceObject,
 					expectedType);
@@ -62,11 +61,10 @@ public class String2EnumConverter implements SpecializedTypeConverter<String, En
 		Enum enumValue;
 		try {
 			enumValue = Enum.valueOf(enumClass, sourceObject);
-		}
-		catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			// Esta excepcion se produce si el enum no existe
 			throw new CannotConvertException("Enum value does not exist[" + sourceObject + "]", sourceObject,
-					expectedType);
+					expectedType, e);
 		}
 		return enumValue;
 	}

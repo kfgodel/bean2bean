@@ -77,7 +77,7 @@ public class AnnotatedClassConverter implements GeneralTypeConverter<Object, Obj
 			throw new CannotConvertException("Passed-in argument type[" + expectedType
 					+ "] does not match expected type", value, expectedType);
 		}
-		Object convertedValue = this.safeGetBeanGenerator().createFrom(value, annotatedClass);
+		final Object convertedValue = this.safeGetBeanGenerator().createFrom(value, annotatedClass);
 		return convertedValue;
 	}
 
@@ -95,7 +95,7 @@ public class AnnotatedClassConverter implements GeneralTypeConverter<Object, Obj
 			throw new CannotConvertException("Can not get a class instance from expected type[" + expectedType + "]",
 					value, expectedType);
 		}
-		Object convertedValue = this.safeGetBeanGenerator().convertTo(unAnnotatedClass, value);
+		final Object convertedValue = this.safeGetBeanGenerator().convertTo(unAnnotatedClass, value);
 		return convertedValue;
 	}
 
@@ -112,25 +112,6 @@ public class AnnotatedClassConverter implements GeneralTypeConverter<Object, Obj
 		final ConditionalIterator<Field> iteradorAtributosAnotados = ConditionalIterator.createFrom(siEstaAnotado,
 				allFields);
 		return iteradorAtributosAnotados.hasNext();
-	}
-
-	/**
-	 * Indica si el tipo pasado no es manejable por este conversor
-	 * 
-	 * @param testedType
-	 *            Tipo a chequear
-	 */
-	private boolean isUnhandledType(final Class<?> testedType) {
-		if (Number.class.isAssignableFrom(testedType)) {
-			return true;
-		}
-		if (String.class.equals(testedType)) {
-			return true;
-		}
-		if (testedType.isPrimitive()) {
-			return true;
-		}
-		return false;
 	}
 
 	/**
