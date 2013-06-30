@@ -17,32 +17,39 @@
  */
 package net.sf.kfgodel.bean2bean.conversion.converters;
 
-import java.io.StringReader;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 import net.sf.kfgodel.bean2bean.conversion.GeneralTypeConverter;
+import net.sf.kfgodel.bean2bean.conversion.converters.json.CannotTextSerializeException;
+import net.sf.kfgodel.bean2bean.conversion.converters.json.CannotTextUnserializeException;
+import net.sf.kfgodel.bean2bean.conversion.converters.json.JsonTextualizer;
 import net.sf.kfgodel.bean2bean.exceptions.CannotConvertException;
 import net.sf.kfgodel.dgarcia.lang.reflection.ReflectionUtils;
-
-import antlr.RecognitionException;
-import antlr.TokenStreamException;
-
-import com.sdicons.json.mapper.JSONMapper;
-import com.sdicons.json.mapper.MapperException;
-import com.sdicons.json.parser.JSONParser;
 
 /**
  * Esta clase sabe como convertir un objeto a una representacion de cadena utilizando el formato
  * JSON, y viceversa, como convertir desde una representacion en String de cualquier objeto usando
  * JSON a un objeto Java.
  * 
- * @version 1.0
+ * @version 1.1
  * @since 31/12/2007
  * @author D. Garcia
  */
 public class JsonStringObjectConverter implements GeneralTypeConverter<String, Object> {
+
+	private JsonTextualizer textualizer;
+
+	public JsonTextualizer getTextualizer() {
+		if (textualizer == null) {
+			textualizer = JsonTextualizer.createWithoutTypeMetadata();
+		}
+		return textualizer;
+	}
+
+	public void setTextualizer(final JsonTextualizer textualizer) {
+		this.textualizer = textualizer;
+	}
 
 	/**
 	 * @param value
@@ -55,31 +62,15 @@ public class JsonStringObjectConverter implements GeneralTypeConverter<String, O
 	 * @see net.sf.kfgodel.bean2bean.conversion.GeneralTypeConverter#convertFrom(java.lang.Object,
 	 *      java.lang.reflect.Type, java.lang.annotation.Annotation[])
 	 */
-	public Object convertFrom(String value, Type expectedType, Annotation[] contextAnnotations) {
+	public Object convertFrom(final String value, final Type expectedType, final Annotation[] contextAnnotations) {
 		if (expectedType == null) {
 			throw new CannotConvertException("Cannot make conversion. Expected type was not defined", value,
 					expectedType);
 		}
 		try {
-			JSONParser parser = new JSONParser(new StringReader(value));
-			Object convertedObject;
-			if (expectedType instanceof ParameterizedType) {
-				ParameterizedType expectedGenericType = (ParameterizedType) expectedType;
-				convertedObject = JSONMapper.toJava(parser.nextValue(), expectedGenericType);
-			}
-			else {
-				Class<?> expectedClass = ReflectionUtils.degenerify(expectedType);
-				convertedObject = JSONMapper.toJava(parser.nextValue(), expectedClass);
-			}
+			final Object convertedObject = getTextualizer().convertFromStringAsType(expectedType, value);
 			return convertedObject;
-		}
-		catch (TokenStreamException e) {
-			throw new CannotConvertException("Error when generating JSON parser[" + value + "]", value, expectedType, e);
-		}
-		catch (RecognitionException e) {
-			throw new CannotConvertException("Error when parsing JSON text[" + value + "]", value, expectedType, e);
-		}
-		catch (MapperException e) {
+		} catch (final CannotTextUnserializeException e) {
 			throw new CannotConvertException("Error when creating object from JSON text[" + value + "]", value,
 					expectedType, e);
 		}
@@ -89,13 +80,12 @@ public class JsonStringObjectConverter implements GeneralTypeConverter<String, O
 	 * @see net.sf.kfgodel.bean2bean.conversion.GeneralTypeConverter#convertTo(java.lang.reflect.Type,
 	 *      java.lang.Object, java.lang.annotation.Annotation[])
 	 */
-	public String convertTo(Type expectedType, Object value, Annotation[] contextAnnotations) {
+	public String convertTo(final Type expectedType, final Object value, final Annotation[] contextAnnotations) {
 		try {
-			String representation = JSONMapper.toJSON(value).render(false);
+			final String representation = getTextualizer().convertToString(value);
 			return representation;
-		}
-		catch (MapperException e) {
-			throw new CannotConvertException("Error mapping to JSON", value, expectedType, e);
+		} catch (final CannotTextSerializeException e) {
+			throw new CannotConvertException("Error mapping to JSON[" + value + "]", value, expectedType, e);
 		}
 	}
 
@@ -111,7 +101,7 @@ public class JsonStringObjectConverter implements GeneralTypeConverter<String, O
 	 * @see net.sf.kfgodel.bean2bean.conversion.GeneralTypeConverter#acceptsConversionFrom(java.lang.Class,
 	 *      java.lang.reflect.Type, java.lang.Object)
 	 */
-	public boolean acceptsConversionFrom(Class<?> sourceType, Type expectedType, Object sourceObject) {
+	public boolean acceptsConversionFrom(final Class<?> sourceType, final Type expectedType, final Object sourceObject) {
 		return sourceType.equals(String.class);
 	}
 
@@ -123,8 +113,8 @@ public class JsonStringObjectConverter implements GeneralTypeConverter<String, O
 	 * @see net.sf.kfgodel.bean2bean.conversion.GeneralTypeConverter#acceptsConversionTo(java.lang.reflect.Type,
 	 *      java.lang.Class, java.lang.Object)
 	 */
-	public boolean acceptsConversionTo(Type expectedType, Class<?> sourceType, Object sourceObject) {
-		Class<?> destinationType = ReflectionUtils.degenerify(expectedType);
+	public boolean acceptsConversionTo(final Type expectedType, final Class<?> sourceType, final Object sourceObject) {
+		final Class<?> destinationType = ReflectionUtils.degenerify(expectedType);
 		return destinationType.equals(String.class);
 	}
 

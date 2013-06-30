@@ -165,8 +165,8 @@ public class ConverterTest {
 		checkConversion(integers, String[].class, cadenas);
 
 		objetos = new Object[] { NonAnnotatedBean.create("string1", 1L), NonAnnotatedBean.create("string2", 2L) };
-		cadenas = new String[] { "{\"longValue\":1,\"stringValue\":\"string1\"}",
-				"{\"longValue\":2,\"stringValue\":\"string2\"}" };
+		cadenas = new String[] { "{\"stringValue\":\"string1\",\"longValue\":1}",
+				"{\"stringValue\":\"string2\",\"longValue\":2}" };
 		checkConversion(objetos, String[].class, cadenas);
 
 		final int[][] arrayDeArraysDeEnteros = new int[][] { { 1, 2, 3 }, { 4, 5, 6 } };
@@ -196,17 +196,6 @@ public class ConverterTest {
 			}
 		};
 		Assert.exceptionOn(codigo, CannotConvertException.class);
-	}
-
-	@Test
-	public void testBadString2ArrayConversion() {
-		final CodeThatShouldFail code = new CodeThatShouldFail() {
-			public void doTheFaultyThing() {
-				checkConversion("[1,3.14,9223372036854775807]", Double[].class,
-						new Number[] { 1, 3.14d, Long.MAX_VALUE });
-			}
-		};
-		Assert.exceptionOn(code, CannotConvertException.class);
 	}
 
 	@Test
