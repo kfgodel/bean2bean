@@ -142,44 +142,11 @@
 			<!-- Groovy language -->
 			<groupId>org.codehaus.groovy</groupId>
 			<artifactId>groovy</artifactId>
-			<version>1.7.0</version>
+			<version>2.1.5</version>
 			<type>jar</type>
 			<scope>provided</scope>
-			<exclusions>
-				<!-- Conflicts with Hibernate -->
-				<exclusion>
-		          <groupId>asm</groupId>
-		          <artifactId>asm-util</artifactId>
-		        </exclusion>
-				<exclusion>
-		          <groupId>asm</groupId>
-		          <artifactId>asm-analysis</artifactId>
-		        </exclusion>
-				<exclusion>
-		          <groupId>asm</groupId>
-		          <artifactId>asm-tree</artifactId>
-		        </exclusion>
-				<exclusion>
-		          <groupId>asm</groupId>
-		          <artifactId>asm</artifactId>
-		        </exclusion>
-			</exclusions>
 		</dependency>
 		
-		<!-- Solves hibernate conflicts with groovy and Hibernate-->
-		<dependency>
-			<groupId>asm</groupId>
-			<artifactId>asm-all</artifactId>
-			<version>3.2</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-	      <groupId>cglib</groupId>
-	      <artifactId>cglib-nodep</artifactId>
-	      <version>2.2</version>
-			<scope>provided</scope>
-	    </dependency>
-	    
 		<!-- Test dependencies -->
 		<dependency>
 			<groupId>junit</groupId>
