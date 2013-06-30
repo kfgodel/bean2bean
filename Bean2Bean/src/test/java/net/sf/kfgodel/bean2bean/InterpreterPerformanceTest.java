@@ -82,7 +82,7 @@ public class InterpreterPerformanceTest {
 	/**
 	 * Number of tests to run to measure time
 	 */
-	private static final int TEST_COUNT = 100000;
+	private static final int TEST_COUNT = 10000;
 	private Bean2Bean bean2Bean;
 
 	@Before
