@@ -21,6 +21,7 @@ import net.sf.kfgodel.bean2bean.conversion.TypeConverter;
 import net.sf.kfgodel.bean2bean.exceptions.BadMappingException;
 import net.sf.kfgodel.bean2bean.instantiation.ObjectFactory;
 import net.sf.kfgodel.bean2bean.population.PopulationType;
+import net.sf.kfgodel.bean2bean.population.metadata.ClassPopulationMetadataExtractor;
 import net.sf.kfgodel.tasks.Task;
 
 /**
@@ -61,6 +62,8 @@ public class BeanCreationTask<R> implements Task<R> {
 	 */
 	private TypeConverter typeConverter;
 
+	private ClassPopulationMetadataExtractor metadataExtractor;
+
 	/**
 	 * @see net.sf.kfgodel.tasks.Task#cycleDetected()
 	 */
@@ -78,11 +81,11 @@ public class BeanCreationTask<R> implements Task<R> {
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (!(obj instanceof BeanCreationTask<?>)) {
 			return false;
 		}
-		BeanCreationTask<?> that = (BeanCreationTask<?>) obj;
+		final BeanCreationTask<?> that = (BeanCreationTask<?>) obj;
 		if (!this.getPopulationType().equals(that.getPopulationType())) {
 			return false;
 		}
@@ -105,8 +108,8 @@ public class BeanCreationTask<R> implements Task<R> {
 	 * @see net.sf.kfgodel.tasks.Task#getNextSubTask()
 	 */
 	public Task<R> getNextSubTask() {
-		BeanPopulationTask<R> populationSubtask = BeanPopulationTask.createFor(this.getResult(), getSourceBean(), this
-				.getPopulationType(), this.getTypeConverter());
+		final BeanPopulationTask<R> populationSubtask = BeanPopulationTask.createFor(this.getResult(), getSourceBean(),
+				this.getPopulationType(), this.getTypeConverter(), metadataExtractor);
 		this.isResultUnpopulated = false;
 		return populationSubtask;
 	}
@@ -153,7 +156,7 @@ public class BeanCreationTask<R> implements Task<R> {
 	public void prepareTask() {
 	}
 
-	public void setResult(R result) {
+	public void setResult(final R result) {
 		this.result = result;
 	}
 
@@ -162,14 +165,13 @@ public class BeanCreationTask<R> implements Task<R> {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder(this.getClass().getSimpleName());
+		final StringBuilder builder = new StringBuilder(this.getClass().getSimpleName());
 		builder.append(" (");
 		if (this.getPopulationType().equals(PopulationType.METADATA_READ_FROM_DESTINATION_TYPE)) {
 			builder.append(this.getDestinationType().getSimpleName());
 			builder.append(" FROM ");
 			builder.append(this.getSourceBean());
-		}
-		else {
+		} else {
 			builder.append(this.getSourceBean());
 			builder.append(" TO ");
 			builder.append(this.getDestinationType().getSimpleName());
@@ -178,14 +180,16 @@ public class BeanCreationTask<R> implements Task<R> {
 		return builder.toString();
 	}
 
-	public static <R> BeanCreationTask<R> createFor(Object sourceBean, Class<R> destinationType,
-			PopulationType populationType, TypeConverter converter) {
-		BeanCreationTask<R> task = new BeanCreationTask<R>();
+	public static <R> BeanCreationTask<R> createFor(final Object sourceBean, final Class<R> destinationType,
+			final PopulationType populationType, final TypeConverter converter,
+			final ClassPopulationMetadataExtractor extractor) {
+		final BeanCreationTask<R> task = new BeanCreationTask<R>();
 		task.sourceBean = sourceBean;
 		task.destinationType = destinationType;
 		task.isResultUnpopulated = true;
 		task.populationType = populationType;
 		task.typeConverter = converter;
+		task.metadataExtractor = extractor;
 		return task;
 	}
 
@@ -195,15 +199,15 @@ public class BeanCreationTask<R> implements Task<R> {
 	 */
 	@SuppressWarnings("unchecked")
 	public void prepareResult() {
-		TypeConverter usedTypeConverter = getTypeConverter();
-		ObjectFactory objectFactory = usedTypeConverter.getObjectFactory();
+		final TypeConverter usedTypeConverter = getTypeConverter();
+		final ObjectFactory objectFactory = usedTypeConverter.getObjectFactory();
 		if (objectFactory == null) {
 			throw new RuntimeException("Configuration error: No object factory was found for TypeConverter["
 					+ usedTypeConverter + "]");
 		}
 		// Esta ida y vuelta de casteos es necesario para el compilador de maven
-		Object instantiate = objectFactory.instantiate(getDestinationType());
-		R newInstace = (R) instantiate;
+		final Object instantiate = objectFactory.instantiate(getDestinationType());
+		final R newInstace = (R) instantiate;
 		setResult(newInstace);
 	}
 

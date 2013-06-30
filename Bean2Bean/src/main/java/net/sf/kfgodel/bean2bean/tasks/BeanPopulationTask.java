@@ -23,15 +23,14 @@ import java.util.LinkedList;
 import net.sf.kfgodel.bean2bean.conversion.TypeConverter;
 import net.sf.kfgodel.bean2bean.exceptions.BadMappingException;
 import net.sf.kfgodel.bean2bean.metadata.ClassPopulationMetadata;
-import net.sf.kfgodel.bean2bean.population.ClassPopulationMetadaExtractor;
 import net.sf.kfgodel.bean2bean.population.PopulationType;
 import net.sf.kfgodel.bean2bean.population.instructions.PopulationInstruction;
+import net.sf.kfgodel.bean2bean.population.metadata.ClassPopulationMetadataExtractor;
 import net.sf.kfgodel.tasks.Task;
 
-
 /**
- * Esta clase representa la populacion de un bean basandose siguiendo los annotations presentes en
- * la clase, destino u origen de los datos.
+ * Esta clase representa la populacion de un bean siguiendo los annotations presentes en la clase,
+ * destino u origen de los datos.
  * 
  * @version 1.0
  * @since 22/12/2007
@@ -63,6 +62,11 @@ public class BeanPopulationTask<T> implements Task<T> {
 	private TypeConverter typeConverter;
 
 	/**
+	 * Extractor usado para saber como popular las instancias
+	 */
+	private ClassPopulationMetadataExtractor metadataExtractor;
+
+	/**
 	 * @see net.sf.kfgodel.tasks.Task#cycleDetected()
 	 */
 	public void cycleDetected() {
@@ -80,11 +84,11 @@ public class BeanPopulationTask<T> implements Task<T> {
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (!(obj instanceof BeanPopulationTask<?>)) {
 			return false;
 		}
-		BeanPopulationTask<?> that = (BeanPopulationTask<?>) obj;
+		final BeanPopulationTask<?> that = (BeanPopulationTask<?>) obj;
 		if (!this.getPopulationType().equals(that.getPopulationType())) {
 			return false;
 		}
@@ -102,7 +106,7 @@ public class BeanPopulationTask<T> implements Task<T> {
 	 */
 	@SuppressWarnings("unchecked")
 	public Task<T> getNextSubTask() {
-		PropertyPopulationTask subtask = this.getPopulationTasks().removeFirst();
+		final PropertyPopulationTask subtask = this.getPopulationTasks().removeFirst();
 		return (Task<T>) subtask;
 	}
 
@@ -158,13 +162,13 @@ public class BeanPopulationTask<T> implements Task<T> {
 	 * @see net.sf.kfgodel.tasks.Task#prepareTask()
 	 */
 	public void prepareTask() {
-		Class<?> metadataClass = this.getPopulationType().getMetadataClassFor(this);
-		ClassPopulationMetadata classMetadata = ClassPopulationMetadaExtractor.getMetadataFor(metadataClass, this
-				.getPopulationType());
-		Iterator<PopulationInstruction> instructions = classMetadata.getPopulationInstructions().iterator();
+		final Class<?> metadataClass = this.getPopulationType().getMetadataClassFor(this);
+		final ClassPopulationMetadata classMetadata = metadataExtractor.getMetadataFor(metadataClass,
+				this.getPopulationType());
+		final Iterator<PopulationInstruction> instructions = classMetadata.getPopulationInstructions().iterator();
 		while (instructions.hasNext()) {
-			PopulationInstruction instruction = instructions.next();
-			PropertyPopulationTask populationSubTask = PropertyPopulationTask.createFor(this.getSourceBean(),
+			final PopulationInstruction instruction = instructions.next();
+			final PropertyPopulationTask populationSubTask = PropertyPopulationTask.createFor(this.getSourceBean(),
 					instruction, this.getPopulatedBean(), this.getTypeConverter());
 			this.getPopulationTasks().add(populationSubTask);
 		}
@@ -175,14 +179,13 @@ public class BeanPopulationTask<T> implements Task<T> {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder(this.getClass().getSimpleName());
+		final StringBuilder builder = new StringBuilder(this.getClass().getSimpleName());
 		builder.append(" (");
 		if (this.getPopulationType().equals(PopulationType.METADATA_READ_FROM_DESTINATION_TYPE)) {
 			builder.append(this.getPopulatedBean());
 			builder.append(" FROM ");
 			builder.append(this.getSourceBean());
-		}
-		else {
+		} else {
 			builder.append(this.getSourceBean());
 			builder.append(" TO ");
 			builder.append(this.getPopulatedBean());
@@ -194,13 +197,15 @@ public class BeanPopulationTask<T> implements Task<T> {
 	/**
 	 * Creates a new task to populate populatedBean from data on sourceBean
 	 */
-	public static <T> BeanPopulationTask<T> createFor(T populatedBean, Object sourceBean,
-			PopulationType populationType, TypeConverter converter) {
-		BeanPopulationTask<T> task = new BeanPopulationTask<T>();
+	public static <T> BeanPopulationTask<T> createFor(final T populatedBean, final Object sourceBean,
+			final PopulationType populationType, final TypeConverter converter,
+			final ClassPopulationMetadataExtractor extractor) {
+		final BeanPopulationTask<T> task = new BeanPopulationTask<T>();
 		task.populatedBean = populatedBean;
 		task.sourceBean = sourceBean;
 		task.populationType = populationType;
 		task.typeConverter = converter;
+		task.metadataExtractor = extractor;
 		return task;
 	}
 

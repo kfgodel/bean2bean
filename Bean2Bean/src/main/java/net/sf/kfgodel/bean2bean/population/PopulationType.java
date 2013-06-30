@@ -31,6 +31,7 @@ import net.sf.kfgodel.bean2bean.metadata.ExpressionDeclaration;
 import net.sf.kfgodel.bean2bean.metadata.PropertyMappingDeclaration;
 import net.sf.kfgodel.bean2bean.population.conversion.TypeConverterCall;
 import net.sf.kfgodel.bean2bean.population.instructions.PopulationInstruction;
+import net.sf.kfgodel.bean2bean.population.metadata.AnnotatedFieldsMetadaExtractor;
 import net.sf.kfgodel.bean2bean.tasks.BeanPopulationTask;
 
 
@@ -251,7 +252,7 @@ public enum PopulationType {
 		fillImplicitExpression(field, setterExpression);
 
 		// Levanto los annotations del atributo
-		Annotation[] relatedAnnotations = ClassPopulationMetadaExtractor.extractContextAnnotationsFrom(field,
+		Annotation[] relatedAnnotations = AnnotatedFieldsMetadaExtractor.extractContextAnnotationsFrom(field,
 				mappingDeclaration.getRelatedAnnotationTypes());
 		mappingDeclaration.setRelatedAnnotations(relatedAnnotations);
 	}
@@ -321,7 +322,7 @@ public enum PopulationType {
 		PropertyMappingDeclaration mappingDeclaration = readMappingFrom(annotations);
 		fillImplicitValuesFor(field, mappingDeclaration);
 		try {
-			PopulationInstruction instruction = ClassPopulationMetadaExtractor
+			PopulationInstruction instruction = AnnotatedFieldsMetadaExtractor
 					.createPopulationInstructionFor(mappingDeclaration);
 			return instruction;
 		}

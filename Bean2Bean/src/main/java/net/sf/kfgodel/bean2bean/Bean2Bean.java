@@ -22,6 +22,8 @@ import net.sf.kfgodel.bean2bean.annotations.CopyTo;
 import net.sf.kfgodel.bean2bean.conversion.DefaultTypeConverter;
 import net.sf.kfgodel.bean2bean.conversion.TypeConverter;
 import net.sf.kfgodel.bean2bean.population.PopulationType;
+import net.sf.kfgodel.bean2bean.population.metadata.AnnotatedFieldsMetadaExtractor;
+import net.sf.kfgodel.bean2bean.population.metadata.ClassPopulationMetadataExtractor;
 import net.sf.kfgodel.bean2bean.tasks.BeanCreationTask;
 import net.sf.kfgodel.bean2bean.tasks.BeanPopulationTask;
 import net.sf.kfgodel.bean2bean.tasks.BeanTaskProcessor;
@@ -53,6 +55,11 @@ public class Bean2Bean {
 	private TypeConverter typeConverter;
 
 	/**
+	 * Extractor de las instrucciones desde los annotations
+	 */
+	private ClassPopulationMetadataExtractor metadataExtractor;
+
+	/**
 	 * Creates a new instance of destinationType using sourceBean as a data source.<br>
 	 * {@link CopyTo} annotations present on sourceBean will be used to map properties from
 	 * sourceBean to created bean.<br>
@@ -67,7 +74,7 @@ public class Bean2Bean {
 	 */
 	public <T> T convertTo(final Class<T> destinationType, final Object sourceBean) {
 		final BeanCreationTask<T> creationTask = BeanCreationTask.createFor(sourceBean, destinationType,
-				PopulationType.METADATA_READ_FROM_SOURCE_TYPE, getTypeConverter());
+				PopulationType.METADATA_READ_FROM_SOURCE_TYPE, getTypeConverter(), metadataExtractor);
 		return processTask(creationTask);
 	}
 
@@ -82,7 +89,7 @@ public class Bean2Bean {
 	 */
 	public void copyPropertiesFrom(final Object sourceBean, final Object destinationBean) {
 		final BeanPopulationTask<Object> populationTask = BeanPopulationTask.createFor(destinationBean, sourceBean,
-				PopulationType.METADATA_READ_FROM_DESTINATION_TYPE, getTypeConverter());
+				PopulationType.METADATA_READ_FROM_DESTINATION_TYPE, getTypeConverter(), metadataExtractor);
 		processTask(populationTask);
 	}
 
@@ -97,7 +104,7 @@ public class Bean2Bean {
 	 */
 	public void copyPropertiesTo(final Object destinationBean, final Object sourceBean) {
 		final BeanPopulationTask<Object> populationTask = BeanPopulationTask.createFor(destinationBean, sourceBean,
-				PopulationType.METADATA_READ_FROM_SOURCE_TYPE, getTypeConverter());
+				PopulationType.METADATA_READ_FROM_SOURCE_TYPE, getTypeConverter(), metadataExtractor);
 		processTask(populationTask);
 	}
 
@@ -118,7 +125,7 @@ public class Bean2Bean {
 	 */
 	public <T> T createFrom(final Object sourceBean, final Class<T> destinationType) {
 		final BeanCreationTask<T> creationTask = BeanCreationTask.createFor(sourceBean, destinationType,
-				PopulationType.METADATA_READ_FROM_DESTINATION_TYPE, getTypeConverter());
+				PopulationType.METADATA_READ_FROM_DESTINATION_TYPE, getTypeConverter(), metadataExtractor);
 		return processTask(creationTask);
 	}
 
@@ -147,6 +154,7 @@ public class Bean2Bean {
 	public static Bean2Bean create(final TypeConverter converter) {
 		final Bean2Bean beaner = new Bean2Bean();
 		beaner.typeConverter = converter;
+		beaner.metadataExtractor = AnnotatedFieldsMetadaExtractor.create();
 		return beaner;
 	}
 
