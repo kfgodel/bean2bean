@@ -260,4 +260,12 @@ public class Bean2Bean {
 		DefaultTypeConverter.clearInstance();
 	}
 
+	public ClassPopulationMetadataExtractor getMetadataExtractor() {
+		return metadataExtractor;
+	}
+
+	public void setMetadataExtractor(final ClassPopulationMetadataExtractor metadataExtractor) {
+		this.metadataExtractor = metadataExtractor;
+	}
+
 }
