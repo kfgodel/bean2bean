@@ -21,6 +21,8 @@ import java.lang.reflect.Type;
 import java.util.Arrays;
 
 import net.sf.kfgodel.bean2bean.exceptions.AttributeException;
+import net.sf.kfgodel.bean2bean.exceptions.FailedAssumptionException;
+import net.sf.kfgodel.bean2bean.exceptions.FailedInstantiationException;
 import net.sf.kfgodel.bean2bean.exceptions.MissingPropertyException;
 import net.sf.kfgodel.bean2bean.instantiation.ObjectFactory;
 import net.sf.kfgodel.dgarcia.java.lang.ParOrdenado;
@@ -40,6 +42,8 @@ public class PropertyChain {
 
 	private ObjectFactory objectFactory;
 
+	private boolean canCreateMissingInstances;
+
 	/**
 	 * Creates a new PropertyChan object based on the expression passed
 	 * 
@@ -47,15 +51,17 @@ public class PropertyChain {
 	 *            "." delimited properties
 	 * @return Created property chain
 	 * @throws IllegalArgumentException
-	 *             If the expression used is not a valir property chain
+	 *             If the expression used is not a valid property chain
 	 */
-	public static PropertyChain create(final String originalExpression, final ObjectFactory objectFactory) {
+	public static PropertyChain create(final String originalExpression, final ObjectFactory objectFactory,
+			final boolean canCreateMissingInstances) {
 		if (!ReflectionUtils.isPropertyChain(originalExpression)) {
 			throw new IllegalArgumentException("[" + originalExpression + "] is not a property chain sequence");
 		}
 		final PropertyChain expression = new PropertyChain();
 		expression.propertyNames = originalExpression.split("\\.");
 		expression.objectFactory = objectFactory;
+		expression.canCreateMissingInstances = canCreateMissingInstances;
 		return expression;
 	}
 
@@ -94,33 +100,95 @@ public class PropertyChain {
 	 *             If there's a security restriction or invalid value while traversing the property
 	 *             chain
 	 */
-	private ParOrdenado<Object, Attribute> getLastPropertyLinkFrom(final Object rootObject) throws AttributeException {
+	private ParOrdenado<Object, Attribute> getLastPropertyLinkFrom(final Object rootObject) throws AttributeException,
+			MissingPropertyException, FailedInstantiationException {
 		Object currentObject = rootObject;
 		Attribute attribute = null;
 		for (int i = 0; i < propertyNames.length; i++) {
-			attribute = obtainAttributeFor(i, currentObject, rootObject);
+			attribute = obtainAttributeForIndex(i, currentObject, rootObject);
 			if (i == propertyNames.length - 1) {
 				// End of travel. Last property is the attribute we are looking for!
 				break;
 			}
-			Object nextObject = attribute.getValueFrom(currentObject);
-			if (nextObject == null) {
-				// There's a null value in the chain. Do we have a factory to complete the chain?
-				if (objectFactory != null) {
-					final Type nextObjectType = attribute.getAssignableType();
-					final Object missingValue = objectFactory.instantiate(nextObjectType);
-					attribute.setValueOn(currentObject, missingValue);
-					nextObject = missingValue;
-				} else {
-					throw new MissingPropertyException("Property[" + propertyNames[i] + "] is null in class["
-							+ currentObject.getClass() + "] from object[" + rootObject
-							+ "] while traversing property chain" + Arrays.toString(propertyNames));
-				}
-			}
+			final Object nextObject = obtainValueForIndex(i, attribute, currentObject, rootObject);
 			currentObject = nextObject;
 		}
 		final ParOrdenado<Object, Attribute> lastChainLink = ParOrdenado.create(currentObject, attribute);
 		return lastChainLink;
+	}
+
+	/**
+	 * Obtiene el valor de la propiedad indicada como atributo, bajo el indice indicado
+	 * 
+	 * @param propertyIndex
+	 *            El atributo del indice en la cadena de propiedades
+	 * @param attribute
+	 *            El atributo usado para acceder al valor
+	 * @param currentObject
+	 *            El objeto sobre el que se aplica el atributo
+	 * @param rootObject
+	 *            El objeto raíz de la cadena
+	 * @return El valor obtenido aplicando el atributo sobre el objeto
+	 */
+	private Object obtainValueForIndex(final int propertyIndex, final Attribute attribute, final Object currentObject,
+			final Object rootObject) throws AttributeException, MissingPropertyException, FailedInstantiationException {
+		final Object existingValue = attribute.getValueFrom(currentObject);
+		if (existingValue != null) {
+			// Ya existe un valor para devolver
+			return existingValue;
+		}
+		// There's a null value in the chain. Can we complete the chain it?
+		if (!canCreateMissingInstances()) {
+			throw new MissingPropertyException("Property[" + propertyNames[propertyIndex] + "] is null in class["
+					+ currentObject.getClass() + "] from object[" + rootObject + "] while traversing property chain"
+					+ Arrays.toString(propertyNames));
+		}
+		final Object createdValue = createMissingObjectFor(attribute, currentObject, propertyIndex, rootObject);
+		return createdValue;
+	}
+
+	/**
+	 * Crea la instancia faltante para el atributo indicado, sobre el objeto pasado como
+	 * currentObject. Modificando el estado de ese objeto
+	 * 
+	 * @param attribute
+	 *            El atributo cuyo valor está faltando
+	 * @param currentObject
+	 *            El objeto en el cual se aplicará el atributo
+	 * @param propertyIndex
+	 *            El indice de la propiedad
+	 * @param rootObject
+	 *            El objeto raiz de la cadena
+	 * @return El valor creado para completar la cadena
+	 */
+	private Object createMissingObjectFor(final Attribute attribute, final Object currentObject,
+			final int propertyIndex, final Object rootObject) throws AttributeException, FailedInstantiationException {
+		if (objectFactory == null) {
+			throw new FailedAssumptionException("There's no ObjectFactory on property chain"
+					+ Arrays.toString(propertyNames) + "and we need one to create missing instances");
+		}
+		final Type nextObjectType = attribute.getAssignableType();
+		Object createdValue;
+		try {
+			createdValue = objectFactory.instantiate(nextObjectType);
+		} catch (final FailedInstantiationException e) {
+			throw new FailedInstantiationException("Couldn't instantiate missing object for property["
+					+ propertyNames[propertyIndex] + "] in class[" + currentObject.getClass() + "] from object["
+					+ rootObject + "] while traversing property chain" + Arrays.toString(propertyNames), e);
+		}
+		// We complete the chain with the missing object
+		attribute.setValueOn(currentObject, createdValue);
+		return createdValue;
+	}
+
+	/**
+	 * Indica si la estrategia de acceso a los objetos de esta cadena permite crear instancias
+	 * faltantes
+	 * 
+	 * @return true si se pueden completar las instancias faltantes
+	 */
+	private boolean canCreateMissingInstances() {
+		return canCreateMissingInstances;
 	}
 
 	/**
@@ -137,7 +205,8 @@ public class PropertyChain {
 	 * @return El atributo a aplicar sobre el objeto para obtener el valor de la propiedad indicada
 	 *         por propertyIndex
 	 */
-	private Attribute obtainAttributeFor(final int propertyIndex, final Object currentObject, final Object rootObject) {
+	private Attribute obtainAttributeForIndex(final int propertyIndex, final Object currentObject,
+			final Object rootObject) {
 		Attribute attribute = getCachedAttributes()[propertyIndex];
 		if (attribute == null || !attribute.isApplicableOn(currentObject)) {
 			final String propertyName = propertyNames[propertyIndex];

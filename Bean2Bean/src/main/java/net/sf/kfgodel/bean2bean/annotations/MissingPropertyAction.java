@@ -42,7 +42,7 @@ public enum MissingPropertyAction {
 		@Override
 		public Object dealWithMissingPropertyOnConversion(final MissingPropertyException e)
 				throws StopPopulationException {
-			throw e;
+			throw new BadMappingException("Cannot determine expected in property: " + e.getMessage(), e);
 		}
 
 		@Override
@@ -52,6 +52,10 @@ public enum MissingPropertyAction {
 					+ "] was not found on destination bean: " + destination, e);
 		}
 
+		@Override
+		public boolean allowPropertyChainsToCreateMissingInstances() {
+			return false;
+		}
 	},
 	/**
 	 * Trata el caso como si el valor obtenido fuera null
@@ -66,7 +70,7 @@ public enum MissingPropertyAction {
 		@Override
 		public Object dealWithMissingPropertyOnConversion(final MissingPropertyException arg0)
 				throws StopPopulationException {
-			throw new StopPopulationException();
+			return null;
 		}
 
 		@Override
@@ -74,6 +78,12 @@ public enum MissingPropertyAction {
 				final Object destination) throws StopPopulationException {
 			throw new StopPopulationException();
 		}
+
+		@Override
+		public boolean allowPropertyChainsToCreateMissingInstances() {
+			return false;
+		}
+
 	},
 	/**
 	 * A medida que traversa el path de propiedades destino, si no encuentra una propiedad, trata de
@@ -95,6 +105,11 @@ public enum MissingPropertyAction {
 		public void dealWithMissingPropertyOnSetter(final MissingPropertyException e,
 				final SetterInstruction setterInstruction, final Object destination) throws StopPopulationException {
 			throw e;
+		}
+
+		@Override
+		public boolean allowPropertyChainsToCreateMissingInstances() {
+			return true;
 		}
 
 	};
@@ -153,4 +168,10 @@ public enum MissingPropertyAction {
 			final SetterInstruction setterInstruction, final Object destination) throws StopPopulationException,
 			BadMappingException, MissingPropertyException;
 
+	/**
+	 * Indica si las propiedades anidadas pueden crear instancias faltantes según esta estrategia
+	 * 
+	 * @return False si las propiedades faltantes ni pueden ser instanciadas
+	 */
+	public abstract boolean allowPropertyChainsToCreateMissingInstances();
 }

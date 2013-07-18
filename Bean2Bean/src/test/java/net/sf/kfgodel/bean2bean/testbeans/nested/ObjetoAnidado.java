@@ -3,7 +3,6 @@
  */
 package net.sf.kfgodel.bean2bean.testbeans.nested;
 
-
 /**
  * Esta clase representa un objeto que tiene propiedades anidadas
  * 
@@ -18,6 +17,10 @@ public class ObjetoAnidado {
 
 	private String cadena;
 	public static final String cadena_FIELD = "cadena";
+
+	public ObjetoAnidado() {
+		this.cadena = DEFAULT_CADENA;
+	}
 
 	public ObjetoAnidado getNested() {
 		return nested;
@@ -46,6 +49,6 @@ public class ObjetoAnidado {
 	 */
 	@Override
 	public String toString() {
-		return "{cadena: " + cadena + ", nested: " + nested + "}";
+		return getClass().getSimpleName() + "{cadena: " + cadena + ", nested: " + nested + "}";
 	}
 }

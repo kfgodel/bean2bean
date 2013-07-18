@@ -44,11 +44,13 @@ public class ScriptedInstruction implements GetterInstruction, SetterInstruction
 	 */
 	private ObjectFactory objectFactory;
 
+	private boolean allowInstanceCreation;
+
 	public String getOriginalExpression() {
 		return originalExpression;
 	}
 
-	public void setOriginalExpression(String originalExpression) {
+	public void setOriginalExpression(final String originalExpression) {
 		this.originalExpression = originalExpression;
 	}
 
@@ -56,13 +58,14 @@ public class ScriptedInstruction implements GetterInstruction, SetterInstruction
 		return interpreterType;
 	}
 
-	public void setInterpreterType(InterpreterType interpreterType) {
+	public void setInterpreterType(final InterpreterType interpreterType) {
 		this.interpreterType = interpreterType;
 	}
 
 	public Object getCompiledExpression() {
 		if (compiledExpression == null) {
-			compiledExpression = getInterpreter().precompile(getOriginalExpression(), objectFactory);
+			compiledExpression = getInterpreter().precompile(getOriginalExpression(), objectFactory,
+					allowInstanceCreation);
 		}
 		return compiledExpression;
 	}
@@ -74,28 +77,28 @@ public class ScriptedInstruction implements GetterInstruction, SetterInstruction
 		return interpreter;
 	}
 
-	public static ScriptedInstruction createFor(String expression, InterpreterType interpreterType) {
-		ScriptedInstruction instruction = new ScriptedInstruction();
+	public static ScriptedInstruction createFor(final String expression, final InterpreterType interpreterType,
+			final boolean allowInstanceCreation) {
+		final ScriptedInstruction instruction = new ScriptedInstruction();
 		instruction.setInterpreterType(interpreterType);
 		instruction.setOriginalExpression(expression);
+		instruction.allowInstanceCreation = allowInstanceCreation;
 		return instruction;
 	}
 
 	/**
 	 * @see net.sf.kfgodel.bean2bean.population.getting.GetterInstruction#applyOn(java.lang.Object)
 	 */
-	public Object applyOn(Object source) throws MissingPropertyException {
-		Object context = this.getInterpreter().generateGetterContextFrom(source);
+	public Object applyOn(final Object source) throws MissingPropertyException {
+		final Object context = this.getInterpreter().generateGetterContextFrom(source);
 		Object value;
 		try {
-			Object expression = getCompiledExpression();
+			final Object expression = getCompiledExpression();
 			value = this.getInterpreter().evaluateGetterOn(source, expression, context);
-		}
-		catch (MissingPropertyException e) {
+		} catch (final MissingPropertyException e) {
 			// Esta no la queremos catchear
 			throw e;
-		}
-		catch (Exception e) {
+		} catch (final Exception e) {
 			throw new BadMappingException("Couldn't get value from[" + source + "] using interpreter["
 					+ getInterpreterType() + "]. Catched a " + e.getClass().getName() + ": " + e.getMessage(), e);
 		}
@@ -106,16 +109,14 @@ public class ScriptedInstruction implements GetterInstruction, SetterInstruction
 	 * @see net.sf.kfgodel.bean2bean.population.setting.SetterInstruction#applyOn(java.lang.Object,
 	 *      java.lang.Object)
 	 */
-	public void applyOn(Object destination, Object convertedValue) throws MissingPropertyException {
-		Object context = this.getInterpreter().generateSetterContextFor(destination, convertedValue);
+	public void applyOn(final Object destination, final Object convertedValue) throws MissingPropertyException {
+		final Object context = this.getInterpreter().generateSetterContextFor(destination, convertedValue);
 		try {
 			this.getInterpreter().makeAssignmentOn(destination, getCompiledExpression(), context, convertedValue);
-		}
-		catch (MissingPropertyException e) {
+		} catch (final MissingPropertyException e) {
 			// Esta no la queremos catchear
 			throw e;
-		}
-		catch (Exception e) {
+		} catch (final Exception e) {
 			throw new BadMappingException("Couldn't assign value[" + convertedValue + "] on object[" + destination
 					+ "] using interpreter[" + getInterpreterType() + "]. Catched a " + e.getClass().getName() + ": "
 					+ e.getMessage(), e);
@@ -127,7 +128,7 @@ public class ScriptedInstruction implements GetterInstruction, SetterInstruction
 	 */
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder(this.getClass().getSimpleName());
+		final StringBuilder builder = new StringBuilder(this.getClass().getSimpleName());
 		builder.append("[ ");
 		builder.append(this.getInterpreterType());
 		builder.append(":\"");
@@ -141,12 +142,15 @@ public class ScriptedInstruction implements GetterInstruction, SetterInstruction
 	 * 
 	 * @param sourceExpression
 	 *            Expresion utilizada como base
+	 * @param mapping
+	 *            Mapeos adicionales de la expresión pasada
 	 * @return La instruccion creada
 	 */
-	public static ScriptedInstruction createFor(ExpressionDeclaration sourceExpression, ObjectFactory objectFactory) {
-		String expressionValue = sourceExpression.getExpressionValue();
-		InterpreterType interpreterType2 = sourceExpression.getInterpreterType();
-		ScriptedInstruction instruction = createFor(expressionValue, interpreterType2);
+	public static ScriptedInstruction createFor(final ExpressionDeclaration sourceExpression,
+			final ObjectFactory objectFactory, final boolean allowInstanceCreation) {
+		final String expressionValue = sourceExpression.getExpressionValue();
+		final InterpreterType interpreterType2 = sourceExpression.getInterpreterType();
+		final ScriptedInstruction instruction = createFor(expressionValue, interpreterType2, allowInstanceCreation);
 		instruction.objectFactory = objectFactory;
 		return instruction;
 	}

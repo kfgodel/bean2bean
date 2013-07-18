@@ -47,9 +47,10 @@ public class PropertyChainTypeExtractor implements ExpectedTypeExtractor {
 		}
 	}
 
-	public static PropertyChainTypeExtractor create(final String propertyName, final ObjectFactory objectFactory) {
+	public static PropertyChainTypeExtractor create(final String propertyName, final ObjectFactory objectFactory,
+			final boolean canCreateMissingInstances) {
 		final PropertyChainTypeExtractor extractor = new PropertyChainTypeExtractor();
-		extractor.propertyChain = PropertyChain.create(propertyName, objectFactory);
+		extractor.propertyChain = PropertyChain.create(propertyName, objectFactory, canCreateMissingInstances);
 		return extractor;
 	}
 

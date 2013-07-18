@@ -4,7 +4,7 @@
 package net.sf.kfgodel.bean2bean;
 
 import net.sf.kfgodel.bean2bean.annotations.MissingPropertyAction;
-import net.sf.kfgodel.bean2bean.exceptions.CannotConvertException;
+import net.sf.kfgodel.bean2bean.exceptions.BadMappingException;
 import net.sf.kfgodel.bean2bean.testbeans.nested.ObjetoAnidado;
 import net.sf.kfgodel.bean2bean.testbeans.nested.ObjetoAnidadoToCopyFromAndToCreateInstance;
 import net.sf.kfgodel.bean2bean.testbeans.nested.ObjetoAnidadoToCopyFromAndToDefault;
@@ -53,7 +53,7 @@ public class NestedPopulationTest {
 					ObjetoAnidadoToCopyFromDefault.class);
 			LOG.error("No se debería haber obtenido este objeto: {}", converted);
 			Assert.fail("Debería haber fallado la conversion");
-		} catch (final CannotConvertException e) {
+		} catch (final BadMappingException e) {
 			// Es la excepción que esperabamos
 		}
 		Assert.assertNull("No debería crear una instancia intermedia", raiz.getNested());
@@ -94,7 +94,7 @@ public class NestedPopulationTest {
 			final ObjetoAnidado converted = bean2bean.convertTo(ObjetoAnidado.class, toObject);
 			LOG.error("No se debería haber obtenido este objeto: {}", converted);
 			Assert.fail("Debería haber fallado la conversion");
-		} catch (final CannotConvertException e) {
+		} catch (final BadMappingException e) {
 			// Excepcion esperada
 		}
 	}
@@ -131,7 +131,7 @@ public class NestedPopulationTest {
 					ObjetoAnidadoToCopyFromAndToDefault.class);
 			LOG.error("No se debería haber obtenido este objeto: {}", converted);
 			Assert.fail("Debería haber fallado la conversion");
-		} catch (final CannotConvertException e) {
+		} catch (final BadMappingException e) {
 			// Excepcion esperada
 		}
 		Assert.assertNull("No debería crear una instancia intermedia", raiz.getNested());
@@ -172,7 +172,7 @@ public class NestedPopulationTest {
 			final ObjetoAnidado converted = bean2bean.convertTo(ObjetoAnidado.class, toObject);
 			LOG.error("No se debería haber obtenido este objeto: {}", converted);
 			Assert.fail("Debería haber fallado la conversion");
-		} catch (final CannotConvertException e) {
+		} catch (final BadMappingException e) {
 			// Excepcion esperada
 		}
 

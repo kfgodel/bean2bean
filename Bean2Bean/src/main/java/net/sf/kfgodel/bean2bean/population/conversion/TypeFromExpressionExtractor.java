@@ -23,7 +23,6 @@ import net.sf.kfgodel.bean2bean.exceptions.BadMappingException;
 import net.sf.kfgodel.bean2bean.interpreters.InterpreterType;
 import net.sf.kfgodel.bean2bean.population.instructions.ScriptedInstruction;
 
-
 /**
  * Esta clase representa un extractor del tipo esperado que se basa en una expresion de scripting
  * 
@@ -38,15 +37,15 @@ public class TypeFromExpressionExtractor implements ExpectedTypeExtractor {
 		return extractorInstruction;
 	}
 
-	public void setExtractorInstruction(ScriptedInstruction extractorInstruction) {
+	public void setExtractorInstruction(final ScriptedInstruction extractorInstruction) {
 		this.extractorInstruction = extractorInstruction;
 	}
 
 	/**
 	 * @see net.sf.kfgodel.bean2bean.population.conversion.ExpectedTypeExtractor#extractExpectedTypeFrom(java.lang.Object)
 	 */
-	public Type extractExpectedTypeFrom(Object destination) {
-		Object resultingType = getExtractorInstruction().applyOn(destination);
+	public Type extractExpectedTypeFrom(final Object destination) {
+		final Object resultingType = getExtractorInstruction().applyOn(destination);
 		if (!(resultingType instanceof Type)) {
 			throw new BadMappingException("Evaluated expression[" + getExtractorInstruction().getOriginalExpression()
 					+ "] didn't return a valid " + Type.class.getName() + ": " + resultingType);
@@ -54,9 +53,11 @@ public class TypeFromExpressionExtractor implements ExpectedTypeExtractor {
 		return (Type) resultingType;
 	}
 
-	public static TypeFromExpressionExtractor create(String expression, InterpreterType interpreterType) {
-		TypeFromExpressionExtractor extractor = new TypeFromExpressionExtractor();
-		ScriptedInstruction instruction = ScriptedInstruction.createFor(expression, interpreterType);
+	public static TypeFromExpressionExtractor create(final String expression, final InterpreterType interpreterType,
+			final boolean allowInstanceCreation) {
+		final TypeFromExpressionExtractor extractor = new TypeFromExpressionExtractor();
+		final ScriptedInstruction instruction = ScriptedInstruction.createFor(expression, interpreterType,
+				allowInstanceCreation);
 		extractor.setExtractorInstruction(instruction);
 		return extractor;
 	}
@@ -66,7 +67,7 @@ public class TypeFromExpressionExtractor implements ExpectedTypeExtractor {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder(this.getClass().getSimpleName());
+		final StringBuilder builder = new StringBuilder(this.getClass().getSimpleName());
 		builder.append("[");
 		builder.append(this.getExtractorInstruction());
 		builder.append("]");
