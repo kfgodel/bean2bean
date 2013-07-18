@@ -98,20 +98,9 @@ public class PropertyChain {
 		Object currentObject = rootObject;
 		Attribute attribute = null;
 		for (int i = 0; i < propertyNames.length; i++) {
-			attribute = getCachedAttributes()[i];
-			if (attribute == null || !attribute.isApplicableOn(currentObject)) {
-				final String propertyName = propertyNames[i];
-				final Class<? extends Object> currentClass = currentObject.getClass();
-				attribute = ReflectionUtils.lookupAttribute(propertyName, currentClass);
-				getCachedAttributes()[i] = attribute;
-			}
-			if (attribute == null) {
-				throw new MissingPropertyException("There's no property[" + propertyNames[i] + "] in class["
-						+ currentObject.getClass() + "] from object[" + rootObject
-						+ "] while traversing property chain" + Arrays.toString(propertyNames));
-			}
+			attribute = obtainAttributeFor(i, currentObject, rootObject);
 			if (i == propertyNames.length - 1) {
-				// We are almost there. Last property is the setter we are looking for!
+				// End of travel. Last property is the attribute we are looking for!
 				break;
 			}
 			Object nextObject = attribute.getValueFrom(currentObject);
@@ -132,6 +121,36 @@ public class PropertyChain {
 		}
 		final ParOrdenado<Object, Attribute> lastChainLink = ParOrdenado.create(currentObject, attribute);
 		return lastChainLink;
+	}
+
+	/**
+	 * Obtiene el atributo para poder acceder a los valores de la propiedad que corresponden a la
+	 * posición indicada como propertyIndex
+	 * 
+	 * @param propertyIndex
+	 *            El indice de la propiedad pedida
+	 * @param currentObject
+	 *            El objeto en el cual se aplicará el atributo
+	 * @param rootObject
+	 *            El objeto raiz de la cadena de propiedades
+	 * 
+	 * @return El atributo a aplicar sobre el objeto para obtener el valor de la propiedad indicada
+	 *         por propertyIndex
+	 */
+	private Attribute obtainAttributeFor(final int propertyIndex, final Object currentObject, final Object rootObject) {
+		Attribute attribute = getCachedAttributes()[propertyIndex];
+		if (attribute == null || !attribute.isApplicableOn(currentObject)) {
+			final String propertyName = propertyNames[propertyIndex];
+			final Class<? extends Object> currentClass = currentObject.getClass();
+			attribute = ReflectionUtils.lookupAttribute(propertyName, currentClass);
+			getCachedAttributes()[propertyIndex] = attribute;
+		}
+		if (attribute == null) {
+			throw new MissingPropertyException("There's no property[" + propertyNames[propertyIndex] + "] in class["
+					+ currentObject.getClass() + "] from object[" + rootObject + "] while traversing the "
+					+ propertyIndex + "° element of property chain" + Arrays.toString(propertyNames));
+		}
+		return attribute;
 	}
 
 	/**

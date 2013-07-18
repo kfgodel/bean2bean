@@ -38,11 +38,31 @@ public enum MissingPropertyAction {
 		public Object dealWithMissingPropertyOnGetter(final MissingPropertyException e) {
 			throw new BadMappingException("Cannot get the value from the source bean: " + e.getMessage(), e);
 		}
+
+		@Override
+		public Object dealWithMissingPropertyOnConversion(final MissingPropertyException e)
+				throws StopPopulationException {
+			throw e;
+		}
+
+		@Override
+		public void dealWithMissingPropertyOnSetter(final MissingPropertyException e,
+				final SetterInstruction setterInstruction, final Object destination) throws StopPopulationException {
+			throw new BadMappingException("Indicated property[" + setterInstruction.getOriginalExpression()
+					+ "] was not found on destination bean: " + destination, e);
+		}
+
 	},
 	/**
 	 * Trata el caso como si el valor obtenido fuera null
 	 */
 	TREAT_AS_NULL {
+
+		@Override
+		public Object dealWithMissingPropertyOnGetter(final MissingPropertyException e) throws StopPopulationException {
+			return null;
+		}
+
 		@Override
 		public Object dealWithMissingPropertyOnConversion(final MissingPropertyException arg0)
 				throws StopPopulationException {
@@ -66,6 +86,12 @@ public enum MissingPropertyAction {
 		}
 
 		@Override
+		public Object dealWithMissingPropertyOnConversion(final MissingPropertyException e)
+				throws StopPopulationException {
+			throw e;
+		}
+
+		@Override
 		public void dealWithMissingPropertyOnSetter(final MissingPropertyException e,
 				final SetterInstruction setterInstruction, final Object destination) throws StopPopulationException {
 			throw e;
@@ -77,12 +103,18 @@ public enum MissingPropertyAction {
 	 * Trata el caso de propiedad inexsitente al usarse el getter para obtener la propiedad
 	 * 
 	 * @param e
-	 *            Excpecion que describe el error ocurrido con la propiedad faltante
+	 *            Excepcion que describe el error ocurrido con la propiedad faltante
 	 * @return El valor que reemplaza al faltante
+	 * @throws StopPopulationException
+	 *             Si esta estrategia determina que se debe interrumpir la populación normalmente
+	 * @throw BadMappingException Si esta estrategia determina que se debe interrumpir la populación
+	 *        por un error de mapeo
+	 * @throws MissingPropertyException
+	 *             Si esta estrategia determina que se debe interrumpir la populación por un objeto
+	 *             faltante
 	 */
-	public Object dealWithMissingPropertyOnGetter(final MissingPropertyException e) throws StopPopulationException {
-		return null;
-	}
+	public abstract Object dealWithMissingPropertyOnGetter(final MissingPropertyException e)
+			throws StopPopulationException, BadMappingException, MissingPropertyException;
 
 	/**
 	 * Trata el caso de propiedad inexsitente al momento de determinar el tipo esperado
@@ -91,10 +123,16 @@ public enum MissingPropertyAction {
 	 *            Excepcion que describe el error ocurrido
 	 * @return El valor que corresponde al tipo esperado de la conversion que reemplazaria al que no
 	 *         se pudo convertir
+	 * @throws StopPopulationException
+	 *             Si esta estrategia determina que se debe interrumpir la populación normalmente
+	 * @throw BadMappingException Si esta estrategia determina que se debe interrumpir la populación
+	 *        por un error de mapeo
+	 * @throws MissingPropertyException
+	 *             Si esta estrategia determina que se debe interrumpir la populación por un objeto
+	 *             faltante
 	 */
-	public Object dealWithMissingPropertyOnConversion(final MissingPropertyException e) throws StopPopulationException {
-		throw e;
-	}
+	public abstract Object dealWithMissingPropertyOnConversion(final MissingPropertyException e)
+			throws StopPopulationException, MissingPropertyException;
 
 	/**
 	 * Trata el caso de propiedad inexistente al momento de asignar el valor en destino
@@ -103,11 +141,16 @@ public enum MissingPropertyAction {
 	 *            La excepcion con el error ocurrido
 	 * @param setterInstruction
 	 *            Instruccion realizada para la asignacion
+	 * @throws StopPopulationException
+	 *             Si esta estrategia determina que se debe interrumpir la populación normalmente
+	 * @throw BadMappingException Si esta estrategia determina que se debe interrumpir la populación
+	 *        por un error de mapeo
+	 * @throws MissingPropertyException
+	 *             Si esta estrategia determina que se debe interrumpir la populación por un objeto
+	 *             faltante
 	 */
-	public void dealWithMissingPropertyOnSetter(final MissingPropertyException e,
-			final SetterInstruction setterInstruction, final Object destination) throws StopPopulationException {
-		throw new BadMappingException("Indicated property[" + setterInstruction.getOriginalExpression()
-				+ "] was not found on destination bean: " + destination, e);
-	}
+	public abstract void dealWithMissingPropertyOnSetter(final MissingPropertyException e,
+			final SetterInstruction setterInstruction, final Object destination) throws StopPopulationException,
+			BadMappingException, MissingPropertyException;
 
 }
