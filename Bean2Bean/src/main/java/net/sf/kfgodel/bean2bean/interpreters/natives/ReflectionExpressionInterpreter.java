@@ -99,10 +99,11 @@ public class ReflectionExpressionInterpreter implements ExpressionInterpreter {
 	 * @see net.sf.kfgodel.bean2bean.interpreters.ExpressionInterpreter#precompile(String,
 	 *      ObjectFactory)
 	 */
-	public Object precompile(final String expression, final ObjectFactory objectFactory) {
+	public Object precompile(final String expression, final ObjectFactory objectFactory,
+			final boolean canCreateMissingProperties) {
 		PropertyChain compiled;
 		try {
-			compiled = PropertyChain.create(expression, objectFactory);
+			compiled = PropertyChain.create(expression, objectFactory, canCreateMissingProperties);
 		} catch (final IllegalArgumentException e) {
 			throw new BadMappingException("Reflection interpreter cannot parse expression[" + expression
 					+ "], it should be a property chain", e);

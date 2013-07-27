@@ -40,7 +40,8 @@ public class OgnlExpressionInterpreter implements ExpressionInterpreter {
 	 * @see net.sf.kfgodel.bean2bean.interpreters.ExpressionInterpreter#precompile(String,
 	 *      ObjectFactory)
 	 */
-	public Object precompile(final String expression, final ObjectFactory objectFactory) {
+	public Object precompile(final String expression, final ObjectFactory objectFactory,
+			final boolean canCreateMissingProperties) {
 		try {
 			return Ognl.parseExpression(expression);
 		} catch (final OgnlException e) {

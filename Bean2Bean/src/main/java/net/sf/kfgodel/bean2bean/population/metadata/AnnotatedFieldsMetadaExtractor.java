@@ -201,7 +201,10 @@ public class AnnotatedFieldsMetadaExtractor implements ClassPopulationMetadataEx
 			final ExpressionDeclaration setterDeclaration = mapping.getSetterExpression();
 			final String setterExpression = setterDeclaration.getExpressionValue();
 			if (ReflectionUtils.isPropertyChain(setterExpression)) {
-				typeExtractor = PropertyChainTypeExtractor.create(setterExpression, objectFactory);
+				final boolean canCreateMissingInstances = mapping.getActionWhenMissing()
+						.allowPropertyChainsToCreateMissingInstances();
+				typeExtractor = PropertyChainTypeExtractor.create(setterExpression, objectFactory,
+						canCreateMissingInstances);
 			} else {
 				if (alternativeConversor != null && alternativeConversor.length() > 0) {
 					// Indico un conversor pero no sabemos el tipo esperado, dejamos que falle el
@@ -225,8 +228,10 @@ public class AnnotatedFieldsMetadaExtractor implements ClassPopulationMetadataEx
 
 			// No era una referencia a una clase, intentamos como una expresión a evaluar
 			if (typeExtractor == null) {
+				final boolean canCreateMissingInstances = mapping.getActionWhenMissing()
+						.allowPropertyChainsToCreateMissingInstances();
 				typeExtractor = TypeFromExpressionExtractor.create(typeDeclaration.getExpressionValue(),
-						typeDeclaration.getInterpreterType());
+						typeDeclaration.getInterpreterType(), canCreateMissingInstances);
 			}
 		}
 
@@ -250,11 +255,13 @@ public class AnnotatedFieldsMetadaExtractor implements ClassPopulationMetadataEx
 	 */
 	public static PopulationInstruction createPopulationInstructionFor(final PropertyMappingDeclaration mapping,
 			final ObjectFactory objectFactory) throws CannotCreateConversionInstructionException {
+		final boolean allowInstanceCreations = mapping.getActionWhenMissing()
+				.allowPropertyChainsToCreateMissingInstances();
 		final GetterInstruction getterInstruction = ScriptedInstruction.createFor(mapping.getGetterExpression(),
-				objectFactory);
+				objectFactory, allowInstanceCreations);
 		final ConversionInstruction conversionInstruction = createConversionInstructionFor(mapping, objectFactory);
 		final SetterInstruction setterInstruction = ScriptedInstruction.createFor(mapping.getSetterExpression(),
-				objectFactory);
+				objectFactory, allowInstanceCreations);
 		final MissingPropertyAction whenMissingAction = mapping.getActionWhenMissing();
 
 		final GeneralPopulationInstruction populationInstruction = GeneralPopulationInstruction.create(

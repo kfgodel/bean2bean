@@ -38,9 +38,11 @@ public interface ExpressionInterpreter {
 	 * 
 	 * @param expression
 	 *            Expresion que representa una accion evaluable por este interprete
+	 * @param canCreateMissingProperties
+	 *            Indica si la expresión puede completar instancias faltantes
 	 * @return El resultado de la compilación utilizando el lenguaje de este interprete
 	 */
-	Object precompile(String expression, ObjectFactory objectFactory);
+	Object precompile(String expression, ObjectFactory objectFactory, boolean canCreateMissingProperties);
 
 	/**
 	 * Genera un objeto que representa el contexto de evaluacion de la expresion. El objeto
