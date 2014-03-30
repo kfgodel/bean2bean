@@ -1,0 +1,146 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+		
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>net.sf.kfgodel</groupId>
+	<artifactId>bean2bean-groovy</artifactId>
+	<version>0.8</version>
+	<description>Proyecto para transformacion de beans usando annotation y conversion entre tipos de datos</description>
+
+    <scm>
+        <connection>scm:svn:https://bean2bean.svn.sourceforge.net/svnroot/bean2bean/Bean2Bean/trunk</connection>
+        <developerConnection>scm:svn:https://bean2bean.svn.sourceforge.net/svnroot/bean2bean/Bean2Bean/trunk</developerConnection>
+        <tag>HEAD</tag>
+        <url>https://bean2bean.svn.sourceforge.net/svnroot/bean2bean/Bean2Bean/trunk</url>
+    </scm>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+
+	<build>
+			<plugins>
+				<plugin>
+					<artifactId>maven-jar-plugin</artifactId>
+					<configuration>
+						<archive>
+							<manifest>
+								<addClasspath>true</addClasspath>
+							</manifest>
+						</archive>
+					</configuration>
+				</plugin>
+				<plugin>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<source>1.5</source>
+						<target>1.5</target>
+	                   <debug>true</debug>
+	                   <encoding>UTF-8</encoding>
+					</configuration>
+				</plugin>
+				<plugin>
+					<artifactId>maven-source-plugin</artifactId>
+					<executions>
+						<execution>
+							<id>attach-source</id>
+							<goals>
+								<goal>jar</goal>
+								<goal>test-jar</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+	</build>
+	
+	<pluginRepositories>
+		<pluginRepository>
+			<id>ibiblio</id>
+			<url>http://www.ibiblio.org/maven</url>
+		</pluginRepository>
+		<pluginRepository>
+			<id>sourceforge</id>
+			<url>http://maven-plugins.sourceforge.net/repository</url>
+		</pluginRepository>
+	</pluginRepositories>
+	
+	<dependencies>
+		<!-- Mandatory dependencies -->
+		<dependency>
+			<groupId>net.sf.kfgodel</groupId>
+			<artifactId>bean2bean</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<!-- Add this if you want to be able to convert to/from JSON strings -->
+			<groupId>com.sdicons.jsontools</groupId>
+			<artifactId>jsontools-core</artifactId>
+			<version>1.5</version>
+		</dependency>
+		
+		<!-- Test dependencies -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.4</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring</artifactId>
+			<version>2.0.6</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-mock</artifactId>
+			<version>2.0.6</version>
+			<scope>test</scope>
+		</dependency>
+		
+		
+		<!-- Language dependencies -->
+		<dependency>
+			<!-- Groovy language -->
+			<groupId>org.codehaus.groovy</groupId>
+			<artifactId>groovy</artifactId>
+			<version>1.7.0</version>
+			<type>jar</type>
+			<exclusions>
+				<!-- Conflicts with Hibernate -->
+				<exclusion>
+		          <groupId>asm</groupId>
+		          <artifactId>asm-util</artifactId>
+		        </exclusion>
+				<exclusion>
+		          <groupId>asm</groupId>
+		          <artifactId>asm-analysis</artifactId>
+		        </exclusion>
+				<exclusion>
+		          <groupId>asm</groupId>
+		          <artifactId>asm-tree</artifactId>
+		        </exclusion>
+				<exclusion>
+		          <groupId>asm</groupId>
+		          <artifactId>asm</artifactId>
+		        </exclusion>
+			</exclusions>
+		</dependency>
+		
+		<!-- Solves hibernate conflicts with groovy and Hibernate-->
+		<dependency>
+			<groupId>asm</groupId>
+			<artifactId>asm-all</artifactId>
+			<version>3.2</version>
+		</dependency>
+		<dependency>
+	      <groupId>cglib</groupId>
+	      <artifactId>cglib-nodep</artifactId>
+	      <version>2.2</version>
+	    </dependency>	
+	    	
+	</dependencies>
+</project>
