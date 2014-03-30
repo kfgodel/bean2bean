@@ -159,13 +159,13 @@
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-core</artifactId>
       <version>${version.logback}</version>
-      <scope>${version.logback}</scope>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
       <version>${version.logback}</version>
-      <scope>${version.logback}</scope>
+      <scope>test</scope>
     </dependency>
     
     <!-- Testing -->
