@@ -25,6 +25,8 @@
     <version.plugin.source>2.2.1</version.plugin.source>
     <version.plugin.eclipse>2.9</version.plugin.eclipse>
     <version.plugin.assembly>2.4</version.plugin.assembly>
+    <version.plugin.failsafe>2.17</version.plugin.failsafe>
+    <version.plugin.surefire>2.17</version.plugin.surefire>
     
     <version.dgarcia>[1.0.5-SNAPSHOT,)</version.dgarcia>
     <version.slf4j>1.7.6</version.slf4j>
@@ -32,6 +34,7 @@
     <version.junit>4.11</version.junit>
     <version.testng>6.8.8</version.testng>
     <version.guava>16.0.1</version.guava>
+    <version.cucumber>1.1.5</version.cucumber>
   </properties>
 
   
@@ -48,6 +51,28 @@
           <debug>true</debug>
         </configuration>
       </plugin>
+      
+      <!-- Corre los tests unitarios *Test -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${version.plugin.surefire}</version>
+      </plugin>
+      
+		<!-- Corre los tests de integracion *IT -->
+		<plugin>
+		<artifactId>maven-failsafe-plugin</artifactId>
+		<version>${version.plugin.failsafe}</version>
+		<executions>
+			<execution>
+				<goals>
+					<goal>integration-test</goal>
+					<goal>verify</goal>
+				</goals>
+			</execution>
+		</executions>
+		</plugin>
+      
 	  
 	  <!-- Los empaqueta en jars -->
       <plugin>
@@ -92,7 +117,7 @@
           <downloadSources>true</downloadSources>
         </configuration>
       </plugin>
-	  
+      
     </plugins>
   </build>
   
@@ -175,13 +200,30 @@
       <version>${version.junit}</version>
       <scope>test</scope>
     </dependency>
+    <!-- 
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
       <version>${version.testng}</version>
       <scope>test</scope>
     </dependency>
+     -->
     
+    <!-- Testing con cucumber -->
+ 	<dependency>
+        <groupId>info.cukes</groupId>
+        <artifactId>cucumber-java</artifactId>
+        <version>${version.cucumber}</version>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>info.cukes</groupId>
+        <artifactId>cucumber-junit</artifactId>
+        <version>${version.cucumber}</version>
+        <scope>test</scope>
+    </dependency>
+
   </dependencies>
+  
   
 </project>
