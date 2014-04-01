@@ -1,5 +1,5 @@
 /**
- * 31/03/2014 20:16:37 Copyright (C) 2014 Darío L. García
+ * 31/03/2014 23:39:25 Copyright (C) 2014 Darío L. García
  * 
  * <a rel="license" href="http://creativecommons.org/licenses/by/3.0/"><img
  * alt="Creative Commons License" style="border-width:0"
@@ -22,24 +22,22 @@ import cucumber.api.java.en.When;
  * 
  * @author D. García
  */
-public class HolaMundoSteps {
+public class ConversorUniversalSteps {
 
-	private String palabraParaMundo;
-	private String expresionArmada;
+	private String convertido;
 
-	@Given("^En espaniol mundo se dice \"([^\"]*)\"$")
-	public void En_español_mundo_se_dice(final String arg1) throws Throwable {
-		this.palabraParaMundo = arg1;
+	@Given("^Un conversor ya setupeado$")
+	public void un_conversor_ya_setupeado() throws Throwable {
 	}
 
-	@When("^Quiero decir Hello world!$")
-	public void Quiero_decir_Hello_world() throws Throwable {
-		this.expresionArmada = "Hola " + palabraParaMundo;
+	@When("^Convierto el numero entero (-?\\d+) en String$")
+	public void convierto_el_numero_en_String(final int numeroIngresado) throws Throwable {
+		this.convertido = "" + numeroIngresado;
 	}
 
-	@Then("^Deberia responder con \"([^\"]*)\"$")
-	public void Debería_responder_con(final String expresionEsperada) throws Throwable {
-		Assert.assertEquals(expresionArmada, expresionEsperada);
+	@Then("^Deberia obtener el valor \"(.*?)\"$")
+	public void deberia_obtener_el_valor(final String textoEsperado) throws Throwable {
+		Assert.assertEquals(textoEsperado, convertido);
 	}
 
 }
