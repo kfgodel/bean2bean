@@ -12,7 +12,8 @@
  */
 package integration;
 
-import static org.junit.Assert.assertEquals;
+import org.testng.Assert;
+
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -38,7 +39,7 @@ public class HolaMundoSteps {
 
 	@Then("^Deberia responder con \"([^\"]*)\"$")
 	public void Debería_responder_con(final String expresionEsperada) throws Throwable {
-		assertEquals(expresionArmada, expresionEsperada);
+		Assert.assertEquals(expresionArmada, expresionEsperada);
 	}
 
 }

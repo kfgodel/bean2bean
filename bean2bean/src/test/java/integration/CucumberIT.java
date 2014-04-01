@@ -12,17 +12,14 @@
  */
 package integration;
 
-import org.junit.runner.RunWith;
-
 import cucumber.api.CucumberOptions;
-import cucumber.api.junit.Cucumber;
+import cucumber.api.testng.AbstractTestNGCucumberTests;
 
 /**
  * 
  * @author D. García
  */
-@RunWith(Cucumber.class)
 @CucumberOptions(format = { "pretty", "html:target/cucumber-it" }, monochrome = true, strict = true)
-public class CucumberIT {
+public class CucumberIT extends AbstractTestNGCucumberTests {
 
 }

@@ -34,7 +34,7 @@
     <version.junit>4.11</version.junit>
     <version.testng>6.8.8</version.testng>
     <version.guava>16.0.1</version.guava>
-    <version.cucumber>1.1.5</version.cucumber>
+    <version.cucumber>1.1.6</version.cucumber>
   </properties>
 
   
@@ -194,20 +194,20 @@
     </dependency>
     
     <!-- Testing -->
+    <!-- 
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>${version.junit}</version>
       <scope>test</scope>
     </dependency>
-    <!-- 
+     -->
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
       <version>${version.testng}</version>
       <scope>test</scope>
     </dependency>
-     -->
     
     <!-- Testing con cucumber -->
  	<dependency>
@@ -218,7 +218,7 @@
     </dependency>
     <dependency>
         <groupId>info.cukes</groupId>
-        <artifactId>cucumber-junit</artifactId>
+        <artifactId>cucumber-testng</artifactId>
         <version>${version.cucumber}</version>
         <scope>test</scope>
     </dependency>
