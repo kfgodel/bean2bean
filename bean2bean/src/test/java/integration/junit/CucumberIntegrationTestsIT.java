@@ -10,16 +10,19 @@
  * licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative
  * Commons Attribution 3.0 Unported License</a>.
  */
-package integration;
+package integration.junit;
+
+import org.junit.runner.RunWith;
 
 import cucumber.api.CucumberOptions;
-import cucumber.api.testng.AbstractTestNGCucumberTests;
+import cucumber.api.junit.Cucumber;
 
 /**
  * 
  * @author D. García
  */
+@RunWith(Cucumber.class)
 @CucumberOptions(format = { "pretty", "html:target/cucumber-it" }, monochrome = true, strict = true)
-public class CucumberIT extends AbstractTestNGCucumberTests {
+public class CucumberIntegrationTestsIT {
 
 }

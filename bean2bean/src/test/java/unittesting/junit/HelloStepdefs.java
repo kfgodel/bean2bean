@@ -1,4 +1,4 @@
-package unittesting;
+package unittesting.junit;
 
 import org.testng.Assert;
 

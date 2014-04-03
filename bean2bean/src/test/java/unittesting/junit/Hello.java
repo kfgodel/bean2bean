@@ -1,4 +1,4 @@
-package unittesting;
+package unittesting.junit;
 
 public class Hello {
 	private final String greeting;

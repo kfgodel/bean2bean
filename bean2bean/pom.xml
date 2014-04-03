@@ -60,7 +60,7 @@
       </plugin>
       
 		<!-- Corre los tests de integracion *IT -->
-		<plugin>
+	  <plugin>
 		<artifactId>maven-failsafe-plugin</artifactId>
 		<version>${version.plugin.failsafe}</version>
 		<executions>
@@ -71,7 +71,7 @@
 				</goals>
 			</execution>
 		</executions>
-		</plugin>
+	  </plugin>
       
 	  
 	  <!-- Los empaqueta en jars -->
@@ -194,14 +194,12 @@
     </dependency>
     
     <!-- Testing -->
-    <!-- 
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>${version.junit}</version>
       <scope>test</scope>
     </dependency>
-     -->
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
@@ -218,7 +216,7 @@
     </dependency>
     <dependency>
         <groupId>info.cukes</groupId>
-        <artifactId>cucumber-testng</artifactId>
+        <artifactId>cucumber-junit</artifactId>
         <version>${version.cucumber}</version>
         <scope>test</scope>
     </dependency>
