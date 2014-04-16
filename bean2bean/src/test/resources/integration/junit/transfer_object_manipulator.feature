@@ -1,7 +1,7 @@
 Feature: Transfer Object manipulator
   In order to abstract the internal state representation of a system 
   As a bean2bean api user
-  I want to represent its internal state as transfer objects
+  I want to represent an system state as a transfer objects
 
   Scenario: Typical domain object to TO
     Given A default configured bean2bean type converter
