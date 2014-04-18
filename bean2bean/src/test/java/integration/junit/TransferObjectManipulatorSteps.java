@@ -66,4 +66,17 @@ public class TransferObjectManipulatorSteps {
 		// Write code here that turns the phrase above into concrete actions
 		throw new PendingException();
 	}
+
+	@When("^I convert the circular reference domain object to its TO representation$")
+	public void i_convert_the_circular_reference_domain_object_to_its_TO_representation() throws Throwable {
+		// Write code here that turns the phrase above into concrete actions
+		throw new PendingException();
+	}
+
+	@Then("^I should obtain a TO object with a circular reference too$")
+	public void i_should_obtain_a_TO_object_with_a_circular_reference_too() throws Throwable {
+		// Write code here that turns the phrase above into concrete actions
+		throw new PendingException();
+	}
+
 }

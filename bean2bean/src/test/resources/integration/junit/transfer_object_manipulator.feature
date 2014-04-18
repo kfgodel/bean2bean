@@ -15,4 +15,9 @@ Feature: Transfer Object manipulator
     When I convert the TO representation to the domain object
     Then I should obtain a domain object with the state from the TO
     
+  Scenario: Domain object with circular reference to TO
+    Given A default configured bean2bean type converter
+    	And a configured mapping from a typical domain object to its transfer object
+    When I convert the circular reference domain object to its TO representation
+    Then I should obtain a TO object with a circular reference too 
         
