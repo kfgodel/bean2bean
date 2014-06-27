@@ -8,3 +8,5 @@ bin
 *.war
 *.ear
 test-output
+.idea
+*.iml

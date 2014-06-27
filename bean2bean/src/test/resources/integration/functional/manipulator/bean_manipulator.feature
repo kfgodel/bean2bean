@@ -1,27 +1,30 @@
 Feature: Bean manipulator
-  In order to change part of the state of an object
+  In order to change part of the state of a system
   As a bean2bean api user
-  I want to be able to manipulate object properties
+  I want to be able to manipulate objects and properties
 
   Scenario: Object creation as conversion
     Given A default configured bean2bean type converter
-    	And a creation mapping configured
-    When I convert null to destination type 
-    Then I should obtain a new object created of expected type
-    	And the object creator should be called
+    	And an object creator mapping configured
+    When I convert null to a non nullable destination type
+    Then I should obtain a new object created for the expected type
+    	And the object creator should have been called
     
   Scenario: Object elimination as conversion
     Given A default configured bean2bean type converter
-    	And an elimination mapping configured
+    	And an object eliminator mapping configured
     When I convert the object to Void type
     Then I should obtain null as result
-    	And the object eliminator should be called
+    	And the object eliminator should have been called
 
-  Scenario: Object elimination as conversion
-    Given A default configured bean2bean type converter
-    	And an elimination mapping configured
-    When I convert the object to Void type
-    Then I should obtain null as result
-    	And the object eliminator should be called
-    	
-    
+  Scenario: Property getter
+    Given An object with a state value
+    And a getter expression on that state
+    When I execute the getter expression
+    Then I should obtain the state value
+
+  Scenario: Property setter
+    Given An object without a state value
+    And a setter expression on that state
+    When I execute the setter expression with a value
+    Then the object should have the setted value

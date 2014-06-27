@@ -35,6 +35,9 @@
     <version.testng>6.8.8</version.testng>
     <version.guava>16.0.1</version.guava>
     <version.cucumber>1.1.6</version.cucumber>
+    <version.assertj>1.6.1</version.assertj>
+    <version.hiearchicalrunner>4.11.3</version.hiearchicalrunner>
+    <version.mockito>1.9.5</version.mockito>
   </properties>
 
   
@@ -200,14 +203,32 @@
       <version>${version.junit}</version>
       <scope>test</scope>
     </dependency>
+
+    <!-- Nice assertions -->
     <dependency>
-      <groupId>org.testng</groupId>
-      <artifactId>testng</artifactId>
-      <version>${version.testng}</version>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>${version.assertj}</version>
+        <scope>test</scope>
+    </dependency>
+
+    <!-- hierarchical test for junit -->
+    <dependency>
+      <groupId>de.bechte.junit</groupId>
+      <artifactId>junit-hierarchicalcontextrunner</artifactId>
+      <version>${version.hiearchicalrunner}</version>
       <scope>test</scope>
     </dependency>
-    
-    <!-- Testing con cucumber -->
+
+    <!-- Mock for testing -->
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+      <version>${version.mockito}</version>
+    </dependency>
+
+
+      <!-- Testing con cucumber -->
  	<dependency>
         <groupId>info.cukes</groupId>
         <artifactId>cucumber-java</artifactId>
