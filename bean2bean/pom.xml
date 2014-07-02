@@ -212,7 +212,7 @@
         <scope>test</scope>
     </dependency>
 
-    <!-- hierarchical test for junit -->
+    <!-- hierarchical test for units -->
     <dependency>
       <groupId>de.bechte.junit</groupId>
       <artifactId>junit-hierarchicalcontextrunner</artifactId>

@@ -1,4 +1,4 @@
-package net.sf.kfgodel.bean2bean.unittesting.junit.junit;
+package net.sf.kfgodel.bean2bean.units;
 
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
 import org.junit.*;
