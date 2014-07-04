@@ -1,9 +1,9 @@
-package net.sf.kfgodel.bean2bean.units.conversions;
+package net.sf.kfgodel.bean2bean.integration.functional.converter.conversions;
 
 import org.junit.Test;
 
 /**
- * This class tests the conversion between numbers.<br>
+ * This class tests the conversion between numbers using bean2bean as converter.<br>
  *     Type reference from: http://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html
  * Created by kfgodel on 01/07/14.
  */
