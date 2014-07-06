@@ -6,7 +6,7 @@ import org.junit.Test;
  * This class tests that bean2bean as converter uses the specified decimal format
  * Created by kfgodel on 01/07/14.
  */
-public class DecimalToStringFormatTest {
+public class DecimalToStringFormatIT {
 
     @Test
     public void itShouldUseDefaultFormatIfNotSpecified(){

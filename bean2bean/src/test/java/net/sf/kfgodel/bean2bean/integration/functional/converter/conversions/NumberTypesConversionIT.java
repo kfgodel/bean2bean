@@ -7,7 +7,7 @@ import org.junit.Test;
  *     Type reference from: http://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html
  * Created by kfgodel on 01/07/14.
  */
-public class NumberTypesConversionTest {
+public class NumberTypesConversionIT {
 
     @Test
     public void byteToOtherNumbers(){

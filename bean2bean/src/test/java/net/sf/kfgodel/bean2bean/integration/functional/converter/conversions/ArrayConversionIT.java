@@ -6,7 +6,7 @@ import org.junit.Test;
  * This class verifies that bean2bean converts arrays as expected when used as converter
  * Created by kfgodel on 04/07/14.
  */
-public class ArrayConversionTest {
+public class ArrayConversionIT {
 
     @Test
     public void arrayToList(){
@@ -28,5 +28,14 @@ public class ArrayConversionTest {
 
     }
 
+    @Test
+    public void primitiveNumberArrayToObjectNumberArray(){
+
+    }
+
+    @Test
+    public void objectNumberArrayToPrimitiveNumberArray(){
+
+    }
 
 }

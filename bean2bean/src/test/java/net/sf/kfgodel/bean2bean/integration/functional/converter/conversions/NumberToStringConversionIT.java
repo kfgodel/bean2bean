@@ -6,7 +6,7 @@ import org.junit.Test;
  * This class verifies that bean2bean as a number to string converter works as expected
  * Created by kfgodel on 01/07/14.
  */
-public class NumberToStringConversionTest {
+public class NumberToStringConversionIT {
 
     @Test
     public void byteToString(){

@@ -6,7 +6,7 @@ import org.junit.Test;
  * This class verifies that bean2bean convertes maps as expected when used as converter
  * Created by kfgodel on 04/07/14.
  */
-public class MapConversionTest {
+public class MapConversionIT {
 
     @Test
     public void mapToArray(){
@@ -29,6 +29,21 @@ public class MapConversionTest {
 
     @Test
     public void oneTypedValueMapToOtherTypedValueMap(){
+
+    }
+
+    @Test
+    public void hashMapToTreeMap(){
+
+    }
+
+    @Test
+    public void hashMapToLinkedHashMap(){
+
+    }
+
+    @Test
+    public void treeMapToHashMap(){
 
     }
 

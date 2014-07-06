@@ -6,7 +6,7 @@ import org.junit.Test;
  * This class verifies that bean2bean converts lists as expected when used as converter
  * Created by kfgodel on 04/07/14.
  */
-public class ListConversionTest {
+public class ListConversionIT {
 
     @Test
     public void listToArray(){
@@ -25,6 +25,16 @@ public class ListConversionTest {
 
     @Test
     public void typedListToOtherTypedList(){
+
+    }
+
+    @Test
+    public void arrayListTolinkedList(){
+
+    }
+
+    @Test
+    public void linkedListToArrayList(){
 
     }
 }

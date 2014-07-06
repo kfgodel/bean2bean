@@ -6,7 +6,7 @@ import org.junit.Test;
  * This class verifies that when converting nested instances bean2bean behaves as expected
  * Created by kfgodel on 04/07/14.
  */
-public class NestedObjectConversionTest {
+public class NestedObjectConversionIT {
 
     @Test
     public void selfReferencedObjectToDto(){
@@ -14,7 +14,12 @@ public class NestedObjectConversionTest {
     }
 
     @Test
-    public void selfReferenceInCollectionToDto(){
+    public void collectionWithSelfReferenceToDtoCollection(){
+
+    }
+
+    @Test
+    public void selfReferenceInACollectionPropertyToDto(){
 
     }
 

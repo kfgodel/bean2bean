@@ -6,7 +6,7 @@ import org.junit.Test;
  * This class verifies that bean2bean converts Sets as expected when used as converter
  * Created by kfgodel on 04/07/14.
  */
-public class SetConversionTest {
+public class SetConversionIT {
 
     @Test
     public void setToArray(){
@@ -26,6 +26,21 @@ public class SetConversionTest {
 
     @Test
     public void oneTypedSetToOtherTypedSet(){
+
+    }
+
+    @Test
+    public void hashSetToLinkedHashSet(){
+
+    }
+
+    @Test
+    public void hashSetToTreeSet(){
+
+    }
+
+    @Test
+    public void treeSetToHashSet(){
 
     }
 }
