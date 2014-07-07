@@ -25,7 +25,7 @@ public class ManipulatorPerformanceIT {
     @Test
     public void creator(){
         //Given that I can execute X instantiation calls in 3 seconds
-        // When I execute Y manipulator creator calls in 3 seconds
+        // When I execute Y manipulator creators calls in 3 seconds
         // Then Y should be bigger than 0.5X--
     }
 
