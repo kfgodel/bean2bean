@@ -17,7 +17,7 @@ import cucumber.api.java.en.When;
  */
 public class BeanManipulatorSteps {
 
-    @Given("^an object creators mapping configured$")
+    @Given("^an object creator mapping configured$")
     public void an_object_creator_mapping_configured() throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         throw new PendingException();
@@ -35,11 +35,12 @@ public class BeanManipulatorSteps {
         throw new PendingException();
     }
 
-    @Then("^the object creators should have been called$")
+    @Then("^the object creator should have been called$")
     public void the_object_creator_should_have_been_called() throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         throw new PendingException();
     }
+
 
     @Given("^an object eliminator mapping configured$")
     public void an_object_eliminator_mapping_configured() throws Throwable {
@@ -112,5 +113,6 @@ public class BeanManipulatorSteps {
         // Write code here that turns the phrase above into concrete actions
         throw new PendingException();
     }
+
 
 }

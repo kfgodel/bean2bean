@@ -17,7 +17,8 @@
   
 
   <properties>
-    <project.jdk>1.5</project.jdk>
+    <project.java.source>1.8</project.java.source>
+    <project.java.target>1.8</project.java.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     
     <version.plugin.compiler>3.1</version.plugin.compiler>
@@ -49,8 +50,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>${version.plugin.compiler}</version>
         <configuration>
-          <source>${project.jdk}</source>
-          <target>${project.jdk}</target>
+          <source>${project.java.source}</source>
+          <target>${project.java.target}</target>
           <debug>true</debug>
         </configuration>
       </plugin>
@@ -120,7 +121,7 @@
           <downloadSources>true</downloadSources>
         </configuration>
       </plugin>
-      
+
     </plugins>
   </build>
   

@@ -16,15 +16,24 @@ import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 
  * @author D. García
  */
 public class UniversalObjectConverterSteps {
+    private static final Logger LOG = LoggerFactory.getLogger(UniversalObjectConverterSteps.class);
+
+
+    public UniversalObjectConverterSteps(){
+        LOG.info("Constructor");
+    }
 
 	@Given("^a configured mapping from any object to Json$")
 	public void a_configured_mapping_from_any_object_to_Json() throws Throwable {
+        LOG.info("Configure");
 		// Write code here that turns the phrase above into concrete actions
 		throw new PendingException();
 	}

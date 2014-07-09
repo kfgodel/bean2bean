@@ -12,10 +12,23 @@
  */
 package net.sf.kfgodel.bean2bean.integration.functional.converter;
 
+import com.google.common.collect.Lists;
 import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import net.sf.kfgodel.bean2bean.api.B2bApi;
+import net.sf.kfgodel.bean2bean.api.impl.B2bApiImpl;
+import net.sf.kfgodel.bean2bean.assertions.B2bAssertions;
+import net.sf.kfgodel.bean2bean.integration.functional.converter.steps.PersonDto;
+import net.sf.kfgodel.bean2bean.integration.functional.converter.steps.PhoneNumberDto;
+import net.sf.kfgodel.bean2bean.integration.functional.converter.steps.TypicalPerson;
+import net.sf.kfgodel.bean2bean.integration.functional.converter.steps.TypicalPhoneNumber;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import static net.sf.kfgodel.bean2bean.assertions.B2bAssertions.assertThat;
 
 /**
  * Esta clase define los pasos para probar bean2bean como manipulador de TOs (conversor a y desde
@@ -24,29 +37,37 @@ import cucumber.api.java.en.When;
  * @author D. García
  */
 public class TransferObjectConverterSteps {
+    private static final Logger LOG = LoggerFactory.getLogger(TransferObjectConverterSteps.class);
 
-	@Given("^A default configured bean(\\d+)bean type converter$")
-	public void a_default_configured_bean_bean_type_converter(final int arg1) throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new PendingException();
+    private B2bApi b2b;
+    private TypicalPerson domainObject;
+    private PersonDto toRepresentation;
+
+    @Given("^A default configured bean2bean type converter$")
+	public void a_default_configured_bean_bean_type_converter() throws Throwable {
+        b2b = B2bApiImpl.create();
 	}
 
-	@Given("^a configured mapping from a typical domain object to its transfer object$")
+	@Given("^an implicit property name mapper between classes$")
 	public void a_configured_mapping_from_a_typical_domain_object_to_its_transfer_object() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new PendingException();
+        b2b.configuration().usePropertyNamesAsDefaultMappings();
 	}
 
-	@When("^I convert the domain object to its TO representation$")
+    @Given("^a typical domain object instance$")
+    public void a_domain_object_instance() throws Throwable {
+        domainObject = TypicalPerson.create(1L,"Pepe", 23);
+        domainObject.addPhoneNumber(TypicalPhoneNumber.create(2L, "+5491164312564"));
+        domainObject.addPhoneNumber(TypicalPhoneNumber.create(3L, "+5491164312564"));
+    }
+
+    @When("^I convert the domain object to its TO representation$")
 	public void i_convert_the_domain_object_to_its_TO_representation() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new PendingException();
+        toRepresentation = b2b.convert().from(domainObject).to(PersonDto.class);
 	}
 
 	@Then("^I should obtain a TO object with the state of the domain object$")
 	public void i_should_obtain_a_TO_object_with_the_state_of_the_domain_object() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new PendingException();
+        assertThat(toRepresentation).represents(domainObject);
 	}
 
 	@Given("^a configured mapping to a typical domain object from its transfer object$")

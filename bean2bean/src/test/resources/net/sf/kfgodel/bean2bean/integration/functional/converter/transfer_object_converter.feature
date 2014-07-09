@@ -5,7 +5,8 @@ Feature: Transfer Object Converter
 
   Scenario: Typical domain object to TO
     Given A default configured bean2bean type converter
-    	And a configured mapping from a typical domain object to its transfer object
+      And an implicit property name mapper between classes
+      And a typical domain object instance
     When I convert the domain object to its TO representation
     Then I should obtain a TO object with the state of the domain object
     
