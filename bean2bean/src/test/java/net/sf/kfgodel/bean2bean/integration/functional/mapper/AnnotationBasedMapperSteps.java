@@ -23,7 +23,7 @@ import cucumber.api.java.en.When;
  */
 public class AnnotationBasedMapperSteps {
 
-	@When("^I convert the source object to destination object$")
+	@When("^I convert the source object toInstanceOf destination object$")
 	public void i_convert_the_source_object_to_destination() throws Throwable {
 		// Write code here that turns the phrase above into concrete actions
 		throw new PendingException();

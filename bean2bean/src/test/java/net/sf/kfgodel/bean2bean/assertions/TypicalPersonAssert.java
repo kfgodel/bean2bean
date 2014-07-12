@@ -10,7 +10,7 @@ import org.assertj.core.api.SoftAssertions;
 import java.util.List;
 
 /**
- * This class adds custom assertion to test conversion
+ * This class adds custom assertion toInstanceOf test conversion
  * Created by kfgodel on 12/07/14.
  */
 public class TypicalPersonAssert extends AbstractAssert<TypicalPersonAssert, TypicalPerson> {

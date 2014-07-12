@@ -25,12 +25,12 @@ public class PersonDtoAssert extends AbstractAssert<PersonDtoAssert, PersonDto> 
     Iterables iterables = Iterables.instance();
 
 
-    // 2 - Write a constructor to build your assertion class with the object you want make assertions on.
+    // 2 - Write a constructor toInstanceOf build your assertion class with the object you want make assertions on.
     public PersonDtoAssert(PersonDto actual) {
         super(actual, PersonDtoAssert.class);
     }
 
-    // 3 - A fluent entry point to your specific assertion class, use it with static import.
+    // 3 - A fluent entry point toInstanceOf your specific assertion class, use it with static import.
     public static PersonDtoAssert assertThat(PersonDto actual) {
         return new PersonDtoAssert(actual);
     }

@@ -15,7 +15,7 @@ public class B2bAssertions extends Assertions {
 
     /**
      * Starts an assertion construct for PersonDto objects
-     * @param actual Dto to evaluate
+     * @param actual Dto toInstanceOf evaluate
      * @return The partial assertion object
      */
     public static PersonDtoAssert assertThat(PersonDto actual) {
@@ -24,7 +24,7 @@ public class B2bAssertions extends Assertions {
 
     /**
      * Starts an assertion construct for PhoneNumberDto objects
-     * @param actual Dto to evaluate
+     * @param actual Dto toInstanceOf evaluate
      * @return The partial assertion object
      */
     public static PhoneNumberDtoAssert assertThat(PhoneNumberDto actual) {
@@ -33,7 +33,7 @@ public class B2bAssertions extends Assertions {
 
     /**
      * Starts an assertion construct for TypicalPerson objects
-     * @param actual The domain object to test
+     * @param actual The domain object toInstanceOf test
      * @return The partial assertion
      */
     public static TypicalPersonAssert assertThat(TypicalPerson actual) {
@@ -42,7 +42,7 @@ public class B2bAssertions extends Assertions {
 
     /**
      * Starts an assertion construct for TypicalPhoneNumber objects
-     * @param actual The domain object to assert
+     * @param actual The domain object toInstanceOf assert
      * @return The partial assertion
      */
     public static TypicalPhoneNumberAssert assertThat(TypicalPhoneNumber actual) {

@@ -71,4 +71,11 @@ public class TypicalPerson {
     public void addPhoneNumber(TypicalPhoneNumber phoneNumber) {
         this.phoneNumbers.add(phoneNumber);
     }
+
+    public static TypicalPerson createWithTestState() {
+        TypicalPerson domainObject = TypicalPerson.create(1L, "Pepe", 23);
+        domainObject.addPhoneNumber(TypicalPhoneNumber.create(2L, "+5491164312564"));
+        domainObject.addPhoneNumber(TypicalPhoneNumber.create(3L, "+5491164312565"));
+        return domainObject;
+    }
 }

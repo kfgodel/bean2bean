@@ -28,17 +28,15 @@ public class UniversalObjectConverterSteps {
 
 
     public UniversalObjectConverterSteps(){
-        LOG.info("Constructor");
     }
 
-	@Given("^a configured mapping from any object to Json$")
+	@Given("^a configured mapping from any object toInstanceOf Json$")
 	public void a_configured_mapping_from_any_object_to_Json() throws Throwable {
-        LOG.info("Configure");
 		// Write code here that turns the phrase above into concrete actions
 		throw new PendingException();
 	}
 
-	@When("^I convert the domain object to String$")
+	@When("^I convert the domain object toInstanceOf String$")
 	public void i_convert_the_domain_object_to_String() throws Throwable {
 		// Write code here that turns the phrase above into concrete actions
 		throw new PendingException();
@@ -50,7 +48,7 @@ public class UniversalObjectConverterSteps {
 		throw new PendingException();
 	}
 
-	@Given("^a configured mapping from any object to toString String$")
+	@Given("^a configured mapping from any object toInstanceOf toString String$")
 	public void a_configured_mapping_from_any_object_to_toString_String() throws Throwable {
 		// Write code here that turns the phrase above into concrete actions
 		throw new PendingException();
@@ -62,13 +60,13 @@ public class UniversalObjectConverterSteps {
 		throw new PendingException();
 	}
 
-    @Given("^a configured mapping from Json to any object$")
+    @Given("^a configured mapping from Json toInstanceOf any object$")
     public void a_configured_mapping_from_Json_to_any_object() throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         throw new PendingException();
     }
 
-    @When("^I convert the String to a domain object$")
+    @When("^I convert the String toInstanceOf a domain object$")
     public void i_convert_the_String_to_a_domain_object() throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         throw new PendingException();

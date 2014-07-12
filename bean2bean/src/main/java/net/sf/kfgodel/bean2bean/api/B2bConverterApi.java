@@ -8,10 +8,10 @@ public interface B2bConverterApi {
 
     /**
      * Starts a conversion definition by setting the source value.<br>
-     * A subsequent call to method to() on returned object will complete the definition and make the conversion.
+     * A subsequent call toInstanceOf method toInstanceOf() on returned object will complete the definition and make the conversion.
      *
-     * @param sourceValue Value to convert to another kind
-     * @return A partial definition to be completed
+     * @param sourceValue Value toInstanceOf convert toInstanceOf another kind
+     * @return A partial definition toInstanceOf be completed
      */
     SourceDefinedConversionApi from(Object sourceValue);
 }

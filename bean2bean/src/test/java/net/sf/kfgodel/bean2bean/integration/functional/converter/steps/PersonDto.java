@@ -53,4 +53,11 @@ public class PersonDto {
     public void addNumber(PhoneNumberDto numberDto) {
         this.phoneNumbers.add(numberDto);
     }
+
+    public static PersonDto createWithTestState() {
+        PersonDto toRepresentation = PersonDto.create(21L, "UnNombre");
+        toRepresentation.addNumber(PhoneNumberDto.create(22L, "asdasd"));
+        toRepresentation.addNumber(PhoneNumberDto.create(23L, "asdasd asd"));
+        return toRepresentation;
+    }
 }

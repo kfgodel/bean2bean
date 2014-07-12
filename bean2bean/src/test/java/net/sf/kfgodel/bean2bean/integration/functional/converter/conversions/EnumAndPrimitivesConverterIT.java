@@ -29,7 +29,7 @@ public class EnumAndPrimitivesConverterIT {
     }
 
     /**
-     * Verifies that the enum value can be converted to a Dto like object with id and description
+     * Verifies that the enum value can be converted toInstanceOf a Dto like object with id and description
      */
     @Test
     public void enumToDto(){
@@ -37,7 +37,7 @@ public class EnumAndPrimitivesConverterIT {
     }
 
     /**
-     * Verifies that a dto object with id and description can be converted to an enum value
+     * Verifies that a dto object with id and description can be converted toInstanceOf an enum value
      */
     @Test
     public void dtoToEnum(){

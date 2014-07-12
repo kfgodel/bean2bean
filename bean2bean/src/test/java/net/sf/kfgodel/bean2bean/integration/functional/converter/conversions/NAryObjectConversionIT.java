@@ -3,7 +3,7 @@ package net.sf.kfgodel.bean2bean.integration.functional.converter.conversions;
 import org.junit.Test;
 
 /**
- * This class verifies that b2b can be used to convert objects N to 1, and 1 to N
+ * This class verifies that b2b can be used toInstanceOf convert objects N toInstanceOf 1, and 1 toInstanceOf N
  * Created by kfgodel on 06/07/14.
  */
 public class NAryObjectConversionIT {

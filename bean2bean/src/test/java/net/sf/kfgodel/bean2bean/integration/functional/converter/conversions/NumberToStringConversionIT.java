@@ -3,7 +3,7 @@ package net.sf.kfgodel.bean2bean.integration.functional.converter.conversions;
 import org.junit.Test;
 
 /**
- * This class verifies that bean2bean as a number to string converter works as expected
+ * This class verifies that bean2bean as a number toInstanceOf string converter works as expected
  * Created by kfgodel on 01/07/14.
  */
 public class NumberToStringConversionIT {

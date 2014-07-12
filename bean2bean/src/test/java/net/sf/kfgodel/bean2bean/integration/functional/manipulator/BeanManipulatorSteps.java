@@ -23,7 +23,7 @@ public class BeanManipulatorSteps {
         throw new PendingException();
     }
 
-    @When("^I convert null to a non nullable destination type$")
+    @When("^I convert null toInstanceOf a non nullable destination type$")
     public void i_convert_null_to_a_non_nullable_destination_type() throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         throw new PendingException();
@@ -48,7 +48,7 @@ public class BeanManipulatorSteps {
         throw new PendingException();
     }
 
-    @When("^I convert the object to Void type$")
+    @When("^I convert the object toInstanceOf Void type$")
     public void i_convert_the_object_to_Void_type() throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         throw new PendingException();
