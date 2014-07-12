@@ -26,4 +26,11 @@ public class PhoneNumberDto {
     public void setNumber(String number) {
         this.number = number;
     }
+
+    public static PhoneNumberDto create(Long id, String number){
+        PhoneNumberDto dto = new PhoneNumberDto();
+        dto.id = id;
+        dto.number = number;
+        return dto;
+    }
 }

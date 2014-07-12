@@ -57,7 +57,7 @@ public class TransferObjectConverterSteps {
     public void a_domain_object_instance() throws Throwable {
         domainObject = TypicalPerson.create(1L,"Pepe", 23);
         domainObject.addPhoneNumber(TypicalPhoneNumber.create(2L, "+5491164312564"));
-        domainObject.addPhoneNumber(TypicalPhoneNumber.create(3L, "+5491164312564"));
+        domainObject.addPhoneNumber(TypicalPhoneNumber.create(3L, "+5491164312565"));
     }
 
     @When("^I convert the domain object to its TO representation$")
@@ -70,34 +70,22 @@ public class TransferObjectConverterSteps {
         assertThat(toRepresentation).represents(domainObject);
 	}
 
-	@Given("^a configured mapping to a typical domain object from its transfer object$")
-	public void a_configured_mapping_to_a_typical_domain_object_from_its_transfer_object() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new PendingException();
-	}
+    @Given("^a TO representation instance$")
+    public void a_TO_representation_instance() throws Throwable{
+        toRepresentation = PersonDto.create(21L, "UnNombre");
+        toRepresentation.addNumber(PhoneNumberDto.create(22L, "asdasd"));
+        toRepresentation.addNumber(PhoneNumberDto.create(23L, "asdasd asd"));
+    }
 
 	@When("^I convert the TO representation to the domain object$")
 	public void i_convert_the_TO_representation_to_the_domain_object() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new PendingException();
+        domainObject = b2b.convert().from(toRepresentation).to(TypicalPerson.class);
 	}
 
 	@Then("^I should obtain a domain object with the state from the TO$")
 	public void i_should_obtain_a_domain_object_with_the_state_from_the_TO() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new PendingException();
+        assertThat(domainObject).isARealizationOf(toRepresentation);
 	}
 
-	@When("^I convert the circular reference domain object to its TO representation$")
-	public void i_convert_the_circular_reference_domain_object_to_its_TO_representation() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new PendingException();
-	}
-
-	@Then("^I should obtain a TO object with a circular reference too$")
-	public void i_should_obtain_a_TO_object_with_a_circular_reference_too() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new PendingException();
-	}
 
 }

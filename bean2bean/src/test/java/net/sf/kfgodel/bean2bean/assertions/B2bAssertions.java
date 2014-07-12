@@ -2,6 +2,8 @@ package net.sf.kfgodel.bean2bean.assertions;
 
 import net.sf.kfgodel.bean2bean.integration.functional.converter.steps.PersonDto;
 import net.sf.kfgodel.bean2bean.integration.functional.converter.steps.PhoneNumberDto;
+import net.sf.kfgodel.bean2bean.integration.functional.converter.steps.TypicalPerson;
+import net.sf.kfgodel.bean2bean.integration.functional.converter.steps.TypicalPhoneNumber;
 import org.assertj.core.api.Assertions;
 
 /**
@@ -17,7 +19,7 @@ public class B2bAssertions extends Assertions {
      * @return The partial assertion object
      */
     public static PersonDtoAssert assertThat(PersonDto actual) {
-        return new PersonDtoAssert(actual);
+        return PersonDtoAssert.assertThat(actual);
     }
 
     /**
@@ -26,7 +28,25 @@ public class B2bAssertions extends Assertions {
      * @return The partial assertion object
      */
     public static PhoneNumberDtoAssert assertThat(PhoneNumberDto actual) {
-        return new PhoneNumberDtoAssert(actual);
+        return PhoneNumberDtoAssert.assertThat(actual);
+    }
+
+    /**
+     * Starts an assertion construct for TypicalPerson objects
+     * @param actual The domain object to test
+     * @return The partial assertion
+     */
+    public static TypicalPersonAssert assertThat(TypicalPerson actual) {
+        return TypicalPersonAssert.assertThat(actual);
+    }
+
+    /**
+     * Starts an assertion construct for TypicalPhoneNumber objects
+     * @param actual The domain object to assert
+     * @return The partial assertion
+     */
+    public static TypicalPhoneNumberAssert assertThat(TypicalPhoneNumber actual) {
+        return TypicalPhoneNumberAssert.assertThat(actual);
     }
 
 }

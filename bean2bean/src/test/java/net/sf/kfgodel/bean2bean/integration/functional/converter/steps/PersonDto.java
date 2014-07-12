@@ -1,5 +1,6 @@
 package net.sf.kfgodel.bean2bean.integration.functional.converter.steps;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,5 +40,17 @@ public class PersonDto {
 
     public void setPhoneNumbers(List<PhoneNumberDto> phoneNumbers) {
         this.phoneNumbers = phoneNumbers;
+    }
+
+    public static PersonDto create(Long id, String name){
+        PersonDto dto = new PersonDto();
+        dto.id = id;
+        dto.name = name;
+        dto.phoneNumbers = new ArrayList<>();
+        return dto;
+    }
+
+    public void addNumber(PhoneNumberDto numberDto) {
+        this.phoneNumbers.add(numberDto);
     }
 }

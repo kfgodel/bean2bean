@@ -7,8 +7,12 @@ package net.sf.kfgodel.bean2bean.integration.functional.converter.steps;
 public class TypicalPhoneNumber {
 
     private Long id;
+    public static final String id_FIELD = "id";
+
 
     private String number;
+    public static final String number_FIELD = "number";
+
 
     public Long getId() {
         return id;
