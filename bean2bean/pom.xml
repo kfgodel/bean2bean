@@ -39,6 +39,7 @@
     <version.assertj>1.6.1</version.assertj>
     <version.hiearchicalrunner>4.11.3</version.hiearchicalrunner>
     <version.mockito>1.9.5</version.mockito>
+    <version.javaspec>1.0</version.javaspec>
   </properties>
 
   
@@ -213,13 +214,13 @@
         <scope>test</scope>
     </dependency>
 
-    <!-- hierarchical test for units -->
-    <dependency>
-      <groupId>de.bechte.junit</groupId>
-      <artifactId>junit-hierarchicalcontextrunner</artifactId>
-      <version>${version.hiearchicalrunner}</version>
-      <scope>test</scope>
-    </dependency>
+    <!-- Spec for testing -->
+      <dependency>
+          <groupId>ar.com.dgarcia</groupId>
+          <artifactId>java-spec</artifactId>
+          <version>${version.javaspec}</version>
+          <scope>test</scope>
+      </dependency>
 
     <!-- Mock for testing -->
     <dependency>

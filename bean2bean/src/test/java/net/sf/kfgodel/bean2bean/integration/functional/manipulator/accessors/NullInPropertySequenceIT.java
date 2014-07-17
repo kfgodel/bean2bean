@@ -1,86 +1,46 @@
 package net.sf.kfgodel.bean2bean.integration.functional.manipulator.accessors;
 
-import de.bechte.junit.runners.context.HierarchicalContextRunner;
-import org.junit.Before;
-import org.junit.Test;
+import ar.com.dgarcia.javaspec.api.JavaSpec;
+import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
 import org.junit.runner.RunWith;
 
 /**
  * This class verifies that bean2bean behaves correctly when null instances are found on accessors
  * Created by kfgodel on 06/07/14.
  */
-@RunWith(HierarchicalContextRunner.class)
-public class NullInPropertySequenceIT {
+@RunWith(JavaSpecRunner.class)
+public class NullInPropertySequenceIT extends JavaSpec {
 
-    public class FoundBeforeLastProperty {
+    @Override
+    public void define() {
 
-        public class WhenProducing{
+        describe("when producing a getter result", () -> {
 
-            @Test
-            public void produceNull(){
+            describe("if null found before last property", ()->{
+                it("can produce null as result");
+                it("can create missing instances");
+                it("can throw an exception");
+            });
 
-            }
+            describe("if found on last property", ()->{
+                it("can produce null as result");
+                it("can create the missing instance");
+                it("can throw an exception");
+            });
+        });
 
-            @Test
-            public void createMissingObjects(){
+        describe("when consuming as setter arg", ()-> {
 
-            }
+            describe("if null found before last property", () -> {
+                it("can stop consumption");
+                it("can create missing instances");
+                it("can throw an exception");
+            });
 
-            @Test
-            public void throwException(){
-
-            }
-
-        }
-
-        public class WhenConsuming{
-
-            @Test
-            public void stopConsumption(){
-
-            }
-
-            @Test
-            public void createMissingObjects(){
-
-            }
-
-            @Test
-            public void throwException(){
-
-            }
-        }
-    }
-
-    public class FoundOnLastProperty {
-
-        public class WhenProducing{
-
-            @Test
-            public void produceNull(){
-
-            }
-
-            @Test
-            public void createObject(){
-
-            }
-
-            @Test
-            public void throwException(){
-
-            }
-
-        }
-
-        public class WhenConsuming{
-
-            @Test
-            public void replaceWithValue(){
-
-            }
-
-        }
+            describe("if found on last property", () -> {
+                it("can replace null with value");
+            });
+        });
 
     }
 
