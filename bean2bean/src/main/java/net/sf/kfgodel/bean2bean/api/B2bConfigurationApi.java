@@ -31,4 +31,13 @@ public interface B2bConfigurationApi {
      *
      */
     void usePropertyNamesAsDefaultMappings();
+
+    /**
+     * Modifies this configuration instance to use Json String con version when no other more specific type conversion is available.<br>
+     * Converting any object to String will result in a json string representing the variables of that object.<br>
+     * A default json mapper configuration will be used to define the expected json string.<br>
+     * If no other more specific converter, converting a String to any object will parse the string a a json string trying to populate the objects properties.<br>
+     * Missing properties will be ignored, so the conversion will only fail if the string is not a json string.
+     */
+    void useJsonForMappingStrings();
 }

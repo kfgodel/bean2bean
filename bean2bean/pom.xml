@@ -39,7 +39,7 @@
     <version.assertj>1.6.1</version.assertj>
     <version.hiearchicalrunner>4.11.3</version.hiearchicalrunner>
     <version.mockito>1.9.5</version.mockito>
-    <version.javaspec>1.0</version.javaspec>
+    <version.javaspec>1.1</version.javaspec>
   </properties>
 
   

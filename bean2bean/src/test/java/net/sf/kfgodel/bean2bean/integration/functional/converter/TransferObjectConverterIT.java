@@ -12,17 +12,23 @@ import org.junit.runner.RunWith;
 import static net.sf.kfgodel.bean2bean.assertions.B2bAssertions.assertThat;
 
 /**
- * This type defines the most common test cases for bean2bean as a transfer object converter
+ * This type defines the most common test cases for bean2bean as a transfer object converter.<br>
+ *
+ *  In order to abstract the internal state of a system
+ *  As a bean2bean api user
+ *  I want to represent a system state as a transfer objects
+ *
  * Created by kfgodel on 12/07/14.
  */
 @RunWith(JavaSpecRunner.class)
 public class TransferObjectConverterIT extends JavaSpec {
 
 
-    private Variable<B2bApi> b2b;
 
     @Override
     public void define() {
+
+        Variable<B2bApi> b2b = Variable.create();
 
         beforeEach(()->{
             b2b.set(B2bApiImpl.create());
