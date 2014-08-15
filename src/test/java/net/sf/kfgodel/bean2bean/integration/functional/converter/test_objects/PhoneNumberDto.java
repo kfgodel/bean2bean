@@ -1,4 +1,4 @@
-package net.sf.kfgodel.bean2bean.integration.functional.converter.steps;
+package net.sf.kfgodel.bean2bean.integration.functional.converter.test_objects;
 
 /**
  * This class represents a example DTo for phone numbers

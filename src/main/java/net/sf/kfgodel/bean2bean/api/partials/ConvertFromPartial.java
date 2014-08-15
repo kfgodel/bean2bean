@@ -1,10 +1,10 @@
-package net.sf.kfgodel.bean2bean.api;
+package net.sf.kfgodel.bean2bean.api.partials;
 
 /**
  * This type representes a request for conversion that has defined the source value, but lacks the destination type
  * Created by kfgodel on 09/07/14.
  */
-public interface SourceDefinedConversionApi {
+public interface ConvertFromPartial {
 
     /**
      * Completes the conversion definition by setting the destination value, and makes the conversion

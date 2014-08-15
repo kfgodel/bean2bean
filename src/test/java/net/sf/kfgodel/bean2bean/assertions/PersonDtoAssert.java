@@ -1,9 +1,9 @@
 package net.sf.kfgodel.bean2bean.assertions;
 
-import net.sf.kfgodel.bean2bean.integration.functional.converter.steps.PersonDto;
-import net.sf.kfgodel.bean2bean.integration.functional.converter.steps.PhoneNumberDto;
-import net.sf.kfgodel.bean2bean.integration.functional.converter.steps.TypicalPerson;
-import net.sf.kfgodel.bean2bean.integration.functional.converter.steps.TypicalPhoneNumber;
+import net.sf.kfgodel.bean2bean.integration.functional.converter.test_objects.PersonDto;
+import net.sf.kfgodel.bean2bean.integration.functional.converter.test_objects.PhoneNumberDto;
+import net.sf.kfgodel.bean2bean.integration.functional.converter.test_objects.TypicalPerson;
+import net.sf.kfgodel.bean2bean.integration.functional.converter.test_objects.TypicalPhoneNumber;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.SoftAssertions;
 import org.assertj.core.internal.Iterables;

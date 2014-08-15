@@ -2,6 +2,7 @@ package net.sf.kfgodel.bean2bean.integration.functional.manipulator.accessors;
 
 import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
+import net.sf.kfgodel.bean2bean.B2bContext;
 import org.junit.runner.RunWith;
 
 /**
@@ -9,7 +10,7 @@ import org.junit.runner.RunWith;
  * Created by kfgodel on 06/07/14.
  */
 @RunWith(JavaSpecRunner.class)
-public class NullInPropertySequenceIT extends JavaSpec {
+public class NullInPropertySequenceIT extends JavaSpec<B2bContext> {
 
     @Override
     public void define() {

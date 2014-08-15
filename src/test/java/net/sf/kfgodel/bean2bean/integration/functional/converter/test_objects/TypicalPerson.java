@@ -1,7 +1,4 @@
-package net.sf.kfgodel.bean2bean.integration.functional.converter.steps;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+package net.sf.kfgodel.bean2bean.integration.functional.converter.test_objects;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package net.sf.kfgodel.bean2bean.api.impl;
+package net.sf.kfgodel.bean2bean.impl;
 
 import net.sf.kfgodel.bean2bean.api.B2bApi;
 import net.sf.kfgodel.bean2bean.api.B2bConfigurationApi;

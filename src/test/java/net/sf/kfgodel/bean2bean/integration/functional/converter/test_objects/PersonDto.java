@@ -1,4 +1,4 @@
-package net.sf.kfgodel.bean2bean.integration.functional.converter.steps;
+package net.sf.kfgodel.bean2bean.integration.functional.converter.test_objects;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,5 @@
 package net.sf.kfgodel.bean2bean.assertions;
 
-import net.sf.kfgodel.bean2bean.integration.functional.converter.steps.PersonDto;
 import org.assertj.core.api.WritableAssertionInfo;
 
 /**

@@ -2,11 +2,10 @@ package net.sf.kfgodel.bean2bean.integration.functional.converter;
 
 import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
-import ar.com.dgarcia.javaspec.api.Variable;
-import net.sf.kfgodel.bean2bean.api.B2bApi;
-import net.sf.kfgodel.bean2bean.api.impl.B2bApiImpl;
-import net.sf.kfgodel.bean2bean.integration.functional.converter.steps.PersonDto;
-import net.sf.kfgodel.bean2bean.integration.functional.converter.steps.TypicalPerson;
+import net.sf.kfgodel.bean2bean.B2bContext;
+import net.sf.kfgodel.bean2bean.impl.B2bApiImpl;
+import net.sf.kfgodel.bean2bean.integration.functional.converter.test_objects.PersonDto;
+import net.sf.kfgodel.bean2bean.integration.functional.converter.test_objects.TypicalPerson;
 import org.junit.runner.RunWith;
 
 import static net.sf.kfgodel.bean2bean.assertions.B2bAssertions.assertThat;
@@ -21,18 +20,15 @@ import static net.sf.kfgodel.bean2bean.assertions.B2bAssertions.assertThat;
  * Created by kfgodel on 12/07/14.
  */
 @RunWith(JavaSpecRunner.class)
-public class TransferObjectConverterIT extends JavaSpec {
-
+public class TransferObjectConverterIT extends JavaSpec<B2bContext> {
 
 
     @Override
     public void define() {
 
-        Variable<B2bApi> b2b = Variable.create();
-
         beforeEach(()->{
-            b2b.set(B2bApiImpl.create());
-            b2b.get().configuration().usePropertyNamesAsDefaultMappings();
+            context().b2b(()-> B2bApiImpl.create());
+            context().b2b().configuration().usePropertyNamesAsDefaultMappings();
         });
 
         /**
@@ -47,7 +43,7 @@ public class TransferObjectConverterIT extends JavaSpec {
             TypicalPerson domainObject = TypicalPerson.createWithTestState();
 
             //When
-            PersonDto toRepresentation = b2b.get().convert().from(domainObject).toInstanceOf(PersonDto.class);
+            PersonDto toRepresentation = context().b2b().convert().from(domainObject).toInstanceOf(PersonDto.class);
 
             //Then
             assertThat(toRepresentation).represents(domainObject);
@@ -66,7 +62,7 @@ public class TransferObjectConverterIT extends JavaSpec {
             PersonDto toRepresentation = PersonDto.createWithTestState();
 
             //When
-            TypicalPerson domainObject = b2b.get().convert().from(toRepresentation).toInstanceOf(TypicalPerson.class);
+            TypicalPerson domainObject = context().b2b().convert().from(toRepresentation).toInstanceOf(TypicalPerson.class);
 
             //Then
             assertThat(domainObject).isARealizationOf(toRepresentation);

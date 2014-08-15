@@ -2,10 +2,9 @@ package net.sf.kfgodel.bean2bean.integration.functional.converter;
 
 import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
-import ar.com.dgarcia.javaspec.api.Variable;
-import net.sf.kfgodel.bean2bean.api.B2bApi;
-import net.sf.kfgodel.bean2bean.api.impl.B2bApiImpl;
-import net.sf.kfgodel.bean2bean.integration.functional.converter.steps.TypicalPerson;
+import net.sf.kfgodel.bean2bean.B2bContext;
+import net.sf.kfgodel.bean2bean.impl.B2bApiImpl;
+import net.sf.kfgodel.bean2bean.integration.functional.converter.test_objects.TypicalPerson;
 import org.junit.runner.RunWith;
 
 import static net.sf.kfgodel.bean2bean.assertions.B2bAssertions.assertThat;
@@ -20,17 +19,14 @@ import static net.sf.kfgodel.bean2bean.assertions.B2bAssertions.assertThat;
  * Created by kfgodel on 17/07/14.
  */
 @RunWith(JavaSpecRunner.class)
-public class UniversalObjectConverterIT extends JavaSpec {
+public class UniversalObjectConverterIT extends JavaSpec<B2bContext> {
 
     @Override
     public void define() {
 
-        Variable<B2bApi> b2b = Variable.create();
-
-
         beforeEach(()->{
-            b2b.set(B2bApiImpl.create());
-            b2b.get().configuration().useJsonForMappingStrings();
+            context().b2b(() -> B2bApiImpl.create());
+            context().b2b().configuration().useJsonForMappingStrings();
         });
 
         /**
@@ -44,7 +40,7 @@ public class UniversalObjectConverterIT extends JavaSpec {
             TypicalPerson domainObject = TypicalPerson.createWithTestState();
 
             //When
-            String jsonString = b2b.get().convert().from(domainObject).toInstanceOf(String.class);
+            String jsonString = context().b2b().convert().from(domainObject).toInstanceOf(String.class);
 
             //Then
             assertThat(jsonString).isEqualTo("{}");
@@ -61,7 +57,7 @@ public class UniversalObjectConverterIT extends JavaSpec {
             String jsonString = "{}";
 
             //When
-            TypicalPerson domainObject = b2b.get().convert().from(jsonString).toInstanceOf(TypicalPerson.class);
+            TypicalPerson domainObject = context().b2b().convert().from(jsonString).toInstanceOf(TypicalPerson.class);
 
             //Then
             assertThat(domainObject).isNotNull();
