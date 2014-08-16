@@ -45,4 +45,11 @@ public interface B2bManipulatorApi {
      * @param disposable The object to be disposed of
      */
     void dispose(Object disposable);
+
+    /**
+     * Starts the manipulation of the given instance returning a partial definition of operation to be done
+     * @param instance the instance to be manipulated
+     * @return The partial operation definition
+     */
+    <T> ManipulateAttributePartial<T> from(T instance);
 }

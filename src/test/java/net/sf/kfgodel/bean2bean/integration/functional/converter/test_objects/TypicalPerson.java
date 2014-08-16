@@ -75,4 +75,5 @@ public class TypicalPerson {
         domainObject.addPhoneNumber(TypicalPhoneNumber.create(3L, "+5491164312565"));
         return domainObject;
     }
+
 }

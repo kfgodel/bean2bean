@@ -2,9 +2,9 @@ package net.sf.kfgodel.bean2bean.integration.functional.manipulator;
 
 import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
-import cucumber.api.java.en.Given;
 import net.sf.kfgodel.bean2bean.B2bContext;
 import net.sf.kfgodel.bean2bean.impl.B2bApiImpl;
+import net.sf.kfgodel.bean2bean.integration.functional.converter.test_objects.TypicalPerson;
 import org.junit.runner.RunWith;
 
 import java.util.function.Consumer;
@@ -62,26 +62,24 @@ public class BeanManipulatorIT extends JavaSpec<B2bContext> {
 
         it("allows getting the property value of an object", ()->{
             // Given
-            Integer one = Integer.valueOf(1);
-
+            TypicalPerson pepe = TypicalPerson.createWithTestState();
 
             // When
+            String nameValue = context().b2b().manipulate().from(pepe).property("name").andGetItsValue();
 
             // Then
+            assertThat(nameValue).isEqualTo("Pepe");
         });
 
-//        Scenario: Property getter
-//        Given An object with a state value
-//        And a getter expression on that state
-//        When I execute the getter expression
-//        Then I should obtain the state value
-//
-        it("allows setting the property value of an object")
-//
-//        Scenario: Property setter
-//        Given An object without a state value
-//        And a setter expression on that state
-//        When I execute the setter expression with a value
-//        Then the object should have the setted value
+        it("allows setting the property value of an object",()->{
+            // Given
+            TypicalPerson pepe = TypicalPerson.createWithTestState();
+
+            // When
+            context().b2b().manipulate().from(pepe).property("name").andSetItsValueTo("Juan");
+
+            // Then
+            assertThat(pepe.getName()).isEqualTo("Juan");
+        });
     }
 }

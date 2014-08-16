@@ -4,7 +4,16 @@ import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
 import net.sf.kfgodel.bean2bean.B2bContext;
 import net.sf.kfgodel.bean2bean.impl.B2bApiImpl;
+import net.sf.kfgodel.bean2bean.integration.functional.converter.test_objects.TypicalPerson;
 import org.junit.runner.RunWith;
+
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
+import static net.sf.kfgodel.bean2bean.assertions.B2bAssertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * This type defines integration test cases for using the converter as a bean manipulator
@@ -17,34 +26,38 @@ public class ConverterAsManipulatorIT extends JavaSpec<B2bContext> {
     public void define() {
 
         beforeEach(()->{
-            // Given A default configured bean2bean type converter
             context().b2b(() -> B2bApiImpl.create());
         });
 
-        it("object creation can be made as a type conversion", ()->{
+        it("creation can be expressed as a conversion from void", ()->{
+            //Given
+            Supplier<TypicalPerson> mockedCreator = mock(Supplier.class);
+            when(mockedCreator.get()).thenReturn(TypicalPerson.create(1L, "John", 22));
+
             //And an object creator mapping configured
-//            context().b2b().convert().from(Void.class).into()
 
+            //When
+            TypicalPerson createdPerson = context().b2b().convert().from(Void.class).toInstanceOf(TypicalPerson.class);
 
-
-            //    When I convert null to a non nullable destination type
-            //    Then I should obtain a new object created for the expected type
-            //    And the object creator should have been called
-
+            // Then
+            assertThat(createdPerson).isNotNull();
+            assertThat(createdPerson.getName()).isEqualTo("John");
+            verify(mockedCreator).get();
         });
 
-        it("object disposal can be made as a conversion");
+        it("disposal can be expressed as a conversion to void", ()->{
+            //Given
+            Consumer<TypicalPerson> mockedCreator = mock(Consumer.class);
+            TypicalPerson pepe = TypicalPerson.createWithTestState();
 
-
-        it("allows disposal of an object");
-
-//        Scenario: Object elimination as conversion
-//        Given A default configured bean2bean type converter
 //        And an object eliminator mapping configured
-//        When I convert the object to Void type
-//        Then I should obtain null as result
-//        And the object eliminator should have been called
 
+            //When
+            context().b2b().convert().from(pepe).to(Void.class);
+
+            // Then
+            verify(mockedCreator).accept(pepe);
+        });
 
     }
 }
