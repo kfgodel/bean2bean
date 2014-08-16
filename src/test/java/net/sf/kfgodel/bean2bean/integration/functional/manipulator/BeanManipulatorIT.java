@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 /**
- *  This test describes common manipulater tests cases that serve as integration tests
+ *  This test describes common manipulator tests cases that serve as integration tests
  *
  *      In order to change part of the state of a system
  *      As a bean2bean api user
