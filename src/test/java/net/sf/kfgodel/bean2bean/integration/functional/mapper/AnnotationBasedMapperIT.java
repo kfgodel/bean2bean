@@ -34,43 +34,40 @@ public class AnnotationBasedMapperIT extends JavaSpec<B2bContext> {
             //Given
             AnnotatedTestSource sourceObject = AnnotatedTestSource.create();
 
-//        And an annotation mapped source object
-
             //When
             UnannotatedTestDestination destination = context().b2b().convert().from(sourceObject).toInstanceOf(UnannotatedTestDestination.class);
 
             //Then
             assertThat(destination.getDestinationProperty()).isEqualTo(sourceObject.getSourceProperty());
+            assertThat(destination.getMappedFromSource()).isTrue();
+            assertThat(destination.getMappedFromDestination()).isFalse();
         });
 
         it("annotations can be used on the destination object", ()->{
             //Given
             UnannotatedTestSource sourceObject = UnannotatedTestSource.create();
 
-//        And an annotation mapped destination object
+            //When
+            AnnotatedTestDestination destination = context().b2b().convert().from(sourceObject).toInstanceOf(AnnotatedTestDestination.class);
+
+            //Then
+            assertThat(destination.getDestinationProperty()).isEqualTo(sourceObject.getSourceProperty());
+            assertThat(destination.getMappedFromSource()).isFalse();
+            assertThat(destination.getMappedFromDestination()).isTrue();
+        });
+
+        it("if used on both then both are applied", ()->{
+            //Given
+            AnnotatedTestSource sourceObject = AnnotatedTestSource.create();
 
             //When
             AnnotatedTestDestination destination = context().b2b().convert().from(sourceObject).toInstanceOf(AnnotatedTestDestination.class);
 
             //Then
             assertThat(destination.getDestinationProperty()).isEqualTo(sourceObject.getSourceProperty());
+            assertThat(destination.getMappedFromSource()).isTrue();
+            assertThat(destination.getMappedFromDestination()).isTrue();
         });
-
-        it("if used on both then...");
-
-//        Scenario: Mapping with annotations on the source object
-//        Given A default configured bean2bean type converter
-//        And an annotation mapped source object
-//        When I convert the source object to destination object
-//        Then I should obtain the desired state on the destination
-//
-//        Scenario: Mapping with annotations on the destination object
-//        Given A default configured bean2bean type converter
-//        When I convert the source object to destination object
-//        Then I should obtain the desired state on the destination
-
-
-
 
     }
 }

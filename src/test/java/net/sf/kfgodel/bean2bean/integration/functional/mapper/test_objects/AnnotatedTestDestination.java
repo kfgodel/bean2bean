@@ -8,6 +8,22 @@ public class AnnotatedTestDestination {
 
     private String destinationProperty;
 
+    private Boolean mappedFromSource;
+    private Boolean mappedFromDestination;
+
+    public Boolean getMappedFromSource() {
+        return mappedFromSource;
+    }
+
+    public void setMappedFromSource(Boolean mappedFromSource) {
+        this.mappedFromSource = mappedFromSource;
+    }
+
+    public Boolean getMappedFromDestination() {
+        return mappedFromDestination;
+    }
+
+
     public String getDestinationProperty() {
         return destinationProperty;
     }
