@@ -11,5 +11,5 @@ public interface MapFromPartial<S> {
      * @param <D> The destination type
      * @return The partial mapping defined
      */
-    <D> MapFromToPartial<S,D> to(Class<D> destinationType);
+    <D> MapFromToPartial<S,D> toInstanceOf(Class<D> destinationType);
 }

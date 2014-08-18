@@ -28,9 +28,10 @@ public class ProgrammaticBasedMapperIT extends JavaSpec<B2bContext> {
             context().b2b(() -> B2bApiImpl.create());
         });
 
-        it("allows mapping properties between two known types explicitly", ()-> {
+        it("allows mapping properties between two instances as a block of code", ()-> {
             // Given
-            context().b2b().map().from(UnannotatedTestSource.class).to(UnannotatedTestDestination.class).with((mappingContext)->{
+            context().b2b().map().fromInstanceOf(UnannotatedTestSource.class)
+                    .toInstanceOf(UnannotatedTestDestination.class).using((mappingContext) -> {
                 UnannotatedTestSource source = mappingContext.getSourceObject();
                 UnannotatedTestDestination destination = mappingContext.getDestinationObject();
 
@@ -46,9 +47,27 @@ public class ProgrammaticBasedMapperIT extends JavaSpec<B2bContext> {
             assertThat(destination.getDestinationProperty()).isEqualTo("Hello");
         });
 
-        it("allows mapping from a known source type", ()->{
+
+        it("allows mapping properties between two types with instructions", ()->{
             // Given
-            context().b2b().map().from(UnannotatedTestSource.class).to(Object.class).with((mappingContext)->{
+            context().b2b().map().fromInstanceOf(UnannotatedTestSource.class)
+                    .toInstanceOf(UnannotatedTestDestination.class).instructedAs((mappingContext) -> {
+                mappingContext.fromProperty("sourceProperty").toProperty("destinationProperty");
+            });
+
+            //When
+            UnannotatedTestSource sourceObject = UnannotatedTestSource.create("Hello");
+            UnannotatedTestDestination destination = context().b2b().convert().from(sourceObject).toInstanceOf(UnannotatedTestDestination.class);
+
+            //Then
+            assertThat(destination.getDestinationProperty()).isEqualTo("Hello");
+
+        });
+
+        it("allows mapping to an unknown destination instance as a block of code", ()->{
+            // Given
+            context().b2b().map().fromInstanceOf(UnannotatedTestSource.class).
+                    toInstanceOf(Object.class).using((mappingContext) -> {
                 UnannotatedTestSource source = mappingContext.getSourceObject();
                 Object destination = mappingContext.getDestinationObject();
 
@@ -65,14 +84,11 @@ public class ProgrammaticBasedMapperIT extends JavaSpec<B2bContext> {
             assertThat(destination.getDestinationProperty()).isEqualTo("Hello");
         });
 
-        it("allows mapping to a known destination type", ()-> {
+        it("allows mapping from an unknown source type with instructions", ()-> {
             // Given
-            context().b2b().map().from(Object.class).to(UnannotatedTestDestination.class).with((mappingContext)->{
-                Object source = mappingContext.getSourceObject();
-                UnannotatedTestDestination destination = mappingContext.getDestinationObject();
-
-                String sourcePropertyValue = mappingContext.b2b().manipulate().from(source).property("sourceProperty").andGetItsValue();
-                destination.setDestinationProperty(sourcePropertyValue);
+            context().b2b().map().fromInstanceOf(Object.class)
+                    .toInstanceOf(UnannotatedTestDestination.class).instructedAs((mappingContext) -> {
+                mappingContext.fromProperty("sourceProperty").toProperty("destinationProperty");
             });
 
             //When
@@ -83,22 +99,5 @@ public class ProgrammaticBasedMapperIT extends JavaSpec<B2bContext> {
             assertThat(destination.getDestinationProperty()).isEqualTo("Hello");
         });
 
-        it("allows mapping between unknown types", ()->{
-            // Given
-            context().b2b().map().from(Object.class).to(Object.class).with((mappingContext)->{
-                Object source = mappingContext.getSourceObject();
-                Object destination = mappingContext.getDestinationObject();
-
-                String sourcePropertyValue = mappingContext.b2b().manipulate().from(source).property("sourceProperty").andGetItsValue();
-                mappingContext.b2b().manipulate().from(destination).property("destinationProperty");
-            });
-
-            //When
-            UnannotatedTestSource sourceObject = UnannotatedTestSource.create("Hello");
-            UnannotatedTestDestination destination = context().b2b().convert().from(sourceObject).toInstanceOf(UnannotatedTestDestination.class);
-
-            //Then
-            assertThat(destination.getDestinationProperty()).isEqualTo("Hello");
-        });
     }
 }

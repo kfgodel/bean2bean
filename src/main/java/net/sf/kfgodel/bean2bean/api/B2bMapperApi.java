@@ -12,5 +12,5 @@ public interface B2bMapperApi {
      * @param sourceType The source type as a class instance
      * @return The partial definition
      */
-    <T> MapFromPartial<T> from(Class<T> sourceType);
+    <T> MapFromPartial<T> fromInstanceOf(Class<T> sourceType);
 }

@@ -1,15 +1,14 @@
 package net.sf.kfgodel.bean2bean.api.mappings;
 
 /**
- * This type represents a simplemapping between two types that is expresses as a block of code.<br>
- *     Usually as a manual copy of  properties between types
- * Created by kfgodel on 17/08/14.
+ * This type represents a mapping that expresses instructions for mapping the properties between the two types
+ * Created by kfgodel on 18/08/14.
  */
-@FunctionalInterface
 public interface ProgrammaticTypeMapping<S,D> {
     /**
-     * Maps the properties of the source object to the destination object obtained from the mapping context
-     * @param context The context that allows access to the objects being mapped
+     * Maps the properties of the source type to the destination type using instructions
+     * @param context The context that allows access to the types being mapped
      */
-    void mapTypes(MappingContext<S,D> context);
+    void mapInstances(TypeMappingContext<S, D> context);
+
 }

@@ -3,10 +3,10 @@ package net.sf.kfgodel.bean2bean.api.mappings;
 import net.sf.kfgodel.bean2bean.api.B2bApi;
 
 /**
- * This type represents the context of a mapping operation
+ * This type represents the context of a instance mapping operation
  * Created by kfgodel on 17/08/14.
  */
-public interface MappingContext<S,D> {
+public interface InstanceMappingContext<S,D> {
 
     /**
      * The object that has the state to be mapped from
