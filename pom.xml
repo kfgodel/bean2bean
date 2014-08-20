@@ -37,7 +37,6 @@
     <version.junit>4.11</version.junit>
     <version.testng>6.8.8</version.testng>
     <version.guava>16.0.1</version.guava>
-    <version.cucumber>1.1.6</version.cucumber>
     <version.assertj>1.6.1</version.assertj>
     <version.hiearchicalrunner>4.11.3</version.hiearchicalrunner>
     <version.mockito>1.9.5</version.mockito>
@@ -275,21 +274,6 @@ of a fixed location is recommended. -->
       <groupId>org.mockito</groupId>
       <artifactId>mockito-all</artifactId>
       <version>${version.mockito}</version>
-    </dependency>
-
-
-      <!-- Testing con cucumber -->
- 	<dependency>
-        <groupId>info.cukes</groupId>
-        <artifactId>cucumber-java</artifactId>
-        <version>${version.cucumber}</version>
-        <scope>test</scope>
-    </dependency>
-    <dependency>
-        <groupId>info.cukes</groupId>
-        <artifactId>cucumber-junit</artifactId>
-        <version>${version.cucumber}</version>
-        <scope>test</scope>
     </dependency>
 
   </dependencies>
