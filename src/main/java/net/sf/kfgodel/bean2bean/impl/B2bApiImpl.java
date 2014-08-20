@@ -1,8 +1,6 @@
 package net.sf.kfgodel.bean2bean.impl;
 
-import net.sf.kfgodel.bean2bean.api.B2bApi;
-import net.sf.kfgodel.bean2bean.api.B2bConfigurationApi;
-import net.sf.kfgodel.bean2bean.api.B2bConverterApi;
+import net.sf.kfgodel.bean2bean.api.*;
 import org.mockito.Mockito;
 
 /**
@@ -24,5 +22,15 @@ public class B2bApiImpl implements B2bApi {
     @Override
     public B2bConverterApi convert() {
         return Mockito.mock(this.getClass(), Mockito.RETURNS_SMART_NULLS).convert();
+    }
+
+    @Override
+    public B2bManipulatorApi manipulate() {
+        return Mockito.mock(this.getClass(), Mockito.RETURNS_SMART_NULLS).manipulate();
+    }
+
+    @Override
+    public B2bMapperApi map() {
+        return Mockito.mock(this.getClass(), Mockito.RETURNS_SMART_NULLS).map();
     }
 }

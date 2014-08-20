@@ -16,9 +16,9 @@ public class UnannotatedTestSource {
         this.sourceProperty = sourceProperty;
     }
 
-    public static UnannotatedTestSource create(String sourceProperty) {
+    public static UnannotatedTestSource create(String sourcePropertyValue) {
         UnannotatedTestSource source = new UnannotatedTestSource();
-        source.sourceProperty =sourceProperty;
+        source.sourceProperty =sourcePropertyValue;
         return source;
     }
 

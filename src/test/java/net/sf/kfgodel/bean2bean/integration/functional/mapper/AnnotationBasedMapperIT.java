@@ -45,7 +45,7 @@ public class AnnotationBasedMapperIT extends JavaSpec<B2bContext> {
 
         it("annotations can be used on the destination object", ()->{
             //Given
-            UnannotatedTestSource sourceObject = UnannotatedTestSource.create();
+            UnannotatedTestSource sourceObject = UnannotatedTestSource.create("movedValue");
 
             //When
             AnnotatedTestDestination destination = context().b2b().convert().from(sourceObject).toInstanceOf(AnnotatedTestDestination.class);
