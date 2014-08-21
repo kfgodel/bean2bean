@@ -17,8 +17,9 @@ public class AnnotatedTestSource {
     }
 
 
-    public static AnnotatedTestSource create() {
+    public static AnnotatedTestSource create(String sourcePropertyValue) {
         AnnotatedTestSource source = new AnnotatedTestSource();
+        source.sourceProperty = sourcePropertyValue;
         return source;
     }
 

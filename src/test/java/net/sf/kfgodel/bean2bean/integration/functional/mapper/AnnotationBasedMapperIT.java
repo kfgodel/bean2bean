@@ -32,7 +32,7 @@ public class AnnotationBasedMapperIT extends JavaSpec<B2bContext> {
 
         it("annotations can be used on the source object", ()->{
             //Given
-            AnnotatedTestSource sourceObject = AnnotatedTestSource.create();
+            AnnotatedTestSource sourceObject = AnnotatedTestSource.create("Hello");
 
             //When
             UnannotatedTestDestination destination = context().b2b().convert().from(sourceObject).toInstanceOf(UnannotatedTestDestination.class);
@@ -58,7 +58,7 @@ public class AnnotationBasedMapperIT extends JavaSpec<B2bContext> {
 
         it("if used on both then both are applied", ()->{
             //Given
-            AnnotatedTestSource sourceObject = AnnotatedTestSource.create();
+            AnnotatedTestSource sourceObject = AnnotatedTestSource.create("Hello");
 
             //When
             AnnotatedTestDestination destination = context().b2b().convert().from(sourceObject).toInstanceOf(AnnotatedTestDestination.class);

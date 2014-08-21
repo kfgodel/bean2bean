@@ -61,7 +61,6 @@ public class ProgrammaticBasedMapperIT extends JavaSpec<B2bContext> {
 
             //Then
             assertThat(destination.getDestinationProperty()).isEqualTo("Hello");
-
         });
 
         it("allows mapping to an unknown destination instance as a block of code", ()->{
