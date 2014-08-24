@@ -1,4 +1,4 @@
-package net.sf.kfgodel.bean2bean.integration.functional.mapper;
+package net.sf.kfgodel.bean2bean.integration.functional.mapper.move;
 
 import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Created by kfgodel on 16/08/14.
  */
 @RunWith(JavaSpecRunner.class)
-public class PropertyMoveTest extends JavaSpec<B2bContext> {
+public class PropertyMoveIT extends JavaSpec<B2bContext> {
     @Override
     public void define() {
 

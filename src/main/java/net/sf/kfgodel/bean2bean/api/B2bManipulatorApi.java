@@ -1,5 +1,6 @@
 package net.sf.kfgodel.bean2bean.api;
 
+import net.sf.kfgodel.bean2bean.api.partials.ManipulateAttributePartial;
 import net.sf.kfgodel.bean2bean.api.partials.ManipulateCreationPartial;
 import net.sf.kfgodel.bean2bean.api.partials.ManipulateDisposalPartial;
 

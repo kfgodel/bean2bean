@@ -1,4 +1,4 @@
-package net.sf.kfgodel.bean2bean.api;
+package net.sf.kfgodel.bean2bean.api.partials;
 
 import net.sf.kfgodel.bean2bean.api.partials.ManipulatePropertyPartial;
 
