@@ -11,7 +11,7 @@ import org.junit.runner.RunWith;
  * Created by kfgodel on 06/07/14.
  */
 @RunWith(JavaSpecRunner.class)
-public class MappingAnnotationsIT extends JavaSpec<B2bContext> {
+public class AnnotatedCreationAndPopulationIT extends JavaSpec<B2bContext> {
     @Override
     public void define() {
 
