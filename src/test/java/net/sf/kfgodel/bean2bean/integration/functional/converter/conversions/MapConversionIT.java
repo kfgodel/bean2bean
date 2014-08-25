@@ -1,50 +1,27 @@
 package net.sf.kfgodel.bean2bean.integration.functional.converter.conversions;
 
+import ar.com.dgarcia.javaspec.api.JavaSpec;
+import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
+import net.sf.kfgodel.bean2bean.B2bContext;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * This class verifies that bean2bean convertes maps as expected when used as converter
  * Created by kfgodel on 04/07/14.
  */
-public class MapConversionIT {
+@RunWith(JavaSpecRunner.class)
+public class MapConversionIT extends JavaSpec<B2bContext>{
+    @Override
+    public void define() {
 
-    @Test
-    public void mapToArray(){
-
+        it("converts a map to an array");
+        it("converts a map to a list");
+        it("converts a map to a set");
+        it("converts one typed key map to other typed key map");
+        it("converts one typed value map to other typed value map");
+        it("converts hashmap to treemap");
+        it("converts hasmap to a linkedhashmap");
+        it("converts a treemap to a hashmap");
     }
-    @Test
-    public void mapToList(){
-
-    }
-
-    @Test
-    public void mapToSet(){
-
-    }
-
-    @Test
-    public void oneTypedKeyMapToOtherTypedKeyMap(){
-
-    }
-
-    @Test
-    public void oneTypedValueMapToOtherTypedValueMap(){
-
-    }
-
-    @Test
-    public void hashMapToTreeMap(){
-
-    }
-
-    @Test
-    public void hashMapToLinkedHashMap(){
-
-    }
-
-    @Test
-    public void treeMapToHashMap(){
-
-    }
-
 }

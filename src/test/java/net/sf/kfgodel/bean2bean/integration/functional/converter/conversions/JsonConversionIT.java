@@ -1,53 +1,31 @@
 package net.sf.kfgodel.bean2bean.integration.functional.converter.conversions;
 
+import ar.com.dgarcia.javaspec.api.JavaSpec;
+import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
+import net.sf.kfgodel.bean2bean.B2bContext;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * This class verifies that when using bean2bean as a Json converter it behaves properly
  * Created by kfgodel on 06/07/14.
  */
-public class JsonConversionIT {
+@RunWith(JavaSpecRunner.class)
+public class JsonConversionIT extends JavaSpec<B2bContext> {
+    @Override
+    public void define() {
 
-    @Test
-    public void plainDomainObjectToJsonString(){
+        it("converts a plain domain object to json string");
+        it("converts a json string to plain domain object");
 
+        it("converts an array to json string");
+        it("converts a json string to an array");
+
+        it("converts a map to json string");
+        it("converts a json string to a map");
+
+        it("converts a list to json string");
+        it("converts a json string to a list");
     }
-
-    @Test
-    public void jsonStringToDomainObject(){
-
-    }
-
-    @Test
-    public void arrayToJsonString(){
-
-    }
-
-    @Test
-    public void jsonStringToArray(){
-
-    }
-
-    @Test
-    public void mapToJsonString(){
-
-    }
-
-    @Test
-    public void jsonStringToMap(){
-
-    }
-
-    @Test
-    public void listToJsonString(){
-
-    }
-
-    @Test
-    public void jsonStringToList(){
-
-    }
-
-
 }
 

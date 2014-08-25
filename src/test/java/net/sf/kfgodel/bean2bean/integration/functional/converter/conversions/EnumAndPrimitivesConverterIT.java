@@ -1,46 +1,32 @@
 package net.sf.kfgodel.bean2bean.integration.functional.converter.conversions;
 
+import ar.com.dgarcia.javaspec.api.JavaSpec;
+import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
+import net.sf.kfgodel.bean2bean.B2bContext;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * This class verifies that bean2beas as an enum converter works as expected
  * Created by kfgodel on 03/07/14.
  */
-public class EnumAndPrimitivesConverterIT {
+@RunWith(JavaSpecRunner.class)
+public class EnumAndPrimitivesConverterIT extends JavaSpec<B2bContext> {
+    @Override
+    public void define() {
 
-    @Test
-    public void enumToString(){
+        it("converts enums to string");
+        it("converts strings to enum");
 
-    }
+        it("converts enum to number");
+        it("converts number to enum");
 
-    @Test
-    public void stringToEnum(){
+        /**
+         * Custom dto with id and description
+         */
+        it("converts enum to dto");
+        it("converts dto to enum");
 
-    }
-
-    @Test
-    public void enumToNumber(){
-
-    }
-
-    @Test
-    public void numberToEnum(){
-
-    }
-
-    /**
-     * Verifies that the enum value can be converted toInstanceOf a Dto like object with id and description
-     */
-    @Test
-    public void enumToDto(){
-
-    }
-
-    /**
-     * Verifies that a dto object with id and description can be converted toInstanceOf an enum value
-     */
-    @Test
-    public void dtoToEnum(){
 
     }
 }
