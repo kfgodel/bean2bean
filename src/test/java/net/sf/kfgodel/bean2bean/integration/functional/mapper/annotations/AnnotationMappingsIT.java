@@ -20,22 +20,26 @@ public class AnnotationMappingsIT  extends JavaSpec<B2bContext> {
                 it("value is taken from annotated property and assigned to destination with same name");
             });
 
-            it("allows custom expression as getter");
-            it("allows custom expression as setter");
-            it("allows custom expression as transformer");
+            describe("using custom expression", ()->{
+                it("as getter");
+                it("as setter");
+                it("as transformer");
+                it("as the complete mapping");
+            });
             it("allows explicit indication of destination type");
-            it("allows custom expression as complete mapping");
         });
 
         describe("with CopyTo annotation", ()->{
             describe("if no property name indicated", ()->{
                 it("value is taken from property with same name, and assigned to the annotated property");
             });
-            it("allows custom expression as getter");
-            it("allows custom expression as setter");
-            it("allows custom expression as transformer");
+            describe("using custom expression", ()->{
+                it("as getter");
+                it("as setter");
+                it("as transformer");
+                it("as the complete mapping");
+            });
             it("allows explicit indication of destination type");
-            it("allows custom expression as complete mapping");
         });
 
         describe("with CopyFromAndTo annotation", ()->{
@@ -47,11 +51,13 @@ public class AnnotationMappingsIT  extends JavaSpec<B2bContext> {
                     it("value is taken from property with same name, and assigned to the annotated property");
                 });
             });
-            it("allows custom expression as getter");
-            it("allows custom expression as setter");
-            it("allows custom expression as transformer");
+            describe("using custom expression", ()->{
+                it("as getter");
+                it("as setter");
+                it("as transformer");
+                it("as the complete mapping");
+            });
             it("allows explicit indication of destination type");
-            it("allows custom expression as complete mapping");
         });
 
         describe("with the 3 annotations", ()->{
