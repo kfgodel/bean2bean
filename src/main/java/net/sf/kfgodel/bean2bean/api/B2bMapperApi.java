@@ -21,5 +21,5 @@ public interface B2bMapperApi {
      * @param <T> The type from source object
      * @return The partially defined mapping
      */
-    <T> MapFromInstancePartial<T> from(T sourceObject);
+    <T> MapFromInstancePartial<T> propertiesFrom(T sourceObject);
 }

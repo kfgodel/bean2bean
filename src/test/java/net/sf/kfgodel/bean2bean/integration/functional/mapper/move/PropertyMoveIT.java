@@ -25,7 +25,7 @@ public class PropertyMoveIT extends JavaSpec<B2bContext> {
             UnannotatedTestDestination destination = UnannotatedTestDestination.create();
 
             //When
-            context().b2b().map().from(sourceObject).to(destination);
+            context().b2b().map().propertiesFrom(sourceObject).to(destination);
 
             // Then
             assertThat(destination.getDestinationProperty()).isEqualTo("Hello");
@@ -41,7 +41,7 @@ public class PropertyMoveIT extends JavaSpec<B2bContext> {
             UnannotatedTestDestination destination = UnannotatedTestDestination.create();
 
             //When
-            context().b2b().map().from(sourceObject).to(destination);
+            context().b2b().map().propertiesFrom(sourceObject).to(destination);
 
             //Then
             assertThat(destination.getDestinationProperty()).isEqualTo("Hello");
