@@ -5,7 +5,7 @@ import java.lang.annotation.*;
 /**
  * This type represents a mapping operation that uses expressions to define source, destination and/or transformation.<br>
  *     You would normally use this annotation on DTO fields to map properties from a domain object<br>
- *     For a simpler use case see CopyTo.
+ *     For a simpler use case see CopyTo. This annotation overrides a CopyTo annotation if both present
  * Created by kfgodel on 30/08/14.
  */
 @Documented

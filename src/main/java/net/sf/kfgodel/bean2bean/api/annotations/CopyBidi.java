@@ -7,6 +7,7 @@ import java.lang.annotation.*;
  * field annotated with this annotation to an specified destination and vice-versa, depending on the direction of the
  * mapping.<br>
  *     You would normally use this annotation on DTO fields to map properties bidirectionally on a domain object.<br>
+ *     For advanced mappings see MappedAsSource and MappedAsDestination. Both override this annotation if defined
  * Created by kfgodel on 30/08/14.
  */
 @Documented

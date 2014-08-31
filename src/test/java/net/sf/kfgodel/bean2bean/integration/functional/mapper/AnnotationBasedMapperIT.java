@@ -40,7 +40,7 @@ public class AnnotationBasedMapperIT extends JavaSpec<B2bContext> {
             //Then
             assertThat(destination.getDestinationProperty()).isEqualTo(sourceObject.getSourceProperty());
             assertThat(destination.getMappedFromSource()).isTrue();
-            assertThat(destination.getMappedFromDestination()).isFalse();
+            assertThat(destination.getMappedFromDestination()).isNull();
         });
 
         it("annotations can be used on the destination object", ()->{
@@ -52,7 +52,7 @@ public class AnnotationBasedMapperIT extends JavaSpec<B2bContext> {
 
             //Then
             assertThat(destination.getDestinationProperty()).isEqualTo(sourceObject.getSourceProperty());
-            assertThat(destination.getMappedFromSource()).isFalse();
+            assertThat(destination.getMappedFromSource()).isNull();
             assertThat(destination.getMappedFromDestination()).isTrue();
         });
 

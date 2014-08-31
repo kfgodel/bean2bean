@@ -5,7 +5,7 @@ import java.lang.annotation.*;
 /**
  * This type represents a mapping operation that copies the value from a specified source to the field annotated with this annotation.<br>
  *     You would normally use this annotation on DTO fields to map properties from a domain object<br>
- *     For advanced use case see MappedAsSource
+ *     For advanced use case see MappedAsSource. This annotation gets overridden if both present
  * Created by kfgodel on 30/08/14.
  */
 @Documented

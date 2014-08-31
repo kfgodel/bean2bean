@@ -9,6 +9,7 @@ public class UnannotatedTestDestination {
     private String destinationProperty;
 
     private Boolean mappedFromSource;
+
     private Boolean mappedFromDestination;
 
     public Boolean getMappedFromSource() {

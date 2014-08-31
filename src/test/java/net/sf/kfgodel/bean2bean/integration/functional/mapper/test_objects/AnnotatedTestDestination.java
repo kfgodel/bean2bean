@@ -1,14 +1,20 @@
 package net.sf.kfgodel.bean2bean.integration.functional.mapper.test_objects;
 
+import net.sf.kfgodel.bean2bean.api.annotations.CopyFrom;
+import net.sf.kfgodel.bean2bean.api.annotations.CopyTo;
+
 /**
  * This type serves as a test object
  * Created by kfgodel on 16/08/14.
  */
 public class AnnotatedTestDestination {
 
+    @CopyFrom("sourceProperty")
     private String destinationProperty;
 
     private Boolean mappedFromSource;
+
+    @CopyFrom(value="true", interpreter="groovy")
     private Boolean mappedFromDestination;
 
     public Boolean getMappedFromSource() {
