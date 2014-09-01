@@ -14,6 +14,13 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
 public @interface CopyBidi {
+    /**
+     * Number that indicates relative ordering for annotations.<br>
+     *     Lower means first. Annotations with lower number will be processed first
+     * @return The order in which this annotation should be processed in relation with annotations on same type
+     */
+    double order() default Double.NaN;
+
 
     /**
      * Expression that defines the property sequence to follow on the other object to set and get the mapped value.<br>

@@ -14,6 +14,13 @@ import java.lang.annotation.*;
 public @interface CopyFrom {
 
     /**
+     * Number that indicates relative ordering for annotations.<br>
+     *     Lower means first. Annotations with lower number will be processed first
+     * @return The order in which this annotation should be processed in relation with annotations on same type
+     */
+    double order() default Double.NaN;
+
+    /**
      * Expression that defines the property sequence to follow on source object to get the source value.<br>
      *     This expression uses the native interpreter and by default maps to a property with same name as the annotated field.<br>
      *     You should use from() to override this value and select an interpreter different than native
