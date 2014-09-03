@@ -4,10 +4,7 @@ import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
 import net.sf.kfgodel.bean2bean.B2bContext;
 import net.sf.kfgodel.bean2bean.impl.B2bApiImpl;
-import net.sf.kfgodel.bean2bean.integration.functional.mapper.test_objects.mappings.CopyFromExample;
-import net.sf.kfgodel.bean2bean.integration.functional.mapper.test_objects.mappings.CopyFromExampleSource;
-import net.sf.kfgodel.bean2bean.integration.functional.mapper.test_objects.mappings.MappedAsDestinationExample;
-import net.sf.kfgodel.bean2bean.integration.functional.mapper.test_objects.mappings.MappedAsDestinationExampleSource;
+import net.sf.kfgodel.bean2bean.integration.functional.mapper.test_objects.mappings.*;
 import org.junit.runner.RunWith;
 
 import static net.sf.kfgodel.bean2bean.assertions.B2bAssertions.assertThat;
@@ -88,8 +85,36 @@ public class AnnotationMappingsIT  extends JavaSpec<B2bContext> {
 
         describe("with CopyTo annotation", ()->{
             describe("if no property name indicated", ()->{
-                it("value is taken from property with same name, and assigned to the annotated property");
+                it("value is taken from property with same name, and assigned to the annotated property", ()->{
+                    // Given
+                    CopyToExample sourceObject = CopyToExample.create();
+                    // When
+                    CopyToExampleDestination converted = context().b2b().convert().from(sourceObject).toInstanceOf(CopyToExampleDestination.class);
+                    // Then
+                    assertThat(converted.getSameName()).isEqualTo(sourceObject.getSameName());
+                });
             });
+
+            describe("using native interpreter", () -> {
+                it("a single property can be indicated as destination", () -> {
+                    // Given
+                    CopyToExample sourceObject = CopyToExample.create();
+                    // When
+                    CopyToExampleDestination converted = context().b2b().convert().from(sourceObject).toInstanceOf(CopyToExampleDestination.class);
+                    // Then
+                    assertThat(converted.getOtherProperty()).isEqualTo(sourceObject.getSingleProperty());
+                });
+                it("a property sequence can be indicated as destination", () -> {
+                    // Given
+                    CopyToExample sourceObject = CopyToExample.create();
+                    // When
+                    CopyToExampleDestination converted = context().b2b().convert().from(sourceObject).toInstanceOf(CopyToExampleDestination.class);
+                    // Then
+                    assertThat(converted.getOtherObject().getOtherProperty()).isEqualTo(sourceObject.getPropertySequence());
+                });
+            });
+
+
             describe("using custom expression", ()->{
                 it("as getter");
                 it("as setter");
@@ -99,13 +124,64 @@ public class AnnotationMappingsIT  extends JavaSpec<B2bContext> {
             it("allows explicit indication of destination type");
         });
 
-        describe("with CopyFromAndTo annotation", ()->{
+        describe("with CopyBidi annotation", ()->{
             describe("if no property name indicated", ()->{
                 describe("when copied from annotated source", ()->{
-                    it("value is taken from annotated property and assigned to destination with same name");
+                    it("value is taken from annotated property and assigned to destination with same name", ()->{
+                        // Given
+                        CopyBidiExample sourceObject = CopyBidiExample.create();
+                        // When
+                        CopyToExampleDestination converted = context().b2b().convert().from(sourceObject).toInstanceOf(CopyToExampleDestination.class);
+                        // Then
+                        assertThat(converted.getSameName()).isEqualTo(sourceObject.getSameName());
+                    });
+                    describe("using native interpreter", () -> {
+                        it("a single property can be indicated as destination", () -> {
+                            // Given
+                            CopyBidiExample sourceObject = CopyBidiExample.create();
+                            // When
+                            CopyToExampleDestination converted = context().b2b().convert().from(sourceObject).toInstanceOf(CopyToExampleDestination.class);
+                            // Then
+                            assertThat(converted.getOtherProperty()).isEqualTo(sourceObject.getSingleProperty());
+                        });
+                        it("a property sequence can be indicated as destination", () -> {
+                            // Given
+                            CopyBidiExample sourceObject = CopyBidiExample.create();
+                            // When
+                            CopyToExampleDestination converted = context().b2b().convert().from(sourceObject).toInstanceOf(CopyToExampleDestination.class);
+                            // Then
+                            assertThat(converted.getOtherObject().getOtherProperty()).isEqualTo(sourceObject.getPropertySequence());
+                        });
+                    });
                 });
                 describe("when copied to annotated destination", ()->{
-                    it("value is taken from property with same name, and assigned to the annotated property");
+                    it("value is taken from property with same name, and assigned to the annotated property", ()->{
+                        // Given
+                        CopyFromExampleSource sourceObject = CopyFromExampleSource.create();
+                        // When
+                        CopyBidiExample converted = context().b2b().convert().from(sourceObject).toInstanceOf(CopyBidiExample.class);
+                        // Then
+                        assertThat(converted.getSameName()).isEqualTo(sourceObject.getSameName());
+                    });
+
+                    describe("using native interpreter", () -> {
+                        it("a single property can be indicated as source", ()->{
+                            // Given
+                            CopyFromExampleSource sourceObject = CopyFromExampleSource.create();
+                            // When
+                            CopyBidiExample converted = context().b2b().convert().from(sourceObject).toInstanceOf(CopyBidiExample.class);
+                            // Then
+                            assertThat(converted.getSingleProperty()).isEqualTo(sourceObject.getOtherProperty());
+                        });
+                        it("a property sequence can be indicated as source", ()->{
+                            // Given
+                            CopyFromExampleSource sourceObject = CopyFromExampleSource.create();
+                            // When
+                            CopyBidiExample converted = context().b2b().convert().from(sourceObject).toInstanceOf(CopyBidiExample.class);
+                            // Then
+                            assertThat(converted.getPropertySequence()).isEqualTo(sourceObject.getOtherObject().getOtherProperty());
+                        });
+                    });
                 });
             });
             describe("using custom expression", ()->{
