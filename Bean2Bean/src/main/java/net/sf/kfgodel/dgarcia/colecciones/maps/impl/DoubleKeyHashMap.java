@@ -17,11 +17,11 @@
  */
 package net.sf.kfgodel.dgarcia.colecciones.maps.impl;
 
+import net.sf.kfgodel.dgarcia.colecciones.maps.DoubleKeyMap;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
-
-import net.sf.kfgodel.dgarcia.colecciones.maps.DoubleKeyMap;
 
 
 /**
@@ -173,7 +173,7 @@ public class DoubleKeyHashMap<K, S, V> extends HashMap<K, Map<S, V>> implements 
 	 *            Key secundaria
 	 * @return el valor borrado o null si no habia ninguno
 	 */
-	public V remove(K key, S subKey) {
+	public V removeEntry(K key, S subKey) {
 		Map<S, V> subMap = super.get(key);
 		if (subMap == null) {
 			return null;

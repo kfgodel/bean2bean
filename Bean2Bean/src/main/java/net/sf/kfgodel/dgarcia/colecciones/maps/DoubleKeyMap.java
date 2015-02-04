@@ -70,5 +70,5 @@ public interface DoubleKeyMap<K, S, V> extends Map<K, Map<S, V>> {
 	 *            Key secundaria
 	 * @return el valor borrado o null si no habia ninguno
 	 */
-	public V remove(K key, S subKey);
+	public V removeEntry(K key, S subKey);
 }

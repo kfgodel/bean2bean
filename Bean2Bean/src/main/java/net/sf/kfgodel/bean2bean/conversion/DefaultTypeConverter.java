@@ -17,29 +17,8 @@
  */
 package net.sf.kfgodel.bean2bean.conversion;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import net.sf.kfgodel.bean2bean.Bean2Bean;
-import net.sf.kfgodel.bean2bean.conversion.converters.AnnotatedClassConverter;
-import net.sf.kfgodel.bean2bean.conversion.converters.ArrayArrayConverter;
-import net.sf.kfgodel.bean2bean.conversion.converters.ArrayCollectionConverter;
-import net.sf.kfgodel.bean2bean.conversion.converters.Collection2CollectionConverter;
-import net.sf.kfgodel.bean2bean.conversion.converters.Enum2NumberConverter;
-import net.sf.kfgodel.bean2bean.conversion.converters.Enum2StringConverter;
-import net.sf.kfgodel.bean2bean.conversion.converters.FormatterConverter;
-import net.sf.kfgodel.bean2bean.conversion.converters.JsonStringObjectConverter;
-import net.sf.kfgodel.bean2bean.conversion.converters.Number2EnumConverter;
-import net.sf.kfgodel.bean2bean.conversion.converters.PolymorphismConverter;
-import net.sf.kfgodel.bean2bean.conversion.converters.String2EnumConverter;
-import net.sf.kfgodel.bean2bean.conversion.converters.String2NumberConverter;
-import net.sf.kfgodel.bean2bean.conversion.converters.WrappedXWorkConverter;
+import net.sf.kfgodel.bean2bean.conversion.converters.*;
 import net.sf.kfgodel.bean2bean.conversion.spring.GeneralConverterRegistration;
 import net.sf.kfgodel.bean2bean.conversion.spring.SpecializedConverterRegistration;
 import net.sf.kfgodel.bean2bean.exceptions.CannotConvertException;
@@ -53,8 +32,11 @@ import net.sf.kfgodel.bean2bean.population.conversion.TypeConverterCall.Speciali
 import net.sf.kfgodel.dgarcia.colecciones.maps.DoubleKeyMap;
 import net.sf.kfgodel.dgarcia.colecciones.maps.impl.DoubleKeyHashMap;
 import net.sf.kfgodel.dgarcia.lang.reflection.iterators.SuperTypeIterator;
-
 import org.apache.log4j.Logger;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
+import java.util.*;
 
 /**
  * Esta clase define la funcionalidad para convertir entre distintos tipos de datos. <br>
@@ -389,7 +371,7 @@ public class DefaultTypeConverter implements TypeConverter {
 		try {
 			jsonConverter = JsonStringObjectConverter.create();
 		} catch (final NoClassDefFoundError e) {
-			if (!"com/fasterxml/jackson/databind/ObjectMapper".equals(e.getMessage())) {
+			if (!"com/fasterxml/jackson/databind/JsonMappingException".equals(e.getMessage())) {
 				// Es un error que no conocemos
 				throw new MissingDependencyException("There's a missing class creating JSON converter", e);
 			} else {
