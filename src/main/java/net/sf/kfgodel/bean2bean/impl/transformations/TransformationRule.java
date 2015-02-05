@@ -1,4 +1,4 @@
-package net.sf.kfgodel.bean2bean.impl.plans;
+package net.sf.kfgodel.bean2bean.impl.transformations;
 
 import java.util.function.Function;
 

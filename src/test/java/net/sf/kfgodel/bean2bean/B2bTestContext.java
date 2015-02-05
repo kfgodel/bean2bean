@@ -2,7 +2,7 @@ package net.sf.kfgodel.bean2bean;
 
 import ar.com.dgarcia.javaspec.api.TestContext;
 import net.sf.kfgodel.bean2bean.api.B2bApi;
-import net.sf.kfgodel.bean2bean.impl.plans.TransformationRepository;
+import net.sf.kfgodel.bean2bean.impl.transformations.TransformationRepository;
 
 import java.util.function.Supplier;
 

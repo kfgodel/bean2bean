@@ -3,10 +3,10 @@ package net.sf.kfgodel.bean2bean.unit;
 import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
 import net.sf.kfgodel.bean2bean.B2bTestContext;
-import net.sf.kfgodel.bean2bean.impl.plans.TransformationRule;
-import net.sf.kfgodel.bean2bean.impl.plans.impl.EmptyRepositoryException;
-import net.sf.kfgodel.bean2bean.impl.plans.impl.NoTransformationMatchesException;
-import net.sf.kfgodel.bean2bean.impl.plans.impl.SequentialRuleRepository;
+import net.sf.kfgodel.bean2bean.impl.transformations.TransformationRule;
+import net.sf.kfgodel.bean2bean.impl.transformations.impl.EmptyRepositoryException;
+import net.sf.kfgodel.bean2bean.impl.transformations.impl.NoTransformationMatchesException;
+import net.sf.kfgodel.bean2bean.impl.transformations.impl.SequentialRuleRepository;
 import org.junit.runner.RunWith;
 
 import java.util.function.Function;
@@ -79,6 +79,7 @@ public class TransformationRepositoryTest extends JavaSpec<B2bTestContext> {
             });
             
             it("allows to transform different objects differently",()->{
+                // Cast is necessary due to type inference limitation (tries to do Function<Object,Object> and fails)
                 context().transRepo().storeUnder(String.class::isInstance, (Function<String, Integer>)String::length);
                 context().transRepo().storeUnder(Number.class::isInstance, (Function<Number, Integer>)Number::intValue);
 

@@ -1,7 +1,7 @@
-package net.sf.kfgodel.bean2bean.impl.plans.impl;
+package net.sf.kfgodel.bean2bean.impl.transformations.impl;
 
-import net.sf.kfgodel.bean2bean.impl.plans.TransformationRepository;
-import net.sf.kfgodel.bean2bean.impl.plans.TransformationRule;
+import net.sf.kfgodel.bean2bean.impl.transformations.TransformationRepository;
+import net.sf.kfgodel.bean2bean.impl.transformations.TransformationRule;
 
 import java.util.ArrayList;
 import java.util.List;

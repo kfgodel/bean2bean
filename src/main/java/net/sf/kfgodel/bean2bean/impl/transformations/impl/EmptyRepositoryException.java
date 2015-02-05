@@ -1,4 +1,4 @@
-package net.sf.kfgodel.bean2bean.impl.plans.impl;
+package net.sf.kfgodel.bean2bean.impl.transformations.impl;
 
 import net.sf.kfgodel.bean2bean.api.exceptions.Bean2beanException;
 
