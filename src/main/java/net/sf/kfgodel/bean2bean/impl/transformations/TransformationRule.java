@@ -1,5 +1,6 @@
 package net.sf.kfgodel.bean2bean.impl.transformations;
 
+import java.util.Optional;
 import java.util.function.Function;
 
 /**
@@ -7,15 +8,12 @@ import java.util.function.Function;
  * Created by kfgodel on 04/02/15.
  */
 public interface TransformationRule<T> {
-    /**
-     * Indicates if this rule is applicable to the given object according to the condition
-     * @param anObject The object to test
-     * @return True if this rule can be used
-     */
-    boolean isApplicableTo(T anObject);
 
     /**
-     * @return The transformation on this rule
+     * Returns the transformation that's applicable to the given object (only if it's applicable)
+     * @param anObject The object to transform
+     * @param <R> The type of transformation result
+     * @return The transformation or empty if not applicable according to this rule
      */
-    <R> Function<T,R> getTransformation();
+    <R> Optional<Function<T,R>> getTransformationIfApplicableTo(T anObject);
 }

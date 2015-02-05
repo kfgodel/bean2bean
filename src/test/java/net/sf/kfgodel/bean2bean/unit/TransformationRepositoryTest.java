@@ -4,13 +4,13 @@ import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
 import net.sf.kfgodel.bean2bean.B2bTestContext;
 import net.sf.kfgodel.bean2bean.impl.transformations.TransformationRule;
+import net.sf.kfgodel.bean2bean.impl.transformations.impl.ConditionedTransformationRule;
 import net.sf.kfgodel.bean2bean.impl.transformations.impl.EmptyRepositoryException;
 import net.sf.kfgodel.bean2bean.impl.transformations.impl.NoTransformationMatchesException;
 import net.sf.kfgodel.bean2bean.impl.transformations.impl.SequentialRuleRepository;
 import org.junit.runner.RunWith;
 
 import java.util.function.Function;
-import java.util.function.Predicate;
 
 import static net.sf.kfgodel.bean2bean.assertions.B2bAssertions.assertThat;
 import static org.assertj.core.api.Assertions.failBecauseExceptionWasNotThrown;
@@ -28,18 +28,15 @@ public class TransformationRepositoryTest extends JavaSpec<B2bTestContext> {
             
             context().transRepo(SequentialRuleRepository::create);
 
-            it("stores conditional transformations as rules", () -> {
-                Function<Object, Object> aTransformation = mock(Function.class);
-                Predicate<Object> aCondition = mock(Predicate.class);
+            it("stores rules to transform objects", () -> {
+                TransformationRule<Object> aRule = mock(TransformationRule.class);
 
-                TransformationRule rule = context().transRepo().storeUnder(aCondition, aTransformation);
-
-                assertThat(rule).isNotNull();
+                context().transRepo().store(aRule);
             });
             
             it("uses stored rules to get the best transformation for an object",()->{
                 Function<Object, Object> aTransformation = mock(Function.class);
-                context().transRepo().storeUnder((arg)-> true, aTransformation);
+                context().transRepo().store(ConditionedTransformationRule.create((arg) -> true, aTransformation));
 
                 Function<Object, Object> bestTransformation = context().transRepo().getBestTransformationFor(new Object());
                 
@@ -56,7 +53,7 @@ public class TransformationRepositoryTest extends JavaSpec<B2bTestContext> {
             });
             
             it("throws an exception if no rule matches for a given object",()->{
-                context().transRepo().storeUnder((arg) -> false, Function.identity());
+                context().transRepo().store(ConditionedTransformationRule.create((arg) -> false, Function.identity()));
 
                 try{
                     context().transRepo().getBestTransformationFor(1);
@@ -70,8 +67,8 @@ public class TransformationRepositoryTest extends JavaSpec<B2bTestContext> {
                 Function<Object, Object> formerTransformation = mock(Function.class);
                 Function<Object, Object> laterTransformation = mock(Function.class);
                 
-                context().transRepo().storeUnder((arg)-> true, formerTransformation);
-                context().transRepo().storeUnder((arg)-> true, laterTransformation);
+                context().transRepo().store(ConditionedTransformationRule.create((arg)-> true, formerTransformation));
+                context().transRepo().store(ConditionedTransformationRule.create((arg) -> true, laterTransformation));
 
                 Function<Object, Object> bestTransformation = context().transRepo().getBestTransformationFor(new Object());
 
@@ -80,8 +77,8 @@ public class TransformationRepositoryTest extends JavaSpec<B2bTestContext> {
             
             it("allows to transform different objects differently",()->{
                 // Cast is necessary due to type inference limitation (tries to do Function<Object,Object> and fails)
-                context().transRepo().storeUnder(String.class::isInstance, (Function<String, Integer>)String::length);
-                context().transRepo().storeUnder(Number.class::isInstance, (Function<Number, Integer>)Number::intValue);
+                context().transRepo().store(ConditionedTransformationRule.create(String.class::isInstance, String::length));
+                context().transRepo().store(ConditionedTransformationRule.create(Number.class::isInstance, Number::intValue));
 
                 String aText = "Hola";
                 Function<Object, Integer> textTransformation = context().transRepo().getBestTransformationFor(aText);

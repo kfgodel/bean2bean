@@ -5,8 +5,8 @@ import net.sf.kfgodel.bean2bean.impl.transformations.TransformationRule;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
-import java.util.function.Predicate;
 
 /**
  * This type implements teh transformation repository as a sequential list of rules
@@ -17,17 +17,16 @@ public class SequentialRuleRepository<T> implements TransformationRepository<T> 
     private List<TransformationRule<T>> rules;
     
     @Override
-    public TransformationRule<T> storeUnder(Predicate<? super T> aCondition, Function<? extends T, ?> aTransformation) {
-        TransformationRuleImpl<T> createdRule = TransformationRuleImpl.create(aCondition, aTransformation);
-        this.rules.add(createdRule);
-        return createdRule;
+    public void store(TransformationRule<T> aRule) {
+        this.rules.add(aRule);
     }
 
     @Override
     public <R> Function<T, R> getBestTransformationFor(T anObject) {
         for (TransformationRule<T> rule : rules) {
-            if(rule.isApplicableTo(anObject)){
-                return rule.getTransformation();
+            Optional<Function<T, R>> transformation = rule.getTransformationIfApplicableTo(anObject);
+            if(transformation.isPresent()){
+                return transformation.get();
             }
         }
         if(rules.isEmpty()){
