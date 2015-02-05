@@ -2,7 +2,7 @@ package net.sf.kfgodel.bean2bean.integration.functional.mapper;
 
 import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
-import net.sf.kfgodel.bean2bean.B2bContext;
+import net.sf.kfgodel.bean2bean.B2bTestContext;
 import net.sf.kfgodel.bean2bean.impl.B2bApiImpl;
 import net.sf.kfgodel.bean2bean.integration.functional.mapper.test_objects.UnannotatedTestDestination;
 import net.sf.kfgodel.bean2bean.integration.functional.mapper.test_objects.UnannotatedTestSource;
@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Created by kfgodel on 16/08/14.
  */
 @RunWith(JavaSpecRunner.class)
-public class ProgrammaticBasedMapperIT extends JavaSpec<B2bContext> {
+public class ProgrammaticBasedMapperIT extends JavaSpec<B2bTestContext> {
     @Override
     public void define() {
 

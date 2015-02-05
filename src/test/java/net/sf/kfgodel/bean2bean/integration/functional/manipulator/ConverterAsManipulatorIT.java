@@ -2,7 +2,7 @@ package net.sf.kfgodel.bean2bean.integration.functional.manipulator;
 
 import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
-import net.sf.kfgodel.bean2bean.B2bContext;
+import net.sf.kfgodel.bean2bean.B2bTestContext;
 import net.sf.kfgodel.bean2bean.impl.B2bApiImpl;
 import net.sf.kfgodel.bean2bean.integration.functional.converter.test_objects.TypicalPerson;
 import org.junit.runner.RunWith;
@@ -11,16 +11,14 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import static net.sf.kfgodel.bean2bean.assertions.B2bAssertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * This type defines integration test cases for using the converter as a bean manipulator
  * Created by kfgodel on 14/08/14.
  */
 @RunWith(JavaSpecRunner.class)
-public class ConverterAsManipulatorIT extends JavaSpec<B2bContext> {
+public class ConverterAsManipulatorIT extends JavaSpec<B2bTestContext> {
 
     @Override
     public void define() {

@@ -2,7 +2,7 @@ package net.sf.kfgodel.bean2bean.integration.functional.manipulator;
 
 import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
-import net.sf.kfgodel.bean2bean.B2bContext;
+import net.sf.kfgodel.bean2bean.B2bTestContext;
 import net.sf.kfgodel.bean2bean.impl.B2bApiImpl;
 import net.sf.kfgodel.bean2bean.integration.functional.converter.test_objects.TypicalPerson;
 import org.junit.runner.RunWith;
@@ -23,7 +23,7 @@ import static org.mockito.Mockito.*;
  * Created by kfgodel on 14/08/14.
  */
 @RunWith(JavaSpecRunner.class)
-public class BeanManipulatorIT extends JavaSpec<B2bContext> {
+public class BeanManipulatorIT extends JavaSpec<B2bTestContext> {
 
     @Override
     public void define() {

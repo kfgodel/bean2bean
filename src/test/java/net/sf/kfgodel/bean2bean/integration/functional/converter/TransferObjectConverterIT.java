@@ -2,7 +2,7 @@ package net.sf.kfgodel.bean2bean.integration.functional.converter;
 
 import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
-import net.sf.kfgodel.bean2bean.B2bContext;
+import net.sf.kfgodel.bean2bean.B2bTestContext;
 import net.sf.kfgodel.bean2bean.impl.B2bApiImpl;
 import net.sf.kfgodel.bean2bean.integration.functional.converter.test_objects.PersonDto;
 import net.sf.kfgodel.bean2bean.integration.functional.converter.test_objects.TypicalPerson;
@@ -20,7 +20,7 @@ import static net.sf.kfgodel.bean2bean.assertions.B2bAssertions.assertThat;
  * Created by kfgodel on 12/07/14.
  */
 @RunWith(JavaSpecRunner.class)
-public class TransferObjectConverterIT extends JavaSpec<B2bContext> {
+public class TransferObjectConverterIT extends JavaSpec<B2bTestContext> {
 
 
     @Override

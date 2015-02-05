@@ -2,8 +2,7 @@ package net.sf.kfgodel.bean2bean.integration.functional.converter.conversions;
 
 import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
-import net.sf.kfgodel.bean2bean.B2bContext;
-import org.junit.Test;
+import net.sf.kfgodel.bean2bean.B2bTestContext;
 import org.junit.runner.RunWith;
 
 /**
@@ -12,7 +11,7 @@ import org.junit.runner.RunWith;
  * Created by kfgodel on 01/07/14.
  */
 @RunWith(JavaSpecRunner.class)
-public class NumberTypesConversionIT extends JavaSpec<B2bContext> {
+public class NumberTypesConversionIT extends JavaSpec<B2bTestContext> {
     @Override
     public void define() {
 
