@@ -23,6 +23,7 @@ public class ConverterAsManipulatorIT extends JavaSpec<B2bTestContext> {
     @Override
     public void define() {
 
+
         beforeEach(()->{
             context().b2b(() -> B2bApiImpl.create());
         });
@@ -35,7 +36,7 @@ public class ConverterAsManipulatorIT extends JavaSpec<B2bTestContext> {
             //And an object creator mapping configured
 
             //When
-            TypicalPerson createdPerson = context().b2b().convert().from(Void.class).toInstanceOf(TypicalPerson.class);
+            TypicalPerson createdPerson = context().b2b().convert().from(void.class).toInstanceOf(TypicalPerson.class);
 
             // Then
             assertThat(createdPerson).isNotNull();
@@ -51,7 +52,7 @@ public class ConverterAsManipulatorIT extends JavaSpec<B2bTestContext> {
 //        And an object eliminator mapping configured
 
             //When
-            context().b2b().convert().from(pepe).to(Void.class);
+            context().b2b().convert().from(pepe).to(void.class);
 
             // Then
             verify(mockedCreator).accept(pepe);
