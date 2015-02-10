@@ -201,7 +201,13 @@ of a fixed location is recommended. -->
   </pluginRepositories>
   
   <dependencies>
-  
+
+      <dependency>
+          <groupId>ar.com.kfgodel</groupId>
+          <artifactId>diamond</artifactId>
+          <version>1.0-SNAPSHOT</version>
+      </dependency>
+      
   	<!--  Some common clases and utility methods -->
     <dependency>
       <groupId>ar.com.dgarcia</groupId>

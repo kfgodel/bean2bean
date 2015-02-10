@@ -3,10 +3,11 @@ package net.sf.kfgodel.bean2bean.impl.transformations;
 import java.util.function.Function;
 
 /**
- * This type represents a repository of plans that are
+ * This type represents a repository of rules for transforming objects
+ * *
  * Created by kfgodel on 04/02/15.
  */
-public interface TransformationRepository<T> {
+public interface RuleRepository<T> {
 
     /**
      * Based on the stored rules picks the first transformation whose condition matches the object and returns it

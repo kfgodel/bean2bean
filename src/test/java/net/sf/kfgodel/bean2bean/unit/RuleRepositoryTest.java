@@ -21,31 +21,31 @@ import static org.mockito.Mockito.mock;
  * Created by kfgodel on 04/02/15.
  */
 @RunWith(JavaSpecRunner.class)
-public class TransformationRepositoryTest extends JavaSpec<B2bTestContext> {
+public class RuleRepositoryTest extends JavaSpec<B2bTestContext> {
     @Override
     public void define() {
         describe("a transformation repository", () -> {
             
-            context().transRepo(SequentialRuleRepository::create);
+            context().ruleRepo(SequentialRuleRepository::create);
 
             it("stores rules to transform objects", () -> {
                 TransformationRule<Object> aRule = mock(TransformationRule.class);
 
-                context().transRepo().store(aRule);
+                context().ruleRepo().store(aRule);
             });
             
             it("uses stored rules to get the best transformation for an object",()->{
                 Function<Object, Object> aTransformation = mock(Function.class);
-                context().transRepo().store(ConditionedTransformationRule.create((arg) -> true, aTransformation));
+                context().ruleRepo().store(ConditionedTransformationRule.create((arg) -> true, aTransformation));
 
-                Function<Object, Object> bestTransformation = context().transRepo().getBestTransformationFor(new Object());
+                Function<Object, Object> bestTransformation = context().ruleRepo().getBestTransformationFor(new Object());
                 
                 assertThat(bestTransformation).isSameAs(aTransformation);
             });
             
             it("throws an exception if repository has no rules when used",()->{
                 try{
-                    context().transRepo().getBestTransformationFor(1);
+                    context().ruleRepo().getBestTransformationFor(1);
                     failBecauseExceptionWasNotThrown(EmptyRepositoryException.class);
                 }catch(EmptyRepositoryException e){
                     assertThat(e.getMessage()).isEqualTo("Cannot get transformation for object[1] if repository is empty");
@@ -53,10 +53,10 @@ public class TransformationRepositoryTest extends JavaSpec<B2bTestContext> {
             });
             
             it("throws an exception if no rule matches for a given object",()->{
-                context().transRepo().store(ConditionedTransformationRule.create((arg) -> false, Function.identity()));
+                context().ruleRepo().store(ConditionedTransformationRule.create((arg) -> false, Function.identity()));
 
                 try{
-                    context().transRepo().getBestTransformationFor(1);
+                    context().ruleRepo().getBestTransformationFor(1);
                     failBecauseExceptionWasNotThrown(NoTransformationMatchesException.class);
                 }catch(NoTransformationMatchesException e){
                     assertThat(e.getMessage()).isEqualTo("There's no applicable transformation for object[1]");
@@ -67,25 +67,25 @@ public class TransformationRepositoryTest extends JavaSpec<B2bTestContext> {
                 Function<Object, Object> formerTransformation = mock(Function.class);
                 Function<Object, Object> laterTransformation = mock(Function.class);
                 
-                context().transRepo().store(ConditionedTransformationRule.create((arg)-> true, formerTransformation));
-                context().transRepo().store(ConditionedTransformationRule.create((arg) -> true, laterTransformation));
+                context().ruleRepo().store(ConditionedTransformationRule.create((arg)-> true, formerTransformation));
+                context().ruleRepo().store(ConditionedTransformationRule.create((arg) -> true, laterTransformation));
 
-                Function<Object, Object> bestTransformation = context().transRepo().getBestTransformationFor(new Object());
+                Function<Object, Object> bestTransformation = context().ruleRepo().getBestTransformationFor(new Object());
 
                 assertThat(bestTransformation).isSameAs(formerTransformation);
             });
             
             it("allows to transform different objects differently",()->{
                 // Cast is necessary due to type inference limitation (tries to do Function<Object,Object> and fails)
-                context().transRepo().store(ConditionedTransformationRule.create(String.class::isInstance, String::length));
-                context().transRepo().store(ConditionedTransformationRule.create(Number.class::isInstance, Number::intValue));
+                context().ruleRepo().store(ConditionedTransformationRule.create(String.class::isInstance, String::length));
+                context().ruleRepo().store(ConditionedTransformationRule.create(Number.class::isInstance, Number::intValue));
 
                 String aText = "Hola";
-                Function<Object, Integer> textTransformation = context().transRepo().getBestTransformationFor(aText);
+                Function<Object, Integer> textTransformation = context().ruleRepo().getBestTransformationFor(aText);
                 assertThat(textTransformation.apply(aText)).isEqualTo(4);
 
                 Double aNumber = 2.1;
-                Function<Object, Integer> numberTransformation = context().transRepo().getBestTransformationFor(aNumber);
+                Function<Object, Integer> numberTransformation = context().ruleRepo().getBestTransformationFor(aNumber);
                 assertThat(numberTransformation.apply(aNumber)).isEqualTo(2);
             });
             

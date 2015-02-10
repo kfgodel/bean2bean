@@ -1,6 +1,6 @@
 package net.sf.kfgodel.bean2bean.impl.transformations.impl;
 
-import net.sf.kfgodel.bean2bean.impl.transformations.TransformationRepository;
+import net.sf.kfgodel.bean2bean.impl.transformations.RuleRepository;
 import net.sf.kfgodel.bean2bean.impl.transformations.TransformationRule;
 
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.function.Function;
  * This type implements teh transformation repository as a sequential list of rules
  * Created by kfgodel on 05/02/15.
  */
-public class SequentialRuleRepository<T> implements TransformationRepository<T> {
+public class SequentialRuleRepository<T> implements RuleRepository<T> {
     
     private List<TransformationRule<T>> rules;
     
