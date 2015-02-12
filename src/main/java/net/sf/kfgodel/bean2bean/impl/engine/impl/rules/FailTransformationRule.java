@@ -1,4 +1,4 @@
-package net.sf.kfgodel.bean2bean.impl.engine.impl;
+package net.sf.kfgodel.bean2bean.impl.engine.impl.rules;
 
 import net.sf.kfgodel.bean2bean.api.exceptions.Bean2beanException;
 import net.sf.kfgodel.bean2bean.impl.engine.EngineContext;
@@ -20,7 +20,7 @@ public class FailTransformationRule implements TransformationRule<EngineContext>
         MappingVector vector = context.getTransformationVector();
         Object sourceRepresentation = represent(vector.getSourceObject());
         Object destinationRepresentation = represent(vector.getDestinationObject());
-        throw new Bean2beanException("There's no defined transformation from["+sourceRepresentation+"] to["+destinationRepresentation+"]");
+        throw new Bean2beanException("There's no transformation defined from["+sourceRepresentation+"] to["+destinationRepresentation+"]");
     }
 
     /**

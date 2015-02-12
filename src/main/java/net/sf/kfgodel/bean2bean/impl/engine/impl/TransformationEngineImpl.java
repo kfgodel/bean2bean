@@ -3,6 +3,8 @@ package net.sf.kfgodel.bean2bean.impl.engine.impl;
 import net.sf.kfgodel.bean2bean.api.exceptions.Bean2beanException;
 import net.sf.kfgodel.bean2bean.impl.engine.EngineContext;
 import net.sf.kfgodel.bean2bean.impl.engine.TransformationEngine;
+import net.sf.kfgodel.bean2bean.impl.engine.impl.rules.FailTransformationRule;
+import net.sf.kfgodel.bean2bean.impl.engine.impl.rules.UsePredefinedVectorRule;
 import net.sf.kfgodel.bean2bean.impl.transformations.RuleRepository;
 import net.sf.kfgodel.bean2bean.impl.transformations.impl.SequentialRuleRepository;
 
@@ -27,6 +29,7 @@ public class TransformationEngineImpl implements TransformationEngine {
      * Creates the basic rules for this engine to work
      */
     private void initialize() {
+        this.ruleRepository.store(UsePredefinedVectorRule.create());
         //After all the other rules, then fail with an exception
         this.ruleRepository.store(FailTransformationRule.create());
     }

@@ -4,9 +4,14 @@ import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
 import net.sf.kfgodel.bean2bean.B2bTestContext;
 import net.sf.kfgodel.bean2bean.api.exceptions.Bean2beanException;
+import net.sf.kfgodel.bean2bean.impl.engine.EngineContext;
 import net.sf.kfgodel.bean2bean.impl.engine.impl.EngineContextImpl;
 import net.sf.kfgodel.bean2bean.impl.engine.impl.TransformationEngineImpl;
+import net.sf.kfgodel.bean2bean.impl.mappings.MappingRepository;
+import net.sf.kfgodel.bean2bean.impl.mappings.impl.MappingRepositoryImpl;
 import org.junit.runner.RunWith;
+
+import java.util.function.Function;
 
 import static net.sf.kfgodel.bean2bean.assertions.B2bAssertions.assertThat;
 import static org.assertj.core.api.Assertions.failBecauseExceptionWasNotThrown;
@@ -23,9 +28,17 @@ public class TransformationEngineTest extends JavaSpec<B2bTestContext> {
             
             context().engine(TransformationEngineImpl::create);
             
-            it("uses a pre-defined transformation for two known objects",()->{
+            it("uses a pre-defined transformation for a known vector",()->{
+                MappingRepository mappingRepo = MappingRepositoryImpl.create();
+                EngineContextImpl engineContext = EngineContextImpl.create(1, "2", mappingRepo);
+
+                mappingRepo.storeFor(engineContext.getTransformationVector(), (arg)-> "tres");
                 
-            }); 
+                Function<EngineContext, Object> transformation = context().engine().getBestTransformationFor(engineContext);
+                Object result = transformation.apply(engineContext);
+                
+                assertThat(result).isEqualTo("tres");
+            });
             
             it("creates an new instance using reflection from void to a type",()->{
                 
@@ -44,13 +57,14 @@ public class TransformationEngineTest extends JavaSpec<B2bTestContext> {
             });   
             
             it("fails with an exception if none of the above apply",()->{
-                EngineContextImpl engineContext = EngineContextImpl.create(1, "2");
+                MappingRepository mappingRepo = MappingRepositoryImpl.create();
+                EngineContextImpl engineContext = EngineContextImpl.create(1, "2", mappingRepo);
 
                 try{
                     context().engine().getBestTransformationFor(engineContext);
                     failBecauseExceptionWasNotThrown(Bean2beanException.class);
                 }catch(Bean2beanException e){
-                    assertThat(e).hasMessage("There's no defined transformation from[1] to[\"2\"]");
+                    assertThat(e).hasMessage("There's no transformation defined from[1] to[\"2\"]");
                 }
             });
             
