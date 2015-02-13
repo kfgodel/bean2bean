@@ -8,15 +8,22 @@ import net.sf.kfgodel.bean2bean.api.exceptions.Bean2beanException;
 import net.sf.kfgodel.bean2bean.impl.engine.EngineContext;
 import net.sf.kfgodel.bean2bean.impl.engine.impl.EngineContextImpl;
 import net.sf.kfgodel.bean2bean.impl.engine.impl.TransformationEngineImpl;
+import net.sf.kfgodel.bean2bean.impl.engine.impl.trans.CloseResourceTransformation;
+import net.sf.kfgodel.bean2bean.impl.engine.impl.trans.InstantiateTransformation;
 import net.sf.kfgodel.bean2bean.impl.mappings.MappingRepository;
 import net.sf.kfgodel.bean2bean.impl.mappings.impl.MappingRepositoryImpl;
 import net.sf.kfgodel.bean2bean.impl.mappings.impl.MappingVectorImpl;
 import org.junit.runner.RunWith;
 
+import java.io.Closeable;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.function.Function;
 
 import static net.sf.kfgodel.bean2bean.assertions.B2bAssertions.assertThat;
 import static org.assertj.core.api.Assertions.failBecauseExceptionWasNotThrown;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 /**
  * This type verifies the behavior of the transformation engine and its rules
@@ -42,11 +49,32 @@ public class TransformationEngineTest extends JavaSpec<B2bTestContext> {
             });
             
             it("creates an new instance using reflection from void to a type",()->{
-                
-            }); 
-            
-            it("closes an instance from instance to void",()->{
+                MappingRepository mappingRepo = MappingRepositoryImpl.create();
+                InstantiateTransformation.registerIn(mappingRepo);
 
+                EngineContextImpl engineContext = EngineContextImpl.create(Diamond.of(void.class), Diamond.of(ArrayList.class), mappingRepo);
+                Function<EngineContext, Object> transformation = context().engine().getBestTransformationFor(engineContext);
+                Object result = transformation.apply(engineContext);
+
+                assertThat(result).isNotNull();
+                assertThat(result.getClass()).isEqualTo(ArrayList.class);
+            });
+            
+            it("closes a instance from closeable to void",()->{
+                Closeable resource = mock(Closeable.class);
+
+                MappingRepository mappingRepo = MappingRepositoryImpl.create();
+                CloseResourceTransformation.registerIn(mappingRepo);
+
+                EngineContextImpl engineContext = EngineContextImpl.create(resource, Diamond.of(void.class), mappingRepo);
+                Function<EngineContext, Object> transformation = context().engine().getBestTransformationFor(engineContext);
+                transformation.apply(engineContext);
+
+                try {
+                    verify(resource).close();
+                } catch (IOException e) {
+                    throw new RuntimeException("Mockito throwing exception?");
+                }
             });
             
             it("creates a new instance and maps its properties from object to a type",()->{
