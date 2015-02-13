@@ -2,8 +2,6 @@ package net.sf.kfgodel.bean2bean.impl.engine.impl;
 
 import net.sf.kfgodel.bean2bean.impl.engine.EngineContext;
 import net.sf.kfgodel.bean2bean.impl.mappings.MappingRepository;
-import net.sf.kfgodel.bean2bean.impl.mappings.MappingVector;
-import net.sf.kfgodel.bean2bean.impl.mappings.impl.MappingVectorImpl;
 
 /**
  * This type implements the engine context as a reference to all the involved objects
@@ -11,24 +9,35 @@ import net.sf.kfgodel.bean2bean.impl.mappings.impl.MappingVectorImpl;
  */
 public class EngineContextImpl implements EngineContext {
     
-    private MappingVector vector;
+    private Object source;
+    private Object destination;
     private MappingRepository repository;
     
-    @Override
-    public MappingVector getTransformationVector() {
-        return vector;
-    }
-
     @Override
     public MappingRepository getMappingRepository() {
         return repository;
     }
 
+    @Override
+    public Object getSourceObject() {
+        return source;
+    }
+
+    @Override
+    public Object getDestinationObject() {
+        return destination;
+    }
+
     public static EngineContextImpl create(Object source, Object destination,MappingRepository repository) {
         EngineContextImpl context = new EngineContextImpl();
-        context.vector = MappingVectorImpl.create(source, destination);
+        context.source = source;
+        context.destination = destination;
         context.repository = repository;
         return context;
     }
 
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "[" + source + " -> " + destination + "]";
+    }
 }

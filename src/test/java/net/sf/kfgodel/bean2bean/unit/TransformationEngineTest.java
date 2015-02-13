@@ -2,6 +2,7 @@ package net.sf.kfgodel.bean2bean.unit;
 
 import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
+import ar.com.kfgodel.diamond.api.Diamond;
 import net.sf.kfgodel.bean2bean.B2bTestContext;
 import net.sf.kfgodel.bean2bean.api.exceptions.Bean2beanException;
 import net.sf.kfgodel.bean2bean.impl.engine.EngineContext;
@@ -9,6 +10,7 @@ import net.sf.kfgodel.bean2bean.impl.engine.impl.EngineContextImpl;
 import net.sf.kfgodel.bean2bean.impl.engine.impl.TransformationEngineImpl;
 import net.sf.kfgodel.bean2bean.impl.mappings.MappingRepository;
 import net.sf.kfgodel.bean2bean.impl.mappings.impl.MappingRepositoryImpl;
+import net.sf.kfgodel.bean2bean.impl.mappings.impl.MappingVectorImpl;
 import org.junit.runner.RunWith;
 
 import java.util.function.Function;
@@ -30,10 +32,9 @@ public class TransformationEngineTest extends JavaSpec<B2bTestContext> {
             
             it("uses a pre-defined transformation for a known vector",()->{
                 MappingRepository mappingRepo = MappingRepositoryImpl.create();
-                EngineContextImpl engineContext = EngineContextImpl.create(1, "2", mappingRepo);
+                mappingRepo.storeFor(MappingVectorImpl.create(1,"2"), (arg)-> "tres");
 
-                mappingRepo.storeFor(engineContext.getTransformationVector(), (arg)-> "tres");
-                
+                EngineContextImpl engineContext = EngineContextImpl.create(1, "2", mappingRepo);
                 Function<EngineContext, Object> transformation = context().engine().getBestTransformationFor(engineContext);
                 Object result = transformation.apply(engineContext);
                 
@@ -52,8 +53,16 @@ public class TransformationEngineTest extends JavaSpec<B2bTestContext> {
 
             });
             
-            it("uses a pre-defined hierarchy transformation from type to type",()->{
-                
+            it("looks for the hierarchy of source and destination to find a suitable transformation",()->{
+                MappingRepository mappingRepo = MappingRepositoryImpl.create();
+                mappingRepo.storeFor(MappingVectorImpl.create(Diamond.of(Integer.class),Diamond.of(String.class)), (arg)-> "cuatro");
+
+                EngineContextImpl engineContext = EngineContextImpl.create(1, "2", mappingRepo);
+                Function<EngineContext, Object> transformation = context().engine().getBestTransformationFor(engineContext);
+                Object result = transformation.apply(engineContext);
+
+                assertThat(result).isEqualTo("cuatro");
+
             });   
             
             it("fails with an exception if none of the above apply",()->{

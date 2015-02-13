@@ -4,7 +4,7 @@ import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
 import com.google.common.collect.Lists;
 import net.sf.kfgodel.bean2bean.B2bTestContext;
-import net.sf.kfgodel.bean2bean.impl.engine.impl.NextSetSpliterator;
+import net.sf.kfgodel.bean2bean.impl.engine.impl.NextAbstractionSpliterator;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class NextSetIteratorTest extends JavaSpec<B2bTestContext> {
             it("starts from an object",()->{
                 ArrayList<String> initialObject = new ArrayList<String>();
 
-                Iterator<Object> iterator = Spliterators.iterator(NextSetSpliterator.create(initialObject));
+                Iterator<Object> iterator = Spliterators.iterator(NextAbstractionSpliterator.create(initialObject));
 
                 assertThat(iterator.hasNext()).isTrue();
                 assertThat(iterator.next()).isSameAs(initialObject);
@@ -41,7 +41,7 @@ public class NextSetIteratorTest extends JavaSpec<B2bTestContext> {
             it("iterates all types of the object from most specific to less specific",()->{
                 ArrayList<String> initialObject = new ArrayList<String>();
 
-                List<String> iterated = StreamSupport.stream(NextSetSpliterator.create(initialObject), false)
+                List<String> iterated = StreamSupport.stream(NextAbstractionSpliterator.create(initialObject), false)
                         .map(Object::toString)
                         .collect(Collectors.toList());
 

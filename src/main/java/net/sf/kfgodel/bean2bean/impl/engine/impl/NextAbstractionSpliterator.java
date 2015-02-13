@@ -11,7 +11,7 @@ import java.util.function.Consumer;
  * This type represents the iterator of type implied sets
  * Created by kfgodel on 13/02/15.
  */
-public class NextSetSpliterator implements Spliterator<Object> {
+public class NextAbstractionSpliterator implements Spliterator<Object> {
     
     private boolean firstTime;
     private Object initialObject;
@@ -52,8 +52,8 @@ public class NextSetSpliterator implements Spliterator<Object> {
         return Spliterator.DISTINCT & Spliterator.IMMUTABLE & Spliterator.NONNULL & Spliterator.ORDERED;
     }
 
-    public static NextSetSpliterator create(Object initialObject) {
-        NextSetSpliterator spliterator = new NextSetSpliterator();
+    public static NextAbstractionSpliterator create(Object initialObject) {
+        NextAbstractionSpliterator spliterator = new NextAbstractionSpliterator();
         spliterator.initialObject = initialObject;
         spliterator.firstTime = true;
         return spliterator;
