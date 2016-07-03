@@ -1,10 +1,11 @@
 package net.sf.kfgodel.bean2bean;
 
-import ar.com.dgarcia.javaspec.api.TestContext;
+import ar.com.dgarcia.javaspec.api.contexts.TestContext;
 import net.sf.kfgodel.bean2bean.api.B2bApi;
 import net.sf.kfgodel.bean2bean.impl.engine.TransformationEngine;
 import net.sf.kfgodel.bean2bean.impl.transformations.RuleRepository;
 
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -21,4 +22,8 @@ public interface B2bTestContext extends TestContext {
 
     TransformationEngine engine();
     void engine(Supplier<TransformationEngine> definition);
+
+    Function transformation();
+    void transformation(Supplier<Function> definition);
+
 }

@@ -26,7 +26,7 @@ public interface B2bApi {
     B2bManipulatorApi manipulate();
 
     /**
-     * Alloes access to b2b as an object mapper offering methods for transfering state between objects
+     * Allows access to b2b as an object mapper offering methods for transfering state between objects
      * @return The mapper api for defining type mappings
      */
     B2bMapperApi map();

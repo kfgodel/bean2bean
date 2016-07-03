@@ -8,7 +8,7 @@ import java.util.Spliterator;
 import java.util.function.Consumer;
 
 /**
- * This type represents the iterator of type implied sets
+ * This type represents a spliterator of types starting ffrom the original object and traversing to super types
  * Created by kfgodel on 13/02/15.
  */
 public class NextAbstractionSpliterator implements Spliterator<Object> {

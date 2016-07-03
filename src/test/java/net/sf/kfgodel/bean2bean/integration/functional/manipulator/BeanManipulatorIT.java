@@ -6,12 +6,14 @@ import net.sf.kfgodel.bean2bean.B2bTestContext;
 import net.sf.kfgodel.bean2bean.impl.B2bApiImpl;
 import net.sf.kfgodel.bean2bean.integration.functional.converter.test_objects.TypicalPerson;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 /**
  *  This test describes common manipulator tests cases that serve as integration tests
@@ -37,7 +39,7 @@ public class BeanManipulatorIT extends JavaSpec<B2bTestContext> {
             // Given a string creator configured
             Supplier<String> mockedCreator = mock(Supplier.class);
             context().b2b().manipulate().creationOf(String.class).with(mockedCreator);
-            when(mockedCreator.get()).thenReturn("Hello!");
+            Mockito.when(mockedCreator.get()).thenReturn("Hello!");
 
             // When
             String created = context().b2b().manipulate().createInstanceOf(String.class);

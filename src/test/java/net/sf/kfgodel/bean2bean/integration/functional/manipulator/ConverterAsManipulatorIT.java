@@ -6,12 +6,14 @@ import net.sf.kfgodel.bean2bean.B2bTestContext;
 import net.sf.kfgodel.bean2bean.impl.B2bApiImpl;
 import net.sf.kfgodel.bean2bean.integration.functional.converter.test_objects.TypicalPerson;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import static net.sf.kfgodel.bean2bean.assertions.B2bAssertions.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 /**
  * This type defines integration test cases for using the converter as a bean manipulator
@@ -31,7 +33,7 @@ public class ConverterAsManipulatorIT extends JavaSpec<B2bTestContext> {
         it("creation can be expressed as a conversion from void", ()->{
             //Given
             Supplier<TypicalPerson> mockedCreator = mock(Supplier.class);
-            when(mockedCreator.get()).thenReturn(TypicalPerson.create(1L, "John", 22));
+            Mockito.when(mockedCreator.get()).thenReturn(TypicalPerson.create(1L, "John", 22));
 
             //And an object creator mapping configured
 
