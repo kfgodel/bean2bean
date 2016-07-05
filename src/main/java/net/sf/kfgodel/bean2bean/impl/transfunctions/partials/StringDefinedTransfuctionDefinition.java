@@ -1,6 +1,6 @@
 package net.sf.kfgodel.bean2bean.impl.transfunctions.partials;
 
-import net.sf.kfgodel.bean2bean.api.exceptions.Bean2beanException;
+import net.sf.kfgodel.bean2bean.impl.transfunctions.primitives.PrimitiveTransfunction;
 
 import java.util.function.Function;
 
@@ -17,12 +17,6 @@ public class StringDefinedTransfuctionDefinition implements SourceDefinedTransfu
 
   @Override
   public Function<String, Long> toLong() {
-    return (string)->{
-      try {
-        return Long.valueOf(string);
-      } catch (NumberFormatException e) {
-        throw new Bean2beanException("Cannot convert the String [" + string + "] to Long: Unable to parse it");
-      }
-    };
+    return PrimitiveTransfunction::stringToLong;
   }
 }

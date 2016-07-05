@@ -3,7 +3,7 @@ package net.sf.kfgodel.bean2bean.unit.longs;
 import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
 import net.sf.kfgodel.bean2bean.B2bTestContext;
-import net.sf.kfgodel.bean2bean.api.exceptions.Bean2beanException;
+import net.sf.kfgodel.bean2bean.api.exceptions.FailedToConvertException;
 import net.sf.kfgodel.bean2bean.impl.transfunctions.DeltaImpl;
 import org.junit.runner.RunWith;
 
@@ -18,18 +18,24 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class String2LongTransformerTest extends JavaSpec<B2bTestContext> {
   @Override
   public void define() {
-    describe("a string to long transformer", () -> {
+    describe("a string to Long transformer", () -> {
       context().transfunction(()-> DeltaImpl.create().fromString().toLong());
       
-      it("transforms a string valur representing a long, to a long value",()->{
-        Object result = context().transfunction().apply("3");
+      it("transforms a string representing a numeric integer, to a Long object",()->{
+        Long result = (Long) context().transfunction().apply("3");
         assertThat(result).isEqualTo(3L);
       });
 
-      itThrows(Bean2beanException.class, "when the string doesn't represent a long value",()->{
+      itThrows(FailedToConvertException.class, "when the string doesn't represent a numeric integer value",()->{
         context().transfunction().apply("invalid");
       }, (e)->{
         assertThat(e).hasMessage("Cannot convert the String [invalid] to Long: Unable to parse it");
+      });
+      
+      itThrows(IllegalArgumentException.class, "when null is used as the input string", ()->{
+        context().transfunction().apply(null);
+      }, (e)->{
+        assertThat(e).hasMessage("This transfuction doesn't support the String[null] as input. There's no default conversion to Long");
       });
     });
 
