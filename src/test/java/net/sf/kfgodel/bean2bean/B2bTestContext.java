@@ -23,7 +23,7 @@ public interface B2bTestContext extends TestContext {
     TransformationEngine engine();
     void engine(Supplier<TransformationEngine> definition);
 
-    Function transformation();
-    void transformation(Supplier<Function> definition);
+    Function transfunction();
+    void transfunction(Supplier<Function> definition);
 
 }

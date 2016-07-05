@@ -19,26 +19,26 @@ public class TransformerFunctionTest extends JavaSpec<B2bTestContext> {
   @Override
   public void define() {
     describe("a transformer function", () -> {
-      context().transformation(() -> String::valueOf);
+      context().transfunction(() -> String::valueOf);
 
       it("generates output from its input", () -> {
-        Object output = context().transformation().apply(1);
+        Object output = context().transfunction().apply(1);
         assertThat(output).isEqualTo("1");
       });
 
       it("is a java 8 function [to improve integration with others]",()->{
-        assertThat(context().transformation()).isInstanceOfAny(Function.class);
+        assertThat(context().transfunction()).isInstanceOfAny(Function.class);
       });
       
       it("could take null as input",()->{
-        Object apply = context().transformation().apply(null);
+        Object apply = context().transfunction().apply(null);
         assertThat(apply).isEqualTo("null");
       });
 
       it("could generate null as result",()->{
-        context().transformation(()-> (input)-> null);
+        context().transfunction(()-> (input)-> null);
 
-        Object output = context().transformation().apply("something");
+        Object output = context().transfunction().apply("something");
 
         assertThat(output).isNull();
       });
