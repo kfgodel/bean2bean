@@ -1,4 +1,4 @@
-package net.sf.kfgodel.bean2bean.impl.transfunctions.partials;
+package net.sf.kfgodel.bean2bean.impl.repos.primitive.partials;
 
 import ar.com.kfgodel.nary.api.optionals.Optional;
 
@@ -8,7 +8,7 @@ import java.util.function.Function;
  * This type represents a half definition of a desired transfunction
  * Created by kfgodel on 05/07/16.
  */
-public interface SourceDefinedTransfunctionDefinition<I> {
+public interface SourceDefinedPrimitiveTransfunctionDefinition<I> {
   /**
    * @return The transfunction to convert to a long type from the source type
    */

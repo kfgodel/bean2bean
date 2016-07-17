@@ -1,4 +1,4 @@
-package net.sf.kfgodel.bean2bean.impl.transfunctions.partials;
+package net.sf.kfgodel.bean2bean.impl.repos.primitive.partials;
 
 import ar.com.kfgodel.nary.api.Nary;
 import ar.com.kfgodel.nary.api.optionals.Optional;
@@ -14,12 +14,12 @@ import java.util.function.Function;
  * This type has string as a predefined source
  * Created by kfgodel on 05/07/16.
  */
-public class StringDefinedTransfuctionDefinition implements SourceDefinedTransfunctionDefinition<java.lang.String> {
+public class StringDefinedPrimitiveTransfuctionDefinition implements SourceDefinedPrimitiveTransfunctionDefinition<String> {
 
   private Map<Class, Function> functionsByClass;
 
-  public static StringDefinedTransfuctionDefinition create() {
-    StringDefinedTransfuctionDefinition definition = new StringDefinedTransfuctionDefinition();
+  public static StringDefinedPrimitiveTransfuctionDefinition create() {
+    StringDefinedPrimitiveTransfuctionDefinition definition = new StringDefinedPrimitiveTransfuctionDefinition();
     return definition;
   }
 

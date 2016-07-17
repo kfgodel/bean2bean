@@ -1,20 +1,21 @@
-package net.sf.kfgodel.bean2bean.impl.transfunctions;
+package net.sf.kfgodel.bean2bean.impl.repos.primitive;
 
 import ar.com.kfgodel.nary.api.optionals.Optional;
-import net.sf.kfgodel.bean2bean.impl.transfunctions.partials.SourceDefinedTransfunctionDefinition;
+import net.sf.kfgodel.bean2bean.impl.repos.primitive.partials.SourceDefinedPrimitiveTransfunctionDefinition;
 
 
 /**
- * This type represents the access point to transfuctions for primitive types
+ * This type represents the repository for transfuctions for primitive types
+ * 
  * Created by kfgodel on 05/07/16.
  */
-public interface Delta {
+public interface PrimitiveTransfunctionRepo {
 
   /**
    * Defines String as the type of input to get a transfunction for the conversion
    * @return The uncomplete definition to complete by defining a destination type
    */
-  SourceDefinedTransfunctionDefinition<String> fromString();
+  SourceDefinedPrimitiveTransfunctionDefinition<String> fromString();
 
   /**
    * Defines the type of input to get a transfunction for the primitive conversion.<br>
@@ -24,5 +25,5 @@ public interface Delta {
    * @param <T> The type of expected input
    * @return The uncomplete definition or an empty optional if type is not a primitive
    */
-  <T> Optional<SourceDefinedTransfunctionDefinition<T>> fromType(Class<T> sourceType);
+  <T> Optional<SourceDefinedPrimitiveTransfunctionDefinition<T>> fromType(Class<T> sourceType);
 }

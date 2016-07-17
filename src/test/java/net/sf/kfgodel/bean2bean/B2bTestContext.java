@@ -3,8 +3,9 @@ package net.sf.kfgodel.bean2bean;
 import ar.com.dgarcia.javaspec.api.contexts.TestContext;
 import net.sf.kfgodel.bean2bean.api.B2bApi;
 import net.sf.kfgodel.bean2bean.impl.engine.TransformationEngine;
+import net.sf.kfgodel.bean2bean.impl.repos.condition.ConditionBasedTransfunctionRepo;
+import net.sf.kfgodel.bean2bean.impl.repos.primitive.PrimitiveTransfunctionRepo;
 import net.sf.kfgodel.bean2bean.impl.transformations.RuleRepository;
-import net.sf.kfgodel.bean2bean.impl.transfunctions.Delta;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -27,7 +28,11 @@ public interface B2bTestContext extends TestContext {
     Function transfunction();
     void transfunction(Supplier<Function> definition);
 
-    Delta delta();
-    void delta(Supplier<Delta> definition);
+    PrimitiveTransfunctionRepo primitiveRepo();
+    void primitiveRepo(Supplier<PrimitiveTransfunctionRepo> definition);
+
+    ConditionBasedTransfunctionRepo conditionRepo();
+    void conditionRepo(Supplier<ConditionBasedTransfunctionRepo> definition);
+
 
 }

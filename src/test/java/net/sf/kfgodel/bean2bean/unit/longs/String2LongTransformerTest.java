@@ -4,7 +4,7 @@ import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
 import net.sf.kfgodel.bean2bean.B2bTestContext;
 import net.sf.kfgodel.bean2bean.api.exceptions.FailedToConvertException;
-import net.sf.kfgodel.bean2bean.impl.transfunctions.DeltaImpl;
+import net.sf.kfgodel.bean2bean.impl.repos.primitive.PrimitiveTransfunctionRepoImpl;
 import org.junit.runner.RunWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -19,7 +19,7 @@ public class String2LongTransformerTest extends JavaSpec<B2bTestContext> {
   @Override
   public void define() {
     describe("a string to Long transformer", () -> {
-      context().transfunction(()-> DeltaImpl.create().fromString().toLong());
+      context().transfunction(()-> PrimitiveTransfunctionRepoImpl.create().fromString().toLong());
       
       it("transforms a string representing a numeric integer, to a Long object",()->{
         Long result = (Long) context().transfunction().apply("3");
