@@ -3,11 +3,13 @@ package net.sf.kfgodel.bean2bean.unit.repo;
 import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
 import ar.com.kfgodel.nary.api.optionals.Optional;
+import com.google.common.collect.Sets;
 import net.sf.kfgodel.bean2bean.B2bTestContext;
 import net.sf.kfgodel.bean2bean.impl.repos.primitive.PrimitiveTransfunctionRepoImpl;
 import net.sf.kfgodel.bean2bean.impl.repos.primitive.partials.SourceDefinedPrimitiveTransfunctionDefinition;
 import org.junit.runner.RunWith;
 
+import java.util.Set;
 import java.util.function.Function;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -67,6 +69,10 @@ public class PrimitiveTransfunctionRepoTest extends JavaSpec<B2bTestContext> {
           assertThat(transfunction.isAbsent()).isTrue();
         });
 
+        it("lists all the primitive types",()->{
+          Set<Class<?>> primitiveTypes = context().primitiveRepo().getPrimitiveTypes();
+          assertThat(primitiveTypes).isEqualTo(Sets.newHashSet(String.class, Long.class));
+        });   
       });
 
     });

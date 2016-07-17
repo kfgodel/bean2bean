@@ -1,7 +1,9 @@
 package net.sf.kfgodel.bean2bean.impl.repos.condition.predicates;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.collect.Sets;
 
+import java.util.Set;
 import java.util.function.Predicate;
 
 /**
@@ -10,25 +12,36 @@ import java.util.function.Predicate;
  */
 public class IsAnInstance implements Predicate<Object> {
 
-  private Class<?> type;
-  public static final String type_FIELD = "type";
+  private Set<Class<?>> types;
+  public static final String types_FIELD = "types";
 
 
   public static IsAnInstance of(Class<?> type) {
+    return ofAny(Sets.newHashSet(type));
+  }
+
+  public static IsAnInstance ofAny(Set<Class<?>> types) {
     IsAnInstance condition = new IsAnInstance();
-    condition.type = type;
+    condition.types = types;
     return condition;
   }
 
+
   @Override
   public boolean test(Object o) {
-    return type.isInstance(o);
+    for (Class<?> type : types) {
+      if(type.isInstance(o)){
+        return true;
+      }
+    }
+    return false;
   }
 
   @Override
   public String toString() {
     return MoreObjects.toStringHelper(this)
-      .add(type_FIELD, type)
+      .add(types_FIELD, types)
       .toString();
   }
+
 }

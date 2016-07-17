@@ -23,7 +23,7 @@ public class ConditionBasedTransfunctionRepoImpl implements ConditionBasedTransf
   }
 
   @Override
-  public <I, O> Optional<Function<I, O>> findTransfunctionFor(TransformationIntention transformationIntention) {
+  public <O> Optional<Function<TransformationIntention, O>> findTransfunctionFor(TransformationIntention transformationIntention) {
     return (Optional)Nary.create(rules)
       .filterNary((rule)-> rule.isApplicableTo(transformationIntention))
       .mapNary((rule)-> rule.getTransfunction())
@@ -31,7 +31,7 @@ public class ConditionBasedTransfunctionRepoImpl implements ConditionBasedTransf
   }
 
   @Override
-  public ConditionBasedTransfunctionRepo store(Predicate<TransformationIntention> condition, Function<?, ?> transfunction) {
+  public ConditionBasedTransfunctionRepo store(Predicate<TransformationIntention> condition, Function<TransformationIntention, ?> transfunction) {
     TransformationRule newRule = TransformationRule.create(condition, transfunction);
     this.rules.add(newRule);
     return this;

@@ -22,7 +22,7 @@ public interface ConditionBasedTransfunctionRepo {
    * @param <O> The type od output object
    * @return The optional transfunction if found. Empty if none match the intention
    */
-  <I,O> Optional<Function<I,O>> findTransfunctionFor(TransformationIntention transformationIntention);
+  <O> Optional<Function<TransformationIntention,O>> findTransfunctionFor(TransformationIntention transformationIntention);
 
   /**
    * Stores on this repo the given transfunction, conditioned to the given predicate.
@@ -31,5 +31,5 @@ public interface ConditionBasedTransfunctionRepo {
    * @param transfunction The transformation function to use for the matching intention
    * @return This instance to chain declaration
    */
-  ConditionBasedTransfunctionRepo store(Predicate<TransformationIntention> condition, Function<?,?> transfunction);
+  ConditionBasedTransfunctionRepo store(Predicate<TransformationIntention> condition, Function<TransformationIntention,?> transfunction);
 }

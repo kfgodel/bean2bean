@@ -3,6 +3,8 @@ package net.sf.kfgodel.bean2bean.impl.repos.primitive;
 import ar.com.kfgodel.nary.api.optionals.Optional;
 import net.sf.kfgodel.bean2bean.impl.repos.primitive.partials.SourceDefinedPrimitiveTransfunctionDefinition;
 
+import java.util.Set;
+
 
 /**
  * This type represents the repository for transfuctions for primitive types
@@ -26,4 +28,10 @@ public interface PrimitiveTransfunctionRepo {
    * @return The uncomplete definition or an empty optional if type is not a primitive
    */
   <T> Optional<SourceDefinedPrimitiveTransfunctionDefinition<T>> fromType(Class<T> sourceType);
+
+  /**
+   * Defines the set of primitive types this repo supports for conversions
+   * @return The set of classes that represent all the primitive types
+   */
+  Set<Class<?>> getPrimitiveTypes();
 }

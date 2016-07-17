@@ -21,5 +21,5 @@ public interface SourceDefinedPrimitiveTransfunctionDefinition<I> {
    * @param <T> The expected type after conversion
    * @return The transfunction or empty if destination type is not a primitive type
    */
-  <T> Optional<Function<String,T>> toType(Class<T> destinationType);
+  <O> Optional<Function<I,O>> toType(Class<O> destinationType);
 }

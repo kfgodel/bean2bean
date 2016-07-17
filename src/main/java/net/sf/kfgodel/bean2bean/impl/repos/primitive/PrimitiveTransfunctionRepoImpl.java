@@ -2,12 +2,13 @@ package net.sf.kfgodel.bean2bean.impl.repos.primitive;
 
 import ar.com.kfgodel.nary.api.Nary;
 import ar.com.kfgodel.nary.api.optionals.Optional;
+import com.google.common.collect.Sets;
 import net.sf.kfgodel.bean2bean.impl.repos.primitive.partials.SourceDefinedPrimitiveTransfunctionDefinition;
 import net.sf.kfgodel.bean2bean.impl.repos.primitive.partials.StringDefinedPrimitiveTransfuctionDefinition;
 
 import java.util.HashMap;
 import java.util.Map;
-
+import java.util.Set;
 
 
 /**
@@ -32,6 +33,11 @@ public class PrimitiveTransfunctionRepoImpl implements PrimitiveTransfunctionRep
   public <T> Optional<SourceDefinedPrimitiveTransfunctionDefinition<T>> fromType(Class<T> sourceType) {
     SourceDefinedPrimitiveTransfunctionDefinition<T> definition = getDefinitionByClass().get(sourceType);
     return Nary.ofNullable(definition);
+  }
+
+  @Override
+  public Set<Class<?>> getPrimitiveTypes() {
+    return Sets.newHashSet(Long.class, String.class);
   }
 
   public Map<Class, SourceDefinedPrimitiveTransfunctionDefinition> getDefinitionByClass() {
