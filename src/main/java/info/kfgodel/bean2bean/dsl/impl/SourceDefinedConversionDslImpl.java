@@ -4,6 +4,7 @@ import info.kfgodel.bean2bean.core.api.Bean2bean;
 import info.kfgodel.bean2bean.core.api.exceptions.B2bException;
 import info.kfgodel.bean2bean.core.impl.conversion.ObjectConversion;
 import info.kfgodel.bean2bean.dsl.api.SourceDefinedConversionDsl;
+import info.kfgodel.bean2bean.other.TypeRef;
 
 /**
  * Partial definition of a conversion with the source object defined
@@ -24,6 +25,16 @@ public class SourceDefinedConversionDslImpl<I> implements SourceDefinedConversio
   @Override
   public <O> O to(Class<O> outputClass) throws B2bException {
     ObjectConversion conversion = ObjectConversion.create(source, outputClass);
+    return processConversion(conversion);
+  }
+
+  @Override
+  public <O> O to(TypeRef<O> outputTypeRef) throws B2bException {
+    ObjectConversion conversion = ObjectConversion.create(source, outputTypeRef.getReference());
+    return processConversion(conversion);
+  }
+
+  private <O> O processConversion(ObjectConversion conversion) {
     return getCore().process(conversion);
   }
 
