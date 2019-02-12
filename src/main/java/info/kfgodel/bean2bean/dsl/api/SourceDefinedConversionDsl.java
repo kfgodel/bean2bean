@@ -1,6 +1,6 @@
 package info.kfgodel.bean2bean.dsl.api;
 
-import info.kfgodel.bean2bean.core.api.B2bException;
+import info.kfgodel.bean2bean.core.api.exceptions.B2bException;
 
 /**
  * This type defines the available options for a conversion once the

@@ -1,4 +1,4 @@
-package info.kfgodel.bean2bean.core.api;
+package info.kfgodel.bean2bean.core.api.exceptions;
 
 /**
  * This type represents an error on bean 2 bean

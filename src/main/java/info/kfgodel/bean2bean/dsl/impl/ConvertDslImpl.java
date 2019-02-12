@@ -1,5 +1,6 @@
 package info.kfgodel.bean2bean.dsl.impl;
 
+import info.kfgodel.bean2bean.core.api.Bean2bean;
 import info.kfgodel.bean2bean.dsl.api.ConvertDsl;
 import info.kfgodel.bean2bean.dsl.api.SourceDefinedConversionDsl;
 
@@ -9,13 +10,20 @@ import info.kfgodel.bean2bean.dsl.api.SourceDefinedConversionDsl;
  */
 public class ConvertDslImpl implements ConvertDsl {
 
-  public static ConvertDslImpl create() {
+  private Dsl parentDsl;
+
+  public static ConvertDslImpl create(Dsl dsl) {
     ConvertDslImpl convertDsl = new ConvertDslImpl();
+    convertDsl.parentDsl = dsl;
     return convertDsl;
   }
 
   @Override
   public <I> SourceDefinedConversionDsl<I> from(I source) {
-    return SourceDefinedConversionDslImpl.create();
+    return SourceDefinedConversionDslImpl.create(this, source);
+  }
+
+  public Bean2bean getCore() {
+    return parentDsl.getCore();
   }
 }

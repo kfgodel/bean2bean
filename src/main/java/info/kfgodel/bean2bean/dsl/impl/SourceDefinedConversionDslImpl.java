@@ -1,6 +1,8 @@
 package info.kfgodel.bean2bean.dsl.impl;
 
-import info.kfgodel.bean2bean.core.api.B2bException;
+import info.kfgodel.bean2bean.core.api.Bean2bean;
+import info.kfgodel.bean2bean.core.api.exceptions.B2bException;
+import info.kfgodel.bean2bean.core.impl.conversion.ObjectConversion;
 import info.kfgodel.bean2bean.dsl.api.SourceDefinedConversionDsl;
 
 /**
@@ -9,13 +11,23 @@ import info.kfgodel.bean2bean.dsl.api.SourceDefinedConversionDsl;
  */
 public class SourceDefinedConversionDslImpl<I> implements SourceDefinedConversionDsl<I> {
 
-  public static SourceDefinedConversionDslImpl create() {
-    SourceDefinedConversionDslImpl sourceDefinedConversionDsl = new SourceDefinedConversionDslImpl();
+  private ConvertDslImpl parentDsl;
+  private I source;
+
+  public static<I> SourceDefinedConversionDslImpl<I> create(ConvertDslImpl convertDsl, I source) {
+    SourceDefinedConversionDslImpl<I> sourceDefinedConversionDsl = new SourceDefinedConversionDslImpl<>();
+    sourceDefinedConversionDsl.parentDsl = convertDsl;
+    sourceDefinedConversionDsl.source = source;
     return sourceDefinedConversionDsl;
   }
 
   @Override
   public <O> O to(Class<O> outputClass) throws B2bException {
-    throw new B2bException("Impossible conversion: No converter found from \"1\" to java.lang.Integer");
+    ObjectConversion conversion = ObjectConversion.create(source, outputClass);
+    return getCore().process(conversion);
+  }
+
+  private Bean2bean getCore() {
+    return parentDsl.getCore();
   }
 }
