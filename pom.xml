@@ -41,6 +41,7 @@
       <groupId>info.kfgodel</groupId>
       <artifactId>java-spec</artifactId>
       <version>${version.javaspec}</version>
+      <scope>test</scope>
     </dependency>
 
   </dependencies>
