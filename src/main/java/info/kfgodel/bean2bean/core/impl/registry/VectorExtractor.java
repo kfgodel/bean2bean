@@ -1,5 +1,7 @@
 package info.kfgodel.bean2bean.core.impl.registry;
 
+import info.kfgodel.bean2bean.other.TypeVector;
+
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.function.Function;

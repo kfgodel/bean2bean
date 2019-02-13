@@ -2,7 +2,7 @@ package info.kfgodel.bean2bean.core.impl.conversion;
 
 import info.kfgodel.bean2bean.core.api.Bean2beanTask;
 import info.kfgodel.bean2bean.core.api.exceptions.B2bException;
-import info.kfgodel.bean2bean.core.impl.registry.TypeVector;
+import info.kfgodel.bean2bean.other.TypeVector;
 
 import java.lang.reflect.Type;
 

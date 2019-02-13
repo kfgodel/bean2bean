@@ -3,6 +3,7 @@ package info.kfgodel.bean2bean.core.impl.registry;
 import info.kfgodel.bean2bean.core.api.registry.Bean2BeanRegistry;
 import info.kfgodel.bean2bean.core.impl.conversion.ObjectConversion;
 import info.kfgodel.bean2bean.core.impl.registry.definitions.ConverterDefinition;
+import info.kfgodel.bean2bean.other.TypeVector;
 
 import java.util.HashMap;
 import java.util.Map;

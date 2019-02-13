@@ -5,22 +5,22 @@ import java.util.function.Function;
 
 /**
  * This class serves as a way to declare function lambdas while retaining their type argument on runtime.<br>
- *  By creating subclasses of this type you can get the {@link java.lang.reflect.Type} arguments used to
- *  parameterize the function.
- *
+ * By creating subclasses of this type you can get the {@link java.lang.reflect.Type} arguments used to
+ * parameterize the function.
+ * <p>
  * Date: 13/02/19 - 18:57
  */
-public abstract class FunctionRef<I,O> {
+public abstract class FunctionRef<I, O> {
 
-  private final Function<I,O> function;
+  private final Function<I, O> function;
   private Type[] actualTypeArguments;
 
-  public FunctionRef(Function<I,O> function) {
-    this.function = function;
+  public FunctionRef(Function<? super I, ? extends O> function) {
+    this.function = (Function<I, O>) function;
   }
 
   public Type[] getActualTypeArguments() {
-    if(actualTypeArguments == null){
+    if (actualTypeArguments == null) {
       actualTypeArguments = TypeRef.getActualTypeArgumentsFrom(getClass(), FunctionRef.class);
     }
     return actualTypeArguments;
@@ -30,11 +30,15 @@ public abstract class FunctionRef<I,O> {
     return function;
   }
 
-  public Type getInputType(){
+  public Type getInputType() {
     return getActualTypeArguments()[0];
   }
 
-  public Type getOutputType(){
+  public Type getOutputType() {
     return getActualTypeArguments()[1];
+  }
+
+  public TypeVector getInputOutputVector() {
+    return TypeVector.create(getInputType(), getOutputType());
   }
 }

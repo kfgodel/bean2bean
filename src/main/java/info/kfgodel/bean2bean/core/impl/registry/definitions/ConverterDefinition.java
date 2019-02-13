@@ -1,6 +1,6 @@
 package info.kfgodel.bean2bean.core.impl.registry.definitions;
 
-import info.kfgodel.bean2bean.core.impl.registry.TypeVector;
+import info.kfgodel.bean2bean.other.TypeVector;
 
 import java.util.function.Function;
 

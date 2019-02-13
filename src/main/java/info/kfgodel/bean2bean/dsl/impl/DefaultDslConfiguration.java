@@ -4,12 +4,12 @@ import info.kfgodel.bean2bean.core.api.Bean2bean;
 import info.kfgodel.bean2bean.core.api.Bean2beanConfiguration;
 import info.kfgodel.bean2bean.core.impl.Bean2BeanImpl;
 import info.kfgodel.bean2bean.core.impl.DefaultBean2BeanConfiguration;
-import info.kfgodel.bean2bean.core.impl.registry.TypeVector;
 import info.kfgodel.bean2bean.core.impl.registry.VectorExtractor;
 import info.kfgodel.bean2bean.core.impl.registry.definitions.ConverterDefinition;
 import info.kfgodel.bean2bean.core.impl.registry.definitions.FunctionAsConverterDefinition;
 import info.kfgodel.bean2bean.dsl.api.B2bDslConfig;
 import info.kfgodel.bean2bean.other.FunctionRef;
+import info.kfgodel.bean2bean.other.TypeVector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +37,7 @@ public class DefaultDslConfiguration implements B2bDslConfig {
 
   @Override
   public B2bDslConfig usingConverter(FunctionRef<?, ?> converterFunctionRef) {
-    TypeVector implicitVector = TypeVector.create(converterFunctionRef.getInputType(), converterFunctionRef.getOutputType());
+    TypeVector implicitVector = converterFunctionRef.getInputOutputVector();
     Function<?, ?> function = converterFunctionRef.getFunction();
     return usingConverter(implicitVector, function);
   }

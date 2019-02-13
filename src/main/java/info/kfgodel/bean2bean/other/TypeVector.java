@@ -1,4 +1,4 @@
-package info.kfgodel.bean2bean.core.impl.registry;
+package info.kfgodel.bean2bean.other;
 
 import java.lang.reflect.Type;
 import java.util.Objects;
