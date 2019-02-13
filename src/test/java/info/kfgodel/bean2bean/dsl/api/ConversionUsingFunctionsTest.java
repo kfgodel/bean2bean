@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 import info.kfgodel.bean2bean.core.api.exceptions.B2bException;
 import info.kfgodel.bean2bean.dsl.impl.DefaultDslConfiguration;
 import info.kfgodel.bean2bean.dsl.impl.Dsl;
+import info.kfgodel.bean2bean.other.FunctionRef;
 import info.kfgodel.bean2bean.other.TypeRef;
 import org.junit.runner.RunWith;
 
@@ -36,7 +37,7 @@ public class ConversionUsingFunctionsTest extends JavaSpec<B2bTestContext> {
 
       describe("when a converter is pre-defined in the config using a function", () -> {
         test().config(() -> DefaultDslConfiguration.create()
-          .usingConverter(StringToIntegerConverter.create())
+          .usingConverter(new FunctionRef<String,Integer>(Integer::parseInt){})
         );
 
         it("can convert the input value if it matches the functions input's type", () -> {

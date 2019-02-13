@@ -24,7 +24,7 @@ public class Bean2BeanImpl implements Bean2bean {
 
   @Override
   public <O> O process(ObjectConversion task) {
-    Optional<Function<ObjectConversion, O>> foundProcess = config.getRegistry().findBestProcessFor(task);
+    Optional<Function<ObjectConversion, O>> foundProcess = config.getRegistry().findBestConverterFor(task);
     return foundProcess
       .map(process -> process.apply(task))
       .orElseThrow(task::exceptionForMissingProcess);

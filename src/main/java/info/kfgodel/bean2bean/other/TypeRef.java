@@ -8,8 +8,6 @@ import java.lang.reflect.Type;
  * By creating subclasses of this type you can get a {@link java.lang.reflect.Type} instance with full type arguments
  * and use it for conversions.<br>
  * <p>
- * <p>
- * <p>
  * Date: 12/02/19 - 20:09
  *
  * @param <T> Type variable defined by subclass
@@ -22,16 +20,21 @@ public abstract class TypeRef<T> {
    * @return The complete generic type argument used to define "T"
    */
   public Type getReference() {
-    checkSimpleInheritance();
-    ParameterizedType parameterizedClass = (ParameterizedType) getClass().getGenericSuperclass();
-    Type actualTypeArgument = parameterizedClass.getActualTypeArguments()[0];
+    Type[] actualTypeArguments = getActualTypeArgumentsFrom(getClass(), TypeRef.class);
+    Type actualTypeArgument = actualTypeArguments[0];
     return actualTypeArgument;
   }
 
-  private void checkSimpleInheritance() {
-    Class<?> superclass = getClass().getSuperclass();
-    if (!superclass.equals(TypeRef.class)) {
-      throw new IllegalStateException("TypeRef should have only one level subclass. " + superclass + " is in the middle of the inheritance");
+  public static <T> Type[] getActualTypeArgumentsFrom(Class<? extends T> aClass, Class<? super T> expectedSuperType) {
+    checkSimpleInheritance(aClass, expectedSuperType);
+    ParameterizedType parameterizedClass = (ParameterizedType) aClass.getGenericSuperclass();
+    return parameterizedClass.getActualTypeArguments();
+  }
+
+  private static void checkSimpleInheritance(Class aClass, Class expectedSuperType) {
+    Class<?> superclass = aClass.getSuperclass();
+    if (!superclass.equals(expectedSuperType)) {
+      throw new IllegalStateException(expectedSuperType.getSimpleName() + " should have only one level subclass. " + superclass + " is in the middle of the inheritance");
     }
   }
 }
