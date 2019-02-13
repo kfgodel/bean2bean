@@ -4,7 +4,12 @@ import info.kfgodel.bean2bean.core.api.Bean2bean;
 import info.kfgodel.bean2bean.core.api.Bean2beanConfiguration;
 import info.kfgodel.bean2bean.core.impl.Bean2BeanImpl;
 import info.kfgodel.bean2bean.core.impl.DefaultBean2BeanConfiguration;
+import info.kfgodel.bean2bean.core.impl.registry.TypeVector;
+import info.kfgodel.bean2bean.core.impl.registry.VectorExtractor;
+import info.kfgodel.bean2bean.core.impl.registry.definitions.ConverterDefinition;
+import info.kfgodel.bean2bean.core.impl.registry.definitions.FunctionAsConverterDefinition;
 import info.kfgodel.bean2bean.dsl.api.B2bDslConfig;
+import info.kfgodel.bean2bean.other.FunctionRef;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,17 +21,30 @@ import java.util.function.Function;
  */
 public class DefaultDslConfiguration implements B2bDslConfig {
 
-  private List<Function> converterFunctions;
+  private List<ConverterDefinition> converterDefinitions;
 
   public static DefaultDslConfiguration create() {
     DefaultDslConfiguration config = new DefaultDslConfiguration();
-    config.converterFunctions = new ArrayList<>();
+    config.converterDefinitions = new ArrayList<>();
     return config;
   }
 
   @Override
   public B2bDslConfig usingConverter(Function<?, ?> converterFunction) {
-    converterFunctions.add(converterFunction);
+    TypeVector implicitVector = VectorExtractor.create().apply(converterFunction);
+    return usingConverter(implicitVector, converterFunction);
+  }
+
+  @Override
+  public B2bDslConfig usingConverter(FunctionRef<?, ?> converterFunctionRef) {
+    TypeVector implicitVector = TypeVector.create(converterFunctionRef.getInputType(), converterFunctionRef.getOutputType());
+    Function<?, ?> function = converterFunctionRef.getFunction();
+    return usingConverter(implicitVector, function);
+  }
+
+  private B2bDslConfig usingConverter(TypeVector conversionVector, Function converterFunction) {
+    ConverterDefinition converterDefinition = FunctionAsConverterDefinition.create(conversionVector, converterFunction);
+    converterDefinitions.add(converterDefinition);
     return this;
   }
 
@@ -38,7 +56,7 @@ public class DefaultDslConfiguration implements B2bDslConfig {
 
   private Bean2beanConfiguration createConfiguration() {
     DefaultBean2BeanConfiguration configuration = DefaultBean2BeanConfiguration.create();
-    converterFunctions.forEach(configuration.getRegistry()::store);
+    converterDefinitions.forEach(configuration.getRegistry()::store);
     return configuration;
   }
 }

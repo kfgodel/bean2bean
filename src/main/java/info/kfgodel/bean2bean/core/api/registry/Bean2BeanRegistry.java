@@ -1,6 +1,7 @@
 package info.kfgodel.bean2bean.core.api.registry;
 
 import info.kfgodel.bean2bean.core.impl.conversion.ObjectConversion;
+import info.kfgodel.bean2bean.core.impl.registry.definitions.ConverterDefinition;
 
 import java.util.Optional;
 import java.util.function.Function;
@@ -21,12 +22,12 @@ public interface Bean2BeanRegistry {
    * @param <O> The type of expected output
    * @return The process found, or empty if none exists for the input
    */
-  <I extends ObjectConversion, O> Optional<Function<I,O>> findBestProcessFor(I input);
+  <I extends ObjectConversion, O> Optional<Function<I,O>> findBestConverterFor(I input);
 
   /**
-   * Stores the given process in this registry for later search in output generation
-   * @param process The process to include in the registry
+   * Stores the given converter definition in this registry so the converter can be used on conversions
+   * @param definition The descripcion of the converter
    * @return This instance for method chaining
    */
-  Bean2BeanRegistry store(Function<?,?> process);
+  Bean2BeanRegistry store(ConverterDefinition definition);
 }

@@ -3,10 +3,10 @@ package info.kfgodel.bean2bean.core.impl.conversion;
 import java.util.function.Function;
 
 /**
- * This type represents the process needed to make an object conversion
+ * This type represents the converter based on a simple function to do the actual conversion from input value
  * Date: 12/02/19 - 01:18
  */
-public class ObjectConversionProcess implements Function<ObjectConversion, Object> {
+public class FunctionConverter implements Function<ObjectConversion, Object> {
 
   private Function converter;
 
@@ -17,8 +17,8 @@ public class ObjectConversionProcess implements Function<ObjectConversion, Objec
     return output;
   }
 
-  public static ObjectConversionProcess create(Function converter) {
-    ObjectConversionProcess process = new ObjectConversionProcess();
+  public static FunctionConverter create(Function converter) {
+    FunctionConverter process = new FunctionConverter();
     process.converter = converter;
     return process;
   }
