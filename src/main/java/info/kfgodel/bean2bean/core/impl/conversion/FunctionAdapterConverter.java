@@ -6,7 +6,7 @@ import java.util.function.Function;
  * This type represents the converter based on a simple function to do the actual conversion from input value
  * Date: 12/02/19 - 01:18
  */
-public class FunctionConverter implements Function<ObjectConversion, Object> {
+public class FunctionAdapterConverter implements Function<ObjectConversion, Object> {
 
   private Function function;
 
@@ -17,8 +17,8 @@ public class FunctionConverter implements Function<ObjectConversion, Object> {
     return output;
   }
 
-  public static FunctionConverter create(Function function) {
-    FunctionConverter process = new FunctionConverter();
+  public static FunctionAdapterConverter create(Function function) {
+    FunctionAdapterConverter process = new FunctionAdapterConverter();
     process.function = function;
     return process;
   }

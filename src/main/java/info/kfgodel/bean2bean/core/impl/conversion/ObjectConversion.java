@@ -4,6 +4,7 @@ import info.kfgodel.bean2bean.core.api.Bean2beanTask;
 import info.kfgodel.bean2bean.core.api.exceptions.Bean2BeanException;
 import info.kfgodel.bean2bean.other.TypeVector;
 
+import javax.lang.model.type.NullType;
 import java.lang.reflect.Type;
 
 /**
@@ -27,6 +28,9 @@ public class ObjectConversion implements Bean2beanTask {
   }
 
   private Class<?> getSourceType() {
+    if(source == null){
+      return NullType.class;
+    }
     return source.getClass();
   }
 

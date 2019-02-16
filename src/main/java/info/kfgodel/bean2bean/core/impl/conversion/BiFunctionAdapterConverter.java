@@ -11,7 +11,7 @@ import java.util.function.Function;
  *
  * Date: 16/02/19 - 14:30
  */
-public class BiFunctionConverter implements Function<ObjectConversion, Object> {
+public class BiFunctionAdapterConverter implements Function<ObjectConversion, Object> {
 
   private B2bDsl b2bDsl;
   private BiFunction biFunction;
@@ -23,8 +23,8 @@ public class BiFunctionConverter implements Function<ObjectConversion, Object> {
     return output;
   }
 
-  public static BiFunctionConverter create(BiFunction function,  B2bDsl b2bDsl) {
-    BiFunctionConverter converter = new BiFunctionConverter();
+  public static BiFunctionAdapterConverter create(BiFunction function, B2bDsl b2bDsl) {
+    BiFunctionAdapterConverter converter = new BiFunctionAdapterConverter();
     converter.biFunction = function;
     converter.b2bDsl = b2bDsl;
     return converter;

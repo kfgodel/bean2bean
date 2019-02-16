@@ -93,8 +93,19 @@ public class ConversionUsingFunctionsTest extends JavaSpec<B2bTestContext> {
             assertThat(result).isEqualTo(Lists.newArrayList("8"));
           });
         });
+      });
 
+      describe("when no input is needed for the converter", () -> {
+        beforeEach(()->{
+          test().dsl().configure().usingConverter(ArrayListGenerator.create());
+        });
 
+        it("allows instance creation",()->{
+          List result = test().dsl().convert().from(null).to(List.class);
+          assertThat(result)
+            .isNotNull()
+            .isEmpty();
+        });
       });
 
 

@@ -4,6 +4,7 @@ import info.kfgodel.bean2bean.other.FunctionRef;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * This type represents the configuration parameters that a b2b dsl can have
@@ -38,4 +39,12 @@ public interface ConfigureDsl {
    */
   ConfigureDsl usingConverter(BiFunction<?,B2bDsl,?> converterFunction);
 
+
+  /**
+   * Registers a converter function that requires no parameters as input for the conversion.<br>
+   *   Usually this converters are used as generators to instantiate other types
+   * @param converterFunction The function to use a generator
+   * @return This instance for method chaining
+   */
+  ConfigureDsl usingConverter(Supplier<?> converterFunction);
 }
