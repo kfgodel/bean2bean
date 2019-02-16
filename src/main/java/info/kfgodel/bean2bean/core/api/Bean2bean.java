@@ -1,5 +1,6 @@
 package info.kfgodel.bean2bean.core.api;
 
+import info.kfgodel.bean2bean.core.api.registry.Bean2BeanRegistry;
 import info.kfgodel.bean2bean.core.impl.conversion.ObjectConversion;
 
 /**
@@ -18,4 +19,11 @@ public interface Bean2bean {
    * @return The result of processing the task
    */
   <O> O process(ObjectConversion task);
+
+  /**
+   * Allows access to the converter registry for this instance.<br>
+   *   The registry is where bean2bean looks for options when doing a conversion
+   * @return This instance registry
+   */
+  Bean2BeanRegistry getRegistry();
 }

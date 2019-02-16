@@ -1,7 +1,7 @@
 package info.kfgodel.bean2bean.core.impl.conversion;
 
 import info.kfgodel.bean2bean.core.api.Bean2beanTask;
-import info.kfgodel.bean2bean.core.api.exceptions.B2bException;
+import info.kfgodel.bean2bean.core.api.exceptions.Bean2BeanException;
 import info.kfgodel.bean2bean.other.TypeVector;
 
 import java.lang.reflect.Type;
@@ -30,8 +30,8 @@ public class ObjectConversion implements Bean2beanTask {
     return source.getClass();
   }
 
-  public B2bException exceptionForMissingProcess() {
-    return new B2bException("Impossible conversion: No converter found from "+source+"("+getSourceType().getName()+") to " + destinationType.getTypeName());
+  public Bean2BeanException exceptionForMissingConverter() {
+    return new Bean2BeanException("No converter found from "+source+"("+getSourceType().getName()+") to " + destinationType.getTypeName());
   }
 
   public Object getSource() {

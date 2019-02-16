@@ -1,6 +1,6 @@
 package info.kfgodel.bean2bean.dsl.api;
 
-import info.kfgodel.bean2bean.core.api.exceptions.B2bException;
+import info.kfgodel.bean2bean.core.api.exceptions.Bean2BeanException;
 import info.kfgodel.bean2bean.other.TypeRef;
 
 /**
@@ -17,10 +17,10 @@ public interface SourceDefinedConversionDsl<I> {
    *                    the conversion
    * @param <O> The type of expected output
    * @return The generated output after the conversion
-   * @throws B2bException If an error happened during conversion (like failed
+   * @throws Bean2BeanException If an error happened during conversion (like failed
    * or missing converter for the transformation)
    */
-  <O> O to(Class<O> outputClass) throws B2bException;
+  <O> O to(Class<O> outputClass) throws Bean2BeanException;
 
   /**
    * Converts the source object into an instance of the expected class
@@ -28,8 +28,8 @@ public interface SourceDefinedConversionDsl<I> {
    *                    the conversion (usually a parameterized type)
    * @param <O> The type of expected output
    * @return The generated output after the conversion
-   * @throws B2bException If an error happened during conversion (like failed
+   * @throws Bean2BeanException If an error happened during conversion (like failed
    * or missing converter for the transformation)
    */
-  <O> O to(TypeRef<O> outputTypeRef) throws B2bException;
+  <O> O to(TypeRef<O> outputTypeRef) throws Bean2BeanException;
 }

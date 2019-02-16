@@ -8,18 +8,18 @@ import java.util.function.Function;
  */
 public class FunctionConverter implements Function<ObjectConversion, Object> {
 
-  private Function converter;
+  private Function function;
 
   @Override
   public Object apply(ObjectConversion objectConversion) {
     Object input = objectConversion.getSource();
-    Object output = converter.apply(input);
+    Object output = function.apply(input);
     return output;
   }
 
-  public static FunctionConverter create(Function converter) {
+  public static FunctionConverter create(Function function) {
     FunctionConverter process = new FunctionConverter();
-    process.converter = converter;
+    process.function = function;
     return process;
   }
 
