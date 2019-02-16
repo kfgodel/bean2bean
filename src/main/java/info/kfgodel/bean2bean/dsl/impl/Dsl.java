@@ -31,7 +31,7 @@ public class Dsl implements B2bDsl {
   }
 
   @Override
-  public CreateDsl make() {
+  public CreateDsl generate() {
     return CreateDslImpl.create(this);
   }
 

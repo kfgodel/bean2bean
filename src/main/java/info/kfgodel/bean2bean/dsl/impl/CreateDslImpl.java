@@ -23,6 +23,15 @@ public class CreateDslImpl implements CreateDsl {
     }
   }
 
+  @Override
+  public <E> E[] anArrayOf(int arraySize, Class<E[]> expectedArrayClass) throws Bean2BeanException {
+    try {
+      return dsl.convert().from(arraySize).to(expectedArrayClass);
+    } catch (ConversionException e) {
+      throw new CreationException("Creation from "+expectedArrayClass+" to " + expectedArrayClass.getTypeName() + " failed: " + e.getMessage(), expectedArrayClass,e);
+    }
+  }
+
   public static CreateDslImpl create(B2bDsl b2bDsl) {
     CreateDslImpl createDsl = new CreateDslImpl();
     createDsl.dsl = b2bDsl;

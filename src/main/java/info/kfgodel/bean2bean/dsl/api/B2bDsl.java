@@ -18,7 +18,7 @@ public interface B2bDsl {
    * Initiates a creation operation, where input is not needed to get an output
    * @return A creation specific DSL
    */
-  CreateDsl make();
+  CreateDsl generate();
 
 
   /**
