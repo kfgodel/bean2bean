@@ -2,7 +2,7 @@ package info.kfgodel.bean2bean.dsl.api;
 
 import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
-import info.kfgodel.bean2bean.core.api.exceptions.ConversionException;
+import info.kfgodel.bean2bean.core.api.exceptions.CreationException;
 import info.kfgodel.bean2bean.dsl.impl.Dsl;
 import org.junit.runner.RunWith;
 
@@ -22,10 +22,23 @@ public class InstanceCreationTest extends JavaSpec<B2bTestContext> {
 
       describe("with a default configuration", () -> {
 
-        itThrows(ConversionException.class, "when any creation is attempted", () -> {
-          test().dsl().convert().from(null).to(List.class);
+        itThrows(CreationException.class, "when any creation is attempted", () -> {
+          test().dsl().make().anInstanceOf(List.class);
         }, e -> {
-          assertThat(e).hasMessage("No converter found from null(javax.lang.model.type.NullType) to java.util.List");
+          assertThat(e).hasMessage("Creation from null to java.util.List failed: No converter found from null(javax.lang.model.type.NullType) to java.util.List");
+        });
+      });
+
+      describe("when a converter from null is configured", () -> {
+        beforeEach(() -> {
+          test().dsl().configure().usingConverter(ArrayListGenerator.create());
+        });
+
+        it("is used for instance creation", () -> {
+          List list = test().dsl().make().anInstanceOf(List.class);
+          assertThat(list)
+            .isNotNull()
+            .isEmpty();
         });
       });
 

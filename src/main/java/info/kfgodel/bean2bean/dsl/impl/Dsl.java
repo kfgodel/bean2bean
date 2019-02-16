@@ -5,6 +5,7 @@ import info.kfgodel.bean2bean.core.impl.Bean2BeanImpl;
 import info.kfgodel.bean2bean.dsl.api.B2bDsl;
 import info.kfgodel.bean2bean.dsl.api.ConfigureDsl;
 import info.kfgodel.bean2bean.dsl.api.ConvertDsl;
+import info.kfgodel.bean2bean.dsl.api.CreateDsl;
 
 /**
  * This type implements the b2b dsl
@@ -27,6 +28,11 @@ public class Dsl implements B2bDsl {
   @Override
   public ConvertDsl convert() {
     return ConvertDslImpl.create(this);
+  }
+
+  @Override
+  public CreateDsl make() {
+    return CreateDslImpl.create(this);
   }
 
   @Override

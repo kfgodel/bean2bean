@@ -9,16 +9,24 @@ import info.kfgodel.bean2bean.core.api.Bean2bean;
  */
 public interface B2bDsl {
   /**
-   * Initiates a conversion operation
+   * Initiates a conversion operation, transforming an input into an output
    * @return A conversion specific DSL
    */
   ConvertDsl convert();
+
+  /**
+   * Initiates a creation operation, where input is not needed to get an output
+   * @return A creation specific DSL
+   */
+  CreateDsl make();
+
 
   /**
    * Allows access to the configuration of b2b state and behavior
    * @return The dsl instanace to configura b2b with
    */
   ConfigureDsl configure();
+
 
   /**
    * Allows access to the core instance of bean2bean that handles the actual conversions.<br>

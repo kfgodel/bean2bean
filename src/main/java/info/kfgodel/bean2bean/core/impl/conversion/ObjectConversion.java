@@ -28,14 +28,14 @@ public class ObjectConversion implements Bean2beanTask {
   }
 
   private Class<?> getSourceType() {
-    if(source == null){
+    if (source == null) {
       return NullType.class;
     }
     return source.getClass();
   }
 
   public ConversionException exceptionForMissingConverter() {
-    return new ConversionException("No converter found from "+source+"("+getSourceType().getName()+") to " + destinationType.getTypeName());
+    return new ConversionException("No converter found from " + source + "(" + getSourceType().getName() + ") to " + destinationType.getTypeName(), source, destinationType);
   }
 
   public Object getSource() {
