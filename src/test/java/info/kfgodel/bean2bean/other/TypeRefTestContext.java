@@ -16,5 +16,11 @@ public interface TypeRefTestContext extends TestContext {
   FunctionRef functionRef();
   void functionRef(Supplier<FunctionRef> definition);
 
+  SupplierRef supplierRef();
+  void supplierRef(Supplier<SupplierRef> definition);
+
+  BiFunctionRef bifunctionRef();
+  void bifunctionRef(Supplier<BiFunctionRef> definition);
+
 
 }

@@ -1,6 +1,8 @@
 package info.kfgodel.bean2bean.dsl.api;
 
+import info.kfgodel.bean2bean.other.BiFunctionRef;
 import info.kfgodel.bean2bean.other.FunctionRef;
+import info.kfgodel.bean2bean.other.SupplierRef;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -39,6 +41,13 @@ public interface ConfigureDsl {
    */
   ConfigureDsl usingConverter(BiFunction<?,B2bDsl,?> converterFunction);
 
+  /**
+   * Registers a converter function though its reference that will need access to b2b dsl as part of
+   * the conversion process. Usually for delegating the conversion of one or mor parts of the original object.
+   * @param converterFunction The function to use as converter
+   * @return This instance for method chaining
+   */
+  ConfigureDsl usingConverter(BiFunctionRef<?,B2bDsl,?> converterFunction);
 
   /**
    * Registers a converter function that requires no parameters as input for the conversion.<br>
@@ -47,4 +56,13 @@ public interface ConfigureDsl {
    * @return This instance for method chaining
    */
   ConfigureDsl usingConverter(Supplier<?> converterFunction);
+
+  /**
+   * Registers a converter function through its reference that requires no parameters as input for the conversion.<br>
+   *   Usually this converters are used as generators to instantiate other types
+   * @param converterFunction The function to use a generator
+   * @return This instance for method chaining
+   */
+  ConfigureDsl usingConverter(SupplierRef<?> converterFunction);
+
 }

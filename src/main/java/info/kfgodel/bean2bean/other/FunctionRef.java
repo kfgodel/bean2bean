@@ -38,7 +38,4 @@ public abstract class FunctionRef<I, O> {
     return getActualTypeArguments()[1];
   }
 
-  public TypeVector getInputOutputVector() {
-    return TypeVector.create(getInputType(), getOutputType());
-  }
 }

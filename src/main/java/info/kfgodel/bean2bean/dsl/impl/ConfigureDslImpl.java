@@ -8,7 +8,9 @@ import info.kfgodel.bean2bean.core.impl.registry.definitions.ConverterDefinition
 import info.kfgodel.bean2bean.core.impl.registry.definitions.DefaultDefinition;
 import info.kfgodel.bean2bean.dsl.api.B2bDsl;
 import info.kfgodel.bean2bean.dsl.api.ConfigureDsl;
+import info.kfgodel.bean2bean.other.BiFunctionRef;
 import info.kfgodel.bean2bean.other.FunctionRef;
+import info.kfgodel.bean2bean.other.SupplierRef;
 import info.kfgodel.bean2bean.other.TypeVector;
 
 import java.util.function.BiFunction;
@@ -22,42 +24,61 @@ import java.util.function.Supplier;
 public class ConfigureDslImpl implements ConfigureDsl {
 
   private B2bDsl b2bDsl;
+  private TypeVectorExtractor vectorExtractor;
 
   public static ConfigureDslImpl create(B2bDsl b2bDsl) {
     ConfigureDslImpl config = new ConfigureDslImpl();
     config.b2bDsl = b2bDsl;
+    config.vectorExtractor = TypeVectorExtractor.create();
     return config;
   }
 
   @Override
   public ConfigureDsl usingConverter(Function<?, ?> converterFunction) {
-    TypeVector implicitVector = TypeVectorExtractor.create().extractFrom(converterFunction);
-    return usingConverter(implicitVector, converterFunction);
-  }
-
-  @Override
-  public ConfigureDsl usingConverter(BiFunction<?, B2bDsl, ?> converterFunction) {
-    TypeVector implicitVector = TypeVectorExtractor.create().extractFrom(converterFunction);
+    TypeVector implicitVector = vectorExtractor.extractFrom(converterFunction);
     return usingConverter(implicitVector, converterFunction);
   }
 
   @Override
   public ConfigureDsl usingConverter(FunctionRef<?, ?> converterFunctionRef) {
-    TypeVector implicitVector = converterFunctionRef.getInputOutputVector();
+    TypeVector implicitVector = vectorExtractor.extractFrom(converterFunctionRef);
     Function<?, ?> function = converterFunctionRef.getFunction();
     return usingConverter(implicitVector, function);
   }
 
   @Override
+  public ConfigureDsl usingConverter(BiFunction<?, B2bDsl, ?> converterFunction) {
+    TypeVector implicitVector = vectorExtractor.extractFrom(converterFunction);
+    return usingConverter(implicitVector, converterFunction);
+  }
+
+  @Override
+  public ConfigureDsl usingConverter(BiFunctionRef<?, B2bDsl, ?> converterFunction) {
+    TypeVector implicitVector = vectorExtractor.extractFrom(converterFunction);
+    return usingConverter(implicitVector, converterFunction.getBiFunction());
+  }
+
+  @Override
   public ConfigureDsl usingConverter(Supplier<?> converterFunction) {
-    TypeVector implicitVector = TypeVectorExtractor.create().extractFrom(converterFunction);
-    SupplierAdapterConverter converter = SupplierAdapterConverter.create(converterFunction);
-    return usingConverter(implicitVector, converter);
+    TypeVector implicitVector = vectorExtractor.extractFrom(converterFunction);
+    return usingConverter(implicitVector, converterFunction);
+  }
+
+
+  @Override
+  public ConfigureDsl usingConverter(SupplierRef<?> converterFunction) {
+    TypeVector implicitVector = vectorExtractor.extractFrom(converterFunction);
+    return usingConverter(implicitVector, converterFunction.getSupplier());
   }
 
   private ConfigureDsl usingConverter(TypeVector conversionVector, Function converterFunction) {
     Function converter = FunctionAdapterConverter.create(converterFunction);
     return usingConverterFor(conversionVector, converter);
+  }
+
+  private ConfigureDsl usingConverter(TypeVector conversionVector, Supplier<?> converterFunction) {
+    SupplierAdapterConverter converter = SupplierAdapterConverter.create(converterFunction);
+    return usingConverter(conversionVector, converter);
   }
 
   private ConfigureDsl usingConverter(TypeVector conversionVector, BiFunction converterFunction) {

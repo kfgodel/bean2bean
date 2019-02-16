@@ -1,4 +1,6 @@
-package info.kfgodel.bean2bean.dsl.api;
+package info.kfgodel.bean2bean.dsl.api.converters;
+
+import info.kfgodel.bean2bean.dsl.api.B2bDsl;
 
 import java.util.ArrayList;
 import java.util.List;
