@@ -1,4 +1,4 @@
-package info.kfgodel.bean2bean.dsl.api;
+package info.kfgodel.bean2bean.dsl.api.converters;
 
 import java.util.function.Function;
 

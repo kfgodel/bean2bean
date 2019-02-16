@@ -27,10 +27,6 @@ public class FunctionRefTest extends JavaSpec<TypeRefTestContext> {
         assertThat(test().functionRef().getActualTypeArguments()[1]).isEqualTo(Integer.class);
       });
 
-      it("can represent the type arguments as a type vector", () -> {
-        assertThat(test().functionRef().getInputOutputVector()).isEqualTo(TypeVector.create(String.class, Integer.class));
-      });
-
       it("allows access to the function", () -> {
         Function<String, Integer> referencedFunction = test().functionRef().getFunction();
 

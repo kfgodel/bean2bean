@@ -4,11 +4,15 @@ import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
 import com.google.common.collect.Lists;
 import info.kfgodel.bean2bean.core.api.exceptions.ConversionException;
+import info.kfgodel.bean2bean.dsl.api.converters.ArrayListToListOfStringsConverter;
+import info.kfgodel.bean2bean.dsl.api.converters.ArrayListToListOfStringsNestedConverter;
 import info.kfgodel.bean2bean.dsl.impl.Dsl;
 import info.kfgodel.bean2bean.other.FunctionRef;
+import info.kfgodel.bean2bean.other.SupplierRef;
 import info.kfgodel.bean2bean.other.TypeRef;
 import org.junit.runner.RunWith;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -97,7 +101,7 @@ public class ConversionUsingFunctionsTest extends JavaSpec<B2bTestContext> {
 
       describe("when no input is needed for the converter", () -> {
         beforeEach(()->{
-          test().dsl().configure().usingConverter(ArrayListGenerator.create());
+          test().dsl().configure().usingConverter(new SupplierRef<List>(ArrayList::new){});
         });
 
         it("allows instance creation",()->{

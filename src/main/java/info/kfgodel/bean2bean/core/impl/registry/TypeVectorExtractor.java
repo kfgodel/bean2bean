@@ -1,6 +1,9 @@
 package info.kfgodel.bean2bean.core.impl.registry;
 
 import info.kfgodel.bean2bean.dsl.api.B2bDsl;
+import info.kfgodel.bean2bean.other.BiFunctionRef;
+import info.kfgodel.bean2bean.other.FunctionRef;
+import info.kfgodel.bean2bean.other.SupplierRef;
 import info.kfgodel.bean2bean.other.TypeVector;
 
 import javax.lang.model.type.NullType;
@@ -21,6 +24,10 @@ public class TypeVectorExtractor {
     Type outputType = typeArguments[0];
     // null is implicit when supplier is thought as a function
     return TypeVector.create(NullType.class, outputType);
+  }
+
+  public TypeVector extractFrom(SupplierRef<?> converterFunction) {
+    return TypeVector.create(NullType.class, converterFunction.getOutputType());
   }
 
   public TypeVector extractFrom(Function function) {
@@ -46,10 +53,20 @@ public class TypeVectorExtractor {
     return genericFunctionInterface.getActualTypeArguments();
   }
 
+  public TypeVector extractFrom(FunctionRef<?, ?> converterFunctionRef) {
+    Type inputType = converterFunctionRef.getInputType();
+    Type outputType = converterFunctionRef.getOutputType();
+    return TypeVector.create(inputType, outputType);
+  }
 
   public static TypeVectorExtractor create() {
     TypeVectorExtractor extractor = new TypeVectorExtractor();
     return extractor;
   }
 
+  public TypeVector extractFrom(BiFunctionRef<?, B2bDsl, ?> converterFunction) {
+    Type outputType = converterFunction.getOutputType();
+    Type firstInputType = converterFunction.getFirstInputType();
+    return TypeVector.create(firstInputType, outputType);
+  }
 }
