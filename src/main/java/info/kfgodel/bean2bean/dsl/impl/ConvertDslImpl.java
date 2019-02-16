@@ -1,6 +1,7 @@
 package info.kfgodel.bean2bean.dsl.impl;
 
 import info.kfgodel.bean2bean.core.api.Bean2bean;
+import info.kfgodel.bean2bean.dsl.api.B2bDsl;
 import info.kfgodel.bean2bean.dsl.api.ConvertDsl;
 import info.kfgodel.bean2bean.dsl.api.SourceDefinedConversionDsl;
 
@@ -10,9 +11,9 @@ import info.kfgodel.bean2bean.dsl.api.SourceDefinedConversionDsl;
  */
 public class ConvertDslImpl implements ConvertDsl {
 
-  private Dsl parentDsl;
+  private B2bDsl parentDsl;
 
-  public static ConvertDslImpl create(Dsl dsl) {
+  public static ConvertDslImpl create(B2bDsl dsl) {
     ConvertDslImpl convertDsl = new ConvertDslImpl();
     convertDsl.parentDsl = dsl;
     return convertDsl;

@@ -1,9 +1,11 @@
 package info.kfgodel.bean2bean.dsl.impl;
 
-import info.kfgodel.bean2bean.core.impl.registry.VectorExtractor;
-import info.kfgodel.bean2bean.core.impl.registry.definitions.BiFunctionAsConverterDefinition;
+import info.kfgodel.bean2bean.core.impl.conversion.BiFunctionAdapterConverter;
+import info.kfgodel.bean2bean.core.impl.conversion.FunctionAdapterConverter;
+import info.kfgodel.bean2bean.core.impl.conversion.SupplierAdapterConverter;
+import info.kfgodel.bean2bean.core.impl.registry.TypeVectorExtractor;
 import info.kfgodel.bean2bean.core.impl.registry.definitions.ConverterDefinition;
-import info.kfgodel.bean2bean.core.impl.registry.definitions.FunctionAsConverterDefinition;
+import info.kfgodel.bean2bean.core.impl.registry.definitions.DefaultDefinition;
 import info.kfgodel.bean2bean.dsl.api.B2bDsl;
 import info.kfgodel.bean2bean.dsl.api.ConfigureDsl;
 import info.kfgodel.bean2bean.other.FunctionRef;
@@ -11,6 +13,7 @@ import info.kfgodel.bean2bean.other.TypeVector;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * This type defines the defaults for a b2b configuration
@@ -28,13 +31,13 @@ public class ConfigureDslImpl implements ConfigureDsl {
 
   @Override
   public ConfigureDsl usingConverter(Function<?, ?> converterFunction) {
-    TypeVector implicitVector = VectorExtractor.create().extractFrom(converterFunction);
+    TypeVector implicitVector = TypeVectorExtractor.create().extractFrom(converterFunction);
     return usingConverter(implicitVector, converterFunction);
   }
 
   @Override
   public ConfigureDsl usingConverter(BiFunction<?, B2bDsl, ?> converterFunction) {
-    TypeVector implicitVector = VectorExtractor.create().extractFrom(converterFunction);
+    TypeVector implicitVector = TypeVectorExtractor.create().extractFrom(converterFunction);
     return usingConverter(implicitVector, converterFunction);
   }
 
@@ -45,15 +48,26 @@ public class ConfigureDslImpl implements ConfigureDsl {
     return usingConverter(implicitVector, function);
   }
 
+  @Override
+  public ConfigureDsl usingConverter(Supplier<?> converterFunction) {
+    TypeVector implicitVector = TypeVectorExtractor.create().extractFrom(converterFunction);
+    SupplierAdapterConverter converter = SupplierAdapterConverter.create(converterFunction);
+    return usingConverter(implicitVector, converter);
+  }
+
   private ConfigureDsl usingConverter(TypeVector conversionVector, Function converterFunction) {
-    ConverterDefinition converterDefinition = FunctionAsConverterDefinition.create(conversionVector, converterFunction);
-    usingConverter(converterDefinition);
-    return this;
+    Function converter = FunctionAdapterConverter.create(converterFunction);
+    return usingConverterFor(conversionVector, converter);
   }
 
   private ConfigureDsl usingConverter(TypeVector conversionVector, BiFunction converterFunction) {
-    ConverterDefinition converterDefinition = BiFunctionAsConverterDefinition.create(conversionVector, converterFunction, b2bDsl);
-    return usingConverter(converterDefinition);
+    BiFunctionAdapterConverter converter = BiFunctionAdapterConverter.create(converterFunction, b2bDsl);
+    return usingConverterFor(conversionVector, converter);
+  }
+
+  private ConfigureDsl usingConverterFor(TypeVector conversionVector, Function converter) {
+    DefaultDefinition definition = DefaultDefinition.create(converter, conversionVector);
+    return usingConverter(definition);
   }
 
   private ConfigureDsl usingConverter(ConverterDefinition converterDefinition) {
