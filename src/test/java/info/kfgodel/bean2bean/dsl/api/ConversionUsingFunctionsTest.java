@@ -33,7 +33,7 @@ public class ConversionUsingFunctionsTest extends JavaSpec<B2bTestContext> {
         });
       });
 
-      describe("when a converter is defined in the config using a function", () -> {
+      describe("when a converter is configured from a function", () -> {
         beforeEach(() -> {
           // Function ref is needed to avoid losing function type arguments through erasure
           test().dsl().configure().usingConverter(new FunctionRef<String, Integer>(Integer::parseInt) {});
@@ -82,6 +82,18 @@ public class ConversionUsingFunctionsTest extends JavaSpec<B2bTestContext> {
             assertThat(e).hasMessage("No converter found from 8(java.lang.Integer) to java.lang.String");
           });
         });
+
+        describe("and b2b has a converter defined for the part conversion", () -> {
+          beforeEach(()->{
+            test().dsl().configure().usingConverter(new FunctionRef<Integer, String>(String::valueOf) {});
+          });
+
+          it("nests conversions sucessfully",()->{
+            List<String> result = test().dsl().convert().from(Lists.newArrayList(8)).to(new TypeRef<List<String>>() {});
+            assertThat(result).isEqualTo(Lists.newArrayList("8"));
+          });
+        });
+
 
       });
 
