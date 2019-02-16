@@ -2,7 +2,6 @@ package info.kfgodel.bean2bean.dsl.api;
 
 import ar.com.dgarcia.javaspec.api.contexts.TestContext;
 
-import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 /**
@@ -13,9 +12,5 @@ public interface B2bTestContext extends TestContext {
 
   B2bDsl dsl();
   void dsl(Supplier<B2bDsl> definition);
-
-  BiFunction biFunction();
-  void biFunction(Supplier<BiFunction> definition);
-
 
 }

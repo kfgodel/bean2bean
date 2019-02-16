@@ -3,7 +3,7 @@ package info.kfgodel.bean2bean.dsl.api;
 import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
 import com.google.common.collect.Lists;
-import info.kfgodel.bean2bean.core.api.exceptions.Bean2BeanException;
+import info.kfgodel.bean2bean.core.api.exceptions.ConversionException;
 import info.kfgodel.bean2bean.dsl.impl.Dsl;
 import info.kfgodel.bean2bean.other.FunctionRef;
 import info.kfgodel.bean2bean.other.TypeRef;
@@ -26,7 +26,7 @@ public class ConversionUsingFunctionsTest extends JavaSpec<B2bTestContext> {
 
       describe("with a default configuration", () -> {
 
-        itThrows(Bean2BeanException.class, "when any conversion is attempted", () -> {
+        itThrows(ConversionException.class, "when any conversion is attempted", () -> {
           test().dsl().convert().from("1").to(Integer.class);
         }, e -> {
           assertThat(e).hasMessage("No converter found from 1(java.lang.String) to java.lang.Integer");
@@ -44,7 +44,7 @@ public class ConversionUsingFunctionsTest extends JavaSpec<B2bTestContext> {
           assertThat(result).isEqualTo(1);
         });
 
-        itThrows(Bean2BeanException.class, "if the input value types doesn't match the function", () -> {
+        itThrows(ConversionException.class, "if the input value types doesn't match the function", () -> {
           test().dsl().convert().from(1.0).to(Integer.class);
         }, e -> {
           assertThat(e).hasMessage("No converter found from 1.0(java.lang.Double) to java.lang.Integer");
@@ -62,7 +62,7 @@ public class ConversionUsingFunctionsTest extends JavaSpec<B2bTestContext> {
           assertThat(result).isEqualTo(Lists.newArrayList("1"));
         });
 
-        itThrows(Bean2BeanException.class, "if un generified types are expected", () -> {
+        itThrows(ConversionException.class, "if un generified types are expected", () -> {
           test().dsl().convert().from(Lists.newArrayList(1)).to(List.class);
         }, e -> {
           assertThat(e).hasMessage("No converter found from [1](java.util.ArrayList) to java.util.List");
@@ -76,7 +76,7 @@ public class ConversionUsingFunctionsTest extends JavaSpec<B2bTestContext> {
 
         describe("and b2b doesn't have a converter for the part conversion", () -> {
 
-          itThrows(Bean2BeanException.class, "", () -> {
+          itThrows(ConversionException.class, "when the conversion is attempted", () -> {
             test().dsl().convert().from(Lists.newArrayList(8)).to(new TypeRef<List<String>>() {});
           }, e -> {
             assertThat(e).hasMessage("No converter found from 8(java.lang.Integer) to java.lang.String");
