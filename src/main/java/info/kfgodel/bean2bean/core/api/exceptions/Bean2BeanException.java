@@ -4,17 +4,17 @@ package info.kfgodel.bean2bean.core.api.exceptions;
  * This type represents an error on bean 2 bean
  * Date: 10/02/19 - 23:08
  */
-public class B2bException extends RuntimeException {
+public class Bean2BeanException extends RuntimeException {
 
-  public B2bException(String message) {
+  public Bean2BeanException(String message) {
     super(message);
   }
 
-  public B2bException(String message, Throwable cause) {
+  public Bean2BeanException(String message, Throwable cause) {
     super(message, cause);
   }
 
-  public B2bException(Throwable cause) {
+  public Bean2BeanException(Throwable cause) {
     super(cause);
   }
 }

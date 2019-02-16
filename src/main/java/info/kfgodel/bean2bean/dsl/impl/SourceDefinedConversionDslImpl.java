@@ -1,7 +1,7 @@
 package info.kfgodel.bean2bean.dsl.impl;
 
 import info.kfgodel.bean2bean.core.api.Bean2bean;
-import info.kfgodel.bean2bean.core.api.exceptions.B2bException;
+import info.kfgodel.bean2bean.core.api.exceptions.Bean2BeanException;
 import info.kfgodel.bean2bean.core.impl.conversion.ObjectConversion;
 import info.kfgodel.bean2bean.dsl.api.SourceDefinedConversionDsl;
 import info.kfgodel.bean2bean.other.TypeRef;
@@ -23,13 +23,13 @@ public class SourceDefinedConversionDslImpl<I> implements SourceDefinedConversio
   }
 
   @Override
-  public <O> O to(Class<O> outputClass) throws B2bException {
+  public <O> O to(Class<O> outputClass) throws Bean2BeanException {
     ObjectConversion conversion = ObjectConversion.create(source, outputClass);
     return processConversion(conversion);
   }
 
   @Override
-  public <O> O to(TypeRef<O> outputTypeRef) throws B2bException {
+  public <O> O to(TypeRef<O> outputTypeRef) throws Bean2BeanException {
     ObjectConversion conversion = ObjectConversion.create(source, outputTypeRef.getReference());
     return processConversion(conversion);
   }
