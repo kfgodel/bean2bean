@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class TypeRefTest extends JavaSpec<TypeRefTestContext> {
   @Override
   public void define() {
-    describe("a type ref", () -> {
+    describe("a type reference", () -> {
       test().typeRef(() -> new TypeRef<String>() {});
 
       it("can be instantiated only through subclasses", () -> {

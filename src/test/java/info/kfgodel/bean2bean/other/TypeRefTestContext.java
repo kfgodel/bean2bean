@@ -13,4 +13,8 @@ public interface TypeRefTestContext extends TestContext {
   TypeRef typeRef();
   void typeRef(Supplier<TypeRef> definition);
 
+  FunctionRef functionRef();
+  void functionRef(Supplier<FunctionRef> definition);
+
+
 }
