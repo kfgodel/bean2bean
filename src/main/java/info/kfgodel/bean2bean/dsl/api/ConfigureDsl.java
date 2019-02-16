@@ -39,7 +39,6 @@ public interface ConfigureDsl {
    */
   ConfigureDsl usingConverter(BiFunction<?,B2bDsl,?> converterFunction);
 
-
   /**
    * Registers a converter function that requires no parameters as input for the conversion.<br>
    *   Usually this converters are used as generators to instantiate other types

@@ -17,8 +17,7 @@ public class FunctionRefTest extends JavaSpec<TypeRefTestContext> {
   @Override
   public void define() {
     describe("a function reference", () -> {
-      test().functionRef(() -> new FunctionRef<String, Integer>(Integer::parseInt) {
-      });
+      test().functionRef(() -> new FunctionRef<String, Integer>(Integer::parseInt) {});
 
       it("allows access to the function type arguments", () -> {
         assertThat(test().functionRef().getInputType()).isEqualTo(String.class);
