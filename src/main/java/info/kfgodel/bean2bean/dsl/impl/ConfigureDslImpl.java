@@ -1,6 +1,7 @@
 package info.kfgodel.bean2bean.dsl.impl;
 
 import info.kfgodel.bean2bean.core.impl.conversion.BiFunctionAdapterConverter;
+import info.kfgodel.bean2bean.core.impl.conversion.ConsumerAdapterConverter;
 import info.kfgodel.bean2bean.core.impl.conversion.FunctionAdapterConverter;
 import info.kfgodel.bean2bean.core.impl.conversion.ObjectConversion;
 import info.kfgodel.bean2bean.core.impl.conversion.SupplierAdapterConverter;
@@ -15,6 +16,7 @@ import info.kfgodel.bean2bean.other.SupplierRef;
 import info.kfgodel.bean2bean.other.TypeVector;
 
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -35,41 +37,47 @@ public class ConfigureDslImpl implements ConfigureDsl {
   }
 
   @Override
-  public ConfigureDsl usingConverter(Function<?, ?> converterFunction) {
+  public <I,O> ConfigureDsl usingConverter(Function<I, O> converterFunction) {
     TypeVector implicitVector = vectorExtractor.extractFrom(converterFunction);
     return usingConverter(implicitVector, converterFunction);
   }
 
   @Override
-  public ConfigureDsl usingConverter(FunctionRef<?, ?> converterFunctionRef) {
+  public <I,O> ConfigureDsl usingConverter(FunctionRef<I, O> converterFunctionRef) {
     TypeVector implicitVector = vectorExtractor.extractFrom(converterFunctionRef);
     Function<?, ?> function = converterFunctionRef.getFunction();
     return usingConverter(implicitVector, function);
   }
 
   @Override
-  public ConfigureDsl usingConverter(BiFunction<?, B2bDsl, ?> converterFunction) {
+  public <I,O> ConfigureDsl usingConverter(BiFunction<I, B2bDsl, O> converterFunction) {
     TypeVector implicitVector = vectorExtractor.extractFrom(converterFunction);
     return usingConverter(implicitVector, converterFunction);
   }
 
   @Override
-  public ConfigureDsl usingConverter(BiFunctionRef<?, B2bDsl, ?> converterFunction) {
+  public <I,O> ConfigureDsl usingConverter(BiFunctionRef<I, B2bDsl, O> converterFunction) {
     TypeVector implicitVector = vectorExtractor.extractFrom(converterFunction);
     return usingConverter(implicitVector, converterFunction.getBiFunction());
   }
 
   @Override
-  public ConfigureDsl usingConverter(Supplier<?> converterFunction) {
+  public <O> ConfigureDsl usingConverter(Supplier<O> converterFunction) {
     TypeVector implicitVector = vectorExtractor.extractFrom(converterFunction);
     return usingConverter(implicitVector, converterFunction);
   }
 
 
   @Override
-  public ConfigureDsl usingConverter(SupplierRef<?> converterFunction) {
+  public <O> ConfigureDsl usingConverter(SupplierRef<O> converterFunction) {
     TypeVector implicitVector = vectorExtractor.extractFrom(converterFunction);
     return usingConverter(implicitVector, converterFunction.getSupplier());
+  }
+
+  @Override
+  public <I> ConfigureDsl usingConverter(Consumer<I> converterFunction) {
+    TypeVector implicitVector = vectorExtractor.extractFrom(converterFunction);
+    return usingConverter(implicitVector, converterFunction);
   }
 
   private ConfigureDsl usingConverter(TypeVector conversionVector, Function converterFunction) {
@@ -79,9 +87,13 @@ public class ConfigureDslImpl implements ConfigureDsl {
 
   private ConfigureDsl usingConverter(TypeVector conversionVector, Supplier<?> converterFunction) {
     SupplierAdapterConverter converter = SupplierAdapterConverter.create(converterFunction);
-    return usingConverter(conversionVector, converter);
+    return usingConverterFor(conversionVector, converter);
   }
 
+  private ConfigureDsl usingConverter(TypeVector conversionVector, Consumer<?> converterFunction) {
+    ConsumerAdapterConverter converter = ConsumerAdapterConverter.create(converterFunction);
+    return usingConverterFor(conversionVector, converter);
+  }
   private ConfigureDsl usingConverter(TypeVector conversionVector, BiFunction converterFunction) {
     BiFunctionAdapterConverter converter = BiFunctionAdapterConverter.create(converterFunction, b2bDsl);
     return usingConverterFor(conversionVector, converter);

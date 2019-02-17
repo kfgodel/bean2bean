@@ -1,0 +1,49 @@
+package info.kfgodel.bean2bean.dsl.api;
+
+import ar.com.dgarcia.javaspec.api.JavaSpec;
+import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
+import info.kfgodel.bean2bean.core.api.exceptions.DestructionException;
+import info.kfgodel.bean2bean.dsl.api.converters.StringDestructor;
+import info.kfgodel.bean2bean.dsl.impl.Dsl;
+import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+/**
+ * This class defines examples of instance destruction and its behavior
+ * Date: 17/02/19 - 12:17
+ */
+@RunWith(JavaSpecRunner.class)
+public class InstanceDestructionTest extends JavaSpec<B2bTestContext> {
+  public static Logger LOG = LoggerFactory.getLogger(InstanceDestructionTest.class);
+
+  @Override
+  public void define() {
+    describe("a b2b dsl", () -> {
+      context().dsl(Dsl::create);
+
+      describe("with a default configuration", () -> {
+
+        itThrows(DestructionException.class, "when any destruction is attempted", () -> {
+          test().dsl().destroy().object("any object");
+        }, e -> {
+          assertThat(e).hasMessage("Destruction from any object to null failed: No converter found from any object(java.lang.String) to javax.lang.model.type.NullType");
+        });
+      });
+
+      describe("when a destructor is defined", () -> {
+        beforeEach(() -> {
+          test().dsl().configure().usingConverter(StringDestructor.create());
+        });
+
+        it("executes the destructor with the destroyed instance", () -> {
+          test().dsl().destroy().object("an object");
+        });
+      });
+
+    });
+  }
+
+}

@@ -26,9 +26,10 @@ public class Bean2BeanImpl implements Bean2bean {
   @Override
   public <O> O process(ObjectConversion conversion) {
     Optional<Function<ObjectConversion, O>> foundConverter = getRegistry().findBestConverterFor(conversion);
-    return foundConverter
-      .map(converter -> converter.apply(conversion))
+    // We need 2 different variables to help the compiler figuring type of `O`
+    Function<ObjectConversion, O> converter = foundConverter
       .orElseThrow(conversion::exceptionForMissingConverter);
+    return converter.apply(conversion);
   }
 
   @Override

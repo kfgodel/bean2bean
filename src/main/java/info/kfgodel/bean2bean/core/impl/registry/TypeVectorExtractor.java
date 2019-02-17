@@ -10,6 +10,7 @@ import javax.lang.model.type.NullType;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -18,6 +19,13 @@ import java.util.function.Supplier;
  * Date: 12/02/19 - 00:56
  */
 public class TypeVectorExtractor {
+
+  public TypeVector extractFrom(Consumer function) {
+    Type[] typeArguments = getTypeArguments(function.getClass());
+    Type inputType = typeArguments[0];
+    // Implicit null result
+    return TypeVector.create(inputType, NullType.class);
+  }
 
   public TypeVector extractFrom(Supplier function) {
     Type[] typeArguments = getTypeArguments(function.getClass());

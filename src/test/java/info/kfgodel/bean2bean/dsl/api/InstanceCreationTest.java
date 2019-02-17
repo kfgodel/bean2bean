@@ -13,6 +13,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
+ * This class defines examples of instance creation and its behavior
  * Date: 16/02/19 - 18:46
  */
 @RunWith(JavaSpecRunner.class)

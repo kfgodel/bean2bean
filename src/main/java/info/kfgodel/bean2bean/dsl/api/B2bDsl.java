@@ -20,6 +20,13 @@ public interface B2bDsl {
    */
   CreateDsl generate();
 
+  /**
+   * Initiates a destroy operation for releasing any resources the destroyed instance
+   * may hold
+   * @return A destruction specific DSL
+   */
+  DestroyDsl destroy();
+
 
   /**
    * Allows access to the configuration of b2b state and behavior
