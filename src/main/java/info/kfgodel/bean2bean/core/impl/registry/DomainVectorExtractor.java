@@ -66,7 +66,6 @@ public class DomainVectorExtractor {
     return createVectorFor(firstInputType, outputType);
   }
 
-
   /**
    * Poor implementation, change later
    */
@@ -90,9 +89,9 @@ public class DomainVectorExtractor {
     return calculator.forType(javaType);
   }
 
-  public static DomainVectorExtractor create() {
+  public static DomainVectorExtractor create(DomainCalculator calculator) {
     DomainVectorExtractor extractor = new DomainVectorExtractor();
-    extractor.calculator = DomainCalculator.create();
+    extractor.calculator = calculator;
     return extractor;
   }
 

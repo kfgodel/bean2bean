@@ -30,6 +30,11 @@ public class NamedDomain implements Domain {
     return Objects.hash(getName());
   }
 
+  @Override
+  public String toString() {
+    return "{" + name + "}";
+  }
+
   public static NamedDomain create(String name) {
     NamedDomain domain = new NamedDomain();
     domain.name = name;

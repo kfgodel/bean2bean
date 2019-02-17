@@ -2,12 +2,7 @@ package info.kfgodel.bean2bean.core.impl.conversion;
 
 import info.kfgodel.bean2bean.core.api.Bean2beanTask;
 import info.kfgodel.bean2bean.core.api.exceptions.ConversionException;
-import info.kfgodel.bean2bean.core.api.registry.Domain;
-import info.kfgodel.bean2bean.core.impl.registry.DomainCalculator;
 import info.kfgodel.bean2bean.core.impl.registry.DomainVector;
-
-import javax.lang.model.type.NullType;
-import java.lang.reflect.Type;
 
 /**
  * This class represents the definition of an expected conversion
@@ -16,30 +11,21 @@ import java.lang.reflect.Type;
 public class ObjectConversion implements Bean2beanTask {
 
   private Object source;
-  private Type destinationType;
+  private DomainVector conversionVector;
 
-  public static ObjectConversion create(Object source, Type destination) {
+  public static ObjectConversion create(Object source, DomainVector conversionVector) {
     ObjectConversion conversion = new ObjectConversion();
     conversion.source = source;
-    conversion.destinationType = destination;
+    conversion.conversionVector = conversionVector;
     return conversion;
   }
 
   public DomainVector getConversionVector(){
-    Domain sourceDomain = DomainCalculator.create().forType(getSourceType());
-    Domain targetDomain = DomainCalculator.create().forType(destinationType);
-    return DomainVector.create(sourceDomain, targetDomain);
-  }
-
-  private Class<?> getSourceType() {
-    if (source == null) {
-      return NullType.class;
-    }
-    return source.getClass();
+    return conversionVector;
   }
 
   public ConversionException exceptionForMissingConverter() {
-    return new ConversionException("No converter found from " + source + "(" + getSourceType().getName() + ") to " + destinationType.getTypeName(), source, destinationType);
+    return new ConversionException("No converter found from " + source + getConversionVector().getSource() + " to " + getConversionVector().getTarget(), source, conversionVector);
   }
 
   public Object getSource() {

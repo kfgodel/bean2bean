@@ -1,6 +1,8 @@
 package info.kfgodel.bean2bean.dsl.impl;
 
 import info.kfgodel.bean2bean.core.api.Bean2bean;
+import info.kfgodel.bean2bean.core.api.registry.Domain;
+import info.kfgodel.bean2bean.core.impl.registry.DomainCalculator;
 import info.kfgodel.bean2bean.dsl.api.B2bDsl;
 import info.kfgodel.bean2bean.dsl.api.ConvertDsl;
 import info.kfgodel.bean2bean.dsl.api.SourceDefinedConversionDsl;
@@ -20,11 +22,16 @@ public class ConvertDslImpl implements ConvertDsl {
   }
 
   @Override
-  public <I> SourceDefinedConversionDsl<I> from(I source) {
-    return SourceDefinedConversionDslImpl.create(this, source);
+  public <I> SourceDefinedConversionDsl<I> from(I value) {
+    Domain sourceDomain = getCalculator().forObject(value);
+    return SourceDefinedConversionDslImpl.create(this, value, sourceDomain);
   }
 
   public Bean2bean getCore() {
     return parentDsl.getCore();
+  }
+
+  public DomainCalculator getCalculator() {
+    return parentDsl.getCalculator();
   }
 }

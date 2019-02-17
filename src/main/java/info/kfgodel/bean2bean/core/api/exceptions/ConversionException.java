@@ -1,6 +1,6 @@
 package info.kfgodel.bean2bean.core.api.exceptions;
 
-import java.lang.reflect.Type;
+import info.kfgodel.bean2bean.core.impl.registry.DomainVector;
 
 /**
  * This type represents an error during a conversion attempt
@@ -9,11 +9,11 @@ import java.lang.reflect.Type;
 public class ConversionException extends Bean2BeanException {
 
   private final Object source;
-  private final Type destinationType;
+  private final DomainVector conversionVector;
 
-  public ConversionException(String message, Object source, Type destinationType) {
+  public ConversionException(String message, Object source, DomainVector conversionVector) {
     super(message);
-    this.destinationType = destinationType;
+    this.conversionVector = conversionVector;
     this.source = source;
   }
 
@@ -21,7 +21,7 @@ public class ConversionException extends Bean2BeanException {
     return source;
   }
 
-  public Type getDestinationType() {
-    return destinationType;
+  public DomainVector getConversionVector() {
+    return conversionVector;
   }
 }

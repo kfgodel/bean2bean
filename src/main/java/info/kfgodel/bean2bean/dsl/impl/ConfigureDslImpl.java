@@ -33,7 +33,7 @@ public class ConfigureDslImpl implements ConfigureDsl {
   public static ConfigureDslImpl create(B2bDsl b2bDsl) {
     ConfigureDslImpl config = new ConfigureDslImpl();
     config.b2bDsl = b2bDsl;
-    config.vectorExtractor = DomainVectorExtractor.create();
+    config.vectorExtractor = DomainVectorExtractor.create(b2bDsl.getCalculator());
     return config;
   }
 
