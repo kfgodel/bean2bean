@@ -3,7 +3,6 @@ package info.kfgodel.bean2bean.core.impl.registry;
 import info.kfgodel.bean2bean.core.api.registry.Bean2BeanRegistry;
 import info.kfgodel.bean2bean.core.impl.conversion.ObjectConversion;
 import info.kfgodel.bean2bean.core.impl.registry.definitions.ConverterDefinition;
-import info.kfgodel.bean2bean.other.TypeVector;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +15,7 @@ import java.util.function.Function;
  */
 public class DefaultRegistry implements Bean2BeanRegistry {
 
-  private Map<TypeVector, Function> convertersByVector;
+  private Map<DomainVector, ConverterDefinition> convertersByVector;
 
   public static DefaultRegistry create() {
     DefaultRegistry registry = new DefaultRegistry();
@@ -26,16 +25,16 @@ public class DefaultRegistry implements Bean2BeanRegistry {
 
   @Override
   public <O> Optional<Function<ObjectConversion, O>> findBestConverterFor(ObjectConversion input) {
-    TypeVector vector = input.getConversionVector();
-    Optional<Function<ObjectConversion, O>> found = Optional.ofNullable(convertersByVector.get(vector));
-    return found;
+    DomainVector vector = input.getConversionVector();
+    Optional<ConverterDefinition> foundDefinition = Optional.ofNullable(convertersByVector.get(vector));
+    return foundDefinition
+      .map(ConverterDefinition::getConverter);
   }
 
   @Override
   public Bean2BeanRegistry store(ConverterDefinition definition) {
-    TypeVector implicitVector = definition.getConversionVector();
-    Function<ObjectConversion, Object> converter = definition.getConverter();
-    this.convertersByVector.put(implicitVector, converter);
+    DomainVector implicitVector = definition.getConversionVector();
+    this.convertersByVector.put(implicitVector, definition);
     return this;
   }
 }

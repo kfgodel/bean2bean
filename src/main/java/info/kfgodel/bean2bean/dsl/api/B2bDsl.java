@@ -1,6 +1,7 @@
 package info.kfgodel.bean2bean.dsl.api;
 
 import info.kfgodel.bean2bean.core.api.Bean2bean;
+import info.kfgodel.bean2bean.core.impl.registry.DomainCalculator;
 
 /**
  * This type represents the a dsl to interact with bean2bean without knowing its internals
@@ -42,4 +43,10 @@ public interface B2bDsl {
    */
   Bean2bean getCore();
 
+  /**
+   * Allows access to the object that defines the domain for each conversion.<br>
+   *   This object is rarely needed unless you are accessing the core directly
+   * @return The domain calculator
+   */
+  DomainCalculator getCalculator();
 }

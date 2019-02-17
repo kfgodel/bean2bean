@@ -32,7 +32,7 @@ public class InstanceDestructionTest extends JavaSpec<B2bTestContext> {
         itThrows(DestructionException.class, "when any destruction is attempted", () -> {
           test().dsl().destroy().object("any object");
         }, e -> {
-          assertThat(e).hasMessage("Destruction from any object to null failed: No converter found from any object(java.lang.String) to javax.lang.model.type.NullType");
+          assertThat(e).hasMessage("Destruction from any object to null failed: No converter found from any object{java.lang.String} to {javax.lang.model.type.NullType}");
         });
       });
 
