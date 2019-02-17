@@ -13,4 +13,8 @@ package info.kfgodel.bean2bean.core.api.registry;
  * Date: 17/02/19 - 14:18
  */
 public interface Domain {
+  /**
+   * @return The name that identifies this domain
+   */
+  String getName();
 }

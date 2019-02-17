@@ -1,5 +1,9 @@
 package info.kfgodel.bean2bean.other;
 
+import info.kfgodel.bean2bean.core.api.registry.Domain;
+import info.kfgodel.bean2bean.core.impl.registry.DomainCalculator;
+import info.kfgodel.bean2bean.core.impl.registry.DomainVector;
+
 import java.lang.reflect.Type;
 import java.util.Objects;
 
@@ -34,4 +38,10 @@ public class TypeVector {
   }
 
 
+  public DomainVector getDomains() {
+    DomainCalculator calculator = DomainCalculator.create();
+    Domain source = calculator.forType(sourceType);
+    Domain target = calculator.forType(destinationType);
+    return DomainVector.create(source, target);
+  }
 }

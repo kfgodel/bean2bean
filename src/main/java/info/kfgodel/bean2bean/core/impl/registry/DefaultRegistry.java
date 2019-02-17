@@ -16,7 +16,7 @@ import java.util.function.Function;
  */
 public class DefaultRegistry implements Bean2BeanRegistry {
 
-  private Map<TypeVector, Function> convertersByVector;
+  private Map<DomainVector, Function> convertersByVector;
 
   public static DefaultRegistry create() {
     DefaultRegistry registry = new DefaultRegistry();
@@ -26,7 +26,8 @@ public class DefaultRegistry implements Bean2BeanRegistry {
 
   @Override
   public <O> Optional<Function<ObjectConversion, O>> findBestConverterFor(ObjectConversion input) {
-    TypeVector vector = input.getConversionVector();
+    TypeVector typeVector = input.getConversionVector();
+    DomainVector vector = typeVector.getDomains();
     Optional<Function<ObjectConversion, O>> found = Optional.ofNullable(convertersByVector.get(vector));
     return found;
   }
@@ -35,7 +36,8 @@ public class DefaultRegistry implements Bean2BeanRegistry {
   public Bean2BeanRegistry store(ConverterDefinition definition) {
     TypeVector implicitVector = definition.getConversionVector();
     Function<ObjectConversion, Object> converter = definition.getConverter();
-    this.convertersByVector.put(implicitVector, converter);
+    DomainVector vector = implicitVector.getDomains();
+    this.convertersByVector.put(vector, converter);
     return this;
   }
 }
