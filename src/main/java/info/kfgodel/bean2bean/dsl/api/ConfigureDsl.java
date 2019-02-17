@@ -1,6 +1,7 @@
 package info.kfgodel.bean2bean.dsl.api;
 
 import info.kfgodel.bean2bean.other.BiFunctionRef;
+import info.kfgodel.bean2bean.other.ConsumerRef;
 import info.kfgodel.bean2bean.other.FunctionRef;
 import info.kfgodel.bean2bean.other.SupplierRef;
 
@@ -73,4 +74,12 @@ public interface ConfigureDsl {
    * @return This instance for method chaining
    */
   <I> ConfigureDsl usingConverter(Consumer<I> converterFunction);
+
+  /**
+   * Registers a converter function through its reference that generates no output as result of the conversion.<br>
+   *   Usually these converters are used as destructors of intances to release resources
+   * @param converterFunction The function to use as destructor
+   * @return This instance for method chaining
+   */
+  <I> ConfigureDsl usingConverter(ConsumerRef<I> converterFunction);
 }

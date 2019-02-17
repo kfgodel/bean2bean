@@ -2,6 +2,7 @@ package info.kfgodel.bean2bean.core.impl.registry;
 
 import info.kfgodel.bean2bean.dsl.api.B2bDsl;
 import info.kfgodel.bean2bean.other.BiFunctionRef;
+import info.kfgodel.bean2bean.other.ConsumerRef;
 import info.kfgodel.bean2bean.other.FunctionRef;
 import info.kfgodel.bean2bean.other.SupplierRef;
 import info.kfgodel.bean2bean.other.TypeVector;
@@ -24,6 +25,11 @@ public class TypeVectorExtractor {
     Type[] typeArguments = getTypeArguments(function.getClass());
     Type inputType = typeArguments[0];
     // Implicit null result
+    return TypeVector.create(inputType, NullType.class);
+  }
+
+  public TypeVector extractFrom(ConsumerRef function) {
+    Type inputType = function.getInputType();
     return TypeVector.create(inputType, NullType.class);
   }
 

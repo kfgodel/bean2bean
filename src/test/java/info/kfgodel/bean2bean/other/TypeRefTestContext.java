@@ -22,5 +22,8 @@ public interface TypeRefTestContext extends TestContext {
   BiFunctionRef bifunctionRef();
   void bifunctionRef(Supplier<BiFunctionRef> definition);
 
+  ConsumerRef consumerRef();
+  void consumerRef(Supplier<ConsumerRef> definition);
+
 
 }

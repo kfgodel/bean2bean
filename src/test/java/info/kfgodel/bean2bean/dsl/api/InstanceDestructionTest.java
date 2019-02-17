@@ -5,9 +5,12 @@ import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
 import info.kfgodel.bean2bean.core.api.exceptions.DestructionException;
 import info.kfgodel.bean2bean.dsl.api.converters.StringDestructor;
 import info.kfgodel.bean2bean.dsl.impl.Dsl;
+import info.kfgodel.bean2bean.other.ConsumerRef;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -33,15 +36,33 @@ public class InstanceDestructionTest extends JavaSpec<B2bTestContext> {
         });
       });
 
-      describe("when a destructor is defined", () -> {
+      describe("when a destructor is configured", () -> {
+        StringDestructor converterFunction = StringDestructor.create();
+
         beforeEach(() -> {
-          test().dsl().configure().usingConverter(StringDestructor.create());
+          test().dsl().configure().usingConverter(converterFunction);
         });
 
         it("executes the destructor with the destroyed instance", () -> {
           test().dsl().destroy().object("an object");
+          assertThat(converterFunction.getLastArgument()).isEqualTo("an object");
         });
       });
+
+      describe("when a destructor lambda is configured", () -> {
+        AtomicReference<String> argument = new AtomicReference<>();
+
+        beforeEach(() -> {
+          test().dsl().configure().usingConverter(new ConsumerRef<String>(argument::set){});
+        });
+
+        it("executes the destructor with the destroyed instance", () -> {
+          test().dsl().destroy().object("an object");
+          assertThat(argument.get()).isEqualTo("an object");
+        });
+
+      });
+
 
     });
   }

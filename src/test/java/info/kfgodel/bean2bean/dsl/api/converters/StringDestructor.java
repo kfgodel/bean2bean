@@ -12,9 +12,12 @@ import java.util.function.Consumer;
 public class StringDestructor implements Consumer<String> {
   public static Logger LOG = LoggerFactory.getLogger(StringDestructor.class);
 
+  private String lastArgument;
+
   @Override
   public void accept(String input) {
     LOG.info("Destroying \"{}\"", input);
+    this.lastArgument = input;
   }
 
   public static StringDestructor create() {
@@ -22,4 +25,7 @@ public class StringDestructor implements Consumer<String> {
     return destructor;
   }
 
+  public String getLastArgument() {
+    return lastArgument;
+  }
 }

@@ -11,6 +11,7 @@ import info.kfgodel.bean2bean.core.impl.registry.definitions.DefaultDefinition;
 import info.kfgodel.bean2bean.dsl.api.B2bDsl;
 import info.kfgodel.bean2bean.dsl.api.ConfigureDsl;
 import info.kfgodel.bean2bean.other.BiFunctionRef;
+import info.kfgodel.bean2bean.other.ConsumerRef;
 import info.kfgodel.bean2bean.other.FunctionRef;
 import info.kfgodel.bean2bean.other.SupplierRef;
 import info.kfgodel.bean2bean.other.TypeVector;
@@ -78,6 +79,12 @@ public class ConfigureDslImpl implements ConfigureDsl {
   public <I> ConfigureDsl usingConverter(Consumer<I> converterFunction) {
     TypeVector implicitVector = vectorExtractor.extractFrom(converterFunction);
     return usingConverter(implicitVector, converterFunction);
+  }
+
+  @Override
+  public <I> ConfigureDsl usingConverter(ConsumerRef<I> converterFunction) {
+    TypeVector implicitVector = vectorExtractor.extractFrom(converterFunction);
+    return usingConverter(implicitVector, converterFunction.getConsumer());
   }
 
   private ConfigureDsl usingConverter(TypeVector conversionVector, Function converterFunction) {
