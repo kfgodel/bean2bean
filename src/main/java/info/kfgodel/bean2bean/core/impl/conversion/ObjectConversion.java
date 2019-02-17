@@ -25,7 +25,7 @@ public class ObjectConversion implements Bean2beanTask {
     return conversion;
   }
 
-  public DomainVector getDomainVector(){
+  public DomainVector getConversionVector(){
     Domain sourceDomain = DomainCalculator.create().forType(getSourceType());
     Domain targetDomain = DomainCalculator.create().forType(destinationType);
     return DomainVector.create(sourceDomain, targetDomain);
