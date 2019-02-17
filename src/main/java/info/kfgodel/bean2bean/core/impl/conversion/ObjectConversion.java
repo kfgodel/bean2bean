@@ -2,7 +2,9 @@ package info.kfgodel.bean2bean.core.impl.conversion;
 
 import info.kfgodel.bean2bean.core.api.Bean2beanTask;
 import info.kfgodel.bean2bean.core.api.exceptions.ConversionException;
-import info.kfgodel.bean2bean.other.TypeVector;
+import info.kfgodel.bean2bean.core.api.registry.Domain;
+import info.kfgodel.bean2bean.core.impl.registry.DomainCalculator;
+import info.kfgodel.bean2bean.core.impl.registry.DomainVector;
 
 import javax.lang.model.type.NullType;
 import java.lang.reflect.Type;
@@ -23,8 +25,10 @@ public class ObjectConversion implements Bean2beanTask {
     return conversion;
   }
 
-  public TypeVector getConversionVector() {
-    return TypeVector.create(getSourceType(), destinationType);
+  public DomainVector getDomainVector(){
+    Domain sourceDomain = DomainCalculator.create().forType(getSourceType());
+    Domain targetDomain = DomainCalculator.create().forType(destinationType);
+    return DomainVector.create(sourceDomain, targetDomain);
   }
 
   private Class<?> getSourceType() {

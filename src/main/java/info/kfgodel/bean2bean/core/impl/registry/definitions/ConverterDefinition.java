@@ -1,7 +1,7 @@
 package info.kfgodel.bean2bean.core.impl.registry.definitions;
 
 import info.kfgodel.bean2bean.core.impl.conversion.ObjectConversion;
-import info.kfgodel.bean2bean.other.TypeVector;
+import info.kfgodel.bean2bean.core.impl.registry.DomainVector;
 
 import java.util.function.Function;
 
@@ -16,10 +16,10 @@ public interface ConverterDefinition {
    * Indicates the type direction this converter supports
    * @return A type vector that indicats from which type to which type the converter can handle
    */
-  TypeVector getConversionVector();
+  DomainVector getConversionVector();
 
   /**
    * @return The function that can be used as converter to transform input into output
    */
-  Function<ObjectConversion, Object> getConverter();
+  <O> Function<ObjectConversion, O> getConverter();
 }
