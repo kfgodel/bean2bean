@@ -24,11 +24,11 @@ public class Bean2BeanImpl implements Bean2bean {
   }
 
   @Override
-  public <O> O process(ObjectConversion task) {
-    Optional<Function<ObjectConversion, O>> foundProcess = getRegistry().findBestConverterFor(task);
-    return foundProcess
-      .map(process -> process.apply(task))
-      .orElseThrow(task::exceptionForMissingConverter);
+  public <O> O process(ObjectConversion conversion) {
+    Optional<Function<ObjectConversion, O>> foundConverter = getRegistry().findBestConverterFor(conversion);
+    return foundConverter
+      .map(converter -> converter.apply(conversion))
+      .orElseThrow(conversion::exceptionForMissingConverter);
   }
 
   @Override

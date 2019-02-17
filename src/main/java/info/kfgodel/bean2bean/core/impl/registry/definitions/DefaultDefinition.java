@@ -1,5 +1,6 @@
 package info.kfgodel.bean2bean.core.impl.registry.definitions;
 
+import info.kfgodel.bean2bean.core.impl.conversion.ObjectConversion;
 import info.kfgodel.bean2bean.other.TypeVector;
 
 import java.util.function.Function;
@@ -11,7 +12,7 @@ import java.util.function.Function;
 public class DefaultDefinition implements ConverterDefinition {
 
   private TypeVector conversionVector;
-  private Function converter;
+  private Function<ObjectConversion, Object> converter;
 
   @Override
   public TypeVector getConversionVector() {
@@ -19,11 +20,11 @@ public class DefaultDefinition implements ConverterDefinition {
   }
 
   @Override
-  public Function getConverter() {
+  public Function<ObjectConversion, Object> getConverter() {
     return converter;
   }
 
-  public static DefaultDefinition create(Function converter, TypeVector conversionVector) {
+  public static DefaultDefinition create(Function<ObjectConversion, Object> converter, TypeVector conversionVector) {
     DefaultDefinition definition = new DefaultDefinition();
     definition.converter = converter;
     definition.conversionVector = conversionVector;

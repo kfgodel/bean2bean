@@ -17,12 +17,12 @@ public interface Bean2BeanRegistry {
   /**
    * Searches for the best available process in this registry to generate an expected output
    * for the given input
-   * @param input The input that needs to be processed
+   * @param conversion The input that needs to be processed
    * @param <I> The type of input
    * @param <O> The type of expected output
    * @return The process found, or empty if none exists for the input
    */
-  <I extends ObjectConversion, O> Optional<Function<I,O>> findBestConverterFor(I input);
+  <O> Optional<Function<ObjectConversion,O>> findBestConverterFor(ObjectConversion conversion);
 
   /**
    * Stores the given converter definition in this registry so the converter can be used on conversions
