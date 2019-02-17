@@ -1,5 +1,6 @@
 package info.kfgodel.bean2bean.core.impl.registry.definitions;
 
+import info.kfgodel.bean2bean.core.impl.conversion.ObjectConversion;
 import info.kfgodel.bean2bean.other.TypeVector;
 
 import java.util.function.Function;
@@ -20,5 +21,5 @@ public interface ConverterDefinition {
   /**
    * @return The function that can be used as converter to transform input into output
    */
-  Function getConverter();
+  Function<ObjectConversion, Object> getConverter();
 }

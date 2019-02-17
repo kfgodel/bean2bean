@@ -2,6 +2,7 @@ package info.kfgodel.bean2bean.dsl.impl;
 
 import info.kfgodel.bean2bean.core.impl.conversion.BiFunctionAdapterConverter;
 import info.kfgodel.bean2bean.core.impl.conversion.FunctionAdapterConverter;
+import info.kfgodel.bean2bean.core.impl.conversion.ObjectConversion;
 import info.kfgodel.bean2bean.core.impl.conversion.SupplierAdapterConverter;
 import info.kfgodel.bean2bean.core.impl.registry.TypeVectorExtractor;
 import info.kfgodel.bean2bean.core.impl.registry.definitions.ConverterDefinition;
@@ -72,7 +73,7 @@ public class ConfigureDslImpl implements ConfigureDsl {
   }
 
   private ConfigureDsl usingConverter(TypeVector conversionVector, Function converterFunction) {
-    Function converter = FunctionAdapterConverter.create(converterFunction);
+    FunctionAdapterConverter converter = FunctionAdapterConverter.create(converterFunction);
     return usingConverterFor(conversionVector, converter);
   }
 
@@ -86,7 +87,7 @@ public class ConfigureDslImpl implements ConfigureDsl {
     return usingConverterFor(conversionVector, converter);
   }
 
-  private ConfigureDsl usingConverterFor(TypeVector conversionVector, Function converter) {
+  private ConfigureDsl usingConverterFor(TypeVector conversionVector, Function<ObjectConversion, Object> converter) {
     DefaultDefinition definition = DefaultDefinition.create(converter, conversionVector);
     return usingConverter(definition);
   }

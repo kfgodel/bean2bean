@@ -25,16 +25,16 @@ public class DefaultRegistry implements Bean2BeanRegistry {
   }
 
   @Override
-  public <I extends ObjectConversion, O> Optional<Function<I, O>> findBestConverterFor(I input) {
+  public <O> Optional<Function<ObjectConversion, O>> findBestConverterFor(ObjectConversion input) {
     TypeVector vector = input.getConversionVector();
-    Optional<Function<I, O>> found = Optional.ofNullable(convertersByVector.get(vector));
+    Optional<Function<ObjectConversion, O>> found = Optional.ofNullable(convertersByVector.get(vector));
     return found;
   }
 
   @Override
   public Bean2BeanRegistry store(ConverterDefinition definition) {
     TypeVector implicitVector = definition.getConversionVector();
-    Function converter = definition.getConverter();
+    Function<ObjectConversion, Object> converter = definition.getConverter();
     this.convertersByVector.put(implicitVector, converter);
     return this;
   }
