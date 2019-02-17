@@ -6,6 +6,7 @@ import info.kfgodel.bean2bean.core.api.exceptions.CreationException;
 import info.kfgodel.bean2bean.dsl.api.converters.ArrayListGenerator;
 import info.kfgodel.bean2bean.dsl.api.converters.StringArrayGenerator;
 import info.kfgodel.bean2bean.dsl.impl.Dsl;
+import info.kfgodel.bean2bean.other.SupplierRef;
 import org.junit.runner.RunWith;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
+ * This class defines examples of instance creation and its behavior
  * Date: 16/02/19 - 18:46
  */
 @RunWith(JavaSpecRunner.class)
@@ -43,6 +45,18 @@ public class InstanceCreationTest extends JavaSpec<B2bTestContext> {
             .isEmpty();
         });
       });
+
+      describe("when a lambda generator is configured", () -> {
+        beforeEach(()->{
+          test().dsl().configure().usingConverter(new SupplierRef<Object>(Object::new) {});
+        });
+
+        it("is used for instance creation",()->{
+          Object created = test().dsl().generate().anInstanceOf(Object.class);
+          assertThat(created).isNotNull();
+        });
+      });
+
 
       describe("when a converter from integer is configured", () -> {
         beforeEach(()->{

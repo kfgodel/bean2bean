@@ -2,6 +2,7 @@ package info.kfgodel.bean2bean.core.impl.registry;
 
 import info.kfgodel.bean2bean.dsl.api.B2bDsl;
 import info.kfgodel.bean2bean.other.BiFunctionRef;
+import info.kfgodel.bean2bean.other.ConsumerRef;
 import info.kfgodel.bean2bean.other.FunctionRef;
 import info.kfgodel.bean2bean.other.SupplierRef;
 import info.kfgodel.bean2bean.other.TypeVector;
@@ -10,6 +11,7 @@ import javax.lang.model.type.NullType;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -18,6 +20,18 @@ import java.util.function.Supplier;
  * Date: 12/02/19 - 00:56
  */
 public class TypeVectorExtractor {
+
+  public TypeVector extractFrom(Consumer function) {
+    Type[] typeArguments = getTypeArguments(function.getClass());
+    Type inputType = typeArguments[0];
+    // Implicit null result
+    return TypeVector.create(inputType, NullType.class);
+  }
+
+  public TypeVector extractFrom(ConsumerRef function) {
+    Type inputType = function.getInputType();
+    return TypeVector.create(inputType, NullType.class);
+  }
 
   public TypeVector extractFrom(Supplier function) {
     Type[] typeArguments = getTypeArguments(function.getClass());

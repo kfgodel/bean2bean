@@ -1,10 +1,12 @@
 package info.kfgodel.bean2bean.dsl.api;
 
 import info.kfgodel.bean2bean.other.BiFunctionRef;
+import info.kfgodel.bean2bean.other.ConsumerRef;
 import info.kfgodel.bean2bean.other.FunctionRef;
 import info.kfgodel.bean2bean.other.SupplierRef;
 
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -21,7 +23,7 @@ public interface ConfigureDsl {
    * @param converterFunction The function instance to use as a converter
    * @return This instance for method chaining
    */
-  ConfigureDsl usingConverter(Function<?,?> converterFunction);
+  <I,O> ConfigureDsl usingConverter(Function<I,O> converterFunction);
 
   /**
    * Registers a function through its reference to be used as converter between the function input-output types.<br>
@@ -31,7 +33,7 @@ public interface ConfigureDsl {
    * @param converterFunctionRef The reference to the function used a s converter
    * @return This instance for method chaining
    */
-  ConfigureDsl usingConverter(FunctionRef<?,?> converterFunctionRef);
+  <I,O> ConfigureDsl usingConverter(FunctionRef<I,O> converterFunctionRef);
 
   /**
    * Registers a converter that will need access to b2b dsl as part of the conversion process. Usually
@@ -39,7 +41,7 @@ public interface ConfigureDsl {
    * @param converterFunction The function to use as converter
    * @return This instance for method chaining
    */
-  ConfigureDsl usingConverter(BiFunction<?,B2bDsl,?> converterFunction);
+  <I,O> ConfigureDsl usingConverter(BiFunction<I,B2bDsl,O> converterFunction);
 
   /**
    * Registers a converter function though its reference that will need access to b2b dsl as part of
@@ -47,22 +49,37 @@ public interface ConfigureDsl {
    * @param converterFunction The function to use as converter
    * @return This instance for method chaining
    */
-  ConfigureDsl usingConverter(BiFunctionRef<?,B2bDsl,?> converterFunction);
+  <I,O> ConfigureDsl usingConverter(BiFunctionRef<I,B2bDsl,O> converterFunction);
 
   /**
    * Registers a converter function that requires no parameters as input for the conversion.<br>
-   *   Usually this converters are used as generators to instantiate other types
+   *   Usually these converters are used as generators to instantiate other types
    * @param converterFunction The function to use a generator
    * @return This instance for method chaining
    */
-  ConfigureDsl usingConverter(Supplier<?> converterFunction);
+  <O> ConfigureDsl usingConverter(Supplier<O> converterFunction);
 
   /**
    * Registers a converter function through its reference that requires no parameters as input for the conversion.<br>
-   *   Usually this converters are used as generators to instantiate other types
+   *   Usually these converters are used as generators to instantiate other types
    * @param converterFunction The function to use a generator
    * @return This instance for method chaining
    */
-  ConfigureDsl usingConverter(SupplierRef<?> converterFunction);
+  <O> ConfigureDsl usingConverter(SupplierRef<O> converterFunction);
 
+  /**
+   * Registers a converter function that generates no output as result of the conversion.<br>
+   *   Usually these converters are used as destructors of intances to release resources
+   * @param converterFunction The function to use as destructor
+   * @return This instance for method chaining
+   */
+  <I> ConfigureDsl usingConverter(Consumer<I> converterFunction);
+
+  /**
+   * Registers a converter function through its reference that generates no output as result of the conversion.<br>
+   *   Usually these converters are used as destructors of intances to release resources
+   * @param converterFunction The function to use as destructor
+   * @return This instance for method chaining
+   */
+  <I> ConfigureDsl usingConverter(ConsumerRef<I> converterFunction);
 }

@@ -10,8 +10,12 @@ public class CreationException extends Bean2BeanException {
 
   private final Type expectedType;
 
-  public <T> CreationException(String message, Type expectedType, Throwable cause) {
+  public CreationException(String message, Type expectedType, Throwable cause) {
     super(message, cause);
     this.expectedType = expectedType;
+  }
+
+  public Type getExpectedType() {
+    return expectedType;
   }
 }
