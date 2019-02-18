@@ -36,4 +36,7 @@ public interface TypeRefTestContext extends TestContext {
   List<String> supertypes();
   void supertypes(Supplier<List<String>> definition);
 
+  TypeArgumentExtractor argumentExtractor();
+  void argumentExtractor(Supplier<TypeArgumentExtractor> definition);
+
 }

@@ -20,6 +20,8 @@ public abstract class TypeRef<T> {
    * @return The complete generic type argument used to define "T"
    */
   public Type getReference() {
+
+
     Type[] actualTypeArguments = getActualTypeArgumentsFrom(getClass(), TypeRef.class);
     Type actualTypeArgument = actualTypeArguments[0];
     return actualTypeArgument;

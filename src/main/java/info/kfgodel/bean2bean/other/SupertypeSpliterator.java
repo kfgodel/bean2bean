@@ -9,6 +9,8 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.Spliterator;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * This class represents the spliterator that traverses all the super types for a given type (including the type itself)
@@ -18,6 +20,10 @@ public class SupertypeSpliterator implements Spliterator<Type> {
 
   private Set<Type> traversedTypes;
   private Queue<Type> pendingTypes;
+
+  public static Stream<Type> createAsStream(Type startingType) {
+    return StreamSupport.stream(create(startingType), false);
+  }
 
   public static SupertypeSpliterator create(Type startingType) {
     SupertypeSpliterator spliterator = new SupertypeSpliterator();
