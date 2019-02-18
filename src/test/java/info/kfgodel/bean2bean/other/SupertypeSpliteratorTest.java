@@ -65,15 +65,6 @@ public class SupertypeSpliteratorTest<E> extends JavaSpec<TypeRefTestContext> {
               "java.lang.Object"
             ));
           });
-
-          xit("excludes parameterized type with variables as arguments",()->{
-            assertThat(test().supertypes())
-              .doesNotContain(
-              "java.util.Collection<E>",
-              "java.lang.Iterable<E>"
-            );
-
-          });
         });
 
         describe("given a parameterized type", () -> {
