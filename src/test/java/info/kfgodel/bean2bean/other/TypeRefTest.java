@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,14 +22,20 @@ public class TypeRefTest extends JavaSpec<TypeRefTestContext> {
     describe("a type reference", () -> {
       test().typeRef(() -> new TypeRef<String>() {});
 
+      it("retains the actual type argument used to parameterize the subclass", () -> {
+        Type referencedType = test().typeRef().getReference();
+        assertThat(referencedType).isEqualTo(String.class);
+      });
+
       it("can be instantiated only through subclasses", () -> {
         Class instantiableClass = test().typeRef().getClass();
         assertThat(instantiableClass.getSuperclass()).isEqualTo(TypeRef.class);
       });
 
-      it("retains the actual type argument used to parameterize the subclass", () -> {
-        Type referencedType = test().typeRef().getReference();
-        assertThat(referencedType).isEqualTo(String.class);
+      itThrows(IllegalStateException.class, "when accessing the reference and extended without a type argument",()->{
+        new TypeRef(){}.getReference();
+      }, e->{
+        assertThat(e).hasMessage("TypeRef should be parameterized when extended");
       });
 
       describe("when a nested parameterization is used as type argument", () -> {
@@ -41,10 +48,12 @@ public class TypeRefTest extends JavaSpec<TypeRefTestContext> {
         });
       });
 
-      itThrows(IllegalStateException.class, "if more than one level of inheritance is used", () -> {
-        new OtherSubTypeRef<String>() {}.getReference();
-      }, e -> {
-        assertThat(e).hasMessage("TypeRef should have only one level subclass. class info.kfgodel.bean2bean.other.OtherSubTypeRef is in the middle of the inheritance");
+      describe("when more than one level of inheritance is used", () -> {
+        test().typeRef(() -> new OtherSubTypeRef<String>() {});
+
+        it("only retains as reference the type used to parameterize TypeRef, not its subclasses",()->{
+          assertThat(test().typeRef().getReference()).isInstanceOf(TypeVariable.class);
+        });
       });
     });
 

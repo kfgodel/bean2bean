@@ -16,9 +16,19 @@ public abstract class BiFunctionRef<I1,I2,O> {
 
   public Type[] getActualTypeArguments() {
     if (actualTypeArguments == null) {
-      actualTypeArguments = TypeRef.getActualTypeArgumentsFrom(getClass(), BiFunctionRef.class);
+      actualTypeArguments = calculateTypeArguments();
     }
     return actualTypeArguments;
+  }
+
+  private Type[] calculateTypeArguments() {
+    Type[] arguments = TypeArgumentExtractor.create()
+      .getArgumentsUsedFor(BiFunctionRef.class, getClass())
+      .toArray(Type[]::new);
+    if(arguments .length != 3){
+      throw new IllegalStateException(BiFunctionRef.class.getSimpleName() + " should be parameterized when extended");
+    }
+    return arguments;
   }
 
 
