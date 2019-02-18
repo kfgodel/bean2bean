@@ -22,43 +22,77 @@ public class SupertypeSpliteratorTest<E> extends JavaSpec<TypeRefTestContext> {
     describe("a supertype spliterator", () -> {
       test().spliterator(()-> SupertypeSpliterator.create(test().type()));
 
-      describe("given a class", () -> {
-        test().type(()-> List.class);
+      describe("used to collect supertypes", () -> {
+        test().supertypes(()-> StreamSupport.stream(test().spliterator(), false)
+          .map(Type::getTypeName)
+          .collect(Collectors.toList()));
 
-        it("allows access to its super type hierarchy",()->{
-          List<String> superTypes = StreamSupport.stream(test().spliterator(), false)
-            .map(Type::getTypeName)
-            .collect(Collectors.toList());
-          assertThat(superTypes).isEqualTo(Lists.newArrayList(
-            "java.util.List",
-            "java.util.Collection<E>",
-            "java.util.Collection",
-            "java.lang.Iterable<E>",
-            "java.lang.Iterable"
-          ));
+        describe("given a concrete class", () -> {
+          test().type(()-> String.class);
+
+          it("allows access to its super type hierarchy with object as the last type",()->{
+            assertThat(test().supertypes()).isEqualTo(Lists.newArrayList(
+              "java.lang.String",
+              "java.io.Serializable",
+              "java.lang.Comparable<java.lang.String>",
+              "java.lang.CharSequence",
+              "java.lang.Comparable",
+              "java.lang.Object"
+            ));
+          });
+        });
+
+        describe("given Object class", () -> {
+          test().type(()-> Object.class);
+
+          it("can only traverse Object",()->{
+            assertThat(test().supertypes()).isEqualTo(Lists.newArrayList(
+              "java.lang.Object"
+            ));
+          });
+        });
+
+        describe("given an interface class", () -> {
+          test().type(()-> List.class);
+
+          it("allows access to its super type hierarchy adding Object to the hierarchy",()->{
+            assertThat(test().supertypes()).isEqualTo(Lists.newArrayList(
+              "java.util.List",
+              "java.util.Collection<E>",
+              "java.util.Collection",
+              "java.lang.Iterable<E>",
+              "java.lang.Iterable",
+              "java.lang.Object"
+            ));
+          });
+
+          xit("excludes parameterized type with variables as arguments",()->{
+            assertThat(test().supertypes())
+              .doesNotContain(
+              "java.util.Collection<E>",
+              "java.lang.Iterable<E>"
+            );
+
+          });
+        });
+
+        describe("given a parameterized type", () -> {
+          test().type(()-> new TypeRef<List<Integer>>(){}.getReference());
+
+          it("allows access to its super type hierarchy including type arguments only for initial type",()->{
+            assertThat(test().supertypes()).isEqualTo(Lists.newArrayList(
+              "java.util.List<java.lang.Integer>",
+              "java.util.List",
+              "java.util.Collection<E>",
+              "java.util.Collection",
+              "java.lang.Iterable<E>",
+              "java.lang.Iterable",
+              "java.lang.Object"
+            ));
+          });
         });
       });
-
-      describe("given a parameterized type", () -> {
-        test().type(()-> new TypeRef<List<Integer>>(){}.getReference());
-
-        it("allows access to its super type hierarchy excluding type parameters except for root type",()->{
-          List<String> superTypes = StreamSupport.stream(test().spliterator(), false)
-            .map(Type::getTypeName)
-            .collect(Collectors.toList());
-          assertThat(superTypes).isEqualTo(Lists.newArrayList(
-            "java.util.List<java.lang.Integer>",
-            "java.util.List",
-            "java.util.Collection<E>",
-            "java.util.Collection",
-            "java.lang.Iterable<E>",
-            "java.lang.Iterable"
-          ));
-        });
-      });
-
 
     });
-
   }
 }

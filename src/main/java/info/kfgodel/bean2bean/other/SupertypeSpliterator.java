@@ -36,6 +36,12 @@ public class SupertypeSpliterator implements Spliterator<Type> {
       enqueueSupertypesOf(nextType);
       return true;
     }
+    if(!traversedTypes.contains(Object.class)){
+      // This exception ensures Object is last and present on interface hierarchies
+      traversedTypes.add(Object.class);
+      action.accept(Object.class);
+      return true;
+    }
     return false;
   }
 
@@ -83,9 +89,12 @@ public class SupertypeSpliterator implements Spliterator<Type> {
   }
 
   private void enqueue(Type pendingType){
-    // We deal with null here so we don't have to do it for every jdk method
-    if(pendingType == null || this.traversedTypes.contains(pendingType) || this.pendingTypes.contains(pendingType)){
-      return; // No need  to traverse it again
+    if(pendingType == null || // We deal with null here so we don't have to do it for every jdk method
+      Object.class.equals(pendingType) || // Object is a type we add to the end, no matter what
+      this.traversedTypes.contains(pendingType) || // No need to traverse it again
+      this.pendingTypes.contains(pendingType) // It's already on the waiting list
+    ){
+      return; // Don't add it
     }
     this.pendingTypes.add(pendingType);
   }

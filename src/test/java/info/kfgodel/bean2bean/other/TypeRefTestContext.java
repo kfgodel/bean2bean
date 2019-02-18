@@ -3,6 +3,7 @@ package info.kfgodel.bean2bean.other;
 import ar.com.dgarcia.javaspec.api.contexts.TestContext;
 
 import java.lang.reflect.Type;
+import java.util.List;
 import java.util.function.Supplier;
 
 /**
@@ -32,5 +33,7 @@ public interface TypeRefTestContext extends TestContext {
   Type type();
   void type(Supplier<Type> definition);
 
+  List<String> supertypes();
+  void supertypes(Supplier<List<String>> definition);
 
 }
