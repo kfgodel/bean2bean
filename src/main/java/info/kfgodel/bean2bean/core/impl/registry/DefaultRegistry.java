@@ -24,8 +24,7 @@ public class DefaultRegistry implements Bean2BeanRegistry {
   }
 
   @Override
-  public <O> Optional<Function<ObjectConversion, O>> findBestConverterFor(ObjectConversion input) {
-    DomainVector vector = input.getConversionVector();
+  public <O> Optional<Function<ObjectConversion, O>> findBestConverterFor(DomainVector vector) {
     Optional<ConverterDefinition> foundDefinition = Optional.ofNullable(convertersByVector.get(vector));
     return foundDefinition
       .map(ConverterDefinition::getConverter);
