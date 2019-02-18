@@ -2,6 +2,7 @@ package info.kfgodel.bean2bean.other;
 
 import ar.com.dgarcia.javaspec.api.contexts.TestContext;
 
+import java.lang.reflect.Type;
 import java.util.function.Supplier;
 
 /**
@@ -24,6 +25,12 @@ public interface TypeRefTestContext extends TestContext {
 
   ConsumerRef consumerRef();
   void consumerRef(Supplier<ConsumerRef> definition);
+
+  SupertypeSpliterator spliterator();
+  void spliterator(Supplier<SupertypeSpliterator> definition);
+
+  Type type();
+  void type(Supplier<Type> definition);
 
 
 }
