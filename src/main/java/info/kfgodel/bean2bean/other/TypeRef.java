@@ -1,6 +1,5 @@
 package info.kfgodel.bean2bean.other;
 
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 /**
@@ -20,21 +19,9 @@ public abstract class TypeRef<T> {
    * @return The complete generic type argument used to define "T"
    */
   public Type getReference() {
-    Type[] actualTypeArguments = getActualTypeArgumentsFrom(getClass(), TypeRef.class);
-    Type actualTypeArgument = actualTypeArguments[0];
-    return actualTypeArgument;
+    return TypeArgumentExtractor.create()
+      .getArgumentUsedFor(TypeRef.class, getClass())
+      .orElseThrow(()-> new IllegalStateException(TypeRef.class.getSimpleName() + " should be parameterized when extended"));
   }
 
-  public static <T> Type[] getActualTypeArgumentsFrom(Class<? extends T> aClass, Class<? super T> expectedSuperType) {
-    checkSimpleInheritance(aClass, expectedSuperType);
-    ParameterizedType parameterizedClass = (ParameterizedType) aClass.getGenericSuperclass();
-    return parameterizedClass.getActualTypeArguments();
-  }
-
-  private static void checkSimpleInheritance(Class aClass, Class expectedSuperType) {
-    Class<?> superclass = aClass.getSuperclass();
-    if (!superclass.equals(expectedSuperType)) {
-      throw new IllegalStateException(expectedSuperType.getSimpleName() + " should have only one level subclass. " + superclass + " is in the middle of the inheritance");
-    }
-  }
 }

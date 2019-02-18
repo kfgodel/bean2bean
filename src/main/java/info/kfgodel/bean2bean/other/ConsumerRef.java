@@ -22,6 +22,8 @@ public class ConsumerRef<I> {
   }
 
   public Type getInputType(){
-    return TypeRef.getActualTypeArgumentsFrom(getClass(), ConsumerRef.class)[0];
+    return TypeArgumentExtractor.create()
+      .getArgumentUsedFor(ConsumerRef.class, getClass())
+      .orElseThrow(()-> new IllegalStateException(ConsumerRef.class.getSimpleName() + " should be parameterized when extended"));
   }
 }

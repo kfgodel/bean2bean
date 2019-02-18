@@ -21,9 +21,20 @@ public abstract class FunctionRef<I, O> {
 
   public Type[] getActualTypeArguments() {
     if (actualTypeArguments == null) {
-      actualTypeArguments = TypeRef.getActualTypeArgumentsFrom(getClass(), FunctionRef.class);
+      actualTypeArguments = calculateTypeArguments();
     }
     return actualTypeArguments;
+  }
+
+  private Type[] calculateTypeArguments() {
+    Type[] arguments = TypeArgumentExtractor.create()
+      .getArgumentsUsedFor(FunctionRef.class, getClass())
+      .toArray(Type[]::new);
+
+    if(arguments.length != 2){
+      throw new IllegalStateException(FunctionRef.class.getSimpleName() + " should be parameterized when extended");
+    }
+    return arguments;
   }
 
   public Function<I, O> getFunction() {

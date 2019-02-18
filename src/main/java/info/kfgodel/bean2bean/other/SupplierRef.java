@@ -23,7 +23,8 @@ public abstract class SupplierRef<O> {
   }
 
   public Type getOutputType() {
-    Type[] typeArguments = TypeRef.getActualTypeArgumentsFrom(getClass(), SupplierRef.class);
-    return typeArguments[0];
+    return TypeArgumentExtractor.create()
+      .getArgumentUsedFor(SupplierRef.class, getClass())
+      .orElseThrow(()-> new IllegalArgumentException(SupplierRef.class.getSimpleName() + " should be parameterized when extended"));
   }
 }
