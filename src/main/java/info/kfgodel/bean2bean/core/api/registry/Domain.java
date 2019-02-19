@@ -1,5 +1,7 @@
 package info.kfgodel.bean2bean.core.api.registry;
 
+import java.util.stream.Stream;
+
 /**
  * This type represents a set of elements that can define a domain or codomain of a function.<br>
  *   The domain of a function determines the set of acceptable input elements, and the codomain defines the set
@@ -17,4 +19,11 @@ public interface Domain {
    * @return The name that identifies this domain
    */
   String getName();
+
+  /**
+   * The domain hiearchy of which this domain is part.<br>
+   *   The hierarchy starts on this domain and goes up to more generic domains
+   * @return The ordered stream of this domain super domains
+   */
+  Stream<Domain> getHierarchy();
 }

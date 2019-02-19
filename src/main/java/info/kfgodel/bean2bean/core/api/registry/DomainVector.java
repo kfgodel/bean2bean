@@ -40,4 +40,8 @@ public class DomainVector {
     return vector;
   }
 
+  @Override
+  public String toString() {
+    return source + " -> " + target;
+  }
 }

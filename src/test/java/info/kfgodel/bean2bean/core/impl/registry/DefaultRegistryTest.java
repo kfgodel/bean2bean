@@ -104,8 +104,26 @@ public class DefaultRegistryTest extends JavaSpec<B2bTestContext> {
             assertThat(converterResult).isEqualTo("Object -> List");
           });
         });
+
+        describe("even if there's a second converter closer to the input domain", () -> {
+          beforeEach(() -> {
+            test().registry().store(DefaultDefinition.create((in) -> "List -> List", listToList()));
+            test().registry().store(DefaultDefinition.create((in) -> "Object -> List<String>", objectToListOfStrings()));
+          });
+
+          it("finds the one that's more specific to the expected output", () -> {
+            Optional<Function<ObjectConversion, Object>> found = test().registry().findBestConverterFor(listOfIntegersToListOfStrings());
+            Object converterResult = found.get().apply(null);
+            assertThat(converterResult).isEqualTo("Object -> List<String>");
+          });
+        });
+
       });
     });
+  }
+
+  private DomainVector objectToListOfStrings() {
+    return DomainVector.create(objectDomain(), listOfStringsDomain());
   }
 
   private DomainVector listToObject() {
