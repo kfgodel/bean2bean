@@ -3,9 +3,9 @@ package info.kfgodel.bean2bean.dsl.impl;
 import info.kfgodel.bean2bean.core.api.Bean2bean;
 import info.kfgodel.bean2bean.core.api.exceptions.Bean2BeanException;
 import info.kfgodel.bean2bean.core.api.registry.Domain;
+import info.kfgodel.bean2bean.core.api.registry.DomainVector;
 import info.kfgodel.bean2bean.core.impl.conversion.ObjectConversion;
-import info.kfgodel.bean2bean.core.impl.registry.DomainCalculator;
-import info.kfgodel.bean2bean.core.impl.registry.DomainVector;
+import info.kfgodel.bean2bean.core.impl.registry.domains.DomainCalculator;
 import info.kfgodel.bean2bean.dsl.api.SourceDefinedConversionDsl;
 import info.kfgodel.bean2bean.other.TypeRef;
 

@@ -1,6 +1,4 @@
-package info.kfgodel.bean2bean.core.impl.registry;
-
-import info.kfgodel.bean2bean.core.api.registry.Domain;
+package info.kfgodel.bean2bean.core.api.registry;
 
 import java.util.Objects;
 
@@ -42,4 +40,8 @@ public class DomainVector {
     return vector;
   }
 
+  @Override
+  public String toString() {
+    return source + " -> " + target;
+  }
 }

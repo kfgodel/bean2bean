@@ -1,7 +1,6 @@
 package info.kfgodel.bean2bean.core.api.registry;
 
 import info.kfgodel.bean2bean.core.impl.conversion.ObjectConversion;
-import info.kfgodel.bean2bean.core.impl.registry.definitions.ConverterDefinition;
 
 import java.util.Optional;
 import java.util.function.Function;
@@ -15,14 +14,12 @@ import java.util.function.Function;
 public interface Bean2BeanRegistry {
 
   /**
-   * Searches for the best available process in this registry to generate an expected output
-   * for the given input
-   * @param conversion The input that needs to be processed
-   * @param <I> The type of input
+   * Searches for the best available converter for the given domain transformation
+   * @param conversionVector The vector that indicates from which domain to which codomain the conversion shouldbe
    * @param <O> The type of expected output
    * @return The process found, or empty if none exists for the input
    */
-  <O> Optional<Function<ObjectConversion,O>> findBestConverterFor(ObjectConversion conversion);
+  <O> Optional<Function<ObjectConversion,O>> findBestConverterFor(DomainVector conversionVector);
 
   /**
    * Stores the given converter definition in this registry so the converter can be used on conversions

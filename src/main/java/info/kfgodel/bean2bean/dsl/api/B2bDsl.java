@@ -1,7 +1,7 @@
 package info.kfgodel.bean2bean.dsl.api;
 
 import info.kfgodel.bean2bean.core.api.Bean2bean;
-import info.kfgodel.bean2bean.core.impl.registry.DomainCalculator;
+import info.kfgodel.bean2bean.core.impl.registry.domains.DomainCalculator;
 
 /**
  * This type represents the a dsl to interact with bean2bean without knowing its internals

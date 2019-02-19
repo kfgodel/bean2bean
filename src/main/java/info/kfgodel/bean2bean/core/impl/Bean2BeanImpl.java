@@ -3,6 +3,7 @@ package info.kfgodel.bean2bean.core.impl;
 import info.kfgodel.bean2bean.core.api.Bean2bean;
 import info.kfgodel.bean2bean.core.api.Bean2beanConfiguration;
 import info.kfgodel.bean2bean.core.api.registry.Bean2BeanRegistry;
+import info.kfgodel.bean2bean.core.api.registry.DomainVector;
 import info.kfgodel.bean2bean.core.impl.conversion.ObjectConversion;
 
 import java.util.Optional;
@@ -25,7 +26,8 @@ public class Bean2BeanImpl implements Bean2bean {
 
   @Override
   public <O> O process(ObjectConversion conversion) {
-    Optional<Function<ObjectConversion, O>> foundConverter = getRegistry().findBestConverterFor(conversion);
+    DomainVector conversionVector = conversion.getConversionVector();
+    Optional<Function<ObjectConversion, O>> foundConverter = getRegistry().findBestConverterFor(conversionVector);
     // We need 2 different variables to help the compiler figuring type of `O`
     Function<ObjectConversion, O> converter = foundConverter
       .orElseThrow(conversion::exceptionForMissingConverter);

@@ -3,6 +3,7 @@ package info.kfgodel.bean2bean.core.impl.registry;
 import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
 import info.kfgodel.bean2bean.core.api.registry.Domain;
+import info.kfgodel.bean2bean.core.impl.registry.domains.DomainCalculator;
 import info.kfgodel.bean2bean.dsl.api.B2bTestContext;
 import org.junit.runner.RunWith;
 
