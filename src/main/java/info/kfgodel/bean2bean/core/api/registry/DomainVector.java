@@ -1,6 +1,4 @@
-package info.kfgodel.bean2bean.core.impl.registry;
-
-import info.kfgodel.bean2bean.core.api.registry.Domain;
+package info.kfgodel.bean2bean.core.api.registry;
 
 import java.util.Objects;
 

@@ -2,7 +2,7 @@ package info.kfgodel.bean2bean.dsl.impl;
 
 import info.kfgodel.bean2bean.core.api.Bean2bean;
 import info.kfgodel.bean2bean.core.api.registry.Domain;
-import info.kfgodel.bean2bean.core.impl.registry.DomainCalculator;
+import info.kfgodel.bean2bean.core.impl.registry.domains.DomainCalculator;
 import info.kfgodel.bean2bean.dsl.api.B2bDsl;
 import info.kfgodel.bean2bean.dsl.api.ConvertDsl;
 import info.kfgodel.bean2bean.dsl.api.SourceDefinedConversionDsl;

@@ -3,7 +3,7 @@ package info.kfgodel.bean2bean.dsl.api;
 import ar.com.dgarcia.javaspec.api.contexts.TestContext;
 import info.kfgodel.bean2bean.core.api.registry.Bean2BeanRegistry;
 import info.kfgodel.bean2bean.core.api.registry.Domain;
-import info.kfgodel.bean2bean.core.impl.registry.DomainCalculator;
+import info.kfgodel.bean2bean.core.impl.registry.domains.DomainCalculator;
 
 import java.util.function.Supplier;
 

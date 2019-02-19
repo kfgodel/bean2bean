@@ -3,8 +3,8 @@ package info.kfgodel.bean2bean.core.impl;
 import info.kfgodel.bean2bean.core.api.Bean2bean;
 import info.kfgodel.bean2bean.core.api.Bean2beanConfiguration;
 import info.kfgodel.bean2bean.core.api.registry.Bean2BeanRegistry;
+import info.kfgodel.bean2bean.core.api.registry.DomainVector;
 import info.kfgodel.bean2bean.core.impl.conversion.ObjectConversion;
-import info.kfgodel.bean2bean.core.impl.registry.DomainVector;
 
 import java.util.Optional;
 import java.util.function.Function;

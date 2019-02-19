@@ -1,6 +1,6 @@
 package info.kfgodel.bean2bean.core.api.exceptions;
 
-import info.kfgodel.bean2bean.core.impl.registry.DomainVector;
+import info.kfgodel.bean2bean.core.api.registry.DomainVector;
 
 /**
  * This type represents an error during a conversion attempt

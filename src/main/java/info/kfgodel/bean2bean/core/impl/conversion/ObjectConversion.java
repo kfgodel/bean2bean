@@ -2,7 +2,7 @@ package info.kfgodel.bean2bean.core.impl.conversion;
 
 import info.kfgodel.bean2bean.core.api.Bean2beanTask;
 import info.kfgodel.bean2bean.core.api.exceptions.ConversionException;
-import info.kfgodel.bean2bean.core.impl.registry.DomainVector;
+import info.kfgodel.bean2bean.core.api.registry.DomainVector;
 
 /**
  * This class represents the definition of an expected conversion

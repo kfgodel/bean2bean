@@ -1,14 +1,14 @@
 package info.kfgodel.bean2bean.dsl.impl;
 
+import info.kfgodel.bean2bean.core.api.registry.ConverterDefinition;
+import info.kfgodel.bean2bean.core.api.registry.DomainVector;
 import info.kfgodel.bean2bean.core.impl.conversion.BiFunctionAdapterConverter;
 import info.kfgodel.bean2bean.core.impl.conversion.ConsumerAdapterConverter;
 import info.kfgodel.bean2bean.core.impl.conversion.FunctionAdapterConverter;
 import info.kfgodel.bean2bean.core.impl.conversion.ObjectConversion;
 import info.kfgodel.bean2bean.core.impl.conversion.SupplierAdapterConverter;
-import info.kfgodel.bean2bean.core.impl.registry.DomainVector;
-import info.kfgodel.bean2bean.core.impl.registry.DomainVectorExtractor;
-import info.kfgodel.bean2bean.core.impl.registry.definitions.ConverterDefinition;
 import info.kfgodel.bean2bean.core.impl.registry.definitions.DefaultDefinition;
+import info.kfgodel.bean2bean.core.impl.registry.domains.DomainVectorExtractor;
 import info.kfgodel.bean2bean.dsl.api.B2bDsl;
 import info.kfgodel.bean2bean.dsl.api.ConfigureDsl;
 import info.kfgodel.bean2bean.other.BiFunctionRef;

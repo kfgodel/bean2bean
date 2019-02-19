@@ -1,8 +1,9 @@
 package info.kfgodel.bean2bean.core.impl.registry;
 
 import info.kfgodel.bean2bean.core.api.registry.Bean2BeanRegistry;
+import info.kfgodel.bean2bean.core.api.registry.ConverterDefinition;
+import info.kfgodel.bean2bean.core.api.registry.DomainVector;
 import info.kfgodel.bean2bean.core.impl.conversion.ObjectConversion;
-import info.kfgodel.bean2bean.core.impl.registry.definitions.ConverterDefinition;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,9 +26,17 @@ public class DefaultRegistry implements Bean2BeanRegistry {
 
   @Override
   public <O> Optional<Function<ObjectConversion, O>> findBestConverterFor(DomainVector vector) {
-    Optional<ConverterDefinition> foundDefinition = Optional.ofNullable(convertersByVector.get(vector));
+    Optional<ConverterDefinition> foundDefinition = lookupConverterFor(vector);
     return foundDefinition
       .map(ConverterDefinition::getConverter);
+  }
+
+  private Optional<ConverterDefinition> lookupConverterFor(DomainVector vector) {
+    return findExactConverterFor(vector);
+  }
+
+  private Optional<ConverterDefinition> findExactConverterFor(DomainVector vector) {
+    return Optional.ofNullable(convertersByVector.get(vector));
   }
 
   @Override

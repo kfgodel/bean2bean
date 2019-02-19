@@ -1,4 +1,4 @@
-package info.kfgodel.bean2bean.core.impl.registry;
+package info.kfgodel.bean2bean.core.impl.registry.domains;
 
 import info.kfgodel.bean2bean.core.api.registry.Domain;
 

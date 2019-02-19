@@ -1,8 +1,6 @@
 package info.kfgodel.bean2bean.core.api.registry;
 
 import info.kfgodel.bean2bean.core.impl.conversion.ObjectConversion;
-import info.kfgodel.bean2bean.core.impl.registry.DomainVector;
-import info.kfgodel.bean2bean.core.impl.registry.definitions.ConverterDefinition;
 
 import java.util.Optional;
 import java.util.function.Function;
