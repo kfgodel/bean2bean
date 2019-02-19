@@ -19,27 +19,35 @@ import java.util.function.Function;
 public class DefaultRegistry implements Bean2BeanRegistry {
 
   private Map<DomainVector, ConverterDefinition> convertersByVector;
+  private LookupCache cache;
 
   public static DefaultRegistry create() {
     DefaultRegistry registry = new DefaultRegistry();
     registry.convertersByVector = new HashMap<>();
+    registry.cache = LookupCache.create();
     return registry;
   }
 
   @Override
   public <O> Optional<Function<ObjectConversion, O>> findBestConverterFor(DomainVector vector) {
-    Optional<ConverterDefinition> foundDefinition = lookupConverterFor(vector);
+    return this.cache.retrieveCachedOrProduceFor(vector, this::calculateBestConverterFor);
+  }
+
+  private <O> Optional<Function<ObjectConversion, O>> calculateBestConverterFor(DomainVector vector) {
+    Optional<ConverterDefinition> foundDefinition = lookForMatchingDefinitionOnHierarchiesOf(vector);
     return foundDefinition
       .map(ConverterDefinition::getConverter);
   }
 
-  private Optional<ConverterDefinition> lookupConverterFor(DomainVector conversionVector) {
+  private Optional<ConverterDefinition> lookForMatchingDefinitionOnHierarchiesOf(DomainVector conversionVector) {
     Iterator<Domain> targetDomainHierarchy = conversionVector.getTarget().getHierarchy().iterator();
     while(targetDomainHierarchy.hasNext()){
       Domain targetDomain = targetDomainHierarchy.next();
+
       Iterator<Domain> sourceDomainHierarchy = conversionVector.getSource().getHierarchy().iterator();
       while(sourceDomainHierarchy.hasNext()){
         Domain sourceDomain = sourceDomainHierarchy.next();
+
         DomainVector exploredVector = DomainVector.create(sourceDomain, targetDomain);
         Optional<ConverterDefinition> found = findExactConverterFor(exploredVector);
         if(found.isPresent()){
@@ -59,6 +67,7 @@ public class DefaultRegistry implements Bean2BeanRegistry {
   public Bean2BeanRegistry store(ConverterDefinition definition) {
     DomainVector implicitVector = definition.getConversionVector();
     this.convertersByVector.put(implicitVector, definition);
+    this.cache.invalidate();
     return this;
   }
 }
