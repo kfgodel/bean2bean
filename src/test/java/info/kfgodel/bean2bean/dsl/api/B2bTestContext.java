@@ -3,6 +3,7 @@ package info.kfgodel.bean2bean.dsl.api;
 import ar.com.dgarcia.javaspec.api.contexts.TestContext;
 import info.kfgodel.bean2bean.core.api.registry.Bean2BeanRegistry;
 import info.kfgodel.bean2bean.core.api.registry.Domain;
+import info.kfgodel.bean2bean.core.impl.registry.LookupCache;
 import info.kfgodel.bean2bean.core.impl.registry.domains.DomainCalculator;
 
 import java.util.function.Supplier;
@@ -24,5 +25,8 @@ public interface B2bTestContext extends TestContext {
 
   Bean2BeanRegistry registry();
   void registry(Supplier<Bean2BeanRegistry> definition);
+
+  LookupCache cache();
+  void cache(Supplier<LookupCache> definition);
 
 }
