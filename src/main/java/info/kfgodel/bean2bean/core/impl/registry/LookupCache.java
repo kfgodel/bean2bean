@@ -1,8 +1,7 @@
 package info.kfgodel.bean2bean.core.impl.registry;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 /**
@@ -15,7 +14,7 @@ public class LookupCache {
 
   public static LookupCache create() {
     LookupCache cache = new LookupCache();
-    cache.valuesByKey = new HashMap<>(); // This class is a problem for thread safety
+    cache.valuesByKey = new ConcurrentHashMap<>();
     return cache;
   }
 
@@ -28,22 +27,7 @@ public class LookupCache {
   }
 
   public <K, V> V retrieveCachedOrProduceFor(K key, Function<K, V> valueGenerator) {
-    Optional<V> foundValue = this.retrieveValueFor(key);
-    return foundValue
-      .orElseGet(()-> {
-        V generatedValue = valueGenerator.apply(key);
-        this.storeFor(key, generatedValue);
-        return generatedValue;
-      });
-  }
-
-  private <V> Optional<V> retrieveValueFor(Object vector) {
-    V value = (V) valuesByKey.get(vector);
-    return Optional.ofNullable(value);
-  }
-
-  private void storeFor(Object key, Object value) {
-    this.valuesByKey.put(key, value);
+    return (V) this.valuesByKey.computeIfAbsent(key, valueGenerator);
   }
 
 }
