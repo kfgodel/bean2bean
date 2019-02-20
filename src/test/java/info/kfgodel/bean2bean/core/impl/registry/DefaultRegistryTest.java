@@ -6,6 +6,7 @@ import info.kfgodel.bean2bean.core.api.registry.Domain;
 import info.kfgodel.bean2bean.core.api.registry.DomainVector;
 import info.kfgodel.bean2bean.core.impl.conversion.ObjectConversion;
 import info.kfgodel.bean2bean.core.impl.registry.definitions.DefaultDefinition;
+import info.kfgodel.bean2bean.core.impl.registry.definitions.PredicateDefinition;
 import info.kfgodel.bean2bean.core.impl.registry.domains.DomainCalculator;
 import info.kfgodel.bean2bean.dsl.api.B2bTestContext;
 import info.kfgodel.bean2bean.other.TypeRef;
@@ -50,8 +51,73 @@ public class DefaultRegistryTest extends JavaSpec<B2bTestContext> {
           Optional<Function<ObjectConversion, Object>> found = test().registry().findBestConverterFor(listToList());
           assertThat(found).isEmpty();
         });
+
+        describe("even if a predicate based converter matches too", () -> {
+          beforeEach(()->{
+            test().registry().store(PredicateDefinition.create((in) -> "Predicate based", (vector)-> true));
+          });
+
+          it("finds the exact converter",()->{
+            Optional<Function<ObjectConversion, Object>> found = test().registry().findBestConverterFor(listOfIntegersToListOfStrings());
+            Object converterResult = found.get().apply(null);
+            assertThat(converterResult).isEqualTo("List<Integer> -> List<String>");
+          });
+        });
+
       });
 
+      describe("when a predicate based converter is registered", () -> {
+        beforeEach(()->{
+          test().registry().store(PredicateDefinition.create((in) -> "input == output", this::inputIsSameAsOutput));
+        });
+
+        it("finds the converter when the conversion vector matches the predicate",()->{
+          Optional<Function<ObjectConversion, Object>> found = test().registry().findBestConverterFor(listToList());
+          Object converterResult = found.get().apply(null);
+          assertThat(converterResult).isEqualTo("input == output");
+        });
+
+        it("finds no converter if the conversion vector doesn't match the predicate",()->{
+          Optional<Function<ObjectConversion, Object>> found = test().registry().findBestConverterFor(objectToList());
+          assertThat(found).isEmpty();
+        });
+
+        describe("and a second predicate based converter is added", () -> {
+          beforeEach(()->{
+            test().registry().store(PredicateDefinition.create((in) -> "anything", (vector)-> true));
+          });
+
+          it("finds the first converter that matches the predicate",()->{
+            Optional<Function<ObjectConversion, Object>> found = test().registry().findBestConverterFor(listToList());
+            Object converterResult = found.get().apply(null);
+            assertThat(converterResult).isEqualTo("input == output");
+          });
+
+          it("finds the second if the vector doesn't match the first predicate",()->{
+            Optional<Function<ObjectConversion, Object>> found = test().registry().findBestConverterFor(objectToList());
+            Object converterResult = found.get().apply(null);
+            assertThat(converterResult).isEqualTo("anything");
+          });
+        });
+
+        describe("and a second vector based definition is registered", () -> {
+          beforeEach(()->{
+            test().registry().store(DefaultDefinition.create((in) -> "List -> List", listToList()));
+          });
+
+          it("finds a matching vector based converter over any predicate based",()->{
+            Optional<Function<ObjectConversion, Object>> found = test().registry().findBestConverterFor(listToList());
+            Object converterResult = found.get().apply(null);
+            assertThat(converterResult).isEqualTo("List -> List");
+          });
+
+          it("finds the predicate based converter if no vector based is applicable",()->{
+            Optional<Function<ObjectConversion, Object>> found = test().registry().findBestConverterFor(objectToObject());
+            Object converterResult = found.get().apply(null);
+            assertThat(converterResult).isEqualTo("input == output");
+          });
+        });
+      });
 
       describe("when no exact converter is registered", () -> {
 
@@ -120,6 +186,10 @@ public class DefaultRegistryTest extends JavaSpec<B2bTestContext> {
 
       });
     });
+  }
+
+  private boolean inputIsSameAsOutput(DomainVector domainVector) {
+    return domainVector.getSource().equals(domainVector.getTarget());
   }
 
   private DomainVector objectToListOfStrings() {

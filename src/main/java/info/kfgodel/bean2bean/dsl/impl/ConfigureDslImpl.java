@@ -1,7 +1,7 @@
 package info.kfgodel.bean2bean.dsl.impl;
 
-import info.kfgodel.bean2bean.core.api.registry.ConverterDefinition;
 import info.kfgodel.bean2bean.core.api.registry.DomainVector;
+import info.kfgodel.bean2bean.core.api.registry.definitions.VectorBasedDefinition;
 import info.kfgodel.bean2bean.core.impl.conversion.BiFunctionAdapterConverter;
 import info.kfgodel.bean2bean.core.impl.conversion.ConsumerAdapterConverter;
 import info.kfgodel.bean2bean.core.impl.conversion.FunctionAdapterConverter;
@@ -111,7 +111,7 @@ public class ConfigureDslImpl implements ConfigureDsl {
     return usingConverter(definition);
   }
 
-  private ConfigureDsl usingConverter(ConverterDefinition converterDefinition) {
+  private ConfigureDsl usingConverter(VectorBasedDefinition converterDefinition) {
     b2bDsl.getCore().getRegistry().store(converterDefinition);
     return this;
   }

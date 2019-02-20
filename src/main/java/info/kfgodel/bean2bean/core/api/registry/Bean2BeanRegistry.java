@@ -1,5 +1,7 @@
 package info.kfgodel.bean2bean.core.api.registry;
 
+import info.kfgodel.bean2bean.core.api.registry.definitions.PredicateBasedDefinition;
+import info.kfgodel.bean2bean.core.api.registry.definitions.VectorBasedDefinition;
 import info.kfgodel.bean2bean.core.impl.conversion.ObjectConversion;
 
 import java.util.Optional;
@@ -22,9 +24,18 @@ public interface Bean2BeanRegistry {
   <O> Optional<Function<ObjectConversion,O>> findBestConverterFor(DomainVector conversionVector);
 
   /**
-   * Stores the given converter definition in this registry so the converter can be used on conversions
-   * @param definition The descripcion of the converter
+   * Stores the given converter definition in this registry so the converter can be used on conversions<br>
+   *   This method allows adding definitions that are based on domain vectors to limit applicability
+   * @param definition The description of the converter
    * @return This instance for method chaining
    */
-  Bean2BeanRegistry store(ConverterDefinition definition);
+  Bean2BeanRegistry store(VectorBasedDefinition definition);
+
+  /**
+   * Stores the given converter definition in this registry so teh converter can be found for conversiones.<br>
+   *   This method allows adding definitions that are based on predicates to limit applicability of the converter
+   * @param definition The description of the converter
+   * @return This instance for method chaining
+   */
+  Bean2BeanRegistry store(PredicateBasedDefinition definition);
 }
