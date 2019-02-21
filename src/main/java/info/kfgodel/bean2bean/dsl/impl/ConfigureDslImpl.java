@@ -11,10 +11,10 @@ import info.kfgodel.bean2bean.core.impl.registry.definitions.DefaultDefinition;
 import info.kfgodel.bean2bean.core.impl.registry.domains.DomainVectorExtractor;
 import info.kfgodel.bean2bean.dsl.api.B2bDsl;
 import info.kfgodel.bean2bean.dsl.api.ConfigureDsl;
-import info.kfgodel.bean2bean.other.BiFunctionRef;
-import info.kfgodel.bean2bean.other.ConsumerRef;
-import info.kfgodel.bean2bean.other.FunctionRef;
-import info.kfgodel.bean2bean.other.SupplierRef;
+import info.kfgodel.bean2bean.other.references.BiFunctionRef;
+import info.kfgodel.bean2bean.other.references.ConsumerRef;
+import info.kfgodel.bean2bean.other.references.FunctionRef;
+import info.kfgodel.bean2bean.other.references.SupplierRef;
 
 import java.util.function.BiFunction;
 import java.util.function.Consumer;

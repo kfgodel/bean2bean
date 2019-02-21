@@ -7,9 +7,9 @@ import info.kfgodel.bean2bean.core.api.exceptions.ConversionException;
 import info.kfgodel.bean2bean.dsl.api.converters.ArrayListToListOfStringsConverter;
 import info.kfgodel.bean2bean.dsl.api.converters.ArrayListToListOfStringsNestedConverter;
 import info.kfgodel.bean2bean.dsl.impl.Dsl;
-import info.kfgodel.bean2bean.other.FunctionRef;
-import info.kfgodel.bean2bean.other.SupplierRef;
-import info.kfgodel.bean2bean.other.TypeRef;
+import info.kfgodel.bean2bean.other.references.FunctionRef;
+import info.kfgodel.bean2bean.other.references.SupplierRef;
+import info.kfgodel.bean2bean.other.references.TypeRef;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;

@@ -1,7 +1,7 @@
 package info.kfgodel.bean2bean.dsl.api;
 
 import info.kfgodel.bean2bean.core.api.exceptions.Bean2BeanException;
-import info.kfgodel.bean2bean.other.TypeRef;
+import info.kfgodel.bean2bean.other.references.TypeRef;
 
 /**
  * This type defines the available options for a conversion once the

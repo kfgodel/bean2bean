@@ -2,6 +2,7 @@ package info.kfgodel.bean2bean.other;
 
 import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
+import info.kfgodel.bean2bean.other.references.BiFunctionRef;
 import org.junit.runner.RunWith;
 
 import java.util.function.BiFunction;

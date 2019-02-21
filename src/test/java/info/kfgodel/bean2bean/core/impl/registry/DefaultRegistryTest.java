@@ -9,7 +9,7 @@ import info.kfgodel.bean2bean.core.impl.registry.definitions.DefaultDefinition;
 import info.kfgodel.bean2bean.core.impl.registry.definitions.PredicateDefinition;
 import info.kfgodel.bean2bean.core.impl.registry.domains.DomainCalculator;
 import info.kfgodel.bean2bean.dsl.api.B2bTestContext;
-import info.kfgodel.bean2bean.other.TypeRef;
+import info.kfgodel.bean2bean.other.references.TypeRef;
 import org.junit.runner.RunWith;
 
 import java.lang.reflect.Type;

@@ -2,6 +2,7 @@ package info.kfgodel.bean2bean.other;
 
 import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
+import info.kfgodel.bean2bean.other.references.ConsumerRef;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

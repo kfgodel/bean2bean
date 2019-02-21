@@ -29,4 +29,8 @@ public interface B2bTestContext extends TestContext {
   LookupCache cache();
   void cache(Supplier<LookupCache> definition);
 
+  ConfigureDsl configure();
+  void configure(Supplier<ConfigureDsl> definition);
+
+
 }

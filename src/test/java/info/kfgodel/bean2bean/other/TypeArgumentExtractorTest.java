@@ -4,6 +4,7 @@ import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
 import com.google.common.collect.Lists;
 import info.kfgodel.bean2bean.dsl.api.converters.StringArrayGenerator;
+import info.kfgodel.bean2bean.other.types.TypeArgumentExtractor;
 import org.junit.runner.RunWith;
 
 import java.lang.reflect.Type;

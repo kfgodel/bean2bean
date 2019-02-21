@@ -3,6 +3,8 @@ package info.kfgodel.bean2bean.other;
 import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
 import com.google.common.collect.Lists;
+import info.kfgodel.bean2bean.other.references.TypeRef;
+import info.kfgodel.bean2bean.other.types.SupertypeSpliterator;
 import org.junit.runner.RunWith;
 
 import java.lang.reflect.Type;

@@ -1,6 +1,8 @@
 package info.kfgodel.bean2bean.other;
 
 
+import info.kfgodel.bean2bean.other.types.TypeArgumentExtractor;
+
 import java.util.function.Function;
 
 /**

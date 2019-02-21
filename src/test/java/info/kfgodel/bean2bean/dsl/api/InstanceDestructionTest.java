@@ -5,7 +5,7 @@ import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
 import info.kfgodel.bean2bean.core.api.exceptions.DestructionException;
 import info.kfgodel.bean2bean.dsl.api.converters.StringDestructor;
 import info.kfgodel.bean2bean.dsl.impl.Dsl;
-import info.kfgodel.bean2bean.other.ConsumerRef;
+import info.kfgodel.bean2bean.other.references.ConsumerRef;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
