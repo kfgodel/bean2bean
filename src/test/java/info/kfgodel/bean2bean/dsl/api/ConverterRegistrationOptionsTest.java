@@ -9,8 +9,6 @@ import info.kfgodel.bean2bean.other.references.ConsumerRef;
 import info.kfgodel.bean2bean.other.references.FunctionRef;
 import info.kfgodel.bean2bean.other.references.SupplierRef;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.lang.model.type.NullType;
 import java.util.concurrent.atomic.AtomicReference;
@@ -23,8 +21,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @RunWith(JavaSpecRunner.class)
 public class ConverterRegistrationOptionsTest extends JavaSpec<B2bTestContext> {
-  public static Logger LOG = LoggerFactory.getLogger(ConverterRegistrationOptionsTest.class);
-
   @Override
   public void define() {
     describe("a b2b dsl configuration", () -> {
