@@ -1,5 +1,6 @@
 package info.kfgodel.bean2bean.dsl.api;
 
+import info.kfgodel.bean2bean.core.api.registry.DomainVector;
 import info.kfgodel.bean2bean.other.references.BiFunctionRef;
 import info.kfgodel.bean2bean.other.references.ConsumerRef;
 import info.kfgodel.bean2bean.other.references.FunctionRef;
@@ -8,6 +9,7 @@ import info.kfgodel.bean2bean.other.references.SupplierRef;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /**
@@ -24,6 +26,17 @@ public interface ConfigureDsl {
    * @return This instance for method chaining
    */
   <I,O> ConfigureDsl usingConverter(Function<I,O> converterFunction);
+
+  /**
+   * Registers a function to be used as converter, scoping it be a predicate.<br>
+   *   The predicate is evaluated on the conversion domain vector to decide if the converter can be used,
+   *   but only if no other type scoped converter matches first.<br>
+   *
+   * @param converterFunction The function to register for conversions
+   * @param scopePredicate The predicate the returns true on a domain vector when the converter can be used
+   * @return  This instance for method chaining
+   */
+  ConfigureDsl usingConverter(Function<?,?> converterFunction, Predicate<DomainVector> scopePredicate);
 
   /**
    * Registers a function through its reference to be used as converter between the function input-output types.<br>
@@ -82,4 +95,5 @@ public interface ConfigureDsl {
    * @return This instance for method chaining
    */
   <I> ConfigureDsl usingConverter(ConsumerRef<I> converterFunction);
+
 }

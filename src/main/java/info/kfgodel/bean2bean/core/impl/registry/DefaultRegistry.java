@@ -39,6 +39,16 @@ public class DefaultRegistry implements Bean2BeanRegistry {
     return this.cache.retrieveCachedOrProduceFor(vector, this::calculateBestConverterFor);
   }
 
+  @Override
+  public Bean2BeanRegistry store(ConverterDefinition definition) {
+    if(definition instanceof VectorBasedDefinition){
+      return this.store((VectorBasedDefinition)definition);
+    } else if(definition instanceof PredicateBasedDefinition){
+      return this.store((PredicateBasedDefinition) definition);
+    }
+    throw new IllegalArgumentException("The given definition["+definition+"] is not supported on this registry");
+  }
+
   private <O> Optional<Function<ObjectConversion, O>> calculateBestConverterFor(DomainVector vector) {
     Optional<ConverterDefinition> foundDefinition = this.lookForVectorBasedMatchingHiearchiesOf(vector);
     if(!foundDefinition.isPresent()){

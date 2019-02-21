@@ -1,5 +1,6 @@
 package info.kfgodel.bean2bean.core.api.registry;
 
+import info.kfgodel.bean2bean.core.api.registry.definitions.ConverterDefinition;
 import info.kfgodel.bean2bean.core.api.registry.definitions.PredicateBasedDefinition;
 import info.kfgodel.bean2bean.core.api.registry.definitions.VectorBasedDefinition;
 import info.kfgodel.bean2bean.core.impl.conversion.ObjectConversion;
@@ -22,6 +23,16 @@ public interface Bean2BeanRegistry {
    * @return The process found, or empty if none exists for the input
    */
   <O> Optional<Function<ObjectConversion,O>> findBestConverterFor(DomainVector conversionVector);
+
+
+  /**
+   * Stores the given converter definition in this registry so the converter can be used later for conversions.<br>
+   *   This method can be used when the type of definition is not previously known. It's a facility method for
+   *   deciding which version of this method to call.
+   * @param definition The definition to store
+   * @return This instance for method chaining
+   */
+  Bean2BeanRegistry store(ConverterDefinition definition);
 
   /**
    * Stores the given converter definition in this registry so the converter can be used on conversions<br>

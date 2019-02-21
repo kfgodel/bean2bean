@@ -2,6 +2,7 @@ package info.kfgodel.bean2bean.dsl.api;
 
 import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
+import info.kfgodel.bean2bean.core.api.registry.DomainVector;
 import info.kfgodel.bean2bean.dsl.impl.Dsl;
 import info.kfgodel.bean2bean.other.references.BiFunctionRef;
 import info.kfgodel.bean2bean.other.references.ConsumerRef;
@@ -76,9 +77,18 @@ public class ConverterRegistrationOptionsTest extends JavaSpec<B2bTestContext> {
         });
       });
 
+      describe("used to register predicate scoped converters", () -> {
 
+        it("accepts a function as converter", () -> {
+          test().configure().usingConverter((in) -> in, this::acceptAnyInput);
+          assertThat(test().dsl().convert().from("an object").to(Object.class)).isEqualTo("an object");
+        });
 
+      });
     });
+  }
 
+  private boolean acceptAnyInput(DomainVector conversionVector){
+    return true;
   }
 }
