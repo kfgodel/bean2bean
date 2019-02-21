@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.lang.model.type.NullType;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -82,6 +83,23 @@ public class ConverterRegistrationOptionsTest extends JavaSpec<B2bTestContext> {
         it("accepts a function as converter", () -> {
           test().configure().usingConverter((in) -> in, this::acceptAnyInput);
           assertThat(test().dsl().convert().from("an object").to(Object.class)).isEqualTo("an object");
+        });
+
+        it("accepts a bifunction that takes the dsl as second arg as a converter", () -> {
+          test().configure().usingConverter((input, b2b)-> input, this::acceptAnyInput);
+          assertThat(test().dsl().convert().from("an object").to(Object.class)).isEqualTo("an object");
+        });
+
+        it("accepts a supplier as a converter",()->{
+          test().configure().usingConverter(() -> "a value", this::acceptAnyInput);
+          assertThat(test().dsl().convert().from(null).to(Object.class)).isEqualTo("a value");
+        });
+
+        it("accepts a consumer as a converter",()->{
+          AtomicReference<String> converterArgument = new AtomicReference<>();
+          test().configure().usingConverter((Consumer<String>)converterArgument::set, this::acceptAnyInput);
+          assertThat(test().dsl().convert().from("an object").to(NullType.class)).isNull();
+          assertThat(converterArgument.get()).isEqualTo("an object");
         });
 
       });

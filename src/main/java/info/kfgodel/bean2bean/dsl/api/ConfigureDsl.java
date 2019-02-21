@@ -33,7 +33,7 @@ public interface ConfigureDsl {
    *   but only if no other type scoped converter matches first.<br>
    *
    * @param converterFunction The function to register for conversions
-   * @param scopePredicate The predicate the returns true on a domain vector when the converter can be used
+   * @param scopePredicate The predicate that returns true on a domain vector when the converter can be used
    * @return  This instance for method chaining
    */
   ConfigureDsl usingConverter(Function<?,?> converterFunction, Predicate<DomainVector> scopePredicate);
@@ -57,6 +57,17 @@ public interface ConfigureDsl {
   <I,O> ConfigureDsl usingConverter(BiFunction<I,B2bDsl,O> converterFunction);
 
   /**
+   * Registers a converter that will need access to b2b dsl as part of the conversion process. Usually
+   * for delegating the conversion of one or mor parts of the original object.<br>
+   * The predicate is evaluated on the conversion domain vector to decide if the converter can be used,
+   *   but only if no other type scoped converter matches first.<br>
+   * @param converterFunction The function to use as converter
+   * @param scopePredicate The predicate that returns true on a domain vector when the converter can be used
+   * @return This instance for method chaining
+   */
+  ConfigureDsl usingConverter(BiFunction<?,B2bDsl,?> converterFunction, Predicate<DomainVector> scopePredicate);
+
+  /**
    * Registers a converter function though its reference that will need access to b2b dsl as part of
    * the conversion process. Usually for delegating the conversion of one or mor parts of the original object.
    * @param converterFunction The function to use as converter
@@ -67,10 +78,21 @@ public interface ConfigureDsl {
   /**
    * Registers a converter function that requires no parameters as input for the conversion.<br>
    *   Usually these converters are used as generators to instantiate other types
-   * @param converterFunction The function to use a generator
+   * @param converterFunction The function to use as generator
    * @return This instance for method chaining
    */
   <O> ConfigureDsl usingConverter(Supplier<O> converterFunction);
+
+  /**
+   * Registers a converter function that requires no parameters as input for the conversion.<br>
+   * Usually these converters are used as generators to instantiate other types <br>
+   * The predicate is evaluated on the conversion domain vector to decide if the converter can be used,
+   *    but only if no other type scoped converter matches first.<br>
+   * @param converterFunction The function to use as generator
+   * @param scopePredicate The predicate that returns true on a domain vector when the converter can be used
+   * @return This instance for method chaining
+   */
+  ConfigureDsl usingConverter(Supplier<?> converterFunction, Predicate<DomainVector> scopePredicate);
 
   /**
    * Registers a converter function through its reference that requires no parameters as input for the conversion.<br>
@@ -87,6 +109,17 @@ public interface ConfigureDsl {
    * @return This instance for method chaining
    */
   <I> ConfigureDsl usingConverter(Consumer<I> converterFunction);
+
+  /**
+   * Registers a converter function that generates no output as result of the conversion.<br>
+   * Usually these converters are used as destructors of intances to release resources.<br>
+   * The predicate is evaluated on the conversion domain vector to decide if the converter can be used,
+   *     but only if no other type scoped converter matches first.<br>
+   * @param converterFunction The function to use as destructor
+   * @param scopePredicate The predicate that returns true on a domain vector when the converter can be used
+   * @return This instance for method chaining
+   */
+  ConfigureDsl usingConverter(Consumer<?> converterFunction, Predicate<DomainVector> scopePredicate);
 
   /**
    * Registers a converter function through its reference that generates no output as result of the conversion.<br>

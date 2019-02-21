@@ -7,8 +7,8 @@ import info.kfgodel.bean2bean.core.impl.conversion.ConsumerAdapterConverter;
 import info.kfgodel.bean2bean.core.impl.conversion.FunctionAdapterConverter;
 import info.kfgodel.bean2bean.core.impl.conversion.ObjectConversion;
 import info.kfgodel.bean2bean.core.impl.conversion.SupplierAdapterConverter;
-import info.kfgodel.bean2bean.core.impl.registry.definitions.DefaultDefinition;
 import info.kfgodel.bean2bean.core.impl.registry.definitions.PredicateDefinition;
+import info.kfgodel.bean2bean.core.impl.registry.definitions.VectorDefinition;
 import info.kfgodel.bean2bean.core.impl.registry.domains.DomainVectorExtractor;
 import info.kfgodel.bean2bean.dsl.api.B2bDsl;
 import info.kfgodel.bean2bean.dsl.api.ConfigureDsl;
@@ -48,7 +48,7 @@ public class ConfigureDslImpl implements ConfigureDsl {
   @Override
   public ConfigureDsl usingConverter(Function<?, ?> converterFunction, Predicate<DomainVector> scopePredicate) {
     FunctionAdapterConverter converter = FunctionAdapterConverter.create(converterFunction);
-    return usingConverter(PredicateDefinition.create(converter, scopePredicate));
+    return usingConverterFor(converter, scopePredicate);
   }
 
   @Override
@@ -65,6 +65,12 @@ public class ConfigureDslImpl implements ConfigureDsl {
   }
 
   @Override
+  public ConfigureDsl usingConverter(BiFunction<?, B2bDsl, ?> converterFunction, Predicate<DomainVector> scopePredicate) {
+    BiFunctionAdapterConverter converter = BiFunctionAdapterConverter.create(converterFunction, this.b2bDsl);
+    return usingConverterFor(converter, scopePredicate);
+  }
+
+  @Override
   public <I,O> ConfigureDsl usingConverter(BiFunctionRef<I, B2bDsl, O> converterFunction) {
     DomainVector implicitVector = vectorExtractor.extractFrom(converterFunction);
     return usingConverter(implicitVector, converterFunction.getBiFunction());
@@ -74,6 +80,12 @@ public class ConfigureDslImpl implements ConfigureDsl {
   public <O> ConfigureDsl usingConverter(Supplier<O> converterFunction) {
     DomainVector implicitVector = vectorExtractor.extractFrom(converterFunction);
     return usingConverter(implicitVector, converterFunction);
+  }
+
+  @Override
+  public ConfigureDsl usingConverter(Supplier<?> converterFunction, Predicate<DomainVector> scopePredicate) {
+    SupplierAdapterConverter converter = SupplierAdapterConverter.create(converterFunction);
+    return usingConverterFor(converter, scopePredicate);
   }
 
 
@@ -87,6 +99,12 @@ public class ConfigureDslImpl implements ConfigureDsl {
   public <I> ConfigureDsl usingConverter(Consumer<I> converterFunction) {
     DomainVector implicitVector = vectorExtractor.extractFrom(converterFunction);
     return usingConverter(implicitVector, converterFunction);
+  }
+
+  @Override
+  public ConfigureDsl usingConverter(Consumer<?> converterFunction, Predicate<DomainVector> scopePredicate) {
+    ConsumerAdapterConverter converter = ConsumerAdapterConverter.create(converterFunction);
+    return usingConverterFor(converter, scopePredicate);
   }
 
   @Override
@@ -115,9 +133,15 @@ public class ConfigureDslImpl implements ConfigureDsl {
   }
 
   private ConfigureDsl usingConverterFor(DomainVector conversionVector, Function<ObjectConversion, Object> converter) {
-    DefaultDefinition definition = DefaultDefinition.create(converter, conversionVector);
+    VectorDefinition definition = VectorDefinition.create(converter, conversionVector);
     return usingConverter(definition);
   }
+
+  private ConfigureDsl usingConverterFor(Function<ObjectConversion, Object> converter, Predicate<DomainVector> scopePredicate) {
+    PredicateDefinition definition = PredicateDefinition.create(converter, scopePredicate);
+    return usingConverter(definition);
+  }
+
 
   private ConfigureDsl usingConverter(ConverterDefinition converterDefinition) {
     b2bDsl.getCore().getRegistry().store(converterDefinition);

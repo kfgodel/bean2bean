@@ -10,7 +10,7 @@ import java.util.function.Function;
  * This class is the default implementation for a conversion definition
  * Date: 16/02/19 - 18:21
  */
-public class DefaultDefinition implements VectorBasedDefinition {
+public class VectorDefinition implements VectorBasedDefinition {
 
   private DomainVector conversionVector;
   private Function<ObjectConversion, Object> converter;
@@ -25,8 +25,8 @@ public class DefaultDefinition implements VectorBasedDefinition {
     return converter;
   }
 
-  public static DefaultDefinition create(Function<ObjectConversion, Object> converter, DomainVector conversionVector) {
-    DefaultDefinition definition = new DefaultDefinition();
+  public static VectorDefinition create(Function<ObjectConversion, Object> converter, DomainVector conversionVector) {
+    VectorDefinition definition = new VectorDefinition();
     definition.converter = converter;
     definition.conversionVector = conversionVector;
     return definition;
