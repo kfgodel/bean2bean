@@ -7,14 +7,16 @@ import info.kfgodel.bean2bean.other.BiFunctionRef;
 import info.kfgodel.bean2bean.other.ConsumerRef;
 import info.kfgodel.bean2bean.other.FunctionRef;
 import info.kfgodel.bean2bean.other.SupplierRef;
+import info.kfgodel.bean2bean.other.TypeArgumentExtractor;
 
 import javax.lang.model.type.NullType;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * This type extracts the implicit type vector from a function instance
@@ -23,10 +25,11 @@ import java.util.function.Supplier;
 public class DomainVectorExtractor {
 
   private DomainCalculator calculator;
+  private TypeArgumentExtractor typeExtractor;
 
   public DomainVector extractFrom(Consumer function) {
-    Type[] typeArguments = getTypeArguments(function.getClass());
-    Type inputType = typeArguments[0];
+    Type inputType = typeExtractor.getArgumentUsedFor(Consumer.class, function.getClass())
+      .orElse(Object.class);
     // Implicit null result
     return createVectorFor(inputType, NullType.class);
   }
@@ -37,8 +40,8 @@ public class DomainVectorExtractor {
   }
 
   public DomainVector extractFrom(Supplier function) {
-    Type[] typeArguments = getTypeArguments(function.getClass());
-    Type outputType = typeArguments[0];
+    Type outputType = typeExtractor.getArgumentUsedFor(Supplier.class, function.getClass())
+      .orElse(Object.class);
     // null is implicit when supplier is thought as a function
     return createVectorFor(NullType.class, outputType);
   }
@@ -48,7 +51,11 @@ public class DomainVectorExtractor {
   }
 
   public DomainVector extractFrom(Function function) {
-    return extractFromGenericInterface(function.getClass(), 1);
+    List<Type> arguments = typeExtractor.getArgumentsUsedFor(Function.class, function.getClass())
+      .collect(Collectors.toList());
+    Type inputType = arguments.isEmpty() ? Object.class : arguments.get(0);
+    Type outputType = arguments.isEmpty() ? Object.class : arguments.get(1);
+    return createVectorFor(inputType, outputType);
   }
 
   public DomainVector extractFrom(FunctionRef<?, ?> converterFunctionRef) {
@@ -58,28 +65,17 @@ public class DomainVectorExtractor {
   }
 
   public DomainVector extractFrom(BiFunction<?, B2bDsl, ?> biFunction) {
-    return extractFromGenericInterface(biFunction.getClass(), 2);
+    List<Type> arguments = typeExtractor.getArgumentsUsedFor(BiFunction.class, biFunction.getClass())
+      .collect(Collectors.toList());
+    Type inputType = arguments.isEmpty() ? Object.class : arguments.get(0);
+    Type outputType = arguments.isEmpty() ? Object.class : arguments.get(2);
+    return createVectorFor(inputType, outputType);
   }
 
   public DomainVector extractFrom(BiFunctionRef<?, B2bDsl, ?> converterFunction) {
     Type outputType = converterFunction.getOutputType();
     Type firstInputType = converterFunction.getFirstInputType();
     return createVectorFor(firstInputType, outputType);
-  }
-
-  /**
-   * Poor implementation, change later
-   */
-  private DomainVector extractFromGenericInterface(Class<?> functionClass, int outputTypeIndex) {
-    Type[] typeArguments = getTypeArguments(functionClass);
-    Type inputType = typeArguments[0];
-    Type outputType = typeArguments[outputTypeIndex];
-    return createVectorFor(inputType, outputType);
-  }
-
-  private Type[] getTypeArguments(Class<?> functionClass) {
-    ParameterizedType genericFunctionInterface = (ParameterizedType) functionClass.getGenericInterfaces()[0];
-    return genericFunctionInterface.getActualTypeArguments();
   }
 
   private DomainVector createVectorFor(Type inputType, Type outputType) {
@@ -93,6 +89,7 @@ public class DomainVectorExtractor {
   public static DomainVectorExtractor create(DomainCalculator calculator) {
     DomainVectorExtractor extractor = new DomainVectorExtractor();
     extractor.calculator = calculator;
+    extractor.typeExtractor = TypeArgumentExtractor.create();
     return extractor;
   }
 
