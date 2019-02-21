@@ -4,8 +4,8 @@ import info.kfgodel.bean2bean.core.api.registry.Bean2BeanRegistry;
 import info.kfgodel.bean2bean.core.api.registry.Domain;
 import info.kfgodel.bean2bean.core.api.registry.DomainVector;
 import info.kfgodel.bean2bean.core.api.registry.definitions.ConverterDefinition;
-import info.kfgodel.bean2bean.core.api.registry.definitions.PredicateBasedDefinition;
-import info.kfgodel.bean2bean.core.api.registry.definitions.VectorBasedDefinition;
+import info.kfgodel.bean2bean.core.api.registry.definitions.PredicateScopedDefinition;
+import info.kfgodel.bean2bean.core.api.registry.definitions.VectorScopedDefinition;
 import info.kfgodel.bean2bean.core.impl.conversion.ObjectConversion;
 
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ import java.util.function.Function;
 public class DefaultRegistry implements Bean2BeanRegistry {
 
   private Map<DomainVector, ConverterDefinition> convertersByVector;
-  private List<PredicateBasedDefinition> predicateDefinitions;
+  private List<PredicateScopedDefinition> predicateDefinitions;
   private LookupCache cache;
 
   public static DefaultRegistry create() {
@@ -37,6 +37,16 @@ public class DefaultRegistry implements Bean2BeanRegistry {
   @Override
   public <O> Optional<Function<ObjectConversion, O>> findBestConverterFor(DomainVector vector) {
     return this.cache.retrieveCachedOrProduceFor(vector, this::calculateBestConverterFor);
+  }
+
+  @Override
+  public Bean2BeanRegistry store(ConverterDefinition definition) {
+    if(definition instanceof VectorScopedDefinition){
+      return this.store((VectorScopedDefinition)definition);
+    } else if(definition instanceof PredicateScopedDefinition){
+      return this.store((PredicateScopedDefinition) definition);
+    }
+    throw new IllegalArgumentException("The given definition["+definition+"] is not supported on this registry");
   }
 
   private <O> Optional<Function<ObjectConversion, O>> calculateBestConverterFor(DomainVector vector) {
@@ -81,7 +91,7 @@ public class DefaultRegistry implements Bean2BeanRegistry {
   }
 
   @Override
-  public Bean2BeanRegistry store(VectorBasedDefinition definition) {
+  public Bean2BeanRegistry store(VectorScopedDefinition definition) {
     DomainVector implicitVector = definition.getConversionVector();
     this.convertersByVector.put(implicitVector, definition);
     this.cache.invalidate();
@@ -89,7 +99,7 @@ public class DefaultRegistry implements Bean2BeanRegistry {
   }
 
   @Override
-  public Bean2BeanRegistry store(PredicateBasedDefinition definition) {
+  public Bean2BeanRegistry store(PredicateScopedDefinition definition) {
     this.predicateDefinitions.add(definition);
     this.cache.invalidate();
     return this;

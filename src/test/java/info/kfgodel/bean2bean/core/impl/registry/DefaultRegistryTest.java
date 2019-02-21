@@ -5,11 +5,11 @@ import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
 import info.kfgodel.bean2bean.core.api.registry.Domain;
 import info.kfgodel.bean2bean.core.api.registry.DomainVector;
 import info.kfgodel.bean2bean.core.impl.conversion.ObjectConversion;
-import info.kfgodel.bean2bean.core.impl.registry.definitions.DefaultDefinition;
 import info.kfgodel.bean2bean.core.impl.registry.definitions.PredicateDefinition;
+import info.kfgodel.bean2bean.core.impl.registry.definitions.VectorDefinition;
 import info.kfgodel.bean2bean.core.impl.registry.domains.DomainCalculator;
 import info.kfgodel.bean2bean.dsl.api.B2bTestContext;
-import info.kfgodel.bean2bean.other.TypeRef;
+import info.kfgodel.bean2bean.other.references.TypeRef;
 import org.junit.runner.RunWith;
 
 import java.lang.reflect.Type;
@@ -38,7 +38,7 @@ public class DefaultRegistryTest extends JavaSpec<B2bTestContext> {
 
       describe("when an exact converter is registered for the domain vector", () -> {
         beforeEach(() -> {
-          test().registry().store(DefaultDefinition.create((in) -> "List<Integer> -> List<String>", listOfIntegersToListOfStrings()));
+          test().registry().store(VectorDefinition.create((in) -> "List<Integer> -> List<String>", listOfIntegersToListOfStrings()));
         });
 
         it("finds that converter", () -> {
@@ -102,7 +102,7 @@ public class DefaultRegistryTest extends JavaSpec<B2bTestContext> {
 
         describe("and a second vector based definition is registered", () -> {
           beforeEach(()->{
-            test().registry().store(DefaultDefinition.create((in) -> "List -> List", listToList()));
+            test().registry().store(VectorDefinition.create((in) -> "List -> List", listToList()));
           });
 
           it("finds a matching vector based converter over any predicate based",()->{
@@ -123,7 +123,7 @@ public class DefaultRegistryTest extends JavaSpec<B2bTestContext> {
 
         describe("and other unrelated domain converter is registered", () -> {
           beforeEach(() -> {
-            test().registry().store(DefaultDefinition.create((in) -> "List<Integer> -> List<Integer>", listOfIntegersToListOfIntegers()));
+            test().registry().store(VectorDefinition.create((in) -> "List<Integer> -> List<Integer>", listOfIntegersToListOfIntegers()));
           });
 
           it("finds no converter", () -> {
@@ -135,7 +135,7 @@ public class DefaultRegistryTest extends JavaSpec<B2bTestContext> {
 
         describe("and a more generic domain converter is", () -> {
           beforeEach(() -> {
-            test().registry().store(DefaultDefinition.create((in) -> "Object -> Object", objectToObject()));
+            test().registry().store(VectorDefinition.create((in) -> "Object -> Object", objectToObject()));
           });
 
           it("finds that converter", () -> {
@@ -147,8 +147,8 @@ public class DefaultRegistryTest extends JavaSpec<B2bTestContext> {
 
         describe("and two generic domain converters are registered with different level of specificity", () -> {
           beforeEach(() -> {
-            test().registry().store(DefaultDefinition.create((in) -> "Object -> Object", objectToObject()));
-            test().registry().store(DefaultDefinition.create((in) -> "List -> List", listToList()));
+            test().registry().store(VectorDefinition.create((in) -> "Object -> Object", objectToObject()));
+            test().registry().store(VectorDefinition.create((in) -> "List -> List", listToList()));
           });
 
           it("finds the more specific one", () -> {
@@ -160,8 +160,8 @@ public class DefaultRegistryTest extends JavaSpec<B2bTestContext> {
 
         describe("and two generic domain converters are registered with equivalent level of specificity", () -> {
           beforeEach(() -> {
-            test().registry().store(DefaultDefinition.create((in) -> "Object -> List", objectToList()));
-            test().registry().store(DefaultDefinition.create((in) -> "List -> Object", listToObject()));
+            test().registry().store(VectorDefinition.create((in) -> "Object -> List", objectToList()));
+            test().registry().store(VectorDefinition.create((in) -> "List -> Object", listToObject()));
           });
 
           it("finds the one that's more specific to the expected output", () -> {
@@ -173,8 +173,8 @@ public class DefaultRegistryTest extends JavaSpec<B2bTestContext> {
 
         describe("even if there's a second converter closer to the input domain", () -> {
           beforeEach(() -> {
-            test().registry().store(DefaultDefinition.create((in) -> "List -> List", listToList()));
-            test().registry().store(DefaultDefinition.create((in) -> "Object -> List<String>", objectToListOfStrings()));
+            test().registry().store(VectorDefinition.create((in) -> "List -> List", listToList()));
+            test().registry().store(VectorDefinition.create((in) -> "Object -> List<String>", objectToListOfStrings()));
           });
 
           it("finds the one that's more specific to the expected output", () -> {

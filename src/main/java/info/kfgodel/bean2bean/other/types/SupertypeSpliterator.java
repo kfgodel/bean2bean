@@ -1,4 +1,4 @@
-package info.kfgodel.bean2bean.other;
+package info.kfgodel.bean2bean.other.types;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;

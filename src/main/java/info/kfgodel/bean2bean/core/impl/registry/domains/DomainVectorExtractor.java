@@ -3,11 +3,11 @@ package info.kfgodel.bean2bean.core.impl.registry.domains;
 import info.kfgodel.bean2bean.core.api.registry.Domain;
 import info.kfgodel.bean2bean.core.api.registry.DomainVector;
 import info.kfgodel.bean2bean.dsl.api.B2bDsl;
-import info.kfgodel.bean2bean.other.BiFunctionRef;
-import info.kfgodel.bean2bean.other.ConsumerRef;
-import info.kfgodel.bean2bean.other.FunctionRef;
-import info.kfgodel.bean2bean.other.SupplierRef;
-import info.kfgodel.bean2bean.other.TypeArgumentExtractor;
+import info.kfgodel.bean2bean.other.references.BiFunctionRef;
+import info.kfgodel.bean2bean.other.references.ConsumerRef;
+import info.kfgodel.bean2bean.other.references.FunctionRef;
+import info.kfgodel.bean2bean.other.references.SupplierRef;
+import info.kfgodel.bean2bean.other.types.TypeArgumentExtractor;
 
 import javax.lang.model.type.NullType;
 import java.lang.reflect.Type;

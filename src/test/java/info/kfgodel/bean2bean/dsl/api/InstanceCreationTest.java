@@ -6,7 +6,7 @@ import info.kfgodel.bean2bean.core.api.exceptions.CreationException;
 import info.kfgodel.bean2bean.dsl.api.converters.ArrayListGenerator;
 import info.kfgodel.bean2bean.dsl.api.converters.StringArrayGenerator;
 import info.kfgodel.bean2bean.dsl.impl.Dsl;
-import info.kfgodel.bean2bean.other.SupplierRef;
+import info.kfgodel.bean2bean.other.references.SupplierRef;
 import org.junit.runner.RunWith;
 
 import java.util.List;

@@ -1,4 +1,6 @@
-package info.kfgodel.bean2bean.other;
+package info.kfgodel.bean2bean.other.references;
+
+import info.kfgodel.bean2bean.other.types.TypeArgumentExtractor;
 
 import java.lang.reflect.Type;
 import java.util.function.Consumer;
@@ -9,7 +11,7 @@ import java.util.function.Consumer;
  *   Subclasses of this type allows you to access the lambda type parameter
  * Date: 17/02/19 - 13:25
  */
-public class ConsumerRef<I> {
+public abstract class ConsumerRef<I> {
 
   private final Consumer<I> consumer;
 
