@@ -1,8 +1,8 @@
 package info.kfgodel.bean2bean.core.impl.registry.definitions;
 
+import info.kfgodel.bean2bean.core.api.Bean2beanTask;
 import info.kfgodel.bean2bean.core.api.registry.DomainVector;
 import info.kfgodel.bean2bean.core.api.registry.definitions.VectorScopedDefinition;
-import info.kfgodel.bean2bean.core.impl.conversion.ObjectConversion;
 
 import java.util.function.Function;
 
@@ -13,7 +13,7 @@ import java.util.function.Function;
 public class VectorDefinition implements VectorScopedDefinition {
 
   private DomainVector conversionVector;
-  private Function<ObjectConversion, Object> converter;
+  private Function<Bean2beanTask, Object> converter;
 
   @Override
   public DomainVector getConversionVector() {
@@ -21,11 +21,11 @@ public class VectorDefinition implements VectorScopedDefinition {
   }
 
   @Override
-  public Function<ObjectConversion, Object> getConverter() {
+  public Function<Bean2beanTask, Object> getConverter() {
     return converter;
   }
 
-  public static VectorDefinition create(Function<ObjectConversion, Object> converter, DomainVector conversionVector) {
+  public static VectorDefinition create(Function<Bean2beanTask, Object> converter, DomainVector conversionVector) {
     VectorDefinition definition = new VectorDefinition();
     definition.converter = converter;
     definition.conversionVector = conversionVector;

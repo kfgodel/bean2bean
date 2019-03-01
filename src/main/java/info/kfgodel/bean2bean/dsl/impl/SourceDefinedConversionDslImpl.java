@@ -6,6 +6,7 @@ import info.kfgodel.bean2bean.core.api.registry.Domain;
 import info.kfgodel.bean2bean.core.api.registry.DomainVector;
 import info.kfgodel.bean2bean.core.impl.conversion.ObjectConversion;
 import info.kfgodel.bean2bean.core.impl.registry.domains.DomainCalculator;
+import info.kfgodel.bean2bean.dsl.api.B2bDsl;
 import info.kfgodel.bean2bean.dsl.api.SourceDefinedConversionDsl;
 import info.kfgodel.bean2bean.other.references.TypeRef;
 
@@ -49,7 +50,11 @@ public class SourceDefinedConversionDslImpl<I> implements SourceDefinedConversio
 
   private ObjectConversion createConversionTo(Domain targetDomain) {
     DomainVector conversionVector = DomainVector.create(sourceDomain, targetDomain);
-    return ObjectConversion.create(this.value, conversionVector);
+    return ObjectConversion.create(this.value, conversionVector, getDsl());
+  }
+
+  private B2bDsl getDsl() {
+    return parentDsl.getDsl();
   }
 
   private <O> O processConversion(ObjectConversion conversion) {

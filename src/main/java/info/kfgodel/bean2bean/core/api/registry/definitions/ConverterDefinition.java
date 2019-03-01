@@ -1,6 +1,6 @@
 package info.kfgodel.bean2bean.core.api.registry.definitions;
 
-import info.kfgodel.bean2bean.core.impl.conversion.ObjectConversion;
+import info.kfgodel.bean2bean.core.api.Bean2beanTask;
 
 import java.util.function.Function;
 
@@ -14,5 +14,5 @@ public interface ConverterDefinition {
   /**
    * @return The function that can be used as converter to transform input into output
    */
-  <O> Function<ObjectConversion, O> getConverter();
+  <O> Function<Bean2beanTask, O> getConverter();
 }

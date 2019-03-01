@@ -1,8 +1,8 @@
 package info.kfgodel.bean2bean.core.impl.registry.definitions;
 
+import info.kfgodel.bean2bean.core.api.Bean2beanTask;
 import info.kfgodel.bean2bean.core.api.registry.DomainVector;
 import info.kfgodel.bean2bean.core.api.registry.definitions.PredicateScopedDefinition;
-import info.kfgodel.bean2bean.core.impl.conversion.ObjectConversion;
 
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -14,7 +14,7 @@ import java.util.function.Predicate;
 public class PredicateDefinition implements PredicateScopedDefinition {
 
   private Predicate<DomainVector> predicate;
-  private Function<ObjectConversion, Object> converter;
+  private Function<Bean2beanTask, Object> converter;
 
   @Override
   public Predicate<DomainVector> getScopePredicate() {
@@ -22,11 +22,11 @@ public class PredicateDefinition implements PredicateScopedDefinition {
   }
 
   @Override
-  public Function<ObjectConversion, Object> getConverter() {
+  public Function<Bean2beanTask, Object> getConverter() {
     return converter;
   }
 
-  public static PredicateDefinition create(Function<ObjectConversion, Object> converter, Predicate<DomainVector> predicate) {
+  public static PredicateDefinition create(Function<Bean2beanTask, Object> converter, Predicate<DomainVector> predicate) {
     PredicateDefinition definition = new PredicateDefinition();
     definition.predicate = predicate;
     definition.converter = converter;
