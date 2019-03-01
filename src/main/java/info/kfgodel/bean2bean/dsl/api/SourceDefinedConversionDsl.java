@@ -3,6 +3,8 @@ package info.kfgodel.bean2bean.dsl.api;
 import info.kfgodel.bean2bean.core.api.exceptions.Bean2BeanException;
 import info.kfgodel.bean2bean.other.references.TypeRef;
 
+import java.lang.reflect.Type;
+
 /**
  * This type defines the available options for a conversion once the
  * source object is defined
@@ -21,6 +23,17 @@ public interface SourceDefinedConversionDsl<I> {
    * or missing converter for the transformation)
    */
   <O> O to(Class<O> outputClass) throws Bean2BeanException;
+
+  /**
+   * Converts the source object into an instance of the expected type
+   * @param outputType The type instance that indicates the type of expected output for
+   *                    the conversion
+   * @param <O> The type of expected output
+   * @return The generated output after the conversion
+   * @throws Bean2BeanException If an error happened during conversion (like failed
+   * or missing converter for the transformation)
+   */
+  <O> O to(Type outputType) throws Bean2BeanException;
 
   /**
    * Converts the source object into an instance of the expected class
