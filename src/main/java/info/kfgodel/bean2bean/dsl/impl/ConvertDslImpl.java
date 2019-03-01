@@ -34,4 +34,8 @@ public class ConvertDslImpl implements ConvertDsl {
   public DomainCalculator getCalculator() {
     return parentDsl.getCalculator();
   }
+
+  public B2bDsl getDsl() {
+    return parentDsl;
+  }
 }

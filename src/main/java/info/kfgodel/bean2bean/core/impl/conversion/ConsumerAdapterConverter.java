@@ -1,5 +1,7 @@
 package info.kfgodel.bean2bean.core.impl.conversion;
 
+import info.kfgodel.bean2bean.core.api.Bean2beanTask;
+
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -7,12 +9,12 @@ import java.util.function.Function;
  * This type adapts a consumer function into a converter function
  * Date: 17/02/19 - 13:06
  */
-public class ConsumerAdapterConverter implements Function<ObjectConversion, Object> {
+public class ConsumerAdapterConverter implements Function<Bean2beanTask, Object> {
 
-  private Consumer consumer;
+  private Consumer<Object> consumer;
 
   @Override
-  public Object apply(ObjectConversion objectConversion) {
+  public Object apply(Bean2beanTask objectConversion) {
     Object input = objectConversion.getSource();
     consumer.accept(input);
     return null;
@@ -20,7 +22,7 @@ public class ConsumerAdapterConverter implements Function<ObjectConversion, Obje
 
   public static ConsumerAdapterConverter create(Consumer<?> consumer) {
     ConsumerAdapterConverter converter = new ConsumerAdapterConverter();
-    converter.consumer = consumer;
+    converter.consumer = (Consumer<Object>) consumer;
     return converter;
   }
 

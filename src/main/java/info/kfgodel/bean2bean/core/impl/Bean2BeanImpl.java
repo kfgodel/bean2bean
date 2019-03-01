@@ -2,9 +2,10 @@ package info.kfgodel.bean2bean.core.impl;
 
 import info.kfgodel.bean2bean.core.api.Bean2bean;
 import info.kfgodel.bean2bean.core.api.Bean2beanConfiguration;
+import info.kfgodel.bean2bean.core.api.Bean2beanTask;
+import info.kfgodel.bean2bean.core.api.exceptions.ConversionException;
 import info.kfgodel.bean2bean.core.api.registry.Bean2BeanRegistry;
 import info.kfgodel.bean2bean.core.api.registry.DomainVector;
-import info.kfgodel.bean2bean.core.impl.conversion.ObjectConversion;
 
 import java.util.Optional;
 import java.util.function.Function;
@@ -25,13 +26,20 @@ public class Bean2BeanImpl implements Bean2bean {
   }
 
   @Override
-  public <O> O process(ObjectConversion conversion) {
-    DomainVector conversionVector = conversion.getConversionVector();
-    Optional<Function<ObjectConversion, O>> foundConverter = getRegistry().findBestConverterFor(conversionVector);
+  public <O> O process(Bean2beanTask task) {
+    DomainVector conversionVector = task.getConversionVector();
+    Optional<Function<Bean2beanTask, O>> foundConverter = getRegistry().findBestConverterFor(conversionVector);
     // We need 2 different variables to help the compiler figuring type of `O`
-    Function<ObjectConversion, O> converter = foundConverter
-      .orElseThrow(conversion::exceptionForMissingConverter);
-    return converter.apply(conversion);
+    Function<Bean2beanTask, O> converter = foundConverter
+      .orElseThrow(() -> exceptionForMissingConverter(task));
+    return converter.apply(task);
+  }
+
+  public ConversionException exceptionForMissingConverter(Bean2beanTask task) {
+    DomainVector domainVector = task.getConversionVector();
+    return new ConversionException("No converter found from " +
+      task.getSource() + domainVector.getSource() +
+      " to " + domainVector.getTarget(), task);
   }
 
   @Override

@@ -1,6 +1,6 @@
 package info.kfgodel.bean2bean.core.api.exceptions;
 
-import info.kfgodel.bean2bean.core.api.registry.DomainVector;
+import info.kfgodel.bean2bean.core.api.Bean2beanTask;
 
 /**
  * This type represents an error during a conversion attempt
@@ -8,20 +8,14 @@ import info.kfgodel.bean2bean.core.api.registry.DomainVector;
  */
 public class ConversionException extends Bean2BeanException {
 
-  private final Object source;
-  private final DomainVector conversionVector;
+  private final Bean2beanTask task;
 
-  public ConversionException(String message, Object source, DomainVector conversionVector) {
+  public ConversionException(String message, Bean2beanTask task) {
     super(message);
-    this.conversionVector = conversionVector;
-    this.source = source;
+    this.task = task;
   }
 
-  public Object getSource() {
-    return source;
-  }
-
-  public DomainVector getConversionVector() {
-    return conversionVector;
+  public Bean2beanTask getTask() {
+    return task;
   }
 }
