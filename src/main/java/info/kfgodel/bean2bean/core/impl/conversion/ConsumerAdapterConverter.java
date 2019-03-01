@@ -11,7 +11,7 @@ import java.util.function.Function;
  */
 public class ConsumerAdapterConverter implements Function<Bean2beanTask, Object> {
 
-  private Consumer consumer;
+  private Consumer<Object> consumer;
 
   @Override
   public Object apply(Bean2beanTask objectConversion) {
@@ -22,7 +22,7 @@ public class ConsumerAdapterConverter implements Function<Bean2beanTask, Object>
 
   public static ConsumerAdapterConverter create(Consumer<?> consumer) {
     ConsumerAdapterConverter converter = new ConsumerAdapterConverter();
-    converter.consumer = consumer;
+    converter.consumer = (Consumer<Object>) consumer;
     return converter;
   }
 

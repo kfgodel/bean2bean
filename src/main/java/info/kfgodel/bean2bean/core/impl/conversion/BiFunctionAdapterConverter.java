@@ -1,7 +1,6 @@
 package info.kfgodel.bean2bean.core.impl.conversion;
 
 import info.kfgodel.bean2bean.core.api.Bean2beanTask;
-import info.kfgodel.bean2bean.dsl.api.B2bDsl;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -14,20 +13,18 @@ import java.util.function.Function;
  */
 public class BiFunctionAdapterConverter implements Function<Bean2beanTask, Object> {
 
-  private B2bDsl b2bDsl;
-  private BiFunction biFunction;
+  private BiFunction<Object,Bean2beanTask,Object> biFunction;
 
   @Override
-  public Object apply(Bean2beanTask objectConversion) {
-    Object input = objectConversion.getSource();
-    Object output = biFunction.apply(input, b2bDsl);
+  public Object apply(Bean2beanTask task) {
+    Object input = task.getSource();
+    Object output = biFunction.apply(input, task);
     return output;
   }
 
-  public static BiFunctionAdapterConverter create(BiFunction function, B2bDsl b2bDsl) {
+  public static BiFunctionAdapterConverter create(BiFunction<?, Bean2beanTask, ?> function) {
     BiFunctionAdapterConverter converter = new BiFunctionAdapterConverter();
-    converter.biFunction = function;
-    converter.b2bDsl = b2bDsl;
+    converter.biFunction = (BiFunction<Object, Bean2beanTask, Object>) function;
     return converter;
   }
 

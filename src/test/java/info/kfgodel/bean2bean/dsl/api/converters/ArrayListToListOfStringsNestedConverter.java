@@ -1,6 +1,6 @@
 package info.kfgodel.bean2bean.dsl.api.converters;
 
-import info.kfgodel.bean2bean.dsl.api.B2bDsl;
+import info.kfgodel.bean2bean.core.api.Bean2beanTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,13 +13,13 @@ import java.util.stream.Stream;
  * parts of the conversion to b2b
  * Date: 16/02/19 - 13:35
  */
-public class ArrayListToListOfStringsNestedConverter implements BiFunction<ArrayList, B2bDsl, List<String>> {
+public class ArrayListToListOfStringsNestedConverter implements BiFunction<ArrayList, Bean2beanTask, List<String>> {
 
   @Override
-  public List<String> apply(ArrayList arrayList, B2bDsl b2bDsl) {
+  public List<String> apply(ArrayList arrayList, Bean2beanTask task) {
     Stream<Integer> inputStream = arrayList.stream();
     return inputStream
-      .map(value -> b2bDsl.convert().from(value).to(String.class))
+      .map(value -> task.getDsl().convert().from(value).to(String.class))
       .collect(Collectors.toList());
   }
 

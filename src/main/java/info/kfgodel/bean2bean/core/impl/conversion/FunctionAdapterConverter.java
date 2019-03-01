@@ -10,7 +10,7 @@ import java.util.function.Function;
  */
 public class FunctionAdapterConverter implements Function<Bean2beanTask, Object> {
 
-  private Function function;
+  private Function<Object, Object> function;
 
   @Override
   public Object apply(Bean2beanTask objectConversion) {
@@ -19,9 +19,9 @@ public class FunctionAdapterConverter implements Function<Bean2beanTask, Object>
     return output;
   }
 
-  public static FunctionAdapterConverter create(Function function) {
+  public static FunctionAdapterConverter create(Function<?,?> function) {
     FunctionAdapterConverter process = new FunctionAdapterConverter();
-    process.function = function;
+    process.function = (Function<Object, Object>) function;
     return process;
   }
 

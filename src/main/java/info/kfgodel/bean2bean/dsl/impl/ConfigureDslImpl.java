@@ -59,19 +59,19 @@ public class ConfigureDslImpl implements ConfigureDsl {
   }
 
   @Override
-  public <I,O> ConfigureDsl usingConverter(BiFunction<I, B2bDsl, O> converterFunction) {
+  public <I,O> ConfigureDsl usingConverter(BiFunction<I, Bean2beanTask, O> converterFunction) {
     DomainVector implicitVector = vectorExtractor.extractFrom(converterFunction);
     return usingConverter(implicitVector, converterFunction);
   }
 
   @Override
-  public ConfigureDsl usingConverter(BiFunction<?, B2bDsl, ?> converterFunction, Predicate<DomainVector> scopePredicate) {
-    BiFunctionAdapterConverter converter = BiFunctionAdapterConverter.create(converterFunction, this.b2bDsl);
+  public ConfigureDsl usingConverter(BiFunction<?, Bean2beanTask, ?> converterFunction, Predicate<DomainVector> scopePredicate) {
+    BiFunctionAdapterConverter converter = BiFunctionAdapterConverter.create(converterFunction);
     return usingConverterFor(converter, scopePredicate);
   }
 
   @Override
-  public <I,O> ConfigureDsl usingConverter(BiFunctionRef<I, B2bDsl, O> converterFunction) {
+  public <I,O> ConfigureDsl usingConverter(BiFunctionRef<I, Bean2beanTask, O> converterFunction) {
     DomainVector implicitVector = vectorExtractor.extractFrom(converterFunction);
     return usingConverter(implicitVector, converterFunction.getBiFunction());
   }
@@ -128,7 +128,7 @@ public class ConfigureDslImpl implements ConfigureDsl {
     return usingConverterFor(conversionVector, converter);
   }
   private ConfigureDsl usingConverter(DomainVector conversionVector, BiFunction converterFunction) {
-    BiFunctionAdapterConverter converter = BiFunctionAdapterConverter.create(converterFunction, b2bDsl);
+    BiFunctionAdapterConverter converter = BiFunctionAdapterConverter.create(converterFunction);
     return usingConverterFor(conversionVector, converter);
   }
 

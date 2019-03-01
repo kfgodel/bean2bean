@@ -2,7 +2,6 @@ package info.kfgodel.bean2bean.core.impl.registry.domains;
 
 import info.kfgodel.bean2bean.core.api.registry.Domain;
 import info.kfgodel.bean2bean.core.api.registry.DomainVector;
-import info.kfgodel.bean2bean.dsl.api.B2bDsl;
 import info.kfgodel.bean2bean.other.references.BiFunctionRef;
 import info.kfgodel.bean2bean.other.references.ConsumerRef;
 import info.kfgodel.bean2bean.other.references.FunctionRef;
@@ -64,7 +63,7 @@ public class DomainVectorExtractor {
     return createVectorFor(inputType, outputType);
   }
 
-  public DomainVector extractFrom(BiFunction<?, B2bDsl, ?> biFunction) {
+  public DomainVector extractFrom(BiFunction<?, ?, ?> biFunction) {
     List<Type> arguments = typeExtractor.getArgumentsUsedFor(BiFunction.class, biFunction.getClass())
       .collect(Collectors.toList());
     Type inputType = arguments.isEmpty() ? Object.class : arguments.get(0);
@@ -72,7 +71,7 @@ public class DomainVectorExtractor {
     return createVectorFor(inputType, outputType);
   }
 
-  public DomainVector extractFrom(BiFunctionRef<?, B2bDsl, ?> converterFunction) {
+  public DomainVector extractFrom(BiFunctionRef<?, ?, ?> converterFunction) {
     Type outputType = converterFunction.getOutputType();
     Type firstInputType = converterFunction.getFirstInputType();
     return createVectorFor(firstInputType, outputType);

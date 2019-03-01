@@ -2,6 +2,7 @@ package info.kfgodel.bean2bean.dsl.api;
 
 import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
+import info.kfgodel.bean2bean.core.api.Bean2beanTask;
 import info.kfgodel.bean2bean.core.api.registry.DomainVector;
 import info.kfgodel.bean2bean.dsl.impl.Dsl;
 import info.kfgodel.bean2bean.other.references.BiFunctionRef;
@@ -45,7 +46,7 @@ public class ConverterRegistrationOptionsTest extends JavaSpec<B2bTestContext> {
         });
 
         it("accepts a bifunction reference that takes the dsl as second arg as a converter",()->{
-          test().configure().usingConverter(new BiFunctionRef<Object, B2bDsl, Object>((input, b2b)-> input) {});
+          test().configure().usingConverter(new BiFunctionRef<Object, Bean2beanTask, Object>((input, b2b)-> input) {});
           assertThat(test().dsl().convert().from("an object").to(Object.class)).isEqualTo("an object");
         });
 

@@ -11,16 +11,16 @@ import java.util.function.Supplier;
  */
 public class SupplierAdapterConverter implements Function<Bean2beanTask, Object> {
 
-  private Supplier function;
+  private Supplier<Object> function;
 
   @Override
   public Object apply(Bean2beanTask objectConversion) {
     return function.get();
   }
 
-  public static SupplierAdapterConverter create(Supplier function) {
+  public static SupplierAdapterConverter create(Supplier<?> function) {
     SupplierAdapterConverter converter = new SupplierAdapterConverter();
-    converter.function = function;
+    converter.function = (Supplier<Object>) function;
     return converter;
   }
 
