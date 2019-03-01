@@ -3,12 +3,15 @@ package info.kfgodel.bean2bean.converters;
 import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
 import com.google.common.collect.Lists;
+import info.kfgodel.bean2bean.core.api.exceptions.ConversionException;
 import info.kfgodel.bean2bean.core.api.exceptions.CreationException;
 import info.kfgodel.bean2bean.dsl.impl.Dsl;
+import info.kfgodel.bean2bean.other.references.SupplierRef;
 import info.kfgodel.bean2bean.other.references.TypeRef;
 import org.junit.runner.RunWith;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
@@ -44,7 +47,21 @@ public class Collection2CollectionConverterTest extends JavaSpec<ConverterTestCo
         }, e->{
           assertThat(e).hasMessage("Created instance[java.util.HashMap] can't be used as target collection");
         });
+
       });
+
+      describe("when the needed collection creation converter is registered", () -> {
+        beforeEach(()->{
+          test().dsl().configure().usingConverter(new SupplierRef<Set>(HashSet::new) {});
+        });
+
+        itThrows(ConversionException.class, "if no element converter is registered",()->{
+          test().dsl().convert().from(listWith12And2()).to(setOfStrings());
+        }, e->{
+          assertThat(e).hasMessage("No converter found from 1{java.lang.Integer} to {java.lang.String}");
+        });
+      });
+
 
 
     });

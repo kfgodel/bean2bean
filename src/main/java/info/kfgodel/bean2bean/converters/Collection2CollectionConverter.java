@@ -2,6 +2,7 @@ package info.kfgodel.bean2bean.converters;
 
 import info.kfgodel.bean2bean.core.api.Bean2beanTask;
 import info.kfgodel.bean2bean.core.api.exceptions.CreationException;
+import info.kfgodel.bean2bean.other.types.TypeArgumentExtractor;
 
 import java.lang.reflect.Type;
 import java.util.Collection;
@@ -16,13 +17,24 @@ import java.util.function.BiFunction;
 public class Collection2CollectionConverter implements BiFunction<Collection, Bean2beanTask, Collection> {
 
   @Override
-  public Collection apply(Collection input, Bean2beanTask task) {
-    Collection targetCollection = createTargetCollection(task);
-
-    return null;
+  public Collection apply(Collection sourceCollection, Bean2beanTask task) {
+    Collection targetCollection = createTargetCollectionFor(task);
+    Type expectedElementType = deduceExpectedElementTypeFor(task);
+    for (Object sourceElement : sourceCollection) {
+      Object targetElement = task.getDsl().convert().from(sourceElement).to(expectedElementType);
+      targetCollection.add(targetElement);
+    }
+    return targetCollection;
   }
 
-  private Collection createTargetCollection(Bean2beanTask task) {
+  private Type deduceExpectedElementTypeFor(Bean2beanTask task) {
+    Type targetType = task.getTargetType();
+    Type elementType = TypeArgumentExtractor.create().getArgumentUsedFor(Collection.class, targetType)
+      .orElse(Object.class);
+    return elementType;
+  }
+
+  private Collection createTargetCollectionFor(Bean2beanTask task) {
     Type targetType = task.getTargetType();
     Object created = task.getDsl().generate().anInstanceOf(targetType);
     if (!(created instanceof Collection)) {

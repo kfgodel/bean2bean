@@ -24,10 +24,17 @@ public class TypeArgumentExtractor {
    *   This is a variant of {@link #getArgumentsUsedFor(Class, Class)} where only the first argument is considered
    */
   public <T> Optional<Type> getArgumentUsedFor(Class<T> parametrizableClass, Class<? extends T> concreteSubclass) {
+    return getArgumentUsedFor(parametrizableClass, (Type) concreteSubclass);
+  }
+
+  /**
+   * Facility method to get the only argument.<br>
+   *   This is a variant of {@link #getArgumentsUsedFor(Class, Type)} where only the first argument is considered
+   */
+  public Optional<Type> getArgumentUsedFor(Class<?> parametrizableClass, Type concreteSubclass) {
     return getArgumentsUsedFor(parametrizableClass, concreteSubclass)
       .findFirst();
   }
-
   /**
    * Extracts the type arguments used to parameterize a supertype of the given concrete class.<br>
    *   It returns empty if no argument was found, or the supertype doesn't have type parameters
@@ -37,7 +44,19 @@ public class TypeArgumentExtractor {
    * @return The stream of type arguments found or empty
    */
   public <T> Stream<Type> getArgumentsUsedFor(Class<T> parametrizableClass, Class<? extends T> concreteSubclass) {
-    return SupertypeSpliterator.createAsStream(concreteSubclass)
+    return getArgumentsUsedFor(parametrizableClass, (Type) concreteSubclass);
+  }
+
+  /**
+   * Extracts the type arguments used to parameterize a supertype of the given concrete type.<br>
+   *   It returns empty if no argument was found, or the supertype doesn't have type parameters
+   * @param parametrizableClass The supertype for which we want to know the actual type arguments
+   * @param concreteType The concrete type that parameterizes the supertype
+   * @param <T> The parametrizable type
+   * @return The stream of type arguments found or empty
+   */
+  public Stream<Type> getArgumentsUsedFor(Class<?> parametrizableClass, Type concreteType) {
+    return SupertypeSpliterator.createAsStream(concreteType)
       .filter(supertype -> isTheParameterizedVersionOf(parametrizableClass, supertype))
       .limit(1)// Don't waste time with the rest of the hierarchy once we find it
       .map(ParameterizedType.class::cast)
