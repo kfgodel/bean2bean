@@ -15,6 +15,7 @@ public class Collection2CollectionConverter implements BiFunction<Collection, Be
 
   @Override
   public Collection apply(Collection input, Bean2beanTask task) {
+    Collection targetCollection = task.getDsl().generate().anInstanceOf(task.getTargetType());
     return null;
   }
 

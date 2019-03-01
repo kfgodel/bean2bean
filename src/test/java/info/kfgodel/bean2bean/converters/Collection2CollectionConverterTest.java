@@ -31,7 +31,7 @@ public class Collection2CollectionConverterTest extends JavaSpec<ConverterTestCo
         itThrows(CreationException.class, "if no creation converter is registered",()->{
           test().dsl().convert().from(listWith12And2()).to(setOfStrings());
         }, e ->{
-          assertThat(e).hasMessage("");
+          assertThat(e).hasMessage("Creation from null to java.util.Set<java.lang.String> failed: No converter found from null{javax.lang.model.type.NullType} to {java.util.Set<java.lang.String>}");
         });
       });
 
