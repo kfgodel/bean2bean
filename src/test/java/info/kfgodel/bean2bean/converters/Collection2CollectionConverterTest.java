@@ -8,8 +8,10 @@ import info.kfgodel.bean2bean.dsl.impl.Dsl;
 import info.kfgodel.bean2bean.other.references.TypeRef;
 import org.junit.runner.RunWith;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -32,6 +34,15 @@ public class Collection2CollectionConverterTest extends JavaSpec<ConverterTestCo
           test().dsl().convert().from(listWith12And2()).to(setOfStrings());
         }, e ->{
           assertThat(e).hasMessage("Creation from null to java.util.Set<java.lang.String> failed: No converter found from null{javax.lang.model.type.NullType} to {java.util.Set<java.lang.String>}");
+        });
+
+        itThrows(CreationException.class, "if the registered creation converter doesn't produce a collection", ()->{
+          //Create a map for every creation
+          test().dsl().configure().usingConverter((Supplier) HashMap::new, (vector)->true);
+
+          test().dsl().convert().from(listWith12And2()).to(setOfStrings());
+        }, e->{
+          assertThat(e).hasMessage("Created instance[java.util.HashMap] can't be used as target collection");
         });
       });
 
