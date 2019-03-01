@@ -1,11 +1,12 @@
 package info.kfgodel.bean2bean.core.impl.conversion;
 
 import info.kfgodel.bean2bean.core.api.Bean2beanTask;
-import info.kfgodel.bean2bean.core.api.exceptions.ConversionException;
 import info.kfgodel.bean2bean.core.api.registry.DomainVector;
 
 /**
- * This class represents the definition of an expected conversion
+ * This class represents the task that {@link info.kfgodel.bean2bean.core.api.Bean2bean} can process
+ * to convert an object from one domain to another domain (possibly generating a new object)
+ * 
  * Date: 12/02/19 - 00:06
  */
 public class ObjectConversion implements Bean2beanTask {
@@ -20,14 +21,12 @@ public class ObjectConversion implements Bean2beanTask {
     return conversion;
   }
 
+  @Override
   public DomainVector getConversionVector(){
     return conversionVector;
   }
 
-  public ConversionException exceptionForMissingConverter() {
-    return new ConversionException("No converter found from " + source + getConversionVector().getSource() + " to " + getConversionVector().getTarget(), source, conversionVector);
-  }
-
+  @Override
   public Object getSource() {
     return source;
   }

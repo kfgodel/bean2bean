@@ -1,7 +1,6 @@
 package info.kfgodel.bean2bean.core.api;
 
 import info.kfgodel.bean2bean.core.api.registry.Bean2BeanRegistry;
-import info.kfgodel.bean2bean.core.impl.conversion.ObjectConversion;
 
 /**
  * This type represents the interface for the core bean2bean functionality.<br>
@@ -18,7 +17,7 @@ public interface Bean2bean {
    * @param <O> The expected result type
    * @return The result of processing the task
    */
-  <O> O process(ObjectConversion task);
+  <O> O process(Bean2beanTask task);
 
   /**
    * Allows access to the converter registry for this instance.<br>

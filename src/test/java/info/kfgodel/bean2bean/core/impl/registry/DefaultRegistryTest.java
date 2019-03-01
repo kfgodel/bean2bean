@@ -2,9 +2,9 @@ package info.kfgodel.bean2bean.core.impl.registry;
 
 import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
+import info.kfgodel.bean2bean.core.api.Bean2beanTask;
 import info.kfgodel.bean2bean.core.api.registry.Domain;
 import info.kfgodel.bean2bean.core.api.registry.DomainVector;
-import info.kfgodel.bean2bean.core.impl.conversion.ObjectConversion;
 import info.kfgodel.bean2bean.core.impl.registry.definitions.PredicateDefinition;
 import info.kfgodel.bean2bean.core.impl.registry.definitions.VectorDefinition;
 import info.kfgodel.bean2bean.core.impl.registry.domains.DomainCalculator;
@@ -31,7 +31,7 @@ public class DefaultRegistryTest extends JavaSpec<B2bTestContext> {
 
       describe("when created", () -> {
         it("has no registered converter", () -> {
-          Optional<Function<ObjectConversion, Object>> found = test().registry().findBestConverterFor(listOfIntegersToListOfStrings());
+          Optional<Function<Bean2beanTask, Object>> found = test().registry().findBestConverterFor(listOfIntegersToListOfStrings());
           assertThat(found).isEmpty();
         });
       });
@@ -42,13 +42,13 @@ public class DefaultRegistryTest extends JavaSpec<B2bTestContext> {
         });
 
         it("finds that converter", () -> {
-          Optional<Function<ObjectConversion, Object>> found = test().registry().findBestConverterFor(listOfIntegersToListOfStrings());
+          Optional<Function<Bean2beanTask, Object>> found = test().registry().findBestConverterFor(listOfIntegersToListOfStrings());
           Object converterResult = found.get().apply(null);
           assertThat(converterResult).isEqualTo("List<Integer> -> List<String>");
         });
 
         it("finds no converter if a more generic domain conversion is attempted",()->{
-          Optional<Function<ObjectConversion, Object>> found = test().registry().findBestConverterFor(listToList());
+          Optional<Function<Bean2beanTask, Object>> found = test().registry().findBestConverterFor(listToList());
           assertThat(found).isEmpty();
         });
 
@@ -58,7 +58,7 @@ public class DefaultRegistryTest extends JavaSpec<B2bTestContext> {
           });
 
           it("finds the exact converter",()->{
-            Optional<Function<ObjectConversion, Object>> found = test().registry().findBestConverterFor(listOfIntegersToListOfStrings());
+            Optional<Function<Bean2beanTask, Object>> found = test().registry().findBestConverterFor(listOfIntegersToListOfStrings());
             Object converterResult = found.get().apply(null);
             assertThat(converterResult).isEqualTo("List<Integer> -> List<String>");
           });
@@ -72,13 +72,13 @@ public class DefaultRegistryTest extends JavaSpec<B2bTestContext> {
         });
 
         it("finds the converter when the conversion vector matches the predicate",()->{
-          Optional<Function<ObjectConversion, Object>> found = test().registry().findBestConverterFor(listToList());
+          Optional<Function<Bean2beanTask, Object>> found = test().registry().findBestConverterFor(listToList());
           Object converterResult = found.get().apply(null);
           assertThat(converterResult).isEqualTo("input == output");
         });
 
         it("finds no converter if the conversion vector doesn't match the predicate",()->{
-          Optional<Function<ObjectConversion, Object>> found = test().registry().findBestConverterFor(objectToList());
+          Optional<Function<Bean2beanTask, Object>> found = test().registry().findBestConverterFor(objectToList());
           assertThat(found).isEmpty();
         });
 
@@ -88,13 +88,13 @@ public class DefaultRegistryTest extends JavaSpec<B2bTestContext> {
           });
 
           it("finds the first converter that matches the predicate",()->{
-            Optional<Function<ObjectConversion, Object>> found = test().registry().findBestConverterFor(listToList());
+            Optional<Function<Bean2beanTask, Object>> found = test().registry().findBestConverterFor(listToList());
             Object converterResult = found.get().apply(null);
             assertThat(converterResult).isEqualTo("input == output");
           });
 
           it("finds the second if the vector doesn't match the first predicate",()->{
-            Optional<Function<ObjectConversion, Object>> found = test().registry().findBestConverterFor(objectToList());
+            Optional<Function<Bean2beanTask, Object>> found = test().registry().findBestConverterFor(objectToList());
             Object converterResult = found.get().apply(null);
             assertThat(converterResult).isEqualTo("anything");
           });
@@ -106,13 +106,13 @@ public class DefaultRegistryTest extends JavaSpec<B2bTestContext> {
           });
 
           it("finds a matching vector based converter over any predicate based",()->{
-            Optional<Function<ObjectConversion, Object>> found = test().registry().findBestConverterFor(listToList());
+            Optional<Function<Bean2beanTask, Object>> found = test().registry().findBestConverterFor(listToList());
             Object converterResult = found.get().apply(null);
             assertThat(converterResult).isEqualTo("List -> List");
           });
 
           it("finds the predicate based converter if no vector based is applicable",()->{
-            Optional<Function<ObjectConversion, Object>> found = test().registry().findBestConverterFor(objectToObject());
+            Optional<Function<Bean2beanTask, Object>> found = test().registry().findBestConverterFor(objectToObject());
             Object converterResult = found.get().apply(null);
             assertThat(converterResult).isEqualTo("input == output");
           });
@@ -127,7 +127,7 @@ public class DefaultRegistryTest extends JavaSpec<B2bTestContext> {
           });
 
           it("finds no converter", () -> {
-            Optional<Function<ObjectConversion, Object>> found = test().registry().findBestConverterFor(listOfIntegersToListOfStrings());
+            Optional<Function<Bean2beanTask, Object>> found = test().registry().findBestConverterFor(listOfIntegersToListOfStrings());
             assertThat(found).isEmpty();
           });
 
@@ -139,7 +139,7 @@ public class DefaultRegistryTest extends JavaSpec<B2bTestContext> {
           });
 
           it("finds that converter", () -> {
-            Optional<Function<ObjectConversion, Object>> found = test().registry().findBestConverterFor(listOfIntegersToListOfStrings());
+            Optional<Function<Bean2beanTask, Object>> found = test().registry().findBestConverterFor(listOfIntegersToListOfStrings());
             Object converterResult = found.get().apply(null);
             assertThat(converterResult).isEqualTo("Object -> Object");
           });
@@ -152,7 +152,7 @@ public class DefaultRegistryTest extends JavaSpec<B2bTestContext> {
           });
 
           it("finds the more specific one", () -> {
-            Optional<Function<ObjectConversion, Object>> found = test().registry().findBestConverterFor(listOfIntegersToListOfStrings());
+            Optional<Function<Bean2beanTask, Object>> found = test().registry().findBestConverterFor(listOfIntegersToListOfStrings());
             Object converterResult = found.get().apply(null);
             assertThat(converterResult).isEqualTo("List -> List");
           });
@@ -165,7 +165,7 @@ public class DefaultRegistryTest extends JavaSpec<B2bTestContext> {
           });
 
           it("finds the one that's more specific to the expected output", () -> {
-            Optional<Function<ObjectConversion, Object>> found = test().registry().findBestConverterFor(listOfIntegersToListOfStrings());
+            Optional<Function<Bean2beanTask, Object>> found = test().registry().findBestConverterFor(listOfIntegersToListOfStrings());
             Object converterResult = found.get().apply(null);
             assertThat(converterResult).isEqualTo("Object -> List");
           });
@@ -178,7 +178,7 @@ public class DefaultRegistryTest extends JavaSpec<B2bTestContext> {
           });
 
           it("finds the one that's more specific to the expected output", () -> {
-            Optional<Function<ObjectConversion, Object>> found = test().registry().findBestConverterFor(listOfIntegersToListOfStrings());
+            Optional<Function<Bean2beanTask, Object>> found = test().registry().findBestConverterFor(listOfIntegersToListOfStrings());
             Object converterResult = found.get().apply(null);
             assertThat(converterResult).isEqualTo("Object -> List<String>");
           });

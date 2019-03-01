@@ -1,12 +1,12 @@
 package info.kfgodel.bean2bean.core.impl.registry;
 
+import info.kfgodel.bean2bean.core.api.Bean2beanTask;
 import info.kfgodel.bean2bean.core.api.registry.Bean2BeanRegistry;
 import info.kfgodel.bean2bean.core.api.registry.Domain;
 import info.kfgodel.bean2bean.core.api.registry.DomainVector;
 import info.kfgodel.bean2bean.core.api.registry.definitions.ConverterDefinition;
 import info.kfgodel.bean2bean.core.api.registry.definitions.PredicateScopedDefinition;
 import info.kfgodel.bean2bean.core.api.registry.definitions.VectorScopedDefinition;
-import info.kfgodel.bean2bean.core.impl.conversion.ObjectConversion;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,7 +35,7 @@ public class DefaultRegistry implements Bean2BeanRegistry {
   }
 
   @Override
-  public <O> Optional<Function<ObjectConversion, O>> findBestConverterFor(DomainVector vector) {
+  public <O> Optional<Function<Bean2beanTask, O>> findBestConverterFor(DomainVector vector) {
     return this.cache.retrieveCachedOrProduceFor(vector, this::calculateBestConverterFor);
   }
 
@@ -49,7 +49,7 @@ public class DefaultRegistry implements Bean2BeanRegistry {
     throw new IllegalArgumentException("The given definition["+definition+"] is not supported on this registry");
   }
 
-  private <O> Optional<Function<ObjectConversion, O>> calculateBestConverterFor(DomainVector vector) {
+  private <O> Optional<Function<Bean2beanTask, O>> calculateBestConverterFor(DomainVector vector) {
     Optional<ConverterDefinition> foundDefinition = this.lookForVectorBasedMatchingHiearchiesOf(vector);
     if(!foundDefinition.isPresent()){
       // I can't find a better way to express this with native optionals

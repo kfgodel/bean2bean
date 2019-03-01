@@ -1,9 +1,9 @@
 package info.kfgodel.bean2bean.core.api.registry;
 
+import info.kfgodel.bean2bean.core.api.Bean2beanTask;
 import info.kfgodel.bean2bean.core.api.registry.definitions.ConverterDefinition;
 import info.kfgodel.bean2bean.core.api.registry.definitions.PredicateScopedDefinition;
 import info.kfgodel.bean2bean.core.api.registry.definitions.VectorScopedDefinition;
-import info.kfgodel.bean2bean.core.impl.conversion.ObjectConversion;
 
 import java.util.Optional;
 import java.util.function.Function;
@@ -22,7 +22,7 @@ public interface Bean2BeanRegistry {
    * @param <O> The type of expected output
    * @return The process found, or empty if none exists for the input
    */
-  <O> Optional<Function<ObjectConversion,O>> findBestConverterFor(DomainVector conversionVector);
+  <O> Optional<Function<Bean2beanTask,O>> findBestConverterFor(DomainVector conversionVector);
 
 
   /**
