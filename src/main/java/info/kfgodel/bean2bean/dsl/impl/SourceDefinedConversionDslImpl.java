@@ -32,14 +32,18 @@ public class SourceDefinedConversionDslImpl<I> implements SourceDefinedConversio
 
   @Override
   public <O> O to(Class<O> outputClass) throws Bean2BeanException {
-    Domain targetDomain = domainFor(outputClass);
-    ObjectConversion conversion = createConversionTo(targetDomain);
-    return processConversion(conversion);
+    return to((Type) outputClass);
   }
 
   @Override
   public <O> O to(TypeRef<O> outputTypeRef) throws Bean2BeanException {
-    Domain targetDomain = domainFor(outputTypeRef.getReference());
+    Type reference = outputTypeRef.getReference();
+    return to(reference);
+  }
+
+  @Override
+  public <O> O to(Type outputType) throws Bean2BeanException {
+    Domain targetDomain = domainFor(outputType);
     ObjectConversion conversion = createConversionTo(targetDomain);
     return processConversion(conversion);
   }

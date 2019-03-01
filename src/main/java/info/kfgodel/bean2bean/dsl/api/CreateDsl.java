@@ -2,6 +2,8 @@ package info.kfgodel.bean2bean.dsl.api;
 
 import info.kfgodel.bean2bean.core.api.exceptions.Bean2BeanException;
 
+import java.lang.reflect.Type;
+
 /**
  * This type defines the available options for creating objects.<br>
  * Date: 16/02/19 - 18:57
@@ -13,10 +15,20 @@ public interface CreateDsl {
    *   This operation is equivalent to converting null to the expected type
    * @param expectedTypeClass The class that indicates the type of instance to be created
    * @param <T> The type of the output
-   * @return A new instance of teh expected type
+   * @return A new instance of the expected type
    * @throws Bean2BeanException If an error occurs during creation (like a missing converter)
    */
   <T> T anInstanceOf(Class<T> expectedTypeClass) throws Bean2BeanException;
+
+  /**
+   * Creates a new instance of the given type.<br>
+   *   This operation is equivalent to converting null to the expected type
+   * @param expectedType The type instance that indicates the expected type of instance to be created
+   * @param <T> The type of the output
+   * @return A new instance of the expected type
+   * @throws Bean2BeanException If an error occurs during creation (like a missing converter)
+   */
+  <T> T anInstanceOf(Type expectedType) throws Bean2BeanException;
 
 
   /**
