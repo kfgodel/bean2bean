@@ -1,6 +1,7 @@
 package info.kfgodel.bean2bean.core.api;
 
 import info.kfgodel.bean2bean.core.api.registry.DomainVector;
+import info.kfgodel.bean2bean.dsl.api.B2bDsl;
 
 /**
  * This type represents a task that can be processed by a {@link Bean2bean} core
@@ -18,4 +19,10 @@ public interface Bean2beanTask {
    * @return The input for the conversion
    */
   Object getSource();
+
+  /**
+   * Returns the dsl instance that is contextual to this task and can be used for nesting tasks
+   * @return The dsl to ease task definitions
+   */
+  B2bDsl getDsl();
 }
