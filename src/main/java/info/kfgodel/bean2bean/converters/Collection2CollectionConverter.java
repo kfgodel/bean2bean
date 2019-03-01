@@ -1,7 +1,6 @@
 package info.kfgodel.bean2bean.converters;
 
-import info.kfgodel.bean2bean.core.impl.conversion.ObjectConversion;
-import info.kfgodel.bean2bean.dsl.api.B2bDsl;
+import info.kfgodel.bean2bean.core.api.Bean2beanTask;
 
 import java.util.Collection;
 import java.util.function.BiFunction;
@@ -12,10 +11,10 @@ import java.util.function.BiFunction;
  *
  * Date: 28/02/19 - 19:42
  */
-public class Collection2CollectionConverter implements BiFunction<ObjectConversion, B2bDsl, Collection> {
+public class Collection2CollectionConverter implements BiFunction<Collection, Bean2beanTask, Collection> {
 
   @Override
-  public Collection apply(ObjectConversion objectConversion, B2bDsl b2bDsl) {
+  public Collection apply(Collection input, Bean2beanTask task) {
     return null;
   }
 

@@ -43,6 +43,7 @@ public class ObjectConversion implements Bean2beanTask {
     return dsl;
   }
 
+  @Override
   public Type getTargetType() {
     return targetType;
   }
