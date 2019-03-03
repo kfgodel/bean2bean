@@ -3,6 +3,7 @@ package info.kfgodel.bean2bean.other.types.descriptors;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -37,7 +38,7 @@ public class ClassTypeDescriptor implements JavaTypeDescriptor {
   }
 
   @Override
-  public Type[] getTypeArgumentsReplacingParametersWith(Map<TypeVariable, Type> typeParameterValues) {
+  public Type[] getTypeArgumentsBindedWith(Map<TypeVariable, Type> typeParameterBindings) {
     return NO_ARGUMENTS;
   }
 
@@ -50,6 +51,25 @@ public class ClassTypeDescriptor implements JavaTypeDescriptor {
       .map(Arrays::stream)
       .orElse(Stream.empty());
     return Stream.concat(genericSuperclass, genericInterfaces);
+  }
+
+  @Override
+  public Map<TypeVariable, Type> calculateTypeVariableBindingsFor(Type[] actualArguments) {
+    TypeVariable[] typeParameters = aClass.getTypeParameters();
+    if(actualArguments.length != typeParameters.length){
+      throw new IllegalArgumentException(
+        "The class["+aClass+"] can't bind its parameters " + Arrays.toString(typeParameters)
+          + " to the arguments " + Arrays.toString(actualArguments) + ". Arrays don't match"
+      );
+    }
+    Map<TypeVariable, Type> parameterValues = new LinkedHashMap<>();
+    for (int i = 0; i < typeParameters.length; i++) {
+      TypeVariable typeParameter = typeParameters[i];
+      Type typeArgument = actualArguments[i];
+      parameterValues.put(typeParameter, typeArgument);
+    }
+    return parameterValues;
+
   }
 
   @Override

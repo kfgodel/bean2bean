@@ -32,49 +32,46 @@ public class TypeArgumentExtraction {
   private void calculateTypeArguments() {
     SupertypeSpliterator.createAsStream(concreteType)
       .map(JavaTypeDescriptor::createFor)
-      .forEach(this::discoverActualArgumentsFor);
+      .forEach(this::registerHierarchyReplacingArguments);
   }
 
-  private void discoverActualArgumentsFor(JavaTypeDescriptor typeDescriptor) {
+  private void registerHierarchyReplacingArguments(JavaTypeDescriptor typeDescriptor) {
     Type[] typeArguments = typeDescriptor.getTypeArguments();
-    registerArguments(typeDescriptor, typeArguments);
+    registerArgumentsFor(typeDescriptor, typeArguments);
   }
 
-  private void registerArguments(JavaTypeDescriptor typeDescriptor, Type[] typeArguments) {
-    Type aType = typeDescriptor.getType();
-    Type[] registeredArguments = argumentsByType.putIfAbsent(aType, typeArguments);
-    if(registeredArguments != null){
-      // No need to run the rest, the hierarchy was aleready registered
+  private void registerArgumentsFor(JavaTypeDescriptor typeDescriptor, Type[] typeArguments) {
+    Type[] previouslyStored = storeArgumentsFor(typeDescriptor, typeArguments);
+    if(previouslyStored != null){
+      // No need to run the rest, the hierarchy was already registered
       return;
     }
 
-    Optional<Class> parametrizableClass = typeDescriptor.getErasuredType();
-    parametrizableClass.ifPresent((clase) -> {
-      JavaTypeDescriptor erasuredTypeDescriptor = JavaTypeDescriptor.createFor(clase);
-      registerArguments(erasuredTypeDescriptor, typeArguments);
-
-      Map<TypeVariable, Type> typeParameterValues = this.getTypeParameterValues(clase, typeArguments);
-      Stream<Type> superTypes = erasuredTypeDescriptor.getGenericSupertypes();
-      superTypes.forEach(superType ->{
-        JavaTypeDescriptor superTypeDescriptor = JavaTypeDescriptor.createFor(superType);
-        Type[] replacedArguments = superTypeDescriptor.getTypeArgumentsReplacingParametersWith(typeParameterValues);
-        this.registerArguments(superTypeDescriptor, replacedArguments);
+    Optional<Class> erasuredType = typeDescriptor.getErasuredType();
+    erasuredType
+      .map(JavaTypeDescriptor::createFor)
+      .ifPresent((erasuredDescriptor) -> {
+        registerArgumentsFor(erasuredDescriptor, typeArguments);
+        bubbleArgumentsUp(erasuredDescriptor, typeArguments);
       });
-    });
   }
 
-  private Map<TypeVariable, Type> getTypeParameterValues(Class clase, Type[] typeArguments) {
-    TypeVariable[] typeParameters = clase.getTypeParameters();
-    if(typeArguments.length != typeParameters.length){
-      throw new IllegalStateException("How does class["+clase+"] have parameters " + Arrays.toString(typeParameters) + " and mismatching args " + Arrays.toString(typeArguments));
-    }
-    Map<TypeVariable, Type> parameterReplacements = new LinkedHashMap<>();
-    for (int i = 0; i < typeParameters.length; i++) {
-      TypeVariable typeParameter = typeParameters[i];
-      Type typeArgument = typeArguments[i];
-      parameterReplacements.put(typeParameter, typeArgument);
-    }
-    return parameterReplacements;
+  private void bubbleArgumentsUp(JavaTypeDescriptor typeDescriptor, Type[] actualArguments) {
+    Map<TypeVariable, Type> typeVariableBindings = typeDescriptor.calculateTypeVariableBindingsFor(actualArguments);
+    Stream<Type> superTypes = typeDescriptor.getGenericSupertypes();
+    superTypes
+      .map(JavaTypeDescriptor::createFor)
+      .forEach(superTypeDescriptor -> registerArgumentsBindingTypeVariables(superTypeDescriptor, typeVariableBindings));
+  }
+
+  private Type[] storeArgumentsFor(JavaTypeDescriptor typeDescriptor, Type[] typeArguments) {
+    Type aType = typeDescriptor.getType();
+    return argumentsByType.putIfAbsent(aType, typeArguments);
+  }
+
+  private void registerArgumentsBindingTypeVariables(JavaTypeDescriptor superTypeDescriptor, Map<TypeVariable, Type> variableValues) {
+    Type[] replacedArguments = superTypeDescriptor.getTypeArgumentsBindedWith(variableValues);
+    this.registerArgumentsFor(superTypeDescriptor, replacedArguments);
   }
 
   public Stream<Type> getArgumentsFor(Type parametrizableClass) {

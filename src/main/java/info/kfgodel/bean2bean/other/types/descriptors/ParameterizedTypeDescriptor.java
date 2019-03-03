@@ -3,6 +3,7 @@ package info.kfgodel.bean2bean.other.types.descriptors;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -39,13 +40,13 @@ public class ParameterizedTypeDescriptor implements JavaTypeDescriptor {
   }
 
   @Override
-  public Type[] getTypeArgumentsReplacingParametersWith(Map<TypeVariable, Type> typeParameterValues) {
+  public Type[] getTypeArgumentsBindedWith(Map<TypeVariable, Type> typeParameterBindings) {
     Type[] declaredArguments = getTypeArguments();
     Type[] replacedArguments = new Type[declaredArguments.length];
     for (int i = 0; i < declaredArguments.length; i++) {
-      Type declared = declaredArguments[i];
-      Optional<Type> replacement = Optional.ofNullable(typeParameterValues.get(declared));
-      replacedArguments[i] = replacement.orElse(declared);
+      Type declaredArgument = declaredArguments[i];
+      Optional<Type> replacementArgument = Optional.ofNullable(typeParameterBindings.get(declaredArgument));
+      replacedArguments[i] = replacementArgument.orElse(declaredArgument);
     }
     return replacedArguments;
   }
@@ -53,6 +54,11 @@ public class ParameterizedTypeDescriptor implements JavaTypeDescriptor {
   @Override
   public Stream<Type> getGenericSupertypes() {
     return Stream.empty();
+  }
+
+  @Override
+  public Map<TypeVariable, Type> calculateTypeVariableBindingsFor(Type[] typeArguments) {
+    return Collections.emptyMap();
   }
 
   @Override

@@ -2,6 +2,7 @@ package info.kfgodel.bean2bean.other.types.descriptors;
 
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -36,13 +37,18 @@ public class VariableOrWildcardTypeDescriptor implements JavaTypeDescriptor {
   }
 
   @Override
-  public Type[] getTypeArgumentsReplacingParametersWith(Map<TypeVariable, Type> typeParameterValues) {
+  public Type[] getTypeArgumentsBindedWith(Map<TypeVariable, Type> typeParameterBindings) {
     return NO_ARGUMENTS;
   }
 
   @Override
   public Stream<Type> getGenericSupertypes() {
     return Stream.empty();
+  }
+
+  @Override
+  public Map<TypeVariable, Type> calculateTypeVariableBindingsFor(Type[] typeArguments) {
+    return Collections.emptyMap();
   }
 
   @Override
