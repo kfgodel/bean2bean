@@ -11,12 +11,12 @@ import java.util.stream.Stream;
  * This type describes {@link java.lang.reflect.TypeVariable} types or {@link java.lang.reflect.WildcardType} types
  * Date: 02/03/19 - 18:39
  */
-public class VariableOrWildcardTypeDescriptor implements JavaTypeDescriptor {
+public class GeneralTypeDescriptor implements JavaTypeDescriptor {
 
   private Type aType;
 
-  public static VariableOrWildcardTypeDescriptor create(Type aType) {
-    VariableOrWildcardTypeDescriptor descriptor = new VariableOrWildcardTypeDescriptor();
+  public static GeneralTypeDescriptor create(Type aType) {
+    GeneralTypeDescriptor descriptor = new GeneralTypeDescriptor();
     descriptor.aType = aType;
     return descriptor;
   }
@@ -49,6 +49,11 @@ public class VariableOrWildcardTypeDescriptor implements JavaTypeDescriptor {
   @Override
   public Map<TypeVariable, Type> calculateTypeVariableBindingsFor(Type[] typeArguments) {
     return Collections.emptyMap();
+  }
+
+  @Override
+  public Optional<Class> getComponentType() {
+    return Optional.empty();
   }
 
   @Override
