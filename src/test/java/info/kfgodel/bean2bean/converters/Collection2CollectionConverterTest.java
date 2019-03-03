@@ -53,7 +53,7 @@ public class Collection2CollectionConverterTest extends JavaSpec<ConverterTestCo
 
       });
 
-      describe("when the creator converter is registered", () -> {
+      describe("when the correct creator converter is registered", () -> {
         beforeEach(() -> {
           test().dsl().configure().usingConverter(new SupplierRef<Set>(HashSet::new) {
           });
@@ -65,7 +65,7 @@ public class Collection2CollectionConverterTest extends JavaSpec<ConverterTestCo
           assertThat(e).hasMessage("No converter found from 1{java.lang.Integer} to {java.lang.String}");
         });
 
-        describe("when the element converter is registered", () -> {
+        describe("when the correct element converter is registered", () -> {
           beforeEach(() -> {
             test().dsl().configure().usingConverter(new FunctionRef<Integer, String>(String::valueOf) {
             });
@@ -74,6 +74,12 @@ public class Collection2CollectionConverterTest extends JavaSpec<ConverterTestCo
           it("converts the input collection into the expected output collection", () -> {
             Set<String> result = test().dsl().convert().from(listWith12And2()).to(setOfStrings());
             assertThat(result).isEqualTo(Sets.newHashSet("1", "2"));
+          });
+
+          itThrows(ConversionException.class, "if a different element converter is needed", () -> {
+            test().dsl().convert().from(listWith12And2()).to(setOfNumber());
+          }, e -> {
+            assertThat(e).hasMessage("No converter found from 1{java.lang.Integer} to {java.lang.Number}");
           });
         });
 
@@ -86,6 +92,10 @@ public class Collection2CollectionConverterTest extends JavaSpec<ConverterTestCo
 
   private TypeRef<Set<String>> setOfStrings() {
     return new TypeRef<Set<String>>() {
+    };
+  }
+  private TypeRef<Set<Number>> setOfNumber() {
+    return new TypeRef<Set<Number>>() {
     };
   }
 

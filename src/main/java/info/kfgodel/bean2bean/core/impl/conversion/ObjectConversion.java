@@ -47,4 +47,9 @@ public class ObjectConversion implements Bean2beanTask {
   public Type getTargetType() {
     return targetType;
   }
+
+  @Override
+  public String toString() {
+    return source + " -> " + targetType;
+  }
 }
