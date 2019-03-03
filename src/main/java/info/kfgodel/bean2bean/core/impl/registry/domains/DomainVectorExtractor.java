@@ -6,7 +6,7 @@ import info.kfgodel.bean2bean.other.references.BiFunctionRef;
 import info.kfgodel.bean2bean.other.references.ConsumerRef;
 import info.kfgodel.bean2bean.other.references.FunctionRef;
 import info.kfgodel.bean2bean.other.references.SupplierRef;
-import info.kfgodel.bean2bean.other.types.TypeArgumentExtractor;
+import info.kfgodel.bean2bean.other.types.extraction.TypeArgumentExtractor;
 
 import javax.lang.model.type.NullType;
 import java.lang.reflect.Type;

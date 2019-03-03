@@ -1,8 +1,6 @@
-package info.kfgodel.bean2bean.other.types;
+package info.kfgodel.bean2bean.other.types.extraction;
 
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -24,10 +22,17 @@ public class TypeArgumentExtractor {
    *   This is a variant of {@link #getArgumentsUsedFor(Class, Class)} where only the first argument is considered
    */
   public <T> Optional<Type> getArgumentUsedFor(Class<T> parametrizableClass, Class<? extends T> concreteSubclass) {
+    return getArgumentUsedFor(parametrizableClass, (Type) concreteSubclass);
+  }
+
+  /**
+   * Facility method to get the only argument.<br>
+   *   This is a variant of {@link #getArgumentsUsedFor(Class, Type)} where only the first argument is considered
+   */
+  public Optional<Type> getArgumentUsedFor(Class<?> parametrizableClass, Type concreteSubclass) {
     return getArgumentsUsedFor(parametrizableClass, concreteSubclass)
       .findFirst();
   }
-
   /**
    * Extracts the type arguments used to parameterize a supertype of the given concrete class.<br>
    *   It returns empty if no argument was found, or the supertype doesn't have type parameters
@@ -37,29 +42,21 @@ public class TypeArgumentExtractor {
    * @return The stream of type arguments found or empty
    */
   public <T> Stream<Type> getArgumentsUsedFor(Class<T> parametrizableClass, Class<? extends T> concreteSubclass) {
-    return SupertypeSpliterator.createAsStream(concreteSubclass)
-      .filter(supertype -> isTheParameterizedVersionOf(parametrizableClass, supertype))
-      .limit(1)// Don't waste time with the rest of the hierarchy once we find it
-      .map(ParameterizedType.class::cast)
-      .flatMap(this::extractArguments);
+    return getArgumentsUsedFor(parametrizableClass, (Type) concreteSubclass);
   }
 
-  private Stream<Type> extractArguments(ParameterizedType type) {
-    Type[] actualTypeArguments = type.getActualTypeArguments();
-    if(actualTypeArguments == null){
-      // Don't trust the method's javadoc. I'm sure null is a possible return value
-      return Stream.empty();
-    }
-    return Arrays.stream(actualTypeArguments);
+  /**
+   * Extracts the type arguments used to parameterize a supertype of the given concrete type.<br>
+   *   It returns empty if no argument was found, or the supertype doesn't have type parameters
+   * @param parametrizableClass The supertype for which we want to know the actual type arguments
+   * @param concreteType The concrete type that parameterizes the supertype
+   * @param <T> The parametrizable type
+   * @return The stream of type arguments found or empty
+   */
+  public Stream<Type> getArgumentsUsedFor(Class<?> parametrizableClass, Type concreteType) {
+    TypeArgumentExtraction extraction = TypeArgumentExtraction.create(concreteType);
+    return extraction.getArgumentsFor(parametrizableClass);
   }
 
-  private <T> boolean isTheParameterizedVersionOf(Class<T> parametrizableClass, Type type) {
-    if (!(type instanceof ParameterizedType)) {
-      return false;
-    }
-    ParameterizedType parameterizedType = (ParameterizedType) type;
-    boolean isTheClassWeLookFor = parameterizedType.getRawType().equals(parametrizableClass);
-    return isTheClassWeLookFor;
-  }
 
 }

@@ -7,7 +7,6 @@ import org.junit.runner.RunWith;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -52,8 +51,8 @@ public class TypeRefTest extends JavaSpec<TypeRefTestContext> {
       describe("when more than one level of inheritance is used", () -> {
         test().typeRef(() -> new OtherSubTypeRef<String>() {});
 
-        it("only retains as reference the type used to parameterize TypeRef, not its subclasses",()->{
-          assertThat(test().typeRef().getReference()).isInstanceOf(TypeVariable.class);
+        it("retains the indirectly defined type argument",()->{
+          assertThat(test().typeRef().getReference()).isEqualTo(String.class);
         });
       });
     });
