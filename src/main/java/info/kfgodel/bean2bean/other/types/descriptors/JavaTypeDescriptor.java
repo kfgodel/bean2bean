@@ -1,5 +1,6 @@
 package info.kfgodel.bean2bean.other.types.descriptors;
 
+import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
@@ -64,6 +65,15 @@ public interface JavaTypeDescriptor {
    */
   Map<TypeVariable, Type> calculateTypeVariableBindingsFor(Type[] typeArguments);
 
+
+  /**
+   * Returns the class that represents the type of component this array type stores.<br>
+   *   Or empty if this type doesn't represent an array
+   * @return The class of elements to store in this array type or empty
+   */
+  Optional<Class> getComponentType();
+
+
   /**
    * Creates the descriptor that best describes the given type instance
    * @param type The type to describe
@@ -74,8 +84,10 @@ public interface JavaTypeDescriptor {
       return ClassTypeDescriptor.create((Class) type);
     }else if(type instanceof ParameterizedType){
       return ParameterizedTypeDescriptor.create((ParameterizedType)type);
+    }else if(type instanceof GenericArrayType){
+      return GenericArrayTypeDescriptor.create((GenericArrayType)type);
     }
-    return VariableOrWildcardTypeDescriptor.create(type);
+    return GeneralTypeDescriptor.create(type);
   }
 
 

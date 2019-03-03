@@ -3,24 +3,16 @@ package info.kfgodel.bean2bean.other.types.descriptors;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
-import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 /**
  * This type describes instances of {@link java.lang.reflect.ParameterizedType}
  * Date: 02/03/19 - 18:35
  */
-public class ParameterizedTypeDescriptor implements JavaTypeDescriptor {
+public class ParameterizedTypeDescriptor extends GeneralTypeDescriptor {
 
   private ParameterizedType aType;
-
-  public static ParameterizedTypeDescriptor create(ParameterizedType aType) {
-    ParameterizedTypeDescriptor descriptor = new ParameterizedTypeDescriptor();
-    descriptor.aType = aType;
-    return descriptor;
-  }
 
   @Override
   public Type getType() {
@@ -51,19 +43,10 @@ public class ParameterizedTypeDescriptor implements JavaTypeDescriptor {
     return replacedArguments;
   }
 
-  @Override
-  public Stream<Type> getGenericSupertypes() {
-    return Stream.empty();
-  }
-
-  @Override
-  public Map<TypeVariable, Type> calculateTypeVariableBindingsFor(Type[] typeArguments) {
-    return Collections.emptyMap();
-  }
-
-  @Override
-  public String toString() {
-    return getType().getTypeName();
+  public static ParameterizedTypeDescriptor create(ParameterizedType aType) {
+    ParameterizedTypeDescriptor descriptor = new ParameterizedTypeDescriptor();
+    descriptor.aType = aType;
+    return descriptor;
   }
 
 }

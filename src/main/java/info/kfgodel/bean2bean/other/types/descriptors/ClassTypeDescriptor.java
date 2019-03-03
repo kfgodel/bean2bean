@@ -12,7 +12,7 @@ import java.util.stream.Stream;
  * This type describes instances of Class
  * Date: 02/03/19 - 18:34
  */
-public class ClassTypeDescriptor implements JavaTypeDescriptor {
+public class ClassTypeDescriptor extends GeneralTypeDescriptor {
 
   private Class aClass;
 
@@ -25,21 +25,6 @@ public class ClassTypeDescriptor implements JavaTypeDescriptor {
   @Override
   public Type getType() {
     return aClass;
-  }
-
-  @Override
-  public Type[] getTypeArguments() {
-    return NO_ARGUMENTS;
-  }
-
-  @Override
-  public Optional<Class> getErasuredType() {
-    return Optional.empty();
-  }
-
-  @Override
-  public Type[] getTypeArgumentsBindedWith(Map<TypeVariable, Type> typeParameterBindings) {
-    return NO_ARGUMENTS;
   }
 
   @Override
@@ -69,11 +54,13 @@ public class ClassTypeDescriptor implements JavaTypeDescriptor {
       parameterValues.put(typeParameter, typeArgument);
     }
     return parameterValues;
-
   }
 
   @Override
-  public String toString() {
-    return getType().getTypeName();
+  public Optional<Class> getComponentType() {
+    if(aClass.isArray()){
+      return Optional.ofNullable(aClass.getComponentType());
+    }
+    return Optional.empty();
   }
 }
