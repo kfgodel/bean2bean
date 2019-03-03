@@ -2,7 +2,7 @@ package info.kfgodel.bean2bean.converters;
 
 import info.kfgodel.bean2bean.core.api.Bean2beanTask;
 import info.kfgodel.bean2bean.core.api.exceptions.CreationException;
-import info.kfgodel.bean2bean.other.types.TypeArgumentExtractor;
+import info.kfgodel.bean2bean.other.types.extraction.TypeArgumentExtractor;
 
 import java.lang.reflect.Type;
 import java.util.Collection;
