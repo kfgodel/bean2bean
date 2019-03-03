@@ -1,8 +1,6 @@
-package info.kfgodel.bean2bean.other.types;
+package info.kfgodel.bean2bean.other.types.extraction;
 
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -56,29 +54,9 @@ public class TypeArgumentExtractor {
    * @return The stream of type arguments found or empty
    */
   public Stream<Type> getArgumentsUsedFor(Class<?> parametrizableClass, Type concreteType) {
-    return SupertypeSpliterator.createAsStream(concreteType)
-      .filter(supertype -> isTheParameterizedVersionOf(parametrizableClass, supertype))
-      .limit(1)// Don't waste time with the rest of the hierarchy once we find it
-      .map(ParameterizedType.class::cast)
-      .flatMap(this::extractArguments);
+    TypeArgumentExtraction extraction = TypeArgumentExtraction.create(concreteType);
+    return extraction.getArgumentsFor(parametrizableClass);
   }
 
-  private Stream<Type> extractArguments(ParameterizedType type) {
-    Type[] actualTypeArguments = type.getActualTypeArguments();
-    if(actualTypeArguments == null){
-      // Don't trust the method's javadoc. I'm sure null is a possible return value
-      return Stream.empty();
-    }
-    return Arrays.stream(actualTypeArguments);
-  }
-
-  private <T> boolean isTheParameterizedVersionOf(Class<T> parametrizableClass, Type type) {
-    if (!(type instanceof ParameterizedType)) {
-      return false;
-    }
-    ParameterizedType parameterizedType = (ParameterizedType) type;
-    boolean isTheClassWeLookFor = parameterizedType.getRawType().equals(parametrizableClass);
-    return isTheClassWeLookFor;
-  }
 
 }

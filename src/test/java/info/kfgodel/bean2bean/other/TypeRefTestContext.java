@@ -7,7 +7,7 @@ import info.kfgodel.bean2bean.other.references.FunctionRef;
 import info.kfgodel.bean2bean.other.references.SupplierRef;
 import info.kfgodel.bean2bean.other.references.TypeRef;
 import info.kfgodel.bean2bean.other.types.SupertypeSpliterator;
-import info.kfgodel.bean2bean.other.types.TypeArgumentExtractor;
+import info.kfgodel.bean2bean.other.types.extraction.TypeArgumentExtractor;
 
 import java.lang.reflect.Type;
 import java.util.List;
