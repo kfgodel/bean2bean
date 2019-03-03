@@ -38,12 +38,12 @@ public class Collection2CollectionConverter implements BiFunction<Collection, Be
     Type targetType = task.getTargetType();
     Object created = task.getDsl().generate().anInstanceOf(targetType);
     if (!(created instanceof Collection)) {
-      throw new CreationException("Created instance["+ getClassOf(created)+"] can't be used as target collection", targetType);
+      throw new CreationException("Created instance["+ getClassNameOf(created)+"] can't be used as target collection", targetType);
     }
     return (Collection) created;
   }
 
-  private String getClassOf(Object created) {
+  private String getClassNameOf(Object created) {
     return created == null ? "null" : created.getClass().getTypeName();
   }
 
