@@ -10,6 +10,10 @@ public class ConversionException extends Bean2BeanException {
 
   private final Bean2beanTask task;
 
+  public ConversionException(String message, Bean2beanTask task, Throwable cause) {
+    super(message, cause);
+    this.task = task;
+  }
   public ConversionException(String message, Bean2beanTask task) {
     super(message);
     this.task = task;
