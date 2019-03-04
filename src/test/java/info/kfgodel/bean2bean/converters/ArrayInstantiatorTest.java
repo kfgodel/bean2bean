@@ -22,35 +22,6 @@ public class ArrayInstantiatorTest extends JavaSpec<ConverterTestContext> {
     describe("an array instantiator converter registered with b2b", () -> {
       test().dsl(Dsl::create);
 
-      describe("when registered without a predicate", () -> {
-        beforeEach(() -> {
-          test().dsl().configure().usingConverter(ArrayInstantiator.create());
-        });
-
-        itThrows(ConversionException.class, "if input is not an integer", ()->{
-          test().dsl().convert().from(1.5).to(String[].class);
-        }, e ->{
-          assertThat(e).hasMessage("No converter found from 1.5{java.lang.Double} to {java.lang.String[]}");
-        });
-
-        itThrows(CreationException.class, "if a non array target type is expected",()->{
-          test().dsl().convert().from(1).to(Object.class);
-        }, e->{
-          assertThat(e).hasMessage("Can't instantiate array for non array type: class java.lang.Object");
-        });
-
-        it("can create the expected array with the input size",()->{
-          String[] result = test().dsl().convert().from(1).to(String[].class);
-          assertThat(result).hasSize(1);
-        });
-
-        it("can create a parameterized array with the input size",()->{
-          List<String>[] result = test().dsl().convert().from(1).to(new TypeRef<List<String>[]>() {});
-          assertThat(result).hasSize(1);
-        });
-
-      });
-
       describe("when registered with the predicate", () -> {
         beforeEach(() -> {
           test().dsl().configure().usingConverter(ArrayInstantiator.create(), ArrayInstantiator::shouldBeUsed);
@@ -79,9 +50,25 @@ public class ArrayInstantiatorTest extends JavaSpec<ConverterTestContext> {
         });
       });
 
+      describe("when registered without a predicate", () -> {
+        beforeEach(() -> {
+          test().dsl().configure().usingConverter(ArrayInstantiator.create());
+        });
 
+        itThrows(ConversionException.class, "if input is not an integer", ()->{
+          test().dsl().convert().from(1.5).to(String[].class);
+        }, e ->{
+          assertThat(e).hasMessage("No converter found from 1.5{java.lang.Double} to {java.lang.String[]}");
+        });
+
+        itThrows(CreationException.class, "if a non array type is used as target",()->{
+          test().dsl().convert().from(1).to(Object.class);
+        }, e->{
+          assertThat(e).hasMessage("Can't instantiate array for non array type: class java.lang.Object");
+        });
+
+      });
     });
-
 
   }
 }
