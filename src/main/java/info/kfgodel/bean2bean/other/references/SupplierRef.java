@@ -16,8 +16,8 @@ public abstract class SupplierRef<O> {
 
   private final Supplier<O> supplier;
 
-  public SupplierRef(Supplier<O> supplier) {
-    this.supplier = supplier;
+  public SupplierRef(Supplier<? extends O> supplier) {
+    this.supplier = (Supplier<O>) supplier;
   }
 
   public Supplier<O> getSupplier() {

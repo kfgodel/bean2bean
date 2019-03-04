@@ -34,8 +34,8 @@ public abstract class BiFunctionRef<I1,I2,O> {
   }
 
 
-  public BiFunctionRef(BiFunction<I1, I2, O> biFunction) {
-    this.biFunction = biFunction;
+  public BiFunctionRef(BiFunction<? super I1, ? super I2, ? extends O> biFunction) {
+    this.biFunction = (BiFunction<I1, I2, O>) biFunction;
   }
 
   public Type getFirstInputType(){

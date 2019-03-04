@@ -15,8 +15,8 @@ public abstract class ConsumerRef<I> {
 
   private final Consumer<I> consumer;
 
-  public ConsumerRef(Consumer<I> consumer) {
-    this.consumer = consumer;
+  public ConsumerRef(Consumer<? super I> consumer) {
+    this.consumer = (Consumer<I>) consumer;
   }
 
   public Consumer<I> getConsumer() {
