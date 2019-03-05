@@ -2,6 +2,7 @@ package info.kfgodel.bean2bean.dsl.impl.scopes;
 
 import info.kfgodel.bean2bean.core.api.registry.Domain;
 import info.kfgodel.bean2bean.core.api.registry.DomainVector;
+import info.kfgodel.bean2bean.dsl.api.scopes.ImplicitlyScopedConfigureDsl;
 import info.kfgodel.bean2bean.dsl.api.scopes.ScopedConfigureDsl;
 import info.kfgodel.bean2bean.dsl.api.scopes.SourceDefinedExplicitScopeDsl;
 import info.kfgodel.bean2bean.dsl.api.scopes.UndefinedExplicitScopeDsl;
@@ -37,4 +38,10 @@ public class UndefinedExplicitScopeDslImpl implements UndefinedExplicitScopeDsl 
   public ScopedConfigureDsl vector(DomainVector conversionVector) {
     return DomainVectorScopedConfigureDsl.create(conversionVector, this.parentDsl);
   }
+
+  @Override
+  public ImplicitlyScopedConfigureDsl implicitTypes() {
+    return ImplicitScopeConfigureDslImpl.create(this.parentDsl);
+  }
+
 }

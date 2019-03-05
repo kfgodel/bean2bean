@@ -30,6 +30,19 @@ public interface UndefinedExplicitScopeDsl {
   }
 
   /**
+   * Limits the applicability of a converter by using its type parameters to restrict its usage to valid arguments
+   * and result.<br>
+   * If no type parameters can be obtained using reflection on the lambda class, then {@link Object} will be used
+   * instead for input or output types scoping. <br>
+   * <br>
+   * Note, this may collide with other converters if carelessly used. Use lambda refs like {@link info.kfgodel.bean2bean.other.references.FunctionRef}
+   * to explicitly define lambda parameter types<br>
+   *
+   * @return The partial definition of this configuration dsl scoping to implicit types
+   */
+  ImplicitlyScopedConfigureDsl implicitTypes();
+
+  /**
    * Indicates the explicit conversion vector fo which the converter can be used
    * @param conversionVector The vector that defines the scope of applicability for the converter
    * @return The configuration dsl to register the converter

@@ -7,10 +7,8 @@ import info.kfgodel.bean2bean.core.impl.registry.domains.DomainCalculator;
 import info.kfgodel.bean2bean.core.impl.registry.domains.DomainVectorExtractor;
 import info.kfgodel.bean2bean.dsl.api.B2bDsl;
 import info.kfgodel.bean2bean.dsl.api.ConfigureDsl;
-import info.kfgodel.bean2bean.dsl.api.scopes.ImplicitlyScopedConfigureDsl;
 import info.kfgodel.bean2bean.dsl.api.scopes.ScopedConfigureDsl;
 import info.kfgodel.bean2bean.dsl.api.scopes.UndefinedExplicitScopeDsl;
-import info.kfgodel.bean2bean.dsl.impl.scopes.ImplicitScopeConfigureDslImpl;
 import info.kfgodel.bean2bean.dsl.impl.scopes.PredicateScopedConfigureDsl;
 import info.kfgodel.bean2bean.dsl.impl.scopes.UndefinedExplicitScopeDslImpl;
 import info.kfgodel.bean2bean.other.references.BiFunctionRef;
@@ -51,55 +49,50 @@ public class ConfigureDslImpl implements ConfigureDsl {
   }
 
   @Override
-  public ImplicitlyScopedConfigureDsl scopingToTypeArguments() {
-    return ImplicitScopeConfigureDslImpl.create(this);
-  }
-
-  @Override
   public <I,O> ConfigureDsl useConverter(Function<I, O> converterFunction) {
-    scopingToTypeArguments().useConverter(converterFunction);
+    scopingTo().implicitTypes().useConverter(converterFunction);
     return this;
   }
 
   @Override
   public <I,O> ConfigureDsl useConverter(FunctionRef<I, O> converterFunctionRef) {
-    scopingToTypeArguments().useConverter(converterFunctionRef);
+    scopingTo().implicitTypes().useConverter(converterFunctionRef);
     return this;
   }
 
   @Override
   public <I,O> ConfigureDsl useConverter(BiFunction<I, Bean2beanTask, O> converterFunction) {
-    scopingToTypeArguments().useConverter(converterFunction);
+    scopingTo().implicitTypes().useConverter(converterFunction);
     return this;
   }
 
   @Override
   public <I,O> ConfigureDsl useConverter(BiFunctionRef<I, Bean2beanTask, O> converterFunctionRef) {
-    scopingToTypeArguments().useConverter(converterFunctionRef);
+    scopingTo().implicitTypes().useConverter(converterFunctionRef);
     return this;
   }
 
   @Override
   public <O> ConfigureDsl useConverter(Supplier<O> converterFunction) {
-    scopingToTypeArguments().useConverter(converterFunction);
+    scopingTo().implicitTypes().useConverter(converterFunction);
     return this;
   }
 
   @Override
   public <O> ConfigureDsl useConverter(SupplierRef<O> converterFunctionRef) {
-    scopingToTypeArguments().useConverter(converterFunctionRef);
+    scopingTo().implicitTypes().useConverter(converterFunctionRef);
     return this;
   }
 
   @Override
   public <I> ConfigureDsl useConverter(Consumer<I> converterFunction) {
-    scopingToTypeArguments().useConverter(converterFunction);
+    scopingTo().implicitTypes().useConverter(converterFunction);
     return this;
   }
 
   @Override
   public <I> ConfigureDsl useConverter(ConsumerRef<I> converterFunctionRef) {
-    scopingToTypeArguments().useConverter(converterFunctionRef);
+    scopingTo().implicitTypes().useConverter(converterFunctionRef);
     return this;
   }
 
