@@ -28,11 +28,11 @@ public interface ConfigureDsl extends ScopedConfigureDsl {
    *   will be used instead for input or output types scoping. Note, this may collide with other converters.<br>
    *   <br>
    *   For type disambiguation use explicit lambda references that retains the type parameters after
-   *   erasure. See {@link #usingConverter(FunctionRef)}
+   *   erasure. See {@link #useConverter(FunctionRef)}
    * @param converterFunction The function instance to use as a converter
    * @return This instance for method chaining
    */
-  <I,O> ConfigureDsl usingConverter(Function<I,O> converterFunction);
+  <I,O> ConfigureDsl useConverter(Function<I,O> converterFunction);
 
   /**
    * Registers a converter that will need access to the task as part of the conversion process. Usually
@@ -42,12 +42,12 @@ public interface ConfigureDsl extends ScopedConfigureDsl {
    *   will be used instead for input or output types scoping. Note, this may collide with other converters.<br>
    *   <br>
    *   For type disambiguation use explicit lambda references that retains the type parameters after
-   *   erasure. See {@link #usingConverter(BiFunctionRef)}
+   *   erasure. See {@link #useConverter(BiFunctionRef)}
    *
    * @param converterFunction The function to use as converter
    * @return This instance for method chaining
    */
-  <I,O> ConfigureDsl usingConverter(BiFunction<I, Bean2beanTask,O> converterFunction);
+  <I,O> ConfigureDsl useConverter(BiFunction<I, Bean2beanTask,O> converterFunction);
 
   /**
    * Registers a converter function that requires no parameters as input for the conversion.<br>
@@ -57,12 +57,12 @@ public interface ConfigureDsl extends ScopedConfigureDsl {
    *   will be used instead for input or output types scoping. Note, this may collide with other converters.<br>
    *   <br>
    *   For type disambiguation use explicit lambda references that retains the type parameters after
-   *   erasure. See {@link #usingConverter(SupplierRef)}
+   *   erasure. See {@link #useConverter(SupplierRef)}
    *
    * @param converterFunction The function to use as generator
    * @return This instance for method chaining
    */
-  <O> ConfigureDsl usingConverter(Supplier<O> converterFunction);
+  <O> ConfigureDsl useConverter(Supplier<O> converterFunction);
 
   /**
    * Registers a converter function that generates no output as result of the conversion.<br>
@@ -72,12 +72,12 @@ public interface ConfigureDsl extends ScopedConfigureDsl {
    *   will be used instead for input or output types scoping. Note, this may collide with other converters.<br>
    *   <br>
    *   For type disambiguation use explicit lambda references that retains the type parameters after
-   *   erasure. See {@link #usingConverter(ConsumerRef)}
+   *   erasure. See {@link #useConverter(ConsumerRef)}
    *
    * @param converterFunction The function to use as destructor
    * @return This instance for method chaining
    */
-  <I> ConfigureDsl usingConverter(Consumer<I> converterFunction);
+  <I> ConfigureDsl useConverter(Consumer<I> converterFunction);
 
   /**
    * Registers a converter function using its full definition.<br>
@@ -85,7 +85,7 @@ public interface ConfigureDsl extends ScopedConfigureDsl {
    * @param converterDefinition The converter definition to add
    * @return This instance for method chaining
    */
-  ConfigureDsl usingDefinition(ConverterDefinition converterDefinition);
+  ConfigureDsl useDefinition(ConverterDefinition converterDefinition);
 
   /**
    * Limits the applicability of a converter by using a predicate on the conversion vector, so only
@@ -96,7 +96,7 @@ public interface ConfigureDsl extends ScopedConfigureDsl {
    *                       of a converter
    * @return The partial definition of this configuration dsl with the predicate defined
    */
-  ScopedConfigureDsl scopedBy(Predicate<DomainVector> scopePredicate);
+  ScopedConfigureDsl scopingWith(Predicate<DomainVector> scopePredicate);
 
 
   /**
@@ -107,7 +107,7 @@ public interface ConfigureDsl extends ScopedConfigureDsl {
    * @param converterFunctionRef The reference to the function used a s converter
    * @return This instance for method chaining
    */
-  <I,O> ConfigureDsl usingConverter(FunctionRef<I,O> converterFunctionRef);
+  <I,O> ConfigureDsl useConverter(FunctionRef<I,O> converterFunctionRef);
 
   /**
    * Registers a converter function though its reference that will need access to b2b dsl as part of
@@ -115,7 +115,7 @@ public interface ConfigureDsl extends ScopedConfigureDsl {
    * @param converterFunction The function to use as converter
    * @return This instance for method chaining
    */
-  <I,O> ConfigureDsl usingConverter(BiFunctionRef<I,Bean2beanTask,O> converterFunction);
+  <I,O> ConfigureDsl useConverter(BiFunctionRef<I,Bean2beanTask,O> converterFunction);
 
   /**
    * Registers a converter function through its reference that requires no parameters as input for the conversion.<br>
@@ -123,7 +123,7 @@ public interface ConfigureDsl extends ScopedConfigureDsl {
    * @param converterFunction The function to use a generator
    * @return This instance for method chaining
    */
-  <O> ConfigureDsl usingConverter(SupplierRef<O> converterFunction);
+  <O> ConfigureDsl useConverter(SupplierRef<O> converterFunction);
 
   /**
    * Registers a converter function through its reference that generates no output as result of the conversion.<br>
@@ -131,7 +131,7 @@ public interface ConfigureDsl extends ScopedConfigureDsl {
    * @param converterFunction The function to use as destructor
    * @return This instance for method chaining
    */
-  <I> ConfigureDsl usingConverter(ConsumerRef<I> converterFunction);
+  <I> ConfigureDsl useConverter(ConsumerRef<I> converterFunction);
 
 
 }

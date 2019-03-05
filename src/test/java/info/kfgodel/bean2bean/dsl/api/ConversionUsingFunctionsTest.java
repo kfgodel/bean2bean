@@ -40,7 +40,7 @@ public class ConversionUsingFunctionsTest extends JavaSpec<B2bTestContext> {
       describe("when a converter is configured from a function", () -> {
         beforeEach(() -> {
           // Function ref is needed to avoid losing function type arguments through erasure
-          test().dsl().configure().usingConverter(new FunctionRef<String, Integer>(Integer::parseInt) {});
+          test().dsl().configure().useConverter(new FunctionRef<String, Integer>(Integer::parseInt) {});
         });
 
         it("can convert the input value if it matches the functions input's type", () -> {
@@ -58,7 +58,7 @@ public class ConversionUsingFunctionsTest extends JavaSpec<B2bTestContext> {
       describe("when the converter function declares parameterized types", () -> {
         beforeEach(() -> {
           // Function ref is needed to avoid losing function type arguments through erasure
-          test().dsl().configure().usingConverter(ArrayListToListOfStringsConverter.create());
+          test().dsl().configure().useConverter(ArrayListToListOfStringsConverter.create());
         });
 
         it("can do the conversion if exact parameterized types are expected", () -> {
@@ -75,7 +75,7 @@ public class ConversionUsingFunctionsTest extends JavaSpec<B2bTestContext> {
 
       describe("when the converter function needs internal access to b2b for delegating part of the conversion", () -> {
         beforeEach(() -> {
-          test().dsl().configure().usingConverter(ArrayListToListOfStringsNestedConverter.create());
+          test().dsl().configure().useConverter(ArrayListToListOfStringsNestedConverter.create());
         });
 
         describe("and b2b doesn't have a converter for the part conversion", () -> {
@@ -89,7 +89,7 @@ public class ConversionUsingFunctionsTest extends JavaSpec<B2bTestContext> {
 
         describe("and b2b has a converter defined for the part conversion", () -> {
           beforeEach(()->{
-            test().dsl().configure().usingConverter(new FunctionRef<Integer, String>(String::valueOf) {});
+            test().dsl().configure().useConverter(new FunctionRef<Integer, String>(String::valueOf) {});
           });
 
           it("nests conversions sucessfully",()->{
@@ -101,7 +101,7 @@ public class ConversionUsingFunctionsTest extends JavaSpec<B2bTestContext> {
 
       describe("when no input is needed for the converter", () -> {
         beforeEach(()->{
-          test().dsl().configure().usingConverter(new SupplierRef<List>(ArrayList::new){});
+          test().dsl().configure().useConverter(new SupplierRef<List>(ArrayList::new){});
         });
 
         it("allows instance creation",()->{

@@ -26,17 +26,17 @@ public class Array2ArrayConverterTest extends JavaSpec<ConverterTestContext> {
 
       describe("when registered using the predicate", () -> {
         beforeEach(() -> {
-          test().dsl().configure().scopedBy(Array2ArrayConverter::shouldBeUsed).usingConverter(Array2ArrayConverter.create());
+          test().dsl().configure().scopingWith(Array2ArrayConverter::shouldBeUsed).useConverter(Array2ArrayConverter.create());
         });
 
         describe("given a registered array instantiator", () -> {
           beforeEach(() -> {
-            test().dsl().configure().scopedBy(ArrayInstantiator::shouldBeUsed).usingConverter(ArrayInstantiator.create());
+            test().dsl().configure().scopingWith(ArrayInstantiator::shouldBeUsed).useConverter(ArrayInstantiator.create());
           });
 
           describe("given a registered element converter", () -> {
             beforeEach(()->{
-              test().dsl().configure().usingConverter(new FunctionRef<Integer, String>(String::valueOf) {});
+              test().dsl().configure().useConverter(new FunctionRef<Integer, String>(String::valueOf) {});
             });
 
             it("creates a new array",()->{
@@ -66,7 +66,7 @@ public class Array2ArrayConverterTest extends JavaSpec<ConverterTestContext> {
 
       describe("when registered without a predicate", () -> {
         beforeEach(() -> {
-          test().dsl().configure().usingConverter(Array2ArrayConverter.create());
+          test().dsl().configure().useConverter(Array2ArrayConverter.create());
         });
 
         itThrows(ConversionException.class, "if input is null", ()->{
@@ -92,11 +92,11 @@ public class Array2ArrayConverterTest extends JavaSpec<ConverterTestContext> {
         describe("when a specific array instantiator is registered", () -> {
           beforeEach(()->{
             // Force the instantiator to the specific conversion
-            test().dsl().configure().usingConverter(new BiFunctionRef<Integer, Bean2beanTask, String[]>((BiFunction) ArrayInstantiator.create()) {});
+            test().dsl().configure().useConverter(new BiFunctionRef<Integer, Bean2beanTask, String[]>((BiFunction) ArrayInstantiator.create()) {});
           });
 
           itThrows(CreationException.class, "if target type is not an array",()->{
-            test().dsl().configure().usingConverter(ArrayInstantiator.create());
+            test().dsl().configure().useConverter(ArrayInstantiator.create());
             test().dsl().convert().from(new Integer[]{1,2}).to(Object.class);
           }, e->{
             assertThat(e).hasMessage("Can't instantiate array for non array type: class java.lang.Object");
@@ -111,7 +111,7 @@ public class Array2ArrayConverterTest extends JavaSpec<ConverterTestContext> {
 
           describe("when an element converter is registered", () -> {
             beforeEach(()->{
-              test().dsl().configure().usingConverter(new FunctionRef<Integer, String>(String::valueOf) {});
+              test().dsl().configure().useConverter(new FunctionRef<Integer, String>(String::valueOf) {});
             });
             it("creates a new array",()->{
               String[] result = test().dsl().convert().from(new Integer[]{1, 2}).to(String[].class);

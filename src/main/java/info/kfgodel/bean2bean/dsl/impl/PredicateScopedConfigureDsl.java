@@ -33,32 +33,32 @@ public class PredicateScopedConfigureDsl implements ScopedConfigureDsl {
   }
 
   @Override
-  public <I, O> ConfigureDsl usingConverter(Function<I, O> converterFunction) {
+  public <I, O> ConfigureDsl useConverter(Function<I, O> converterFunction) {
     FunctionAdapterConverter converter = FunctionAdapterConverter.create(converterFunction);
     return usingConverterFor(converter);
   }
 
     @Override
-  public <I, O> ConfigureDsl usingConverter(BiFunction<I, Bean2beanTask, O> converterFunction) {
+  public <I, O> ConfigureDsl useConverter(BiFunction<I, Bean2beanTask, O> converterFunction) {
     BiFunctionAdapterConverter converter = BiFunctionAdapterConverter.create(converterFunction);
     return usingConverterFor(converter);
   }
 
   @Override
-  public <O> ConfigureDsl usingConverter(Supplier<O> converterFunction) {
+  public <O> ConfigureDsl useConverter(Supplier<O> converterFunction) {
     SupplierAdapterConverter converter = SupplierAdapterConverter.create(converterFunction);
     return usingConverterFor(converter);
   }
 
   @Override
-  public <I> ConfigureDsl usingConverter(Consumer<I> converterFunction) {
+  public <I> ConfigureDsl useConverter(Consumer<I> converterFunction) {
     ConsumerAdapterConverter converter = ConsumerAdapterConverter.create(converterFunction);
     return usingConverterFor(converter);
   }
 
   private ConfigureDsl usingConverterFor(Function<Bean2beanTask, Object> converter) {
     PredicateDefinition definition = PredicateDefinition.create(converter, scopePredicate);
-    return parentDsl.usingDefinition(definition);
+    return parentDsl.useDefinition(definition);
   }
 
 }

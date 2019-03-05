@@ -20,7 +20,7 @@ public interface ScopedConfigureDsl {
    * @param converterFunction The function instance to use as a converter
    * @return This instance for method chaining
    */
-  <I,O> ScopedConfigureDsl usingConverter(Function<I,O> converterFunction);
+  <I,O> ScopedConfigureDsl useConverter(Function<I,O> converterFunction);
 
   /**
    * Registers a converter that will need access to the conversion task as part of the conversion
@@ -29,7 +29,7 @@ public interface ScopedConfigureDsl {
    * @param converterFunction The bi function to use as converter
    * @return This instance for method chaining
    */
-  <I,O> ScopedConfigureDsl usingConverter(BiFunction<I, Bean2beanTask,O> converterFunction);
+  <I,O> ScopedConfigureDsl useConverter(BiFunction<I, Bean2beanTask,O> converterFunction);
 
   /**
    * Registers a converter function that requires no arguments as input for the conversion.<br>
@@ -37,7 +37,7 @@ public interface ScopedConfigureDsl {
    * @param converterFunction The supplier to use as generator
    * @return This instance for method chaining
    */
-  <O> ScopedConfigureDsl usingConverter(Supplier<O> converterFunction);
+  <O> ScopedConfigureDsl useConverter(Supplier<O> converterFunction);
 
   /**
    * Registers a converter function that generates no output as result of the conversion.<br>
@@ -45,6 +45,6 @@ public interface ScopedConfigureDsl {
    * @param converterFunction The consumer to use as destructor
    * @return This instance for method chaining
    */
-  <I> ScopedConfigureDsl usingConverter(Consumer<I> converterFunction);
+  <I> ScopedConfigureDsl useConverter(Consumer<I> converterFunction);
 
 }

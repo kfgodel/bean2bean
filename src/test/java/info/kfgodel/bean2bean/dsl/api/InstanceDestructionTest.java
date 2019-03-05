@@ -40,7 +40,7 @@ public class InstanceDestructionTest extends JavaSpec<B2bTestContext> {
         StringDestructor converterFunction = StringDestructor.create();
 
         beforeEach(() -> {
-          test().dsl().configure().usingConverter(converterFunction);
+          test().dsl().configure().useConverter(converterFunction);
         });
 
         it("executes the destructor with the destroyed instance", () -> {
@@ -53,7 +53,7 @@ public class InstanceDestructionTest extends JavaSpec<B2bTestContext> {
         AtomicReference<String> argument = new AtomicReference<>();
 
         beforeEach(() -> {
-          test().dsl().configure().usingConverter(new ConsumerRef<String>(argument::set){});
+          test().dsl().configure().useConverter(new ConsumerRef<String>(argument::set){});
         });
 
         it("executes the destructor with the destroyed instance", () -> {
