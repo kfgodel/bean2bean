@@ -44,7 +44,7 @@ public class Collection2CollectionConverterTest extends JavaSpec<ConverterTestCo
 
         itThrows(CreationException.class, "if the registered creation converter doesn't produce a collection", () -> {
           //Create a map for every creation
-          test().dsl().configure().usingConverter((Supplier) HashMap::new, (vector) -> true);
+          test().dsl().configure().scopedBy((vector) -> true).usingConverter((Supplier) HashMap::new);
 
           test().dsl().convert().from(listWith12And2()).to(setOfStrings());
         }, e -> {

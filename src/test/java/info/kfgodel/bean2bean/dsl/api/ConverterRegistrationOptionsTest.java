@@ -13,7 +13,6 @@ import org.junit.runner.RunWith;
 
 import javax.lang.model.type.NullType;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -78,23 +77,23 @@ public class ConverterRegistrationOptionsTest extends JavaSpec<B2bTestContext> {
       describe("used to register predicate scoped converters", () -> {
 
         it("accepts a function as converter", () -> {
-          test().configure().usingConverter((in) -> in, this::acceptAnyInput);
+          test().configure().scopedBy(this::acceptAnyInput).usingConverter((in) -> in);
           assertThat(test().dsl().convert().from("an object").to(Object.class)).isEqualTo("an object");
         });
 
         it("accepts a bifunction that takes the dsl as second arg as a converter", () -> {
-          test().configure().usingConverter((input, b2b)-> input, this::acceptAnyInput);
+          test().configure().scopedBy(this::acceptAnyInput).usingConverter((input, b2b)-> input);
           assertThat(test().dsl().convert().from("an object").to(Object.class)).isEqualTo("an object");
         });
 
         it("accepts a supplier as a converter",()->{
-          test().configure().usingConverter(() -> "a value", this::acceptAnyInput);
+          test().configure().scopedBy(this::acceptAnyInput).usingConverter(() -> "a value");
           assertThat(test().dsl().convert().from(null).to(Object.class)).isEqualTo("a value");
         });
 
         it("accepts a consumer as a converter",()->{
           AtomicReference<String> converterArgument = new AtomicReference<>();
-          test().configure().usingConverter((Consumer<String>)converterArgument::set, this::acceptAnyInput);
+          test().configure().scopedBy(this::acceptAnyInput).usingConverter(converterArgument::set);
           assertThat(test().dsl().convert().from("an object").to(NullType.class)).isNull();
           assertThat(converterArgument.get()).isEqualTo("an object");
         });

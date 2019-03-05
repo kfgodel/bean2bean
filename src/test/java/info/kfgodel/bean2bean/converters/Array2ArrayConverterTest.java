@@ -26,12 +26,12 @@ public class Array2ArrayConverterTest extends JavaSpec<ConverterTestContext> {
 
       describe("when registered using the predicate", () -> {
         beforeEach(() -> {
-          test().dsl().configure().usingConverter(Array2ArrayConverter.create(), Array2ArrayConverter::shouldBeUsed);
+          test().dsl().configure().scopedBy(Array2ArrayConverter::shouldBeUsed).usingConverter(Array2ArrayConverter.create());
         });
 
         describe("given a registered array instantiator", () -> {
           beforeEach(() -> {
-            test().dsl().configure().usingConverter(ArrayInstantiator.create(), ArrayInstantiator::shouldBeUsed);
+            test().dsl().configure().scopedBy(ArrayInstantiator::shouldBeUsed).usingConverter(ArrayInstantiator.create());
           });
 
           describe("given a registered element converter", () -> {
