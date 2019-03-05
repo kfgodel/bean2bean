@@ -7,6 +7,7 @@ import info.kfgodel.bean2bean.other.references.BiFunctionRef;
 import info.kfgodel.bean2bean.other.references.ConsumerRef;
 import info.kfgodel.bean2bean.other.references.FunctionRef;
 import info.kfgodel.bean2bean.other.references.SupplierRef;
+import info.kfgodel.bean2bean.other.references.TypeRef;
 
 import java.lang.reflect.Type;
 import java.util.function.BiFunction;
@@ -49,6 +50,15 @@ public interface ConfigureDsl extends ImplicitlyScopedConfigureDsl {
    * @return The partial definition of this configuration dsl scoped by the indicated domain vector
    */
   ScopedConfigureDsl scopingTo(Type sourceType, Type targetType);
+
+  /**
+   * Limits the applicability of a converter by restricting the type of acceptable instances and the type of produced
+   * results explicitly. The indicated type references serve as the domain vector to be compared at on conversions
+   * @param sourceType The type of input instances that can be accepted by the converter
+   * @param targetType The type of results that the converter generates
+   * @return The partial definition of this configuration dsl scoped by the indicated domain vector
+   */
+  ScopedConfigureDsl scopingTo(TypeRef<?> sourceType, TypeRef<?> targetType);
 
   /**
    * Limits the applicability of a converter by using its type parameters to restrict its usage to valid instances.<br>

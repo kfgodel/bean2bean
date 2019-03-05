@@ -17,6 +17,7 @@ import info.kfgodel.bean2bean.other.references.BiFunctionRef;
 import info.kfgodel.bean2bean.other.references.ConsumerRef;
 import info.kfgodel.bean2bean.other.references.FunctionRef;
 import info.kfgodel.bean2bean.other.references.SupplierRef;
+import info.kfgodel.bean2bean.other.references.TypeRef;
 
 import java.lang.reflect.Type;
 import java.util.function.BiFunction;
@@ -50,6 +51,11 @@ public class ConfigureDslImpl implements ConfigureDsl {
   public ScopedConfigureDsl scopingTo(Type sourceType, Type targetType) {
     DomainVector domainVector = createVectorFor(sourceType, targetType);
     return DomainVectorScopedConfigureDsl.create(domainVector, this);
+  }
+
+  @Override
+  public ScopedConfigureDsl scopingTo(TypeRef<?> sourceType, TypeRef<?> targetType) {
+    return scopingTo(sourceType.getReference(), targetType.getReference());
   }
 
   private DomainVector createVectorFor(Type inputType, Type outputType) {
