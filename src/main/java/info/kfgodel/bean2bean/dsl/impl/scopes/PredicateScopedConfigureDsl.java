@@ -1,4 +1,4 @@
-package info.kfgodel.bean2bean.dsl.impl;
+package info.kfgodel.bean2bean.dsl.impl.scopes;
 
 import info.kfgodel.bean2bean.core.api.Bean2beanTask;
 import info.kfgodel.bean2bean.core.api.registry.DomainVector;
@@ -9,6 +9,7 @@ import info.kfgodel.bean2bean.core.impl.conversion.SupplierAdapterConverter;
 import info.kfgodel.bean2bean.core.impl.registry.definitions.PredicateDefinition;
 import info.kfgodel.bean2bean.dsl.api.ConfigureDsl;
 import info.kfgodel.bean2bean.dsl.api.ScopedConfigureDsl;
+import info.kfgodel.bean2bean.dsl.impl.ConfigureDslImpl;
 
 import java.util.function.BiFunction;
 import java.util.function.Consumer;

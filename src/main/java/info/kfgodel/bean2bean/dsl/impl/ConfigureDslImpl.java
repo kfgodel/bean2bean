@@ -3,16 +3,13 @@ package info.kfgodel.bean2bean.dsl.impl;
 import info.kfgodel.bean2bean.core.api.Bean2beanTask;
 import info.kfgodel.bean2bean.core.api.registry.DomainVector;
 import info.kfgodel.bean2bean.core.api.registry.definitions.ConverterDefinition;
-import info.kfgodel.bean2bean.core.impl.conversion.BiFunctionAdapterConverter;
-import info.kfgodel.bean2bean.core.impl.conversion.ConsumerAdapterConverter;
-import info.kfgodel.bean2bean.core.impl.conversion.FunctionAdapterConverter;
-import info.kfgodel.bean2bean.core.impl.conversion.SupplierAdapterConverter;
-import info.kfgodel.bean2bean.core.impl.registry.definitions.PredicateDefinition;
-import info.kfgodel.bean2bean.core.impl.registry.definitions.VectorDefinition;
 import info.kfgodel.bean2bean.core.impl.registry.domains.DomainVectorExtractor;
 import info.kfgodel.bean2bean.dsl.api.B2bDsl;
 import info.kfgodel.bean2bean.dsl.api.ConfigureDsl;
+import info.kfgodel.bean2bean.dsl.api.ImplicitlyScopedConfigureDsl;
 import info.kfgodel.bean2bean.dsl.api.ScopedConfigureDsl;
+import info.kfgodel.bean2bean.dsl.impl.scopes.ImplicitScopeConfigureDslImpl;
+import info.kfgodel.bean2bean.dsl.impl.scopes.PredicateScopedConfigureDsl;
 import info.kfgodel.bean2bean.other.references.BiFunctionRef;
 import info.kfgodel.bean2bean.other.references.ConsumerRef;
 import info.kfgodel.bean2bean.other.references.FunctionRef;
@@ -41,95 +38,70 @@ public class ConfigureDslImpl implements ConfigureDsl {
   }
 
   @Override
-  public <I,O> ConfigureDsl useConverter(Function<I, O> converterFunction) {
-    DomainVector implicitVector = vectorExtractor.extractFrom(converterFunction);
-    return useConverter(implicitVector, converterFunction);
-  }
-
-  @Override
   public ScopedConfigureDsl scopingWith(Predicate<DomainVector> scopePredicate) {
     return PredicateScopedConfigureDsl.create(scopePredicate, this);
   }
 
   @Override
+  public ImplicitlyScopedConfigureDsl scopingByTypeArguments() {
+    return ImplicitScopeConfigureDslImpl.create(this);
+  }
+
+  @Override
+  public <I,O> ConfigureDsl useConverter(Function<I, O> converterFunction) {
+    scopingByTypeArguments().useConverter(converterFunction);
+    return this;
+  }
+
+  @Override
   public <I,O> ConfigureDsl useConverter(FunctionRef<I, O> converterFunctionRef) {
-    DomainVector implicitVector = vectorExtractor.extractFrom(converterFunctionRef);
-    Function<?, ?> function = converterFunctionRef.getFunction();
-    return useConverter(implicitVector, function);
+    scopingByTypeArguments().useConverter(converterFunctionRef);
+    return this;
   }
 
   @Override
   public <I,O> ConfigureDsl useConverter(BiFunction<I, Bean2beanTask, O> converterFunction) {
-    DomainVector implicitVector = vectorExtractor.extractFrom(converterFunction);
-    return useConverter(implicitVector, converterFunction);
+    scopingByTypeArguments().useConverter(converterFunction);
+    return this;
   }
 
   @Override
-  public <I,O> ConfigureDsl useConverter(BiFunctionRef<I, Bean2beanTask, O> converterFunction) {
-    DomainVector implicitVector = vectorExtractor.extractFrom(converterFunction);
-    return useConverter(implicitVector, converterFunction.getBiFunction());
+  public <I,O> ConfigureDsl useConverter(BiFunctionRef<I, Bean2beanTask, O> converterFunctionRef) {
+    scopingByTypeArguments().useConverter(converterFunctionRef);
+    return this;
   }
 
   @Override
   public <O> ConfigureDsl useConverter(Supplier<O> converterFunction) {
-    DomainVector implicitVector = vectorExtractor.extractFrom(converterFunction);
-    return useConverter(implicitVector, converterFunction);
+    scopingByTypeArguments().useConverter(converterFunction);
+    return this;
   }
 
   @Override
-  public <O> ConfigureDsl useConverter(SupplierRef<O> converterFunction) {
-    DomainVector implicitVector = vectorExtractor.extractFrom(converterFunction);
-    return useConverter(implicitVector, converterFunction.getSupplier());
+  public <O> ConfigureDsl useConverter(SupplierRef<O> converterFunctionRef) {
+    scopingByTypeArguments().useConverter(converterFunctionRef);
+    return this;
   }
 
   @Override
   public <I> ConfigureDsl useConverter(Consumer<I> converterFunction) {
-    DomainVector implicitVector = vectorExtractor.extractFrom(converterFunction);
-    return useConverter(implicitVector, converterFunction);
+    scopingByTypeArguments().useConverter(converterFunction);
+    return this;
   }
 
   @Override
-  public <I> ConfigureDsl useConverter(ConsumerRef<I> converterFunction) {
-    DomainVector implicitVector = vectorExtractor.extractFrom(converterFunction);
-    return useConverter(implicitVector, converterFunction.getConsumer());
+  public <I> ConfigureDsl useConverter(ConsumerRef<I> converterFunctionRef) {
+    scopingByTypeArguments().useConverter(converterFunctionRef);
+    return this;
   }
 
   @Override
   public ConfigureDsl useDefinition(ConverterDefinition converterDefinition) {
-    b2bDsl.getCore().getRegistry().store(converterDefinition);
+    getB2bDsl().getCore().getRegistry().store(converterDefinition);
     return this;
   }
 
-  private ConfigureDsl useConverter(DomainVector conversionVector, Function converterFunction) {
-    FunctionAdapterConverter converter = FunctionAdapterConverter.create(converterFunction);
-    return usingConverterFor(conversionVector, converter);
+  public B2bDsl getB2bDsl() {
+    return b2bDsl;
   }
-
-  private ConfigureDsl useConverter(DomainVector conversionVector, Supplier<?> converterFunction) {
-    SupplierAdapterConverter converter = SupplierAdapterConverter.create(converterFunction);
-    return usingConverterFor(conversionVector, converter);
-  }
-
-  private ConfigureDsl useConverter(DomainVector conversionVector, Consumer<?> converterFunction) {
-    ConsumerAdapterConverter converter = ConsumerAdapterConverter.create(converterFunction);
-    return usingConverterFor(conversionVector, converter);
-  }
-  private ConfigureDsl useConverter(DomainVector conversionVector, BiFunction converterFunction) {
-    BiFunctionAdapterConverter converter = BiFunctionAdapterConverter.create(converterFunction);
-    return usingConverterFor(conversionVector, converter);
-  }
-
-  private ConfigureDsl usingConverterFor(DomainVector conversionVector, Function<Bean2beanTask, Object> converter) {
-    VectorDefinition definition = VectorDefinition.create(converter, conversionVector);
-    return useDefinition(definition);
-  }
-
-  private ConfigureDsl usingConverterFor(Function<Bean2beanTask, Object> converter, Predicate<DomainVector> scopePredicate) {
-    PredicateDefinition definition = PredicateDefinition.create(converter, scopePredicate);
-    return useDefinition(definition);
-  }
-
-
-
-
 }

@@ -16,68 +16,10 @@ import java.util.function.Supplier;
 
 /**
  * This type represents the configuration parameters that a b2b dsl can have.<br>
- *   By default the scope of this configuration is all the conversions
+ *   The scope of this instance is the default scope (all conversions)
  * Date: 10/02/19 - 23:05
  */
-public interface ConfigureDsl extends ScopedConfigureDsl {
-
-  /**
-   * Registers a function to be used as converter between the function input-output types.<br>
-   *   The type parameters of the function class will be used to scope the applicability of the given instance.
-   *   If no type parameters can be obtained using reflection on the lambda class, then {@link Object}
-   *   will be used instead for input or output types scoping. Note, this may collide with other converters.<br>
-   *   <br>
-   *   For type disambiguation use explicit lambda references that retains the type parameters after
-   *   erasure. See {@link #useConverter(FunctionRef)}
-   * @param converterFunction The function instance to use as a converter
-   * @return This instance for method chaining
-   */
-  <I,O> ConfigureDsl useConverter(Function<I,O> converterFunction);
-
-  /**
-   * Registers a converter that will need access to the task as part of the conversion process. Usually
-   * for delegating the conversion of one or more parts of the original object (nesting conversions).<br>
-   *   The type parameters of the lambda class will be used to scope the applicability of the given instance.
-   *   If no type parameters can be obtained using reflection on the lambda class, then {@link Object}
-   *   will be used instead for input or output types scoping. Note, this may collide with other converters.<br>
-   *   <br>
-   *   For type disambiguation use explicit lambda references that retains the type parameters after
-   *   erasure. See {@link #useConverter(BiFunctionRef)}
-   *
-   * @param converterFunction The function to use as converter
-   * @return This instance for method chaining
-   */
-  <I,O> ConfigureDsl useConverter(BiFunction<I, Bean2beanTask,O> converterFunction);
-
-  /**
-   * Registers a converter function that requires no parameters as input for the conversion.<br>
-   *   Usually these converters are used as generators to instantiate other types.<br>
-   *   The type parameters of the lambda class will be used to scope the applicability of the given instance.
-   *   If no type parameters can be obtained using reflection on the lambda class, then {@link Object}
-   *   will be used instead for input or output types scoping. Note, this may collide with other converters.<br>
-   *   <br>
-   *   For type disambiguation use explicit lambda references that retains the type parameters after
-   *   erasure. See {@link #useConverter(SupplierRef)}
-   *
-   * @param converterFunction The function to use as generator
-   * @return This instance for method chaining
-   */
-  <O> ConfigureDsl useConverter(Supplier<O> converterFunction);
-
-  /**
-   * Registers a converter function that generates no output as result of the conversion.<br>
-   *   Usually these converters are used as destructors of instances to release resources.<br>
-   *   The type parameters of the lambda class will be used to scope the applicability of the given instance.
-   *   If no type parameters can be obtained using reflection on the lambda class, then {@link Object}
-   *   will be used instead for input or output types scoping. Note, this may collide with other converters.<br>
-   *   <br>
-   *   For type disambiguation use explicit lambda references that retains the type parameters after
-   *   erasure. See {@link #useConverter(ConsumerRef)}
-   *
-   * @param converterFunction The function to use as destructor
-   * @return This instance for method chaining
-   */
-  <I> ConfigureDsl useConverter(Consumer<I> converterFunction);
+public interface ConfigureDsl extends ImplicitlyScopedConfigureDsl {
 
   /**
    * Registers a converter function using its full definition.<br>
@@ -98,40 +40,39 @@ public interface ConfigureDsl extends ScopedConfigureDsl {
    */
   ScopedConfigureDsl scopingWith(Predicate<DomainVector> scopePredicate);
 
-
   /**
-   * Registers a function through its reference to be used as converter between the function input-output types.<br>
-   *   The type parameters of the function class will be used to scope the applicability of the given instance.
-   *   If no type parameters can be obtained using reflection on the function class, then {@link Object} will be used
-   *   instead for input and output types scoping (Note, this may collide with other converters).<br>
-   * @param converterFunctionRef The reference to the function used a s converter
-   * @return This instance for method chaining
+   * Limits the applicability of a converter by using its type parameters to restrict its usage to valid instances.<br>
+   * If no type parameters can be obtained using reflection on the lambda class, then {@link Object} will be used
+   * instead for input or output types scoping. <br>
+   * <br>
+   * Note, this may collide with other converters if carelessly used. Use lambda refs like {@link FunctionRef}
+   * to explicitly define lambda parameter types<br>
+   *
+   * @return The partial definition of this configuration dsl scoping to implicit types
    */
-  <I,O> ConfigureDsl useConverter(FunctionRef<I,O> converterFunctionRef);
+  ImplicitlyScopedConfigureDsl scopingByTypeArguments();
 
-  /**
-   * Registers a converter function though its reference that will need access to b2b dsl as part of
-   * the conversion process. Usually for delegating the conversion of one or more parts of the original object (nesting conversions).
-   * @param converterFunction The function to use as converter
-   * @return This instance for method chaining
-   */
-  <I,O> ConfigureDsl useConverter(BiFunctionRef<I,Bean2beanTask,O> converterFunction);
+  @Override
+  <I, O> ConfigureDsl useConverter(Function<I, O> converterFunction);
 
-  /**
-   * Registers a converter function through its reference that requires no parameters as input for the conversion.<br>
-   *   Usually these converters are used as generators to instantiate other types
-   * @param converterFunction The function to use a generator
-   * @return This instance for method chaining
-   */
+  @Override
+  <I, O> ConfigureDsl useConverter(BiFunction<I, Bean2beanTask, O> converterFunction);
+
+  @Override
+  <O> ConfigureDsl useConverter(Supplier<O> converterFunction);
+
+  @Override
+  <I> ConfigureDsl useConverter(Consumer<I> converterFunction);
+
+  @Override
+  <I, O> ConfigureDsl useConverter(FunctionRef<I, O> converterFunctionRef);
+
+  @Override
+  <I, O> ConfigureDsl useConverter(BiFunctionRef<I, Bean2beanTask, O> converterFunction);
+
+  @Override
   <O> ConfigureDsl useConverter(SupplierRef<O> converterFunction);
 
-  /**
-   * Registers a converter function through its reference that generates no output as result of the conversion.<br>
-   *   Usually these converters are used as destructors of intances to release resources
-   * @param converterFunction The function to use as destructor
-   * @return This instance for method chaining
-   */
+  @Override
   <I> ConfigureDsl useConverter(ConsumerRef<I> converterFunction);
-
-
 }
