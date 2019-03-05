@@ -2,15 +2,11 @@ package info.kfgodel.bean2bean.converters;
 
 import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
-import info.kfgodel.bean2bean.core.api.Bean2beanTask;
 import info.kfgodel.bean2bean.core.api.exceptions.ConversionException;
 import info.kfgodel.bean2bean.core.api.exceptions.CreationException;
 import info.kfgodel.bean2bean.dsl.impl.Dsl;
-import info.kfgodel.bean2bean.other.references.BiFunctionRef;
 import info.kfgodel.bean2bean.other.references.FunctionRef;
 import org.junit.runner.RunWith;
-
-import java.util.function.BiFunction;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -92,7 +88,8 @@ public class Array2ArrayConverterTest extends JavaSpec<ConverterTestContext> {
         describe("when a specific array instantiator is registered", () -> {
           beforeEach(()->{
             // Force the instantiator to the specific conversion
-            test().dsl().configure().useConverter(new BiFunctionRef<Integer, Bean2beanTask, String[]>((BiFunction) ArrayInstantiator.create()) {});
+            test().dsl().configure().scopingTo(Integer.class, String[].class)
+              .useConverter(ArrayInstantiator.create());
           });
 
           itThrows(CreationException.class, "if target type is not an array",()->{
@@ -119,15 +116,9 @@ public class Array2ArrayConverterTest extends JavaSpec<ConverterTestContext> {
             });
           });
 
-
         });
 
-
-
-
-
       });
-
 
     });
   }
