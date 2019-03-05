@@ -8,6 +8,7 @@ import info.kfgodel.bean2bean.other.references.ConsumerRef;
 import info.kfgodel.bean2bean.other.references.FunctionRef;
 import info.kfgodel.bean2bean.other.references.SupplierRef;
 
+import java.lang.reflect.Type;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -41,6 +42,15 @@ public interface ConfigureDsl extends ImplicitlyScopedConfigureDsl {
   ScopedConfigureDsl scopingWith(Predicate<DomainVector> scopePredicate);
 
   /**
+   * Limits the applicability of a converter by restricting the type of acceptable instances and the type of produced
+   * results explicitly. The indicated types serve as the domain vector to be compared at on conversions
+   * @param sourceType The type of input instances that can be accepted by the converter
+   * @param targetType The type of results that the converter generates
+   * @return The partial definition of this configuration dsl scoped by the indicated domain vector
+   */
+  ScopedConfigureDsl scopingTo(Type sourceType, Type targetType);
+
+  /**
    * Limits the applicability of a converter by using its type parameters to restrict its usage to valid instances.<br>
    * If no type parameters can be obtained using reflection on the lambda class, then {@link Object} will be used
    * instead for input or output types scoping. <br>
@@ -51,6 +61,7 @@ public interface ConfigureDsl extends ImplicitlyScopedConfigureDsl {
    * @return The partial definition of this configuration dsl scoping to implicit types
    */
   ImplicitlyScopedConfigureDsl scopingByTypeArguments();
+
 
   @Override
   <I, O> ConfigureDsl useConverter(Function<I, O> converterFunction);

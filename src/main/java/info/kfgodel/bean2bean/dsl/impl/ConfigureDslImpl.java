@@ -1,13 +1,16 @@
 package info.kfgodel.bean2bean.dsl.impl;
 
 import info.kfgodel.bean2bean.core.api.Bean2beanTask;
+import info.kfgodel.bean2bean.core.api.registry.Domain;
 import info.kfgodel.bean2bean.core.api.registry.DomainVector;
 import info.kfgodel.bean2bean.core.api.registry.definitions.ConverterDefinition;
+import info.kfgodel.bean2bean.core.impl.registry.domains.DomainCalculator;
 import info.kfgodel.bean2bean.core.impl.registry.domains.DomainVectorExtractor;
 import info.kfgodel.bean2bean.dsl.api.B2bDsl;
 import info.kfgodel.bean2bean.dsl.api.ConfigureDsl;
 import info.kfgodel.bean2bean.dsl.api.ImplicitlyScopedConfigureDsl;
 import info.kfgodel.bean2bean.dsl.api.ScopedConfigureDsl;
+import info.kfgodel.bean2bean.dsl.impl.scopes.DomainVectorScopedConfigureDsl;
 import info.kfgodel.bean2bean.dsl.impl.scopes.ImplicitScopeConfigureDslImpl;
 import info.kfgodel.bean2bean.dsl.impl.scopes.PredicateScopedConfigureDsl;
 import info.kfgodel.bean2bean.other.references.BiFunctionRef;
@@ -15,6 +18,7 @@ import info.kfgodel.bean2bean.other.references.ConsumerRef;
 import info.kfgodel.bean2bean.other.references.FunctionRef;
 import info.kfgodel.bean2bean.other.references.SupplierRef;
 
+import java.lang.reflect.Type;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -41,6 +45,21 @@ public class ConfigureDslImpl implements ConfigureDsl {
   public ScopedConfigureDsl scopingWith(Predicate<DomainVector> scopePredicate) {
     return PredicateScopedConfigureDsl.create(scopePredicate, this);
   }
+
+  @Override
+  public ScopedConfigureDsl scopingTo(Type sourceType, Type targetType) {
+    DomainVector domainVector = createVectorFor(sourceType, targetType);
+    return DomainVectorScopedConfigureDsl.create(domainVector, this);
+  }
+
+  private DomainVector createVectorFor(Type inputType, Type outputType) {
+    return DomainVector.create(domainFor(inputType), domainFor(outputType));
+  }
+
+  private Domain domainFor(Type javaType) {
+    return getDomainCalculator().forType(javaType);
+  }
+
 
   @Override
   public ImplicitlyScopedConfigureDsl scopingByTypeArguments() {
@@ -103,5 +122,13 @@ public class ConfigureDslImpl implements ConfigureDsl {
 
   public B2bDsl getB2bDsl() {
     return b2bDsl;
+  }
+
+  public DomainVectorExtractor getVectorExtractor() {
+    return vectorExtractor;
+  }
+
+  public DomainCalculator getDomainCalculator(){
+    return this.b2bDsl.getCalculator();
   }
 }

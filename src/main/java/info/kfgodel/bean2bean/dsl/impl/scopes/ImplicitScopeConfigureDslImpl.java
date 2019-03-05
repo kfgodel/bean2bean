@@ -37,7 +37,7 @@ public class ImplicitScopeConfigureDslImpl implements ImplicitlyScopedConfigureD
   }
 
   public DomainVectorExtractor getVectorExtractor() {
-    return DomainVectorExtractor.create(parentDsl.getB2bDsl().getCalculator());
+    return parentDsl.getVectorExtractor();
   }
 
   @Override

@@ -27,7 +27,7 @@ public class ConverterRegistrationOptionsTest extends JavaSpec<B2bTestContext> {
       test().configure(()-> test().dsl().configure());
       test().dsl(Dsl::create);
 
-      describe("used to register vector scoped converters", () -> {
+      describe("used to register implicitly scoped converters", () -> {
 
         it("accepts a function as converter", () -> {
           test().configure().useConverter((in) -> in);
@@ -72,6 +72,34 @@ public class ConverterRegistrationOptionsTest extends JavaSpec<B2bTestContext> {
           assertThat(test().dsl().convert().from("an object").to(NullType.class)).isNull();
           assertThat(converterArgument.get()).isEqualTo("an object");
         });
+      });
+
+      describe("used to register explicitly scoped converters", () -> {
+
+        it("accepts a function as converter", () -> {
+          test().configure().scopingTo(Object.class, Object.class).useConverter((in) -> in);
+          assertThat(test().dsl().convert().from("an object").to(Object.class)).isEqualTo("an object");
+        });
+
+        it("accepts a bifunction that takes the dsl as second arg as a converter",()->{
+          test().configure().scopingTo(Object.class, Object.class).useConverter((input, b2b)-> input);
+          assertThat(test().dsl().convert().from("an object").to(Object.class)).isEqualTo("an object");
+        });
+
+        it("accepts a supplier as a converter",()->{
+          test().configure().scopingTo(Object.class, Object.class).useConverter(() -> "a value");
+          assertThat(test().dsl().convert().from(null).to(Object.class)).isEqualTo("a value");
+        });
+
+        it("accepts a consumer as a converter",()->{
+          AtomicReference<String> converterArgument = new AtomicReference<>();
+
+          test().configure().scopingTo(Object.class, Object.class).useConverter(converterArgument::set);
+
+          assertThat(test().dsl().convert().from("an object").to(NullType.class)).isNull();
+          assertThat(converterArgument.get()).isEqualTo("an object");
+        });
+
       });
 
       describe("used to register predicate scoped converters", () -> {
