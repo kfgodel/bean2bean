@@ -35,7 +35,7 @@ public class InstanceCreationTest extends JavaSpec<B2bTestContext> {
 
       describe("when a converter from null is configured", () -> {
         beforeEach(() -> {
-          test().dsl().configure().usingConverter(ArrayListGenerator.create());
+          test().dsl().configure().useConverter(ArrayListGenerator.create());
         });
 
         it("is used for instance creation", () -> {
@@ -48,7 +48,7 @@ public class InstanceCreationTest extends JavaSpec<B2bTestContext> {
 
       describe("when a lambda generator is configured", () -> {
         beforeEach(()->{
-          test().dsl().configure().usingConverter(new SupplierRef<Object>(Object::new) {});
+          test().dsl().configure().useConverter(new SupplierRef<Object>(Object::new) {});
         });
 
         it("is used for instance creation",()->{
@@ -60,7 +60,7 @@ public class InstanceCreationTest extends JavaSpec<B2bTestContext> {
 
       describe("when a converter from integer is configured", () -> {
         beforeEach(()->{
-          test().dsl().configure().usingConverter(StringArrayGenerator.create());
+          test().dsl().configure().useConverter(StringArrayGenerator.create());
         });
 
         it("is used for array creation",()->{

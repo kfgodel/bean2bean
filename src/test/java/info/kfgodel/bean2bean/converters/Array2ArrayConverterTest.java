@@ -2,15 +2,11 @@ package info.kfgodel.bean2bean.converters;
 
 import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
-import info.kfgodel.bean2bean.core.api.Bean2beanTask;
 import info.kfgodel.bean2bean.core.api.exceptions.ConversionException;
 import info.kfgodel.bean2bean.core.api.exceptions.CreationException;
 import info.kfgodel.bean2bean.dsl.impl.Dsl;
-import info.kfgodel.bean2bean.other.references.BiFunctionRef;
 import info.kfgodel.bean2bean.other.references.FunctionRef;
 import org.junit.runner.RunWith;
-
-import java.util.function.BiFunction;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -26,17 +22,17 @@ public class Array2ArrayConverterTest extends JavaSpec<ConverterTestContext> {
 
       describe("when registered using the predicate", () -> {
         beforeEach(() -> {
-          test().dsl().configure().usingConverter(Array2ArrayConverter.create(), Array2ArrayConverter::shouldBeUsed);
+          test().dsl().configure().scopingWith(Array2ArrayConverter::shouldBeUsed).useConverter(Array2ArrayConverter.create());
         });
 
         describe("given a registered array instantiator", () -> {
           beforeEach(() -> {
-            test().dsl().configure().usingConverter(ArrayInstantiator.create(), ArrayInstantiator::shouldBeUsed);
+            test().dsl().configure().scopingWith(ArrayInstantiator::shouldBeUsed).useConverter(ArrayInstantiator.create());
           });
 
           describe("given a registered element converter", () -> {
             beforeEach(()->{
-              test().dsl().configure().usingConverter(new FunctionRef<Integer, String>(String::valueOf) {});
+              test().dsl().configure().useConverter(new FunctionRef<Integer, String>(String::valueOf) {});
             });
 
             it("creates a new array",()->{
@@ -66,7 +62,7 @@ public class Array2ArrayConverterTest extends JavaSpec<ConverterTestContext> {
 
       describe("when registered without a predicate", () -> {
         beforeEach(() -> {
-          test().dsl().configure().usingConverter(Array2ArrayConverter.create());
+          test().dsl().configure().useConverter(Array2ArrayConverter.create());
         });
 
         itThrows(ConversionException.class, "if input is null", ()->{
@@ -92,11 +88,12 @@ public class Array2ArrayConverterTest extends JavaSpec<ConverterTestContext> {
         describe("when a specific array instantiator is registered", () -> {
           beforeEach(()->{
             // Force the instantiator to the specific conversion
-            test().dsl().configure().usingConverter(new BiFunctionRef<Integer, Bean2beanTask, String[]>((BiFunction) ArrayInstantiator.create()) {});
+            test().dsl().configure().scopingTo().accept(Integer.class).andProduce(String[].class)
+              .useConverter(ArrayInstantiator.create());
           });
 
           itThrows(CreationException.class, "if target type is not an array",()->{
-            test().dsl().configure().usingConverter(ArrayInstantiator.create());
+            test().dsl().configure().useConverter(ArrayInstantiator.create());
             test().dsl().convert().from(new Integer[]{1,2}).to(Object.class);
           }, e->{
             assertThat(e).hasMessage("Can't instantiate array for non array type: class java.lang.Object");
@@ -111,7 +108,7 @@ public class Array2ArrayConverterTest extends JavaSpec<ConverterTestContext> {
 
           describe("when an element converter is registered", () -> {
             beforeEach(()->{
-              test().dsl().configure().usingConverter(new FunctionRef<Integer, String>(String::valueOf) {});
+              test().dsl().configure().useConverter(new FunctionRef<Integer, String>(String::valueOf) {});
             });
             it("creates a new array",()->{
               String[] result = test().dsl().convert().from(new Integer[]{1, 2}).to(String[].class);
@@ -119,15 +116,9 @@ public class Array2ArrayConverterTest extends JavaSpec<ConverterTestContext> {
             });
           });
 
-
         });
 
-
-
-
-
       });
-
 
     });
   }

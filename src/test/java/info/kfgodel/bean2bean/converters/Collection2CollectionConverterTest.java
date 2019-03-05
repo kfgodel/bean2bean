@@ -29,7 +29,7 @@ public class Collection2CollectionConverterTest extends JavaSpec<ConverterTestCo
   public void define() {
     describe("a collection converter registered with b2b", () -> {
       beforeEach(() -> {
-        test().dsl().configure().usingConverter(Collection2CollectionConverter.create());
+        test().dsl().configure().useConverter(Collection2CollectionConverter.create());
       });
 
       context().dsl(Dsl::create);
@@ -44,7 +44,7 @@ public class Collection2CollectionConverterTest extends JavaSpec<ConverterTestCo
 
         itThrows(CreationException.class, "if the registered creation converter doesn't produce a collection", () -> {
           //Create a map for every creation
-          test().dsl().configure().usingConverter((Supplier) HashMap::new, (vector) -> true);
+          test().dsl().configure().scopingWith((vector) -> true).useConverter((Supplier) HashMap::new);
 
           test().dsl().convert().from(listWith12And2()).to(setOfStrings());
         }, e -> {
@@ -55,7 +55,7 @@ public class Collection2CollectionConverterTest extends JavaSpec<ConverterTestCo
 
       describe("when the correct creator converter is registered", () -> {
         beforeEach(() -> {
-          test().dsl().configure().usingConverter(new SupplierRef<Set>(HashSet::new) {
+          test().dsl().configure().useConverter(new SupplierRef<Set>(HashSet::new) {
           });
         });
 
@@ -67,7 +67,7 @@ public class Collection2CollectionConverterTest extends JavaSpec<ConverterTestCo
 
         describe("when the correct element converter is registered", () -> {
           beforeEach(() -> {
-            test().dsl().configure().usingConverter(new FunctionRef<Integer, String>(String::valueOf) {
+            test().dsl().configure().useConverter(new FunctionRef<Integer, String>(String::valueOf) {
             });
           });
 

@@ -24,7 +24,7 @@ public class ArrayInstantiatorTest extends JavaSpec<ConverterTestContext> {
 
       describe("when registered with the predicate", () -> {
         beforeEach(() -> {
-          test().dsl().configure().usingConverter(ArrayInstantiator.create(), ArrayInstantiator::shouldBeUsed);
+          test().dsl().configure().scopingWith(ArrayInstantiator::shouldBeUsed).useConverter(ArrayInstantiator.create());
         });
 
         itThrows(ConversionException.class, "if input is not an integer", ()->{
@@ -52,7 +52,7 @@ public class ArrayInstantiatorTest extends JavaSpec<ConverterTestContext> {
 
       describe("when registered without a predicate", () -> {
         beforeEach(() -> {
-          test().dsl().configure().usingConverter(ArrayInstantiator.create());
+          test().dsl().configure().useConverter(ArrayInstantiator.create());
         });
 
         itThrows(ConversionException.class, "if input is not an integer", ()->{
