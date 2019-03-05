@@ -88,7 +88,7 @@ public class Array2ArrayConverterTest extends JavaSpec<ConverterTestContext> {
         describe("when a specific array instantiator is registered", () -> {
           beforeEach(()->{
             // Force the instantiator to the specific conversion
-            test().dsl().configure().scopingTo(Integer.class, String[].class)
+            test().dsl().configure().scopingTo().accept(Integer.class).andProduce(String[].class)
               .useConverter(ArrayInstantiator.create());
           });
 

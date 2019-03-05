@@ -78,24 +78,25 @@ public class ConverterRegistrationOptionsTest extends JavaSpec<B2bTestContext> {
       describe("used to register explicitly scoped converters", () -> {
         describe("using type instances to limit scope", () -> {
           it("accepts a function as converter", () -> {
-            test().configure().scopingTo(Object.class, Object.class).useConverter((in) -> in);
+            test().configure().scopingTo().accept(Object.class).andProduce(Object.class).useConverter((in) -> in);
             assertThat(test().dsl().convert().from("an object").to(Object.class)).isEqualTo("an object");
           });
 
           it("accepts a bifunction that takes the dsl as second arg as a converter",()->{
-            test().configure().scopingTo(Object.class, Object.class).useConverter((input, b2b)-> input);
+            test().configure().scopingTo().accept(Object.class).andProduce(Object.class).useConverter((input, b2b)-> input);
             assertThat(test().dsl().convert().from("an object").to(Object.class)).isEqualTo("an object");
           });
 
           it("accepts a supplier as a converter",()->{
-            test().configure().scopingTo(Object.class, Object.class).useConverter(() -> "a value");
+            test().configure().scopingTo().accept(Object.class).andProduce(Object.class).useConverter(() -> "a value");
             assertThat(test().dsl().convert().from(null).to(Object.class)).isEqualTo("a value");
           });
 
           it("accepts a consumer as a converter",()->{
             AtomicReference<String> converterArgument = new AtomicReference<>();
 
-            test().configure().scopingTo(Object.class, Object.class).useConverter(converterArgument::set);
+            test().configure().scopingTo().accept(Object.class).andProduce(Object.class)
+              .useConverter(converterArgument::set);
 
             assertThat(test().dsl().convert().from("an object").to(NullType.class)).isNull();
             assertThat(converterArgument.get()).isEqualTo("an object");
@@ -103,24 +104,32 @@ public class ConverterRegistrationOptionsTest extends JavaSpec<B2bTestContext> {
         });
         describe("using type references to limit scope", () -> {
           it("accepts a function as converter", () -> {
-            test().configure().scopingTo(new TypeRef<Object>(){}, new TypeRef<Object>(){}).useConverter((in) -> in);
+            test().configure()
+              .scopingTo().accept(new TypeRef<Object>(){}).andProduce(new TypeRef<Object>(){})
+              .useConverter((in) -> in);
             assertThat(test().dsl().convert().from("an object").to(Object.class)).isEqualTo("an object");
           });
 
           it("accepts a bifunction that takes the dsl as second arg as a converter",()->{
-            test().configure().scopingTo(new TypeRef<Object>(){}, new TypeRef<Object>(){}).useConverter((input, b2b)-> input);
+            test().configure()
+              .scopingTo().accept(new TypeRef<Object>(){}).andProduce(new TypeRef<Object>(){})
+              .useConverter((input, b2b)-> input);
             assertThat(test().dsl().convert().from("an object").to(Object.class)).isEqualTo("an object");
           });
 
           it("accepts a supplier as a converter",()->{
-            test().configure().scopingTo(new TypeRef<Object>(){}, new TypeRef<Object>(){}).useConverter(() -> "a value");
+            test().configure()
+              .scopingTo().accept(new TypeRef<Object>(){}).andProduce(new TypeRef<Object>(){})
+              .useConverter(() -> "a value");
             assertThat(test().dsl().convert().from(null).to(Object.class)).isEqualTo("a value");
           });
 
           it("accepts a consumer as a converter",()->{
             AtomicReference<String> converterArgument = new AtomicReference<>();
 
-            test().configure().scopingTo(new TypeRef<Object>(){}, new TypeRef<Object>(){}).useConverter(converterArgument::set);
+            test().configure()
+              .scopingTo().accept(new TypeRef<Object>(){}).andProduce(new TypeRef<Object>(){})
+              .useConverter(converterArgument::set);
 
             assertThat(test().dsl().convert().from("an object").to(NullType.class)).isNull();
             assertThat(converterArgument.get()).isEqualTo("an object");

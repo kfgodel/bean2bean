@@ -9,7 +9,7 @@ import info.kfgodel.bean2bean.core.impl.conversion.SupplierAdapterConverter;
 import info.kfgodel.bean2bean.core.impl.registry.definitions.VectorDefinition;
 import info.kfgodel.bean2bean.core.impl.registry.domains.DomainVectorExtractor;
 import info.kfgodel.bean2bean.dsl.api.ConfigureDsl;
-import info.kfgodel.bean2bean.dsl.api.ImplicitlyScopedConfigureDsl;
+import info.kfgodel.bean2bean.dsl.api.scopes.ImplicitlyScopedConfigureDsl;
 import info.kfgodel.bean2bean.dsl.impl.ConfigureDslImpl;
 import info.kfgodel.bean2bean.other.references.BiFunctionRef;
 import info.kfgodel.bean2bean.other.references.ConsumerRef;

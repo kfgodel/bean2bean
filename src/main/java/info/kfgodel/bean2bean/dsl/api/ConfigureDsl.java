@@ -3,13 +3,14 @@ package info.kfgodel.bean2bean.dsl.api;
 import info.kfgodel.bean2bean.core.api.Bean2beanTask;
 import info.kfgodel.bean2bean.core.api.registry.DomainVector;
 import info.kfgodel.bean2bean.core.api.registry.definitions.ConverterDefinition;
+import info.kfgodel.bean2bean.dsl.api.scopes.ImplicitlyScopedConfigureDsl;
+import info.kfgodel.bean2bean.dsl.api.scopes.ScopedConfigureDsl;
+import info.kfgodel.bean2bean.dsl.api.scopes.UndefinedExplicitScopeDsl;
 import info.kfgodel.bean2bean.other.references.BiFunctionRef;
 import info.kfgodel.bean2bean.other.references.ConsumerRef;
 import info.kfgodel.bean2bean.other.references.FunctionRef;
 import info.kfgodel.bean2bean.other.references.SupplierRef;
-import info.kfgodel.bean2bean.other.references.TypeRef;
 
-import java.lang.reflect.Type;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -42,23 +43,13 @@ public interface ConfigureDsl extends ImplicitlyScopedConfigureDsl {
    */
   ScopedConfigureDsl scopingWith(Predicate<DomainVector> scopePredicate);
 
-  /**
-   * Limits the applicability of a converter by restricting the type of acceptable instances and the type of produced
-   * results explicitly. The indicated types serve as the domain vector to be compared at on conversions
-   * @param sourceType The type of input instances that can be accepted by the converter
-   * @param targetType The type of results that the converter generates
-   * @return The partial definition of this configuration dsl scoped by the indicated domain vector
-   */
-  ScopedConfigureDsl scopingTo(Type sourceType, Type targetType);
 
   /**
-   * Limits the applicability of a converter by restricting the type of acceptable instances and the type of produced
-   * results explicitly. The indicated type references serve as the domain vector to be compared at on conversions
-   * @param sourceType The type of input instances that can be accepted by the converter
-   * @param targetType The type of results that the converter generates
-   * @return The partial definition of this configuration dsl scoped by the indicated domain vector
+   * Starts limiting the applicability of a converter by defining types that will restrict input and output for
+   * the converter. The indicated types serve as the domain vector to be compared at on conversions
+   * @return The starting definition of this configuration dsl scoped by the indicated domain vector
    */
-  ScopedConfigureDsl scopingTo(TypeRef<?> sourceType, TypeRef<?> targetType);
+  UndefinedExplicitScopeDsl scopingTo();
 
   /**
    * Limits the applicability of a converter by using its type parameters to restrict its usage to valid instances.<br>
@@ -70,7 +61,7 @@ public interface ConfigureDsl extends ImplicitlyScopedConfigureDsl {
    *
    * @return The partial definition of this configuration dsl scoping to implicit types
    */
-  ImplicitlyScopedConfigureDsl scopingByTypeArguments();
+  ImplicitlyScopedConfigureDsl scopingToTypeArguments();
 
 
   @Override
@@ -96,4 +87,5 @@ public interface ConfigureDsl extends ImplicitlyScopedConfigureDsl {
 
   @Override
   <I> ConfigureDsl useConverter(ConsumerRef<I> converterFunction);
+
 }

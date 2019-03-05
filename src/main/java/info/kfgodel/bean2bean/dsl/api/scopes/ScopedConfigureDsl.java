@@ -1,4 +1,4 @@
-package info.kfgodel.bean2bean.dsl.api;
+package info.kfgodel.bean2bean.dsl.api.scopes;
 
 import info.kfgodel.bean2bean.core.api.Bean2beanTask;
 

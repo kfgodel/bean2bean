@@ -1,4 +1,4 @@
-package info.kfgodel.bean2bean.dsl.api;
+package info.kfgodel.bean2bean.dsl.api.scopes;
 
 import info.kfgodel.bean2bean.core.api.Bean2beanTask;
 import info.kfgodel.bean2bean.other.references.BiFunctionRef;
@@ -13,8 +13,8 @@ import java.util.function.Supplier;
 
 /**
  * This type represents a configuration that limits the applicability of registered converters by scoping
- * their usage by accepted argument types and result.<br>
- *   For runtime lambdas a Lambda ref may be needed to keep the type arguments after erasure
+ * them according to their argument types.<br>
+ *   For runtime defined lambdas a Lambda ref may be needed to keep the type arguments after erasure
  *
  * Date: 05/03/19 - 17:38
  */

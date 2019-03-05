@@ -8,7 +8,7 @@ import info.kfgodel.bean2bean.core.impl.conversion.FunctionAdapterConverter;
 import info.kfgodel.bean2bean.core.impl.conversion.SupplierAdapterConverter;
 import info.kfgodel.bean2bean.core.impl.registry.definitions.PredicateDefinition;
 import info.kfgodel.bean2bean.dsl.api.ConfigureDsl;
-import info.kfgodel.bean2bean.dsl.api.ScopedConfigureDsl;
+import info.kfgodel.bean2bean.dsl.api.scopes.ScopedConfigureDsl;
 import info.kfgodel.bean2bean.dsl.impl.ConfigureDslImpl;
 
 import java.util.function.BiFunction;
