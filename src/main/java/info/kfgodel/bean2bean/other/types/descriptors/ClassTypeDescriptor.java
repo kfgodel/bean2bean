@@ -1,5 +1,6 @@
 package info.kfgodel.bean2bean.other.types.descriptors;
 
+import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.util.Arrays;
@@ -62,5 +63,22 @@ public class ClassTypeDescriptor extends GeneralTypeDescriptor {
       return Optional.ofNullable(aClass.getComponentType());
     }
     return Optional.empty();
+  }
+
+  @Override
+  public Optional<Class> getInstantiableClass() {
+    if(isNonInstantiable()){
+      // We try to prevent most of the non instantiable types
+      return Optional.empty();
+    }
+    return Optional.of(aClass);
+  }
+
+  private boolean isNonInstantiable() {
+    return aClass.isInterface()
+      || aClass.isPrimitive()
+      || aClass.isArray()
+      || aClass.isAnnotation()
+      || Modifier.isAbstract(aClass.getModifiers());
   }
 }

@@ -5,6 +5,7 @@ import info.kfgodel.bean2bean.core.api.exceptions.ConversionException;
 import info.kfgodel.bean2bean.core.api.exceptions.CreationException;
 import info.kfgodel.bean2bean.dsl.api.B2bDsl;
 import info.kfgodel.bean2bean.dsl.api.CreateDsl;
+import info.kfgodel.bean2bean.other.references.TypeRef;
 
 import java.lang.reflect.Type;
 
@@ -28,6 +29,11 @@ public class CreateDslImpl implements CreateDsl {
     } catch (ConversionException e) {
       throw new CreationException("Creation from null to " + expectedType.getTypeName() + " failed: " + e.getMessage(), expectedType ,e);
     }
+  }
+
+  @Override
+  public <T> T anInstanceOf(TypeRef<T> expectedTypeRef) throws Bean2BeanException {
+    return anInstanceOf(expectedTypeRef.getReference());
   }
 
   @Override
