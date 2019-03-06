@@ -43,6 +43,13 @@ public class ParameterizedTypeDescriptor extends GeneralTypeDescriptor {
     return replacedArguments;
   }
 
+  @Override
+  public Optional<Class> getInstantiableClass() {
+    return getErasuredType()
+      .map(JavaTypeDescriptor::createFor)
+      .flatMap(JavaTypeDescriptor::getInstantiableClass);
+  }
+
   public static ParameterizedTypeDescriptor create(ParameterizedType aType) {
     ParameterizedTypeDescriptor descriptor = new ParameterizedTypeDescriptor();
     descriptor.aType = aType;

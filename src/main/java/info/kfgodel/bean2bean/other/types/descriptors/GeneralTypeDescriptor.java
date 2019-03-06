@@ -57,6 +57,11 @@ public class GeneralTypeDescriptor implements JavaTypeDescriptor {
   }
 
   @Override
+  public Optional<Class> getInstantiableClass() {
+    return Optional.empty();
+  }
+
+  @Override
   public String toString() {
     return getType().getTypeName();
   }

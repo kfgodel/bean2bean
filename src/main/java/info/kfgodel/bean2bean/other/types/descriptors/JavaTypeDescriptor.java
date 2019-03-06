@@ -73,6 +73,15 @@ public interface JavaTypeDescriptor {
    */
   Optional<Class> getComponentType();
 
+  /**
+   * Returns the class for this type that can be instantiated on runtime.<br>
+   *   Only concrete classes can be instantiated. <br>
+   *   For parameterized types, the raw type class is returned.<br>
+   *   Wildcards and type variables only return a class if bounded to a concrete class type.<br>
+   *
+   * @return The class that produces instances of this type on runtime, or empty
+   */
+  Optional<Class> getInstantiableClass();
 
   /**
    * Creates the descriptor that best describes the given type instance
@@ -89,6 +98,5 @@ public interface JavaTypeDescriptor {
     }
     return GeneralTypeDescriptor.create(type);
   }
-
 
 }

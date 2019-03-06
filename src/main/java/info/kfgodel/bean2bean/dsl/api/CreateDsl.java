@@ -1,6 +1,7 @@
 package info.kfgodel.bean2bean.dsl.api;
 
 import info.kfgodel.bean2bean.core.api.exceptions.Bean2BeanException;
+import info.kfgodel.bean2bean.other.references.TypeRef;
 
 import java.lang.reflect.Type;
 
@@ -29,6 +30,16 @@ public interface CreateDsl {
    * @throws Bean2BeanException If an error occurs during creation (like a missing converter)
    */
   <T> T anInstanceOf(Type expectedType) throws Bean2BeanException;
+
+  /**
+   * Creates a new instance of the given type.<br>
+   *   This operation is equivalent to converting null to the expected type
+   * @param expectedTypeRef The reference to the expected type of instance to be created
+   * @param <T> The type of the output
+   * @return A new instance of the expected type
+   * @throws Bean2BeanException If an error occurs during creation (like a missing converter)
+   */
+  <T> T anInstanceOf(TypeRef<T> expectedTypeRef) throws Bean2BeanException;
 
 
   /**
