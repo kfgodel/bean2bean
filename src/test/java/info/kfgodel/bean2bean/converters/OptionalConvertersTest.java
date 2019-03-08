@@ -20,11 +20,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class OptionalConvertersTest extends JavaSpec<ConverterTestContext> {
   @Override
   public void define() {
-    describe("an optional converter registered to b2b", () -> {
-      test().dsl(Dsl::create);
+    describe("optional converters registered to b2b", () -> {
       beforeEach(()->{
-
+        test().dsl().configure().useConverter(Object2OptionalConverter.create());
+        test().dsl().configure().useConverter(Optional2ObjectConverter.create());
       });
+      test().dsl(Dsl::create);
 
       describe("when converting from an optional", () -> {
 
