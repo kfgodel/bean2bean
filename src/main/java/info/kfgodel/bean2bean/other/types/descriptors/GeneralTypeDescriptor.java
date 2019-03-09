@@ -28,7 +28,7 @@ public class GeneralTypeDescriptor implements JavaTypeDescriptor {
 
   @Override
   public Type[] getTypeArguments() {
-    return JavaTypeDescriptor.NO_ARGUMENTS;
+    return JavaTypeDescriptor.NO_TYPES;
   }
 
   @Override
@@ -38,7 +38,7 @@ public class GeneralTypeDescriptor implements JavaTypeDescriptor {
 
   @Override
   public Type[] getTypeArgumentsBindedWith(Map<TypeVariable, Type> typeParameterBindings) {
-    return NO_ARGUMENTS;
+    return NO_TYPES;
   }
 
   @Override
@@ -58,6 +58,11 @@ public class GeneralTypeDescriptor implements JavaTypeDescriptor {
 
   @Override
   public Optional<Class> getInstantiableClass() {
+    return Optional.empty();
+  }
+
+  @Override
+  public Optional<Class> getAssignableClass() {
     return Optional.empty();
   }
 

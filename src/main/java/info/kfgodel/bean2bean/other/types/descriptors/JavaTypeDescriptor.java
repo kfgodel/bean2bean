@@ -4,6 +4,7 @@ import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
+import java.lang.reflect.WildcardType;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -19,7 +20,7 @@ public interface JavaTypeDescriptor {
   /**
    * Used for types with no arguments
    */
-  Type[] NO_ARGUMENTS = new Type[0];
+  Type[] NO_TYPES = new Type[0];
 
   /**
    * @return The type that is described
@@ -84,6 +85,17 @@ public interface JavaTypeDescriptor {
   Optional<Class> getInstantiableClass();
 
   /**
+   * Returns the class instance that represents this type runtime equivalent for assignments.<br>
+   *   The returned class is the closest runtime type to this type.<br>
+   *   Some  types like type variables may not have a runtime class equivalent<br>
+   *   This class differs from {@link #getInstantiableClass()} in that not every type is instantiable, however most
+   *   can be used on assignements.
+   *
+   * @return The class to verify instance assignments
+   */
+  Optional<Class> getAssignableClass();
+
+  /**
    * Creates the descriptor that best describes the given type instance
    * @param type The type to describe
    * @return The descriptor specific for that type
@@ -93,6 +105,10 @@ public interface JavaTypeDescriptor {
       return ClassTypeDescriptor.create((Class) type);
     }else if(type instanceof ParameterizedType){
       return ParameterizedTypeDescriptor.create((ParameterizedType)type);
+    }else if(type instanceof TypeVariable){
+      return TypeVariableDescriptor.create((TypeVariable)type);
+    }else if(type instanceof WildcardType){
+      return WildcardTypeDescriptor.create((WildcardType)type);
     }else if(type instanceof GenericArrayType){
       return GenericArrayTypeDescriptor.create((GenericArrayType)type);
     }

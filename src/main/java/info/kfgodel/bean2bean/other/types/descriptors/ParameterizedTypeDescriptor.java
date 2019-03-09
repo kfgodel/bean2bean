@@ -27,8 +27,9 @@ public class ParameterizedTypeDescriptor extends GeneralTypeDescriptor {
   @Override
   public Optional<Class> getErasuredType() {
     Type rawType = aType.getRawType();
-    Class rawClass = (Class) rawType;
-    return Optional.of(rawClass);
+    return Optional.of(rawType)
+      .filter(Class.class::isInstance)
+      .map(Class.class::cast);
   }
 
   @Override
@@ -45,9 +46,12 @@ public class ParameterizedTypeDescriptor extends GeneralTypeDescriptor {
 
   @Override
   public Optional<Class> getInstantiableClass() {
-    return getErasuredType()
-      .map(JavaTypeDescriptor::createFor)
-      .flatMap(JavaTypeDescriptor::getInstantiableClass);
+    return getErasuredType();
+  }
+
+  @Override
+  public Optional<Class> getAssignableClass() {
+    return getErasuredType();
   }
 
   public static ParameterizedTypeDescriptor create(ParameterizedType aType) {
