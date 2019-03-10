@@ -1,5 +1,6 @@
 package info.kfgodel.bean2bean.core.api.registry;
 
+import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -26,4 +27,30 @@ public interface Domain {
    * @return The ordered stream of this domain super domains
    */
   Stream<Domain> getHierarchy();
+
+  /**
+   * Returns the first domain on the hiearchy that doesn't have parameters
+   * @return The super domain on this hierarchy that doesn't have type parameters
+   */
+  Optional<Domain> getUnparameterized();
+
+  /**
+   * Indicates if this domain represents a subset of other domain with parameters to define it.<br>
+   *   Some types represent domains that have type parameters to restrict them in order to get sub-domains.<br>
+   *   This is true if this domain is a paramaterized sub-domain
+   * @return true if this domain uses type parameters (regardless of whether they are variables or concrete types)
+   */
+  boolean isParameterized();
+
+  /**
+   * Indicates if this domain, as a set of possible objects, is included in the given domain (as a super set).<br>
+   *   This is the same as asking if this domain is assignable to the given domain. If an instance belonging to
+   *   this domain also belongs to the given domain
+   * @param otherDomain The domain to verify the inclusion relationship
+   * @return true if this is the same or a sub-domain of the given. False otherwise
+   */
+  boolean isIncludedIn(Domain otherDomain);
+
+
+
 }

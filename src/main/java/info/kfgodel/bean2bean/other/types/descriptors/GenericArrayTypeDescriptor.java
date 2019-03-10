@@ -1,5 +1,6 @@
 package info.kfgodel.bean2bean.other.types.descriptors;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.Type;
 import java.util.Optional;
@@ -22,6 +23,18 @@ public class GenericArrayTypeDescriptor extends GeneralTypeDescriptor {
     Type genericComponent = arrayType.getGenericComponentType();
     return JavaTypeDescriptor.createFor(genericComponent)
       .getErasuredType();
+  }
+
+  @Override
+  public Optional<Class> getAssignableClass() {
+    return getComponentType()
+      .map(this::getArrayClassForComponentOf);
+  }
+
+  private Class getArrayClassForComponentOf(Class componentClass) {
+    // Creating an array is the only way we have to know the array class
+    Object temporalArray = Array.newInstance(componentClass, 0);
+    return temporalArray.getClass();
   }
 
   public static GenericArrayTypeDescriptor create(GenericArrayType arrayType) {

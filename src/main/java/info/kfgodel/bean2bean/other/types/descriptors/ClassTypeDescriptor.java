@@ -74,6 +74,11 @@ public class ClassTypeDescriptor extends GeneralTypeDescriptor {
     return Optional.of(aClass);
   }
 
+  @Override
+  public Optional<Class> getAssignableClass() {
+    return Optional.of(aClass);
+  }
+
   private boolean isNonInstantiable() {
     return aClass.isInterface()
       || aClass.isPrimitive()
@@ -81,4 +86,6 @@ public class ClassTypeDescriptor extends GeneralTypeDescriptor {
       || aClass.isAnnotation()
       || Modifier.isAbstract(aClass.getModifiers());
   }
+
+
 }

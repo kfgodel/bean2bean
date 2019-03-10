@@ -6,7 +6,6 @@ import info.kfgodel.bean2bean.core.api.registry.DomainVector;
 import info.kfgodel.bean2bean.other.types.descriptors.JavaTypeDescriptor;
 
 import java.lang.reflect.Array;
-import java.lang.reflect.Type;
 import java.util.Optional;
 import java.util.function.BiFunction;
 
@@ -24,11 +23,10 @@ public class ArrayInstantiator implements BiFunction<Integer, Bean2beanTask, Obj
   }
 
   private Class deduceElementTypeFrom(Bean2beanTask task) {
-    Type expectedType = task.getTargetType();
-    JavaTypeDescriptor descriptor = JavaTypeDescriptor.createFor(expectedType);
+    JavaTypeDescriptor descriptor = task.getTargetTypeDescriptor();
     Optional<Class> componentType  = descriptor.getComponentType();
     return componentType
-      .orElseThrow(()-> new CreationException("Can't instantiate array for non array type: " + expectedType, expectedType));
+      .orElseThrow(()-> new CreationException("Can't instantiate array for non array type: " + task.getTargetType(), task.getTargetType()));
   }
 
   public static ArrayInstantiator create() {
