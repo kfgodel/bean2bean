@@ -29,6 +29,7 @@ public class NamedDomain implements Domain {
   @Override
   public Optional<Domain> getUnparameterized() {
     return getHierarchy()
+      .filter(domain -> domain.getName().contains(".")) // This is a quick solution that may need to be questioned
       .filter(domain -> !domain.isParameterized())
       .findFirst();
   }

@@ -20,6 +20,11 @@ public class TypeVariableDescriptor extends GeneralTypeDescriptor {
   private TypeVariable typeVariable;
 
   @Override
+  public Type getType() {
+    return typeVariable;
+  }
+
+  @Override
   public Optional<Class> getAssignableClass() {
     Type[] upperBounds = typeVariable.getBounds();
     return calculateAssignableClassFromUpperBounds(upperBounds, getType());

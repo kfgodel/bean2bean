@@ -1,5 +1,6 @@
 package info.kfgodel.bean2bean.other.types.descriptors;
 
+import java.lang.reflect.Type;
 import java.lang.reflect.WildcardType;
 import java.util.Optional;
 
@@ -12,6 +13,11 @@ import java.util.Optional;
 public class WildcardTypeDescriptor extends GeneralTypeDescriptor {
 
   private WildcardType wildcardType;
+
+  @Override
+  public Type getType() {
+    return wildcardType;
+  }
 
   @Override
   public Optional<Class> getAssignableClass() {
