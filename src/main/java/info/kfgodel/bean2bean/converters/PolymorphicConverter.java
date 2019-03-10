@@ -2,9 +2,12 @@ package info.kfgodel.bean2bean.converters;
 
 import info.kfgodel.bean2bean.core.api.Bean2beanTask;
 import info.kfgodel.bean2bean.core.api.exceptions.ConversionException;
+import info.kfgodel.bean2bean.core.api.registry.Domain;
+import info.kfgodel.bean2bean.core.api.registry.DomainVector;
 import info.kfgodel.bean2bean.other.types.descriptors.JavaTypeDescriptor;
 
 import java.lang.reflect.Type;
+import java.util.Optional;
 import java.util.function.BiFunction;
 
 /**
@@ -52,4 +55,21 @@ public class PolymorphicConverter implements BiFunction<Object, Bean2beanTask, O
     return converter;
   }
 
+  public static boolean shouldBeUsed(DomainVector domainVector) {
+    Domain targetDomain = domainVector.getTarget();
+    Domain sourceDomain = domainVector.getSource();
+    boolean sourceIsASubDomain = sourceDomain.isIncludedIn(targetDomain);
+    if(sourceIsASubDomain){
+      return true;
+    }
+    // For parameterized types, target domain may be too specific to match runtime source domains because it contains type parameters
+    // we remove the parameters to see if we can find a runtime type match
+    Optional<Domain> unparameterizedTarget = targetDomain.getUnparameterized();
+    if(!unparameterizedTarget.isPresent() || targetDomain.equals(unparameterizedTarget.get())){
+      // There's no way to find a match or the unparameterized is already the target
+      return false;
+    }
+    Domain targetDomainWithoutParameters = unparameterizedTarget.get();
+    return sourceDomain.isIncludedIn(targetDomainWithoutParameters);
+  }
 }

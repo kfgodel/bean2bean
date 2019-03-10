@@ -3,6 +3,7 @@ package info.kfgodel.bean2bean.core.impl.registry.domains;
 import info.kfgodel.bean2bean.core.api.registry.Domain;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -23,6 +24,23 @@ public class NamedDomain implements Domain {
   @Override
   public Stream<Domain> getHierarchy() {
     return hierarchyGenerator.get();
+  }
+
+  @Override
+  public Optional<Domain> getUnparameterized() {
+    return getHierarchy()
+      .filter(domain -> !domain.isParameterized())
+      .findFirst();
+  }
+
+  @Override
+  public boolean isParameterized() {
+    return this.getName().contains("<") && this.getName().contains(">");
+  }
+
+  @Override
+  public boolean isIncludedIn(Domain otherDomain) {
+    return getHierarchy().anyMatch(otherDomain::equals);
   }
 
   @Override
