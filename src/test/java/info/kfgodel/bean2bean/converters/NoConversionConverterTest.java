@@ -46,6 +46,11 @@ public class NoConversionConverterTest extends JavaSpec<ConverterTestContext> {
           assertThat(e).hasMessage("Source 1{java.lang.String} is not assignable to target type[class java.lang.Integer]");
         });
 
+        it("returns null when null is used as source regardless of the target type",()->{
+          String result = test().dsl().convert().from(null).to(String.class);
+          assertThat(result).isNull();
+        });
+
         it("returns the source object when a parameterized but assignable type is expected",()->{
           ArrayList<String> source = new ArrayList<>();
           List<String> result = test().dsl().convert().from(source).to(new TypeRef<List<String>>() {});
@@ -101,6 +106,11 @@ public class NoConversionConverterTest extends JavaSpec<ConverterTestContext> {
           test().dsl().convert().from("1").to(Integer.class);
         }, e->{
           assertThat(e).hasMessage("No converter found from 1{java.lang.String} to {java.lang.Integer}");
+        });
+
+        it("returns null when null is used as source regardless of the target type",()->{
+          String result = test().dsl().convert().from(null).to(String.class);
+          assertThat(result).isNull();
         });
 
         it("returns the source object when a parameterized but assignable type is expected",()->{

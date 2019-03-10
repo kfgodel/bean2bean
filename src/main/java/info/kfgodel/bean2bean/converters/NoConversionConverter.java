@@ -20,7 +20,7 @@ public class NoConversionConverter implements BiFunction<Object, Bean2beanTask, 
   @Override
   public Object apply(Object source, Bean2beanTask task) {
     Class assignableClass = deduceAssignableClassFor(task, source);
-    if(!assignableClass.isInstance(source)){
+    if(!assignableClass.isInstance(source) && source != null){
       throw new ConversionException("Source " + source + "{" + getClassNameOf(source) + "} is not assignable to target " +
         describeTarget(task, assignableClass),task);
     }
