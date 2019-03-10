@@ -2,6 +2,7 @@ package info.kfgodel.bean2bean.core.api;
 
 import info.kfgodel.bean2bean.core.api.registry.DomainVector;
 import info.kfgodel.bean2bean.dsl.api.B2bDsl;
+import info.kfgodel.bean2bean.other.types.descriptors.JavaTypeDescriptor;
 
 import java.lang.reflect.Type;
 
@@ -28,6 +29,14 @@ public interface Bean2beanTask {
    */
   Type getTargetType();
 
+  /**
+   * Returns a type descriptor that has more method to interact with the target type
+   * than the built-in {@link Type}
+   * @return The type descriptor for the target type
+   */
+  default JavaTypeDescriptor getTargetTypeDescriptor(){
+    return JavaTypeDescriptor.createFor(getTargetType());
+  }
 
   /**
    * Returns the dsl instance that is contextual to this task and can be used for nesting tasks

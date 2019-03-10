@@ -84,8 +84,46 @@ public class SupertypeSpliteratorTest<E> extends JavaSpec<TypeRefTestContext> {
             ));
           });
         });
+
+        describe("given an unbound type variable", () -> {
+          test().type(this::getUnboundTypeVariable);
+
+          it("allows access to its super type hierarchy including type arguments only for initial type",()->{
+            assertThat(test().supertypes()).isEqualTo(Lists.newArrayList(
+              "E",
+              "java.lang.Object"
+            ));
+          });
+        });
+
+        describe("given a multi bonded type variable", () -> {
+          test().type(this::getMultiUpperBondedTypeVariable);
+
+          it("allows access to its super type hierarchy including type arguments only for initial type",()->{
+            assertThat(test().supertypes()).isEqualTo(Lists.newArrayList(
+              "E",
+              "java.lang.String",
+              "java.lang.Iterable",
+              "java.io.Serializable",
+              "java.lang.Comparable<java.lang.String>",
+              "java.lang.CharSequence",
+              "java.lang.Comparable",
+              "java.lang.Object"
+            ));
+          });
+        });
+
+
       });
 
     });
+  }
+
+  private <E> Type getUnboundTypeVariable() {
+    return new TypeRef<E>() {}.getReference();
+  }
+
+  private <E extends String & Iterable> Type getMultiUpperBondedTypeVariable() {
+    return new TypeRef<E>() {}.getReference();
   }
 }
