@@ -16,7 +16,7 @@ import java.util.function.BiFunction;
  *
  * Date: 09/03/19 - 12:25
  */
-public class PolymorphicConverter implements BiFunction<Object, Bean2beanTask, Object> {
+public class NoConversionConverter implements BiFunction<Object, Bean2beanTask, Object> {
   @Override
   public Object apply(Object source, Bean2beanTask task) {
     Class assignableClass = deduceAssignableClassFor(task, source);
@@ -50,8 +50,8 @@ public class PolymorphicConverter implements BiFunction<Object, Bean2beanTask, O
       .orElseThrow(() -> new ConversionException("Cannot determine if target type[" + task.getTargetType() + "] is safely assingable from source[" + source + "]: Can't find class for target type", task));
   }
 
-  public static PolymorphicConverter create() {
-    PolymorphicConverter converter = new PolymorphicConverter();
+  public static NoConversionConverter create() {
+    NoConversionConverter converter = new NoConversionConverter();
     return converter;
   }
 

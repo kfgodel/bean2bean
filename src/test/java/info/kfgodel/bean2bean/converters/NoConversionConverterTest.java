@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Date: 09/03/19 - 12:26
  */
 @RunWith(JavaSpecRunner.class)
-public class PolymorphicConverterTest extends JavaSpec<ConverterTestContext> {
+public class NoConversionConverterTest extends JavaSpec<ConverterTestContext> {
   @Override
   public void define() {
     describe("a polymorphic converter", () -> {
@@ -25,7 +25,7 @@ public class PolymorphicConverterTest extends JavaSpec<ConverterTestContext> {
 
       describe("scoped by domain vector", () -> {
         beforeEach(()->{
-          test().dsl().configure().useConverter(PolymorphicConverter.create());
+          test().dsl().configure().useConverter(NoConversionConverter.create());
         });
 
         it("returns the source object when a target of the same type is expected", () -> {
@@ -82,7 +82,7 @@ public class PolymorphicConverterTest extends JavaSpec<ConverterTestContext> {
 
       describe("scoped by predicate", () -> {
         beforeEach(()->{
-          test().dsl().configure().scopingWith(PolymorphicConverter::shouldBeUsed).useConverter(PolymorphicConverter.create());
+          test().dsl().configure().scopingWith(NoConversionConverter::shouldBeUsed).useConverter(NoConversionConverter.create());
         });
 
         it("returns the source object when a target of the same type is expected", () -> {
