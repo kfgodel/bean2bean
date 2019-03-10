@@ -2,6 +2,7 @@ package info.kfgodel.bean2bean.core.impl.registry.domains;
 
 import info.kfgodel.bean2bean.core.api.registry.Domain;
 
+import javax.lang.model.type.NullType;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -41,6 +42,10 @@ public class NamedDomain implements Domain {
 
   @Override
   public boolean isIncludedIn(Domain otherDomain) {
+    if(getName().contains(NullType.class.getTypeName())){
+      // This reflects the language decision of including null as a subtype of every other type
+      return true;
+    }
     return getHierarchy().anyMatch(otherDomain::equals);
   }
 
