@@ -113,6 +113,19 @@ public class SupertypeSpliteratorTest<E> extends JavaSpec<TypeRefTestContext> {
           });
         });
 
+        describe("given a parameterized generic array", () -> {
+          test().type(this::getParameterizedArray);
+
+          it("allows access to its super type hierarchy including type arguments only for initial type",()->{
+            assertThat(test().supertypes()).isEqualTo(Lists.newArrayList(
+              "java.util.List<java.lang.String>[]",
+              "java.util.List[]",
+              "java.lang.Cloneable",
+              "java.io.Serializable",
+              "java.lang.Object"
+            ));
+          });
+        });
 
       });
 
@@ -126,4 +139,9 @@ public class SupertypeSpliteratorTest<E> extends JavaSpec<TypeRefTestContext> {
   private <E extends String & Iterable> Type getMultiUpperBondedTypeVariable() {
     return new TypeRef<E>() {}.getReference();
   }
+
+  private Type getParameterizedArray() {
+    return new TypeRef<List<String>[]>() {}.getReference();
+  }
+
 }

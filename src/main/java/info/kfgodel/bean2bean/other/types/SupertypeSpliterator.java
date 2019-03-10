@@ -1,8 +1,10 @@
 package info.kfgodel.bean2bean.other.types;
 
+import info.kfgodel.bean2bean.other.types.descriptors.JavaTypeDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
@@ -10,6 +12,7 @@ import java.lang.reflect.WildcardType;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Optional;
 import java.util.Queue;
 import java.util.Set;
 import java.util.Spliterator;
@@ -83,6 +86,8 @@ public class SupertypeSpliterator implements Spliterator<Type> {
       enqueueSupertypesOf((TypeVariable)visitedType);
     }else if(visitedType instanceof WildcardType){
       enqueueSupertypesOf((WildcardType)visitedType);
+    }else if(visitedType instanceof GenericArrayType){
+      enqueueSupertypesOf((GenericArrayType)visitedType);
     }else{
       // For the rest of types we don't have a way to explore supertypes (yet)
       LOG.warn("No known methods for obtaining the supertypes of: {}", visitedType);
@@ -101,6 +106,12 @@ public class SupertypeSpliterator implements Spliterator<Type> {
   private void enqueueSupertypesOf(WildcardType visitedType){
     Arrays.stream(visitedType.getUpperBounds())
       .forEach(this::enqueue);
+
+  }
+  private void enqueueSupertypesOf(GenericArrayType visitedType){
+    Optional<Class> assignableClass = JavaTypeDescriptor.createFor(visitedType)
+      .getAssignableClass();
+    assignableClass.ifPresent(this::enqueue);
   }
 
   private void enqueueSupertypesOf(Class visitedClass){
