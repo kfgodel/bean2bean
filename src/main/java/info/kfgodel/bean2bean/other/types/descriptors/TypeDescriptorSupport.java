@@ -47,7 +47,7 @@ public abstract class TypeDescriptorSupport implements JavaTypeDescriptor {
 
   @Override
   public Optional<Class> getInstantiableClass() {
-    return Optional.empty();
+    return getAssignableClass();
   }
 
   @Override
