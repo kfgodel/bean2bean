@@ -4,7 +4,6 @@ import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
 import info.kfgodel.bean2bean.core.api.exceptions.ConversionException;
 import info.kfgodel.bean2bean.dsl.impl.Dsl;
-import info.kfgodel.bean2bean.other.references.FunctionRef;
 import info.kfgodel.bean2bean.other.references.TypeRef;
 import org.junit.runner.RunWith;
 
@@ -34,80 +33,77 @@ public class OptionalConvertersTest extends JavaSpec<ConverterTestContext> {
           assertThat(result).isNull();
         });
 
-        it("returns the contained element if it's not empty",()->{
-          String result = test().dsl().convert().from(Optional.of("hola")).to(String.class);
-          assertThat(result).isEqualTo("hola");
+        itThrows(ConversionException.class, "when there's no converter for the contained element to the target type",()->{
+          test().dsl().convert().from(Optional.of("hola")).to(String.class);
+        }, e->{
+          assertThat(e).hasMessage("No converter found from hola{java.lang.String} to {java.lang.String}");
         });
 
-        it("allows using a supertype as target for a contained element",()->{
-          Object result = test().dsl().convert().from(Optional.of("hola")).to(Object.class);
-          assertThat(result).isEqualTo("hola");
-        });
-
-        itThrows(ConversionException.class, "if the target type doesn't match the contained type and there's no converter", ()->{
-          test().dsl().convert().from(Optional.of("2")).to(Integer.class);
-        }, e -> {
-          assertThat(e).hasMessage("No converter found from 2{java.lang.String} to {java.lang.Integer}");
-        });
-
-        describe("when there's a proper converter for the contained type", () -> {
+        describe("when a converter for the contained element to the target type is registered", () -> {
           beforeEach(()->{
-            test().dsl().configure().scopingTo().implicitTypes()
-              .useConverter(new FunctionRef<String, Integer>(Integer::parseInt) {});
+            test().dsl().configure().scopingWith(NoConversionConverter::shouldBeUsed).useConverter(NoConversionConverter.create());
           });
 
-          it("returns the contained element converted to the expected type",()->{
-            Integer result = test().dsl().convert().from(Optional.of("2")).to(Integer.class);
-            assertThat(result).isEqualTo(2);
+          it("returns the contained element if it's not empty",()->{
+            String result = test().dsl().convert().from(Optional.of("hola")).to(String.class);
+            assertThat(result).isEqualTo("hola");
           });
 
+          it("allows using a supertype as target for a contained element",()->{
+            Object result = test().dsl().convert().from(Optional.of("hola")).to(Object.class);
+            assertThat(result).isEqualTo("hola");
+          });
+
+          itThrows(ConversionException.class, "if the target type doesn't match the contained type and there's no converter", ()->{
+            test().dsl().convert().from(Optional.of("2")).to(Integer.class);
+          }, e -> {
+            assertThat(e).hasMessage("No converter found from 2{java.lang.String} to {java.lang.Integer}");
+          });
         });
 
       });
 
       describe("when converting to an optional", () -> {
 
-        it("returns empty if null is used as source",()->{
-          Optional<Object> result = test().dsl().convert().from(null).to(new TypeRef<Optional<Object>>() {});
-          assertThat(result).isEmpty();
+        itThrows(ConversionException.class, "when there's no converter for the contained type",()->{
+          test().dsl().convert().from("chau").to(new TypeRef<Optional<String>>() {});
+        }, e->{
+          assertThat(e).hasMessage("No converter found from chau{java.lang.String} to {java.lang.String}");
         });
 
-        it("returns the optional element if source is not null",()->{
-          Optional<String> result = test().dsl().convert().from("chau").to(new TypeRef<Optional<String>>() {});
-          assertThat(result).contains("chau");
-        });
-
-        it("allows using a supertype as the contained type",()->{
-          Optional<Object> result = test().dsl().convert().from("chau").to(new TypeRef<Optional<Object>>() {});
-          assertThat(result).contains("chau");
-        });
-
-        it("uses Object as the contained type if non is specified",()->{
-          Optional result = test().dsl().convert().from(12.0).to(Optional.class);
-          assertThat(result).contains(12.0);
-        });
-
-        itThrows(ConversionException.class, "if the expected contained type doesn't match the source type and there's no converter", ()->{
-          test().dsl().convert().from("3").to(new TypeRef<Optional<Integer>>() {});
-        }, e -> {
-          assertThat(e).hasMessage("No converter found from 3{java.lang.String} to {java.lang.Integer}");
-        });
-
-        describe("when there's a proper converter for the contained type", () -> {
+        describe("when a converter is registered for the contained type", () -> {
           beforeEach(()->{
-            test().dsl().configure().scopingTo().implicitTypes()
-              .useConverter(new FunctionRef<String, Integer>(Integer::parseInt) {});
+            test().dsl().configure().scopingWith(NoConversionConverter::shouldBeUsed).useConverter(NoConversionConverter.create());
           });
 
-          it("returns the contained element converted to the expected type",()->{
-            Optional<Integer> result = test().dsl().convert().from("3").to(new TypeRef<Optional<Integer>>() {});
-            assertThat(result).contains(3);
+          it("returns empty if null is used as source",()->{
+            Optional<Object> result = test().dsl().convert().from(null).to(new TypeRef<Optional<Object>>() {});
+            assertThat(result).isEmpty();
           });
 
+          it("returns the optional element if source is not null",()->{
+            Optional<String> result = test().dsl().convert().from("chau").to(new TypeRef<Optional<String>>() {});
+            assertThat(result).contains("chau");
+          });
+
+          it("allows using a supertype as the contained type",()->{
+            Optional<Object> result = test().dsl().convert().from("chau").to(new TypeRef<Optional<Object>>() {});
+            assertThat(result).contains("chau");
+          });
+
+          it("uses Object as the contained type if non is specified",()->{
+            Optional result = test().dsl().convert().from(12.0).to(Optional.class);
+            assertThat(result).contains(12.0);
+          });
+
+          itThrows(ConversionException.class, "if the expected contained type doesn't match the source type and there's no converter", ()->{
+            test().dsl().convert().from("3").to(new TypeRef<Optional<Integer>>() {});
+          }, e -> {
+            assertThat(e).hasMessage("No converter found from 3{java.lang.String} to {java.lang.Integer}");
+          });
         });
 
       });
-
     });
   }
 }
