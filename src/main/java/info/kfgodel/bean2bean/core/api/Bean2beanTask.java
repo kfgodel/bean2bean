@@ -44,4 +44,15 @@ public interface Bean2beanTask {
    */
   B2bDsl getDsl();
 
+  /**
+   * Provides a simple string representation of the source object to be used on messages
+   * @return A standard representation of the source
+   */
+  String describeSource();
+
+  /**
+   * Provides a simple string representation of the target type to be used on messages
+   * @return A standard representation of the target type
+   */
+  String describeTarget();
 }

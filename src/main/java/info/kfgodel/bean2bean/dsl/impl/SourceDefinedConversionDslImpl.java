@@ -54,7 +54,7 @@ public class SourceDefinedConversionDslImpl<I> implements SourceDefinedConversio
 
   private ObjectConversion createConversionTo(Type targetType, Domain targetDomain) {
     DomainVector conversionVector = DomainVector.create(sourceDomain, targetDomain);
-    return ObjectConversion.create(this.value, targetType, conversionVector, getDsl());
+    return ObjectConversion.create(this.value, targetType, conversionVector, getCore());
   }
 
   private B2bDsl getDsl() {

@@ -7,6 +7,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
+import java.util.Arrays;
 import java.util.stream.Collectors;
 
 /**
@@ -17,11 +18,39 @@ import java.util.stream.Collectors;
 public class ObjectDescriptor {
 
   public String describeInstance(Object instance){
+    if(instance == null){
+      // We need to cover this special case first so the rest of the code can assume not null
+      return "null";
+    }
+    if(instance.getClass().isArray()){
+      return describeArray(instance);
+    }
     String basicDescription = String.valueOf(instance);
     if (instance instanceof String) {
       return "\"" + basicDescription + "\"";
     }
     return basicDescription;
+  }
+
+  private String describeArray(Object instance) {
+    if(instance instanceof long[]){
+      return Arrays.toString((long[])instance);
+    } else if(instance instanceof int[]){
+      return Arrays.toString((int[])instance);
+    } else if(instance instanceof short[]){
+      return Arrays.toString((short[])instance);
+    } else if(instance instanceof char[]){
+      return Arrays.toString((char[])instance);
+    } else if(instance instanceof byte[]){
+      return Arrays.toString((byte[])instance);
+    } else if(instance instanceof boolean[]){
+      return Arrays.toString((boolean[])instance);
+    } else if(instance instanceof float[]){
+      return Arrays.toString((float[])instance);
+    } else if(instance instanceof double[]){
+      return Arrays.toString((double[])instance);
+    }
+    return Arrays.toString((Object[])instance);
   }
 
   public String describeType(Type targetType) {

@@ -39,8 +39,7 @@ public class Collection2CollectionConverter implements BiFunction<Collection, Be
     Type targetType = task.getTargetType();
     Object created = task.getDsl().generate().anInstanceOf(targetType);
     if (!(created instanceof Collection)) {
-      ObjectDescriptor objectDescriptor = ObjectDescriptor.create();
-      String typeDescription = objectDescriptor.describeType(created.getClass());
+      String typeDescription = ObjectDescriptor.create().describeType(created.getClass());
       throw new CreationException("Created instance of type["+ typeDescription +"] can't be used as target collection", targetType);
     }
     return (Collection) created;

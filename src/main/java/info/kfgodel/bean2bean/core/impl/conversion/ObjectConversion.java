@@ -1,8 +1,12 @@
 package info.kfgodel.bean2bean.core.impl.conversion;
 
+import info.kfgodel.bean2bean.core.api.Bean2bean;
 import info.kfgodel.bean2bean.core.api.Bean2beanTask;
 import info.kfgodel.bean2bean.core.api.registry.DomainVector;
+import info.kfgodel.bean2bean.core.impl.descriptor.ObjectDescriptor;
+import info.kfgodel.bean2bean.core.impl.nesting.NestedBean2bean;
 import info.kfgodel.bean2bean.dsl.api.B2bDsl;
+import info.kfgodel.bean2bean.dsl.impl.Dsl;
 
 import java.lang.reflect.Type;
 
@@ -17,13 +21,13 @@ public class ObjectConversion implements Bean2beanTask {
   private Object source;
   private Type targetType;
   private DomainVector conversionVector;
-  private B2bDsl dsl;
+  private Bean2bean core;
 
-  public static ObjectConversion create(Object source, Type targetType, DomainVector conversionVector, B2bDsl dsl) {
+  public static ObjectConversion create(Object source, Type targetType, DomainVector conversionVector, Bean2bean core) {
     ObjectConversion conversion = new ObjectConversion();
     conversion.source = source;
     conversion.conversionVector = conversionVector;
-    conversion.dsl = dsl;
+    conversion.core = core;
     conversion.targetType = targetType;
     return conversion;
   }
@@ -40,7 +44,20 @@ public class ObjectConversion implements Bean2beanTask {
 
   @Override
   public B2bDsl getDsl() {
-    return dsl;
+    NestedBean2bean nestedCore = NestedBean2bean.create(core, this);
+    return Dsl.createFor(nestedCore);
+  }
+
+  @Override
+  public String describeSource() {
+    ObjectDescriptor descriptor = ObjectDescriptor.create();
+    return descriptor.describeSource(this.getSource(), this.getConversionVector().getSource());
+  }
+
+  @Override
+  public String describeTarget() {
+    ObjectDescriptor descriptor = ObjectDescriptor.create();
+    return descriptor.describeTarget(this.getTargetType(), this.getConversionVector().getTarget());
   }
 
   @Override
