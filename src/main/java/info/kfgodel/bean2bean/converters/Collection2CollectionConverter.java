@@ -22,7 +22,7 @@ public class Collection2CollectionConverter implements BiFunction<Collection, Be
     Collection targetCollection = createTargetCollectionFor(task);
     Type expectedElementType = deduceExpectedElementTypeFor(task);
     for (Object sourceElement : sourceCollection) {
-      Object targetElement = task.getDsl().convert().from(sourceElement).to(expectedElementType);
+      Object targetElement = task.nestConversionFrom(sourceElement, expectedElementType);
       targetCollection.add(targetElement);
     }
     return targetCollection;
@@ -39,8 +39,7 @@ public class Collection2CollectionConverter implements BiFunction<Collection, Be
     Type targetType = task.getTargetType();
     Object created = task.getDsl().generate().anInstanceOf(targetType);
     if (!(created instanceof Collection)) {
-      ObjectDescriptor objectDescriptor = ObjectDescriptor.create();
-      String typeDescription = objectDescriptor.describeType(created.getClass());
+      String typeDescription = ObjectDescriptor.create().describeType(created.getClass());
       throw new CreationException("Created instance of type["+ typeDescription +"] can't be used as target collection", targetType);
     }
     return (Collection) created;

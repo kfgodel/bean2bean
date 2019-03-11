@@ -62,7 +62,8 @@ public class Collection2CollectionConverterTest extends JavaSpec<ConverterTestCo
         itThrows(ConversionException.class, "if no element converter is registered", () -> {
           test().dsl().convert().from(listWith12And2()).to(setOfStrings());
         }, e -> {
-          assertThat(e).hasMessage("No converter found from 1 ∈ {java.lang.Integer} to {java.lang.String}");
+          assertThat(e).hasMessage("Failed conversion from [1, 2, 2] ∈ {java.util.ArrayList} to {java.util.Set<java.lang.String>}\n" +
+            "\tdue to: No converter found from 1 ∈ {java.lang.Integer} to {java.lang.String}");
         });
 
         describe("when the correct element converter is registered", () -> {
@@ -79,7 +80,8 @@ public class Collection2CollectionConverterTest extends JavaSpec<ConverterTestCo
           itThrows(ConversionException.class, "if a different element converter is needed", () -> {
             test().dsl().convert().from(listWith12And2()).to(setOfNumber());
           }, e -> {
-            assertThat(e).hasMessage("No converter found from 1 ∈ {java.lang.Integer} to {java.lang.Number}");
+            assertThat(e).hasMessage("Failed conversion from [1, 2, 2] ∈ {java.util.ArrayList} to {java.util.Set<java.lang.Number>}\n" +
+              "\tdue to: No converter found from 1 ∈ {java.lang.Integer} to {java.lang.Number}");
           });
         });
 

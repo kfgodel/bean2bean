@@ -3,7 +3,6 @@ package info.kfgodel.bean2bean.converters;
 import info.kfgodel.bean2bean.core.api.Bean2beanTask;
 import info.kfgodel.bean2bean.core.api.exceptions.ConversionException;
 import info.kfgodel.bean2bean.core.api.registry.DomainVector;
-import info.kfgodel.bean2bean.core.impl.descriptor.ObjectDescriptor;
 
 import java.lang.reflect.Array;
 import java.util.function.BiFunction;
@@ -24,7 +23,7 @@ public class Array2ArrayConverter implements BiFunction<Object, Bean2beanTask, O
 
     for (int i = 0; i < sourceSize; i++) {
       Object sourceElement = Array.get(source, i);
-      Object targetElement = task.getDsl().convert().from(sourceElement).to(expectedElementType);
+      Object targetElement = task.nestConversionFrom(sourceElement, expectedElementType);
       Array.set(created, i, targetElement);
     }
     return created;
@@ -40,8 +39,7 @@ public class Array2ArrayConverter implements BiFunction<Object, Bean2beanTask, O
     } catch (NullPointerException e) {
       throw new ConversionException("Source is not an array: null", task, e);
     } catch (IllegalArgumentException e) {
-      String sourceDescription = ObjectDescriptor.create().describeSource(source, task.getConversionVector().getSource());
-      throw new ConversionException("Source is not an array: " + sourceDescription, task, e);
+      throw new ConversionException("Source is not an array: " + task.describeSource(), task, e);
     }
   }
 

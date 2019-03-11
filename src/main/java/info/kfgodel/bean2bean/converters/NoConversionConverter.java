@@ -4,7 +4,6 @@ import info.kfgodel.bean2bean.core.api.Bean2beanTask;
 import info.kfgodel.bean2bean.core.api.exceptions.ConversionException;
 import info.kfgodel.bean2bean.core.api.registry.Domain;
 import info.kfgodel.bean2bean.core.api.registry.DomainVector;
-import info.kfgodel.bean2bean.core.impl.descriptor.ObjectDescriptor;
 import info.kfgodel.bean2bean.other.types.descriptors.JavaTypeDescriptor;
 
 import java.util.Optional;
@@ -31,10 +30,7 @@ public class NoConversionConverter implements BiFunction<Object, Bean2beanTask, 
   }
 
   private ConversionException unassignableException(Bean2beanTask task) {
-    ObjectDescriptor objectDescriptor = ObjectDescriptor.create();
-    String sourceDescription = objectDescriptor.describeSource(task.getSource(), task.getConversionVector().getSource());
-    String targetDescription = objectDescriptor.describeTarget(task.getTargetType(), task.getConversionVector().getTarget());
-    return new ConversionException("Source " + sourceDescription + " is not assignable to " + targetDescription, task);
+    return new ConversionException("Source " + task.describeSource() + " is not assignable to " + task.describeTarget(), task);
   }
 
   private Class deduceAssignableClassFor(Bean2beanTask task, Object source) {

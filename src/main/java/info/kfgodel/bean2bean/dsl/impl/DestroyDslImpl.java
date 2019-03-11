@@ -21,7 +21,8 @@ public class DestroyDslImpl implements DestroyDsl {
       b2bDsl.convert().from(anObject).to(Nothing.class);
       return this;
     } catch (ConversionException e) {
-      throw new DestructionException("Destruction of "+ ObjectDescriptor.create().describeInstance(anObject) + " failed: " + e.getMessage(),anObject,e);
+      String objectDescription = ObjectDescriptor.create().describeInstance(anObject);
+      throw new DestructionException("Destruction of "+ objectDescription + " failed: " + e.getMessage(),anObject,e);
     }
   }
 

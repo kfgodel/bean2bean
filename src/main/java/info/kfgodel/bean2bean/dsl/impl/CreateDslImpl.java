@@ -29,7 +29,8 @@ public class CreateDslImpl implements CreateDsl {
     try {
       return dsl.convert().from(Nothing.INSTANCE).to(expectedType);
     } catch (ConversionException e) {
-      throw new CreationException("Creation of " + ObjectDescriptor.create().describeType(expectedType) + " failed: " + e.getMessage(), expectedType ,e);
+      String typeDescription = ObjectDescriptor.create().describeType(expectedType);
+      throw new CreationException("Creation of " + typeDescription + " failed: " + e.getMessage(), expectedType ,e);
     }
   }
 

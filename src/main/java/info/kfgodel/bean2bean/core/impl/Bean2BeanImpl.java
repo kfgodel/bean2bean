@@ -6,7 +6,6 @@ import info.kfgodel.bean2bean.core.api.Bean2beanTask;
 import info.kfgodel.bean2bean.core.api.exceptions.ConversionException;
 import info.kfgodel.bean2bean.core.api.registry.Bean2BeanRegistry;
 import info.kfgodel.bean2bean.core.api.registry.DomainVector;
-import info.kfgodel.bean2bean.core.impl.descriptor.ObjectDescriptor;
 
 import java.util.Optional;
 import java.util.function.Function;
@@ -37,19 +36,7 @@ public class Bean2BeanImpl implements Bean2bean {
   }
 
   public ConversionException exceptionForMissingConverter(Bean2beanTask task) {
-    String describeSource = describeSource(task);
-    String describedTarget = describeTarget(task);
-    return new ConversionException("No converter found from " + describeSource +" to " + describedTarget, task);
-  }
-
-  private String describeTarget(Bean2beanTask task) {
-    ObjectDescriptor descriptor = ObjectDescriptor.create();
-    return descriptor.describeTarget(task.getTargetType(), task.getConversionVector().getTarget());
-  }
-
-  private String describeSource(Bean2beanTask task) {
-    ObjectDescriptor descriptor = ObjectDescriptor.create();
-    return descriptor.describeSource(task.getSource(), task.getConversionVector().getSource());
+    return new ConversionException("No converter found from " + task.describeSource() +" to " + task.describeTarget(), task);
   }
 
   @Override

@@ -36,7 +36,8 @@ public class OptionalConvertersTest extends JavaSpec<ConverterTestContext> {
         itThrows(ConversionException.class, "when there's no converter for the contained element to the target type",()->{
           test().dsl().convert().from(Optional.of("hola")).to(String.class);
         }, e->{
-          assertThat(e).hasMessage("No converter found from \"hola\" ∈ {java.lang.String} to {java.lang.String}");
+          assertThat(e).hasMessage("Failed conversion from Optional[hola] ∈ {java.util.Optional} to {java.lang.String}\n" +
+            "\tdue to: No converter found from \"hola\" ∈ {java.lang.String} to {java.lang.String}");
         });
 
         describe("when a converter for the contained element to the target type is registered", () -> {
@@ -57,7 +58,8 @@ public class OptionalConvertersTest extends JavaSpec<ConverterTestContext> {
           itThrows(ConversionException.class, "if the target type doesn't match the contained type and there's no converter", ()->{
             test().dsl().convert().from(Optional.of("2")).to(Integer.class);
           }, e -> {
-            assertThat(e).hasMessage("No converter found from \"2\" ∈ {java.lang.String} to {java.lang.Integer}");
+            assertThat(e).hasMessage("Failed conversion from Optional[2] ∈ {java.util.Optional} to {java.lang.Integer}\n" +
+              "\tdue to: No converter found from \"2\" ∈ {java.lang.String} to {java.lang.Integer}");
           });
         });
 
@@ -68,7 +70,8 @@ public class OptionalConvertersTest extends JavaSpec<ConverterTestContext> {
         itThrows(ConversionException.class, "when there's no converter for the contained type",()->{
           test().dsl().convert().from("chau").to(new TypeRef<Optional<String>>() {});
         }, e->{
-          assertThat(e).hasMessage("No converter found from \"chau\" ∈ {java.lang.String} to {java.lang.String}");
+          assertThat(e).hasMessage("Failed conversion from \"chau\" ∈ {java.lang.String} to {java.util.Optional<java.lang.String>}\n" +
+            "\tdue to: No converter found from \"chau\" ∈ {java.lang.String} to {java.lang.String}");
         });
 
         describe("when a converter is registered for the contained type", () -> {
@@ -99,7 +102,8 @@ public class OptionalConvertersTest extends JavaSpec<ConverterTestContext> {
           itThrows(ConversionException.class, "if the expected contained type doesn't match the source type and there's no converter", ()->{
             test().dsl().convert().from("3").to(new TypeRef<Optional<Integer>>() {});
           }, e -> {
-            assertThat(e).hasMessage("No converter found from \"3\" ∈ {java.lang.String} to {java.lang.Integer}");
+            assertThat(e).hasMessage("Failed conversion from \"3\" ∈ {java.lang.String} to {java.util.Optional<java.lang.Integer>}\n" +
+              "\tdue to: No converter found from \"3\" ∈ {java.lang.String} to {java.lang.Integer}");
           });
         });
 
