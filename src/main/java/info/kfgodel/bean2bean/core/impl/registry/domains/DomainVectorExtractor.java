@@ -2,13 +2,13 @@ package info.kfgodel.bean2bean.core.impl.registry.domains;
 
 import info.kfgodel.bean2bean.core.api.registry.Domain;
 import info.kfgodel.bean2bean.core.api.registry.DomainVector;
+import info.kfgodel.bean2bean.dsl.api.Nothing;
 import info.kfgodel.bean2bean.other.references.BiFunctionRef;
 import info.kfgodel.bean2bean.other.references.ConsumerRef;
 import info.kfgodel.bean2bean.other.references.FunctionRef;
 import info.kfgodel.bean2bean.other.references.SupplierRef;
 import info.kfgodel.bean2bean.other.types.extraction.TypeArgumentExtractor;
 
-import javax.lang.model.type.NullType;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.function.BiFunction;
@@ -30,23 +30,24 @@ public class DomainVectorExtractor {
     Type inputType = typeExtractor.getArgumentUsedFor(Consumer.class, function.getClass())
       .orElse(Object.class);
     // Implicit null result
-    return createVectorFor(inputType, NullType.class);
+    return createVectorFor(inputType, Nothing.class);
   }
 
   public DomainVector extractFrom(ConsumerRef function) {
     Type inputType = function.getInputType();
-    return createVectorFor(inputType, NullType.class);
+    return createVectorFor(inputType, Nothing.class);
   }
 
   public DomainVector extractFrom(Supplier function) {
     Type outputType = typeExtractor.getArgumentUsedFor(Supplier.class, function.getClass())
       .orElse(Object.class);
     // null is implicit when supplier is thought as a function
-    return createVectorFor(NullType.class, outputType);
+    return createVectorFor(Nothing.class, outputType);
   }
 
   public DomainVector extractFrom(SupplierRef<?> converterFunction) {
-    return createVectorFor(NullType.class, converterFunction.getOutputType());
+    Type outputType = converterFunction.getOutputType();
+    return createVectorFor(Nothing.class, outputType);
   }
 
   public DomainVector extractFrom(Function function) {

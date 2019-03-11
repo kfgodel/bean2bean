@@ -2,8 +2,8 @@ package info.kfgodel.bean2bean.converters;
 
 import info.kfgodel.bean2bean.core.api.Bean2beanTask;
 import info.kfgodel.bean2bean.core.api.exceptions.CreationException;
+import info.kfgodel.bean2bean.dsl.api.Nothing;
 
-import javax.lang.model.type.NullType;
 import java.util.Optional;
 import java.util.function.BiFunction;
 
@@ -13,10 +13,10 @@ import java.util.function.BiFunction;
  *
  * Date: 05/03/19 - 22:09
  */
-public class GenericInstantiator implements BiFunction<NullType, Bean2beanTask, Object> {
+public class GenericInstantiator implements BiFunction<Nothing, Bean2beanTask, Object> {
 
   @Override
-  public Object apply(NullType nullType, Bean2beanTask task) {
+  public Object apply(Nothing noInput, Bean2beanTask task) {
     Optional<Class> instantiableClass = task.getTargetTypeDescriptor().getInstantiableClass();
     return instantiableClass
       .map(clase -> createInstanceFrom(clase, task))

@@ -12,7 +12,6 @@ import info.kfgodel.bean2bean.other.references.SupplierRef;
 import info.kfgodel.bean2bean.other.references.TypeRef;
 import org.junit.runner.RunWith;
 
-import javax.lang.model.type.NullType;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -42,12 +41,12 @@ public class ConverterRegistrationOptionsTest extends JavaSpec<B2bTestContext> {
 
         it("accepts a supplier as a converter",()->{
           test().configure().useConverter(() -> "a value");
-          assertThat(test().dsl().convert().from(null).to(Object.class)).isEqualTo("a value");
+          assertThat(test().dsl().convert().from(Nothing.INSTANCE).to(Object.class)).isEqualTo("a value");
         });
         it("accepts a consumer as a converter",()->{
           AtomicReference<String> converterArgument = new AtomicReference<>();
           test().configure().useConverter(converterArgument::set);
-          assertThat(test().dsl().convert().from("an object").to(NullType.class)).isNull();
+          assertThat(test().dsl().convert().from("an object").to(Nothing.class)).isNull();
           assertThat(converterArgument.get()).isEqualTo("an object");
         });
 
@@ -63,13 +62,13 @@ public class ConverterRegistrationOptionsTest extends JavaSpec<B2bTestContext> {
 
         it("accepts a supplier reference as a converter",()->{
           test().configure().useConverter(new SupplierRef<Object>(() -> "a value") {});
-          assertThat(test().dsl().convert().from(null).to(Object.class)).isEqualTo("a value");
+          assertThat(test().dsl().convert().from(Nothing.INSTANCE).to(Object.class)).isEqualTo("a value");
         });
 
         it("accepts a consumer reference as a converter",()->{
           AtomicReference<String> converterArgument = new AtomicReference<>();
           test().configure().useConverter(new ConsumerRef<String>(converterArgument::set){});
-          assertThat(test().dsl().convert().from("an object").to(NullType.class)).isNull();
+          assertThat(test().dsl().convert().from("an object").to(Nothing.class)).isNull();
           assertThat(converterArgument.get()).isEqualTo("an object");
         });
 
@@ -98,7 +97,7 @@ public class ConverterRegistrationOptionsTest extends JavaSpec<B2bTestContext> {
             test().configure().scopingTo().accept(Object.class).andProduce(Object.class)
               .useConverter(converterArgument::set);
 
-            assertThat(test().dsl().convert().from("an object").to(NullType.class)).isNull();
+            assertThat(test().dsl().convert().from("an object").to(Nothing.class)).isNull();
             assertThat(converterArgument.get()).isEqualTo("an object");
           });
         });
@@ -131,7 +130,7 @@ public class ConverterRegistrationOptionsTest extends JavaSpec<B2bTestContext> {
               .scopingTo().accept(new TypeRef<Object>(){}).andProduce(new TypeRef<Object>(){})
               .useConverter(converterArgument::set);
 
-            assertThat(test().dsl().convert().from("an object").to(NullType.class)).isNull();
+            assertThat(test().dsl().convert().from("an object").to(Nothing.class)).isNull();
             assertThat(converterArgument.get()).isEqualTo("an object");
           });
         });
@@ -158,7 +157,7 @@ public class ConverterRegistrationOptionsTest extends JavaSpec<B2bTestContext> {
         it("accepts a consumer as a converter",()->{
           AtomicReference<String> converterArgument = new AtomicReference<>();
           test().configure().scopingWith(this::acceptAnyInput).useConverter(converterArgument::set);
-          assertThat(test().dsl().convert().from("an object").to(NullType.class)).isNull();
+          assertThat(test().dsl().convert().from("an object").to(Nothing.class)).isNull();
           assertThat(converterArgument.get()).isEqualTo("an object");
         });
 

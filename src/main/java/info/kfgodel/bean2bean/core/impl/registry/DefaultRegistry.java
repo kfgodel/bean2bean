@@ -50,7 +50,7 @@ public class DefaultRegistry implements Bean2BeanRegistry {
   }
 
   private <O> Optional<Function<Bean2beanTask, O>> calculateBestConverterFor(DomainVector vector) {
-    Optional<ConverterDefinition> foundDefinition = this.lookForVectorBasedMatchingHiearchiesOf(vector);
+    Optional<ConverterDefinition> foundDefinition = this.lookForVectorBasedMatchingHierarchiesOf(vector);
     if(!foundDefinition.isPresent()){
       // I can't find a better way to express this with native optionals
       foundDefinition = this.lookForPredicateBasedMatching(vector);
@@ -59,7 +59,7 @@ public class DefaultRegistry implements Bean2BeanRegistry {
       .map(ConverterDefinition::getConverter);
   }
 
-  private Optional<ConverterDefinition> lookForVectorBasedMatchingHiearchiesOf(DomainVector conversionVector) {
+  private Optional<ConverterDefinition> lookForVectorBasedMatchingHierarchiesOf(DomainVector conversionVector) {
     Iterator<Domain> targetDomainHierarchy = conversionVector.getTarget().getHierarchy().iterator();
     while(targetDomainHierarchy.hasNext()){
       Domain targetDomain = targetDomainHierarchy.next();

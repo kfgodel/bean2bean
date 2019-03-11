@@ -28,10 +28,9 @@ public class DomainCalculator {
   }
 
   public Domain forObject(Object anObject) {
-    Class<?> objectClass = NullType.class;
-    if (anObject != null) {
-      objectClass = anObject.getClass();
+    if (anObject == null) {
+      return forType(NullType.class);
     }
-    return forType(objectClass);
+    return forType(anObject.getClass());
   }
 }

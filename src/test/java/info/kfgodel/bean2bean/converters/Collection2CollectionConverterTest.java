@@ -39,7 +39,7 @@ public class Collection2CollectionConverterTest extends JavaSpec<ConverterTestCo
         itThrows(CreationException.class, "if no creation converter is registered", () -> {
           test().dsl().convert().from(listWith12And2()).to(setOfStrings());
         }, e -> {
-          assertThat(e).hasMessage("Creation of java.util.Set<java.lang.String> failed: No converter found from null ∈ {javax.lang.model.type.NullType} to {java.util.Set<java.lang.String>}");
+          assertThat(e).hasMessage("Creation of java.util.Set<java.lang.String> failed: No converter found from nothing ∈ {info.kfgodel.bean2bean.dsl.api.Nothing} to {java.util.Set<java.lang.String>}");
         });
 
         itThrows(CreationException.class, "if the registered creation converter doesn't produce a collection", () -> {
