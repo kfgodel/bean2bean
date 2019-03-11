@@ -8,7 +8,6 @@ import info.kfgodel.bean2bean.other.references.FunctionRef;
 import info.kfgodel.bean2bean.other.references.SupplierRef;
 import info.kfgodel.bean2bean.other.types.extraction.TypeArgumentExtractor;
 
-import javax.lang.model.type.NullType;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.function.BiFunction;
@@ -30,23 +29,24 @@ public class DomainVectorExtractor {
     Type inputType = typeExtractor.getArgumentUsedFor(Consumer.class, function.getClass())
       .orElse(Object.class);
     // Implicit null result
-    return createVectorFor(inputType, NullType.class);
+    return createVectorFor(inputType, Void.class);
   }
 
   public DomainVector extractFrom(ConsumerRef function) {
     Type inputType = function.getInputType();
-    return createVectorFor(inputType, NullType.class);
+    return createVectorFor(inputType, Void.class);
   }
 
   public DomainVector extractFrom(Supplier function) {
     Type outputType = typeExtractor.getArgumentUsedFor(Supplier.class, function.getClass())
       .orElse(Object.class);
     // null is implicit when supplier is thought as a function
-    return createVectorFor(NullType.class, outputType);
+    return createVectorFor(Void.class, outputType);
   }
 
   public DomainVector extractFrom(SupplierRef<?> converterFunction) {
-    return createVectorFor(NullType.class, converterFunction.getOutputType());
+    Type outputType = converterFunction.getOutputType();
+    return createVectorFor(Void.class, outputType);
   }
 
   public DomainVector extractFrom(Function function) {

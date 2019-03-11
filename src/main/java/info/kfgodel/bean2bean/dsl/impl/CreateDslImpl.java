@@ -26,7 +26,7 @@ public class CreateDslImpl implements CreateDsl {
   @Override
   public <T> T anInstanceOf(Type expectedType) throws Bean2BeanException {
     try {
-      return dsl.convert().from(null).to(expectedType);
+      return dsl.convert().from(Void.class).to(expectedType);
     } catch (ConversionException e) {
       throw new CreationException("Creation of " + ObjectDescriptor.create().describeType(expectedType) + " failed: " + e.getMessage(), expectedType ,e);
     }
