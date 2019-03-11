@@ -48,7 +48,7 @@ public class Collection2CollectionConverterTest extends JavaSpec<ConverterTestCo
 
           test().dsl().convert().from(listWith12And2()).to(setOfStrings());
         }, e -> {
-          assertThat(e).hasMessage("Created instance[java.util.HashMap] can't be used as target collection");
+          assertThat(e).hasMessage("Created instance of type[class java.util.HashMap] can't be used as target collection");
         });
 
       });

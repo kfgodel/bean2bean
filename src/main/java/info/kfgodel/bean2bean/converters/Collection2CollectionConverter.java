@@ -2,6 +2,7 @@ package info.kfgodel.bean2bean.converters;
 
 import info.kfgodel.bean2bean.core.api.Bean2beanTask;
 import info.kfgodel.bean2bean.core.api.exceptions.CreationException;
+import info.kfgodel.bean2bean.core.impl.descriptor.ObjectDescriptor;
 import info.kfgodel.bean2bean.other.types.extraction.TypeArgumentExtractor;
 
 import java.lang.reflect.Type;
@@ -38,13 +39,11 @@ public class Collection2CollectionConverter implements BiFunction<Collection, Be
     Type targetType = task.getTargetType();
     Object created = task.getDsl().generate().anInstanceOf(targetType);
     if (!(created instanceof Collection)) {
-      throw new CreationException("Created instance["+ getClassNameOf(created)+"] can't be used as target collection", targetType);
+      ObjectDescriptor objectDescriptor = ObjectDescriptor.create();
+      String typeDescription = objectDescriptor.describeType(created.getClass());
+      throw new CreationException("Created instance of type["+ typeDescription +"] can't be used as target collection", targetType);
     }
     return (Collection) created;
-  }
-
-  private String getClassNameOf(Object created) {
-    return created == null ? "null" : created.getClass().getTypeName();
   }
 
   public static Collection2CollectionConverter create() {

@@ -43,7 +43,7 @@ public class NoConversionConverterTest extends JavaSpec<ConverterTestContext> {
         itThrows(ConversionException.class, "when a unrelated type is expected", ()->{
           test().dsl().convert().from("1").to(Integer.class);
         }, e->{
-          assertThat(e).hasMessage("Source 1{java.lang.String} is not assignable to target type[class java.lang.Integer]");
+          assertThat(e).hasMessage("Source \"1\" ∈ {java.lang.String} is not assignable to {java.lang.Integer}");
         });
 
         it("returns null when null is used as source regardless of the target type",()->{
@@ -74,14 +74,14 @@ public class NoConversionConverterTest extends JavaSpec<ConverterTestContext> {
         itThrows(ConversionException.class, "when a non matching bound variable type is expected", ()->{
           test().dsl().convert().from("1").to(getSingleNumberBondedTypeVariable());
         }, e->{
-          assertThat(e).hasMessage("Source 1{java.lang.String} is not assignable to target type[E]{java.lang.Number}");
+          assertThat(e).hasMessage("Source \"1\" ∈ {java.lang.String} is not assignable to {E} ⊇ E extends class java.lang.Number");
         });
 
         itThrows(ConversionException.class, "when a matching bound variable type is expected but is not the first bound", ()->{
           Iterable source = new ArrayList();
           test().dsl().convert().from(source).to(getMultiUpperBondedTypeVariable());
         }, e->{
-          assertThat(e).hasMessage("Source []{java.util.ArrayList} is not assignable to target type[E]{java.lang.String}");
+          assertThat(e).hasMessage("Source [] ∈ {java.util.ArrayList} is not assignable to {E} ⊇ E extends class java.lang.String, interface java.lang.Iterable");
         });
       });
 

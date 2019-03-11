@@ -4,9 +4,9 @@ import info.kfgodel.bean2bean.core.api.Bean2beanTask;
 import info.kfgodel.bean2bean.core.api.exceptions.ConversionException;
 import info.kfgodel.bean2bean.core.api.registry.Domain;
 import info.kfgodel.bean2bean.core.api.registry.DomainVector;
+import info.kfgodel.bean2bean.core.impl.descriptor.ObjectDescriptor;
 import info.kfgodel.bean2bean.other.types.descriptors.JavaTypeDescriptor;
 
-import java.lang.reflect.Type;
 import java.util.Optional;
 import java.util.function.BiFunction;
 
@@ -19,29 +19,22 @@ import java.util.function.BiFunction;
 public class NoConversionConverter implements BiFunction<Object, Bean2beanTask, Object> {
   @Override
   public Object apply(Object source, Bean2beanTask task) {
+    if(source == null){
+      // Null is always assignable to other Object types
+      return null;
+    }
     Class assignableClass = deduceAssignableClassFor(task, source);
-    if(!assignableClass.isInstance(source) && source != null){
-      throw new ConversionException("Source " + source + "{" + getClassNameOf(source) + "} is not assignable to target " +
-        describeTarget(task, assignableClass),task);
+    if(!assignableClass.isInstance(source)){
+      throw unassignableException(task);
     }
     return source;
   }
 
-  private String describeTarget(Bean2beanTask task, Type assignableClass) {
-    Type targetType = task.getTargetType();
-    String shortDescription = "type[" + targetType + "]";
-    if(targetType.equals(assignableClass)){
-      return shortDescription;
-    }
-    // Add extra info for type variables
-    return shortDescription + "{" + assignableClass.getTypeName() + "}";
-  }
-
-  private String getClassNameOf(Object source) {
-    if(source == null){
-      return "null";
-    }
-    return source.getClass().getTypeName();
+  private ConversionException unassignableException(Bean2beanTask task) {
+    ObjectDescriptor objectDescriptor = ObjectDescriptor.create();
+    String sourceDescription = objectDescriptor.describeSource(task.getSource(), task.getConversionVector().getSource());
+    String targetDescription = objectDescriptor.describeTarget(task.getTargetType(), task.getConversionVector().getTarget());
+    return new ConversionException("Source " + sourceDescription + " is not assignable to " + targetDescription, task);
   }
 
   private Class deduceAssignableClassFor(Bean2beanTask task, Object source) {

@@ -18,23 +18,23 @@ public class ObjectDescriptor {
 
   public String describeInstance(Object instance){
     String basicDescription = String.valueOf(instance);
-    if (!(instance instanceof String)) {
-      return basicDescription;
+    if (instance instanceof String) {
+      return "\"" + basicDescription + "\"";
     }
-    return "\"" + basicDescription + "\"";
+    return basicDescription;
   }
 
   public String describeType(Type targetType) {
     String basicTypeDescription = describeInstance(targetType);
-    if ((!(targetType instanceof TypeVariable)) && (!(targetType instanceof WildcardType))) {
+    if ((targetType instanceof TypeVariable) || (targetType instanceof WildcardType)) {// For bounded types we add boundaries to the description so they are not just a single letter
+      String boundsDescription = JavaTypeDescriptor.createFor(targetType)
+        .getUpperBounds()
+        .map(this::describeType)
+        .collect(Collectors.joining(", ", " extends ", ""));
+      return basicTypeDescription + boundsDescription;
+    } else {
       return basicTypeDescription;
     }
-    // For bounded types we add boundaries to the description so they are not just a single letter
-    String boundsDescription = JavaTypeDescriptor.createFor(targetType)
-      .getUpperBounds()
-      .map(this::describeType)
-      .collect(Collectors.joining(", ", " extends ", ""));
-    return basicTypeDescription + boundsDescription;
   }
 
   public static ObjectDescriptor create() {
