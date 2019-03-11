@@ -30,10 +30,6 @@ public class DomainCalculator {
   public Domain forObject(Object anObject) {
     if (anObject == null) {
       return forType(NullType.class);
-    } else if (anObject == Void.class){
-      // That class is used as instance and as type to represent void
-      // it's not the same as void.class which is primite and cannot be used as type argument
-      return forType(Void.class);
     }
     return forType(anObject.getClass());
   }

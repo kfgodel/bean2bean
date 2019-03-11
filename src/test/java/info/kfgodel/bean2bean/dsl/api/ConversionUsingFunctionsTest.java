@@ -105,7 +105,7 @@ public class ConversionUsingFunctionsTest extends JavaSpec<B2bTestContext> {
         });
 
         it("allows instance creation",()->{
-          List result = test().dsl().convert().from(null).to(List.class);
+          List result = test().dsl().convert().from(Nothing.INSTANCE).to(List.class);
           assertThat(result)
             .isNotNull()
             .isEmpty();

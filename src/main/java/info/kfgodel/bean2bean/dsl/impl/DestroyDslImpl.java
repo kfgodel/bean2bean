@@ -5,6 +5,7 @@ import info.kfgodel.bean2bean.core.api.exceptions.DestructionException;
 import info.kfgodel.bean2bean.core.impl.descriptor.ObjectDescriptor;
 import info.kfgodel.bean2bean.dsl.api.B2bDsl;
 import info.kfgodel.bean2bean.dsl.api.DestroyDsl;
+import info.kfgodel.bean2bean.dsl.api.Nothing;
 
 /**
  * This class is the default implemenmtation for the destruction dsl
@@ -17,7 +18,7 @@ public class DestroyDslImpl implements DestroyDsl {
   @Override
   public DestroyDsl object(Object anObject) {
     try {
-      b2bDsl.convert().from(anObject).to(Void.class);
+      b2bDsl.convert().from(anObject).to(Nothing.class);
       return this;
     } catch (ConversionException e) {
       throw new DestructionException("Destruction of "+ ObjectDescriptor.create().describeInstance(anObject) + " failed: " + e.getMessage(),anObject,e);

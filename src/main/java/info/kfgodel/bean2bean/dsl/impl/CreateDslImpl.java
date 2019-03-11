@@ -6,6 +6,7 @@ import info.kfgodel.bean2bean.core.api.exceptions.CreationException;
 import info.kfgodel.bean2bean.core.impl.descriptor.ObjectDescriptor;
 import info.kfgodel.bean2bean.dsl.api.B2bDsl;
 import info.kfgodel.bean2bean.dsl.api.CreateDsl;
+import info.kfgodel.bean2bean.dsl.api.Nothing;
 import info.kfgodel.bean2bean.other.references.TypeRef;
 
 import java.lang.reflect.Type;
@@ -26,7 +27,7 @@ public class CreateDslImpl implements CreateDsl {
   @Override
   public <T> T anInstanceOf(Type expectedType) throws Bean2BeanException {
     try {
-      return dsl.convert().from(Void.class).to(expectedType);
+      return dsl.convert().from(Nothing.INSTANCE).to(expectedType);
     } catch (ConversionException e) {
       throw new CreationException("Creation of " + ObjectDescriptor.create().describeType(expectedType) + " failed: " + e.getMessage(), expectedType ,e);
     }

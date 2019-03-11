@@ -17,10 +17,6 @@ import java.util.stream.Collectors;
 public class ObjectDescriptor {
 
   public String describeInstance(Object instance){
-    if(instance == Void.class){
-      // As an instance that class represents void
-      return "void";
-    }
     String basicDescription = String.valueOf(instance);
     if (instance instanceof String) {
       return "\"" + basicDescription + "\"";
