@@ -58,6 +58,13 @@ public interface JavaTypeDescriptor {
   Stream<Type> getGenericSupertypes();
 
   /**
+   * Returns the declared upper bounds on this type.<br>
+   *   This only applies for types that have restriction on the form of upper bound type: type variables and wildcards
+   * @return The restricted upper bounds or empty for other types
+   */
+  Stream<Type> getUpperBounds();
+
+  /**
    * Calculates the map of bindings required on this type to replace each type variable with the given argument.<br>
    *   The correspondence between variable and variable is done by position of the arrays (parameters and arguments).<br>
    *   For types that don't have parameters and empty map is returned

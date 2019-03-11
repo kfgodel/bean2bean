@@ -105,7 +105,7 @@ public class NoConversionConverterTest extends JavaSpec<ConverterTestContext> {
         itThrows(ConversionException.class, "when a unrelated type is expected", ()->{
           test().dsl().convert().from("1").to(Integer.class);
         }, e->{
-          assertThat(e).hasMessage("No converter found from 1{java.lang.String} to {java.lang.Integer}");
+          assertThat(e).hasMessage("No converter found from \"1\" ∈ {java.lang.String} to {java.lang.Integer}");
         });
 
         it("returns null when null is used as source regardless of the target type",()->{
@@ -136,14 +136,14 @@ public class NoConversionConverterTest extends JavaSpec<ConverterTestContext> {
         itThrows(ConversionException.class, "when a non matching bound variable type is expected", ()->{
           test().dsl().convert().from("1").to(getSingleNumberBondedTypeVariable());
         }, e->{
-          assertThat(e).hasMessage("No converter found from 1{java.lang.String} to {E}");
+          assertThat(e).hasMessage("No converter found from \"1\" ∈ {java.lang.String} to {E} ⊇ E extends class java.lang.Number");
         });
 
         itThrows(ConversionException.class, "when a matching bound variable type is expected but is not the first bound", ()->{
           Iterable source = new ArrayList();
           test().dsl().convert().from(source).to(getMultiUpperBondedTypeVariable());
         }, e->{
-          assertThat(e).hasMessage("No converter found from []{java.util.ArrayList} to {E}");
+          assertThat(e).hasMessage("No converter found from [] ∈ {java.util.ArrayList} to {E} ⊇ E extends class java.lang.String, interface java.lang.Iterable");
         });
 
       });
