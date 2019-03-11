@@ -1,6 +1,10 @@
 package info.kfgodel.bean2bean.dsl.api.scopes;
 
 import info.kfgodel.bean2bean.core.api.Bean2beanTask;
+import info.kfgodel.bean2bean.other.references.BiFunctionRef;
+import info.kfgodel.bean2bean.other.references.ConsumerRef;
+import info.kfgodel.bean2bean.other.references.FunctionRef;
+import info.kfgodel.bean2bean.other.references.SupplierRef;
 
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -47,4 +51,36 @@ public interface ScopedConfigureDsl {
    */
   <I> ScopedConfigureDsl useConverter(Consumer<I> converterFunction);
 
+  /**
+   * Registers a function through its reference to be used as converter between the function input-output types.<br>
+   *   This method variant allows using a reference to disambiguate lambda parameters (useful for method references with
+   *   overloaded versions)
+   * @param converterFunctionRef The reference to the function used as converter
+   * @return This instance for method chaining
+   */
+  <I,O> ScopedConfigureDsl useConverter(FunctionRef<I,O> converterFunctionRef);
+
+  /**
+   * Registers a converter function though its reference that will need access to b2b dsl as part of the conversion
+   *  process. Usually for delegating the conversion of one or more parts of the original object (nesting conversions).
+   * @param converterFunction The function to use as converter
+   * @return This instance for method chaining
+   */
+  <I,O> ScopedConfigureDsl useConverter(BiFunctionRef<I,Bean2beanTask,O> converterFunction);
+
+  /**
+   * Registers a converter lambda through its reference that requires no parameters as input for the conversion.<br>
+   *   Usually these converters are used as generators to instantiate other types
+   * @param converterFunction The function to use a generator
+   * @return This instance for method chaining
+   */
+  <O> ScopedConfigureDsl useConverter(SupplierRef<O> converterFunction);
+
+  /**
+   * Registers a converter lambda through its reference that generates no output as result of the conversion.<br>
+   *   Usually these converters are used as destructors of intances to release resources
+   * @param converterFunction The function to use as destructor
+   * @return This instance for method chaining
+   */
+  <I> ScopedConfigureDsl useConverter(ConsumerRef<I> converterFunction);
 }
