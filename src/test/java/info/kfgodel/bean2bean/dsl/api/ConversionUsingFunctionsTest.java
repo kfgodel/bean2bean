@@ -33,7 +33,7 @@ public class ConversionUsingFunctionsTest extends JavaSpec<B2bTestContext> {
         itThrows(ConversionException.class, "when any conversion is attempted", () -> {
           test().dsl().convert().from("1").to(Integer.class);
         }, e -> {
-          assertThat(e).hasMessage("No converter found from 1{java.lang.String} to {java.lang.Integer}");
+          assertThat(e).hasMessage("No converter found from \"1\" ∈ {java.lang.String} to {java.lang.Integer}");
         });
       });
 
@@ -51,7 +51,7 @@ public class ConversionUsingFunctionsTest extends JavaSpec<B2bTestContext> {
         itThrows(ConversionException.class, "if the input value types doesn't match the function", () -> {
           test().dsl().convert().from(1.0).to(Integer.class);
         }, e -> {
-          assertThat(e).hasMessage("No converter found from 1.0{java.lang.Double} to {java.lang.Integer}");
+          assertThat(e).hasMessage("No converter found from 1.0 ∈ {java.lang.Double} to {java.lang.Integer}");
         });
       });
 
@@ -69,7 +69,7 @@ public class ConversionUsingFunctionsTest extends JavaSpec<B2bTestContext> {
         itThrows(ConversionException.class, "if un generified types are expected", () -> {
           test().dsl().convert().from(Lists.newArrayList(1)).to(List.class);
         }, e -> {
-          assertThat(e).hasMessage("No converter found from [1]{java.util.ArrayList} to {java.util.List}");
+          assertThat(e).hasMessage("No converter found from [1] ∈ {java.util.ArrayList} to {java.util.List}");
         });
       });
 
@@ -83,7 +83,7 @@ public class ConversionUsingFunctionsTest extends JavaSpec<B2bTestContext> {
           itThrows(ConversionException.class, "when the conversion is attempted", () -> {
             test().dsl().convert().from(Lists.newArrayList(8)).to(new TypeRef<List<String>>() {});
           }, e -> {
-            assertThat(e).hasMessage("No converter found from 8{java.lang.Integer} to {java.lang.String}");
+            assertThat(e).hasMessage("No converter found from 8 ∈ {java.lang.Integer} to {java.lang.String}");
           });
         });
 

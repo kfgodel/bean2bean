@@ -30,13 +30,13 @@ public class ArrayInstantiatorTest extends JavaSpec<ConverterTestContext> {
         itThrows(ConversionException.class, "if input is not an integer", ()->{
           test().dsl().convert().from(1.5).to(String[].class);
         }, e ->{
-          assertThat(e).hasMessage("No converter found from 1.5{java.lang.Double} to {java.lang.String[]}");
+          assertThat(e).hasMessage("No converter found from 1.5 ∈ {java.lang.Double} to {java.lang.String[]}");
         });
 
         itThrows(ConversionException.class, "because it's not used",()->{
           test().dsl().convert().from(1).to(Object.class);
         }, e->{
-          assertThat(e).hasMessage("No converter found from 1{java.lang.Integer} to {java.lang.Object}");
+          assertThat(e).hasMessage("No converter found from 1 ∈ {java.lang.Integer} to {java.lang.Object}");
         });
 
         it("can create the expected array with the input size",()->{
@@ -58,7 +58,7 @@ public class ArrayInstantiatorTest extends JavaSpec<ConverterTestContext> {
         itThrows(ConversionException.class, "if input is not an integer", ()->{
           test().dsl().convert().from(1.5).to(String[].class);
         }, e ->{
-          assertThat(e).hasMessage("No converter found from 1.5{java.lang.Double} to {java.lang.String[]}");
+          assertThat(e).hasMessage("No converter found from 1.5 ∈ {java.lang.Double} to {java.lang.String[]}");
         });
 
         itThrows(CreationException.class, "if a non array type is used as target",()->{

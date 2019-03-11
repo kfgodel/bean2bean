@@ -36,6 +36,11 @@ public abstract class TypeDescriptorSupport implements JavaTypeDescriptor {
   }
 
   @Override
+  public Stream<Type> getUpperBounds() {
+    return Stream.empty();
+  }
+
+  @Override
   public Map<TypeVariable, Type> calculateTypeVariableBindingsFor(Type[] typeArguments) {
     return Collections.emptyMap();
   }

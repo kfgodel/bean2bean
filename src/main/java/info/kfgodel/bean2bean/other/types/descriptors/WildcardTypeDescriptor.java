@@ -2,7 +2,9 @@ package info.kfgodel.bean2bean.other.types.descriptors;
 
 import java.lang.reflect.Type;
 import java.lang.reflect.WildcardType;
+import java.util.Arrays;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
  * This class represents the descriptor for wildcard types.<br>
@@ -20,8 +22,13 @@ public class WildcardTypeDescriptor extends GeneralTypeDescriptor {
   }
 
   @Override
+  public Stream<Type> getUpperBounds() {
+    return Arrays.stream(wildcardType.getUpperBounds());
+  }
+
+  @Override
   public Optional<Class> getAssignableClass() {
-    return TypeVariableDescriptor.calculateAssignableClassFromUpperBounds(wildcardType.getUpperBounds(), getType());
+    return TypeVariableDescriptor.calculateAssignableClassFromUpperBounds(getUpperBounds(), getType());
   }
 
   public static WildcardTypeDescriptor create(WildcardType wildcardType) {

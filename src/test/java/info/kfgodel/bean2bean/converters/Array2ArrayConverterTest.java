@@ -46,7 +46,7 @@ public class Array2ArrayConverterTest extends JavaSpec<ConverterTestContext> {
           itThrows(ConversionException.class, "if no element converter is registered",()->{
             test().dsl().convert().from(new Integer[]{1,2}).to(String[].class);
           }, e->{
-            assertThat(e).hasMessage("No converter found from 1{java.lang.Integer} to {java.lang.String}");
+            assertThat(e).hasMessage("No converter found from 1 ∈ {java.lang.Integer} to {java.lang.String}");
           });
 
         });
@@ -54,7 +54,7 @@ public class Array2ArrayConverterTest extends JavaSpec<ConverterTestContext> {
         itThrows(ConversionException.class, "if no instantiator handles the array creation",()->{
           test().dsl().convert().from(new Integer[]{1,2}).to(String[].class);
         }, e->{
-          assertThat(e).hasMessage("No converter found from 2{java.lang.Integer} to {java.lang.String[]}");
+          assertThat(e).hasMessage("No converter found from 2 ∈ {java.lang.Integer} to {java.lang.String[]}");
         });
 
 
@@ -82,7 +82,7 @@ public class Array2ArrayConverterTest extends JavaSpec<ConverterTestContext> {
         itThrows(ConversionException.class, "if no instantiator handles the array creation",()->{
           test().dsl().convert().from(new Integer[]{1,2}).to(Object.class);
         }, e->{
-          assertThat(e).hasMessage("Source is not an array: 2{java.lang.Integer}");
+          assertThat(e).hasMessage("Source is not an array: 2 ∈ {java.lang.Integer}");
         });
 
         describe("when a specific array instantiator is registered", () -> {
@@ -102,7 +102,7 @@ public class Array2ArrayConverterTest extends JavaSpec<ConverterTestContext> {
           itThrows(ConversionException.class, "if no element converter is registered because it calls itself",()->{
             test().dsl().convert().from(new Integer[]{1,2}).to(String[].class);
           }, e->{
-            assertThat(e).hasMessage("Source is not an array: 1{java.lang.Integer}");
+            assertThat(e).hasMessage("Source is not an array: 1 ∈ {java.lang.Integer}");
           });
 
 

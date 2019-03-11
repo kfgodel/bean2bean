@@ -6,7 +6,10 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * This class represents the descriptor for type variable types.<br>
@@ -26,17 +29,20 @@ public class TypeVariableDescriptor extends GeneralTypeDescriptor {
 
   @Override
   public Optional<Class> getAssignableClass() {
-    Type[] upperBounds = typeVariable.getBounds();
-    return calculateAssignableClassFromUpperBounds(upperBounds, getType());
+    return calculateAssignableClassFromUpperBounds(getUpperBounds(), getType());
   }
 
-  public static Optional<Class> calculateAssignableClassFromUpperBounds(Type[] upperBounds, Type type) {
-    Type[] bounds = Optional.ofNullable(upperBounds)
-      .orElse(NO_TYPES); // Just in case the api returns null
-    if(bounds.length > 1){
-      LOG.warn("Type[{}] has multiple bounds {}. Only the first will be considered for assignments", type, Arrays.toString(bounds));
+  @Override
+  public Stream<Type> getUpperBounds() {
+    return Arrays.stream(typeVariable.getBounds());
+  }
+
+  public static Optional<Class> calculateAssignableClassFromUpperBounds(Stream<Type> upperBounds, Type type) {
+    List<Type> bounds = upperBounds.collect(Collectors.toList());
+    if(bounds.size() > 1){
+      LOG.warn("Type[{}] has multiple bounds {}. Only the first will be considered for assignments", type, bounds);
     }
-    return Arrays.stream(bounds)
+    return bounds.stream()
       .map(JavaTypeDescriptor::createFor)
       .findFirst() // We use only the first bound as assignable type (this may be an error but we don't know how to deal with multi bounds yet
       .flatMap(JavaTypeDescriptor::getAssignableClass);

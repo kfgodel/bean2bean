@@ -3,6 +3,7 @@ package info.kfgodel.bean2bean.dsl.impl;
 import info.kfgodel.bean2bean.core.api.exceptions.Bean2BeanException;
 import info.kfgodel.bean2bean.core.api.exceptions.ConversionException;
 import info.kfgodel.bean2bean.core.api.exceptions.CreationException;
+import info.kfgodel.bean2bean.core.impl.descriptor.ObjectDescriptor;
 import info.kfgodel.bean2bean.dsl.api.B2bDsl;
 import info.kfgodel.bean2bean.dsl.api.CreateDsl;
 import info.kfgodel.bean2bean.other.references.TypeRef;
@@ -27,7 +28,7 @@ public class CreateDslImpl implements CreateDsl {
     try {
       return dsl.convert().from(null).to(expectedType);
     } catch (ConversionException e) {
-      throw new CreationException("Creation from null to " + expectedType.getTypeName() + " failed: " + e.getMessage(), expectedType ,e);
+      throw new CreationException("Creation of " + ObjectDescriptor.create().describeType(expectedType) + " failed: " + e.getMessage(), expectedType ,e);
     }
   }
 

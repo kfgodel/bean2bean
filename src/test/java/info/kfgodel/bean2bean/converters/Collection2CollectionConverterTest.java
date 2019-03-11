@@ -39,7 +39,7 @@ public class Collection2CollectionConverterTest extends JavaSpec<ConverterTestCo
         itThrows(CreationException.class, "if no creation converter is registered", () -> {
           test().dsl().convert().from(listWith12And2()).to(setOfStrings());
         }, e -> {
-          assertThat(e).hasMessage("Creation from null to java.util.Set<java.lang.String> failed: No converter found from null{javax.lang.model.type.NullType} to {java.util.Set<java.lang.String>}");
+          assertThat(e).hasMessage("Creation of java.util.Set<java.lang.String> failed: No converter found from null ∈ {javax.lang.model.type.NullType} to {java.util.Set<java.lang.String>}");
         });
 
         itThrows(CreationException.class, "if the registered creation converter doesn't produce a collection", () -> {
@@ -48,7 +48,7 @@ public class Collection2CollectionConverterTest extends JavaSpec<ConverterTestCo
 
           test().dsl().convert().from(listWith12And2()).to(setOfStrings());
         }, e -> {
-          assertThat(e).hasMessage("Created instance[java.util.HashMap] can't be used as target collection");
+          assertThat(e).hasMessage("Created instance of type[class java.util.HashMap] can't be used as target collection");
         });
 
       });
@@ -62,7 +62,7 @@ public class Collection2CollectionConverterTest extends JavaSpec<ConverterTestCo
         itThrows(ConversionException.class, "if no element converter is registered", () -> {
           test().dsl().convert().from(listWith12And2()).to(setOfStrings());
         }, e -> {
-          assertThat(e).hasMessage("No converter found from 1{java.lang.Integer} to {java.lang.String}");
+          assertThat(e).hasMessage("No converter found from 1 ∈ {java.lang.Integer} to {java.lang.String}");
         });
 
         describe("when the correct element converter is registered", () -> {
@@ -79,7 +79,7 @@ public class Collection2CollectionConverterTest extends JavaSpec<ConverterTestCo
           itThrows(ConversionException.class, "if a different element converter is needed", () -> {
             test().dsl().convert().from(listWith12And2()).to(setOfNumber());
           }, e -> {
-            assertThat(e).hasMessage("No converter found from 1{java.lang.Integer} to {java.lang.Number}");
+            assertThat(e).hasMessage("No converter found from 1 ∈ {java.lang.Integer} to {java.lang.Number}");
           });
         });
 

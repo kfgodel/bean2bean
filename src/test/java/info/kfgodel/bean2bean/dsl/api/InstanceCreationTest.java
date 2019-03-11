@@ -29,7 +29,7 @@ public class InstanceCreationTest extends JavaSpec<B2bTestContext> {
         itThrows(CreationException.class, "when any creation is attempted", () -> {
           test().dsl().generate().anInstanceOf(List.class);
         }, e -> {
-          assertThat(e).hasMessage("Creation from null to java.util.List failed: No converter found from null{javax.lang.model.type.NullType} to {java.util.List}");
+          assertThat(e).hasMessage("Creation of interface java.util.List failed: No converter found from null ∈ {javax.lang.model.type.NullType} to {java.util.List}");
         });
       });
 

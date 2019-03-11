@@ -2,6 +2,7 @@ package info.kfgodel.bean2bean.dsl.impl;
 
 import info.kfgodel.bean2bean.core.api.exceptions.ConversionException;
 import info.kfgodel.bean2bean.core.api.exceptions.DestructionException;
+import info.kfgodel.bean2bean.core.impl.descriptor.ObjectDescriptor;
 import info.kfgodel.bean2bean.dsl.api.B2bDsl;
 import info.kfgodel.bean2bean.dsl.api.DestroyDsl;
 
@@ -21,7 +22,7 @@ public class DestroyDslImpl implements DestroyDsl {
       b2bDsl.convert().from(anObject).to(NullType.class);
       return this;
     } catch (ConversionException e) {
-      throw new DestructionException("Destruction from "+anObject+" to null failed: " + e.getMessage(),anObject,e);
+      throw new DestructionException("Destruction of "+ ObjectDescriptor.create().describeInstance(anObject) + " failed: " + e.getMessage(),anObject,e);
     }
   }
 
