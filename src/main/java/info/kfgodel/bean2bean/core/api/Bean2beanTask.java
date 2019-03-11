@@ -45,15 +45,6 @@ public interface Bean2beanTask {
   B2bDsl getDsl();
 
   /**
-   * Generates a nested conversion for the given object into the expected type.<br>
-   *   Impl. note: This method may be temporary since a richer dsl may be needed (instead of only this)
-   * @param sourceElement The object to use as source for the conversion
-   * @param expectedElementType The type of expected result after the conversion
-   * @return The converted object result
-   */
-  Object nestConversionFrom(Object sourceElement, Type expectedElementType);
-
-  /**
    * Provides a simple string representation of the source object to be used on messages
    * @return A standard representation of the source
    */

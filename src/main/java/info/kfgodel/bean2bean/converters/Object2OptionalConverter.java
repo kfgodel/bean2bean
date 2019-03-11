@@ -16,7 +16,7 @@ public class Object2OptionalConverter implements BiFunction<Object, Bean2beanTas
   @Override
   public Optional apply(Object source, Bean2beanTask bean2beanTask) {
     Type containedType = deduceExpectedContainedTypeFor(bean2beanTask);
-    Object contained = bean2beanTask.nestConversionFrom(source, containedType);
+    Object contained = bean2beanTask.getDsl().convert().from(source).to(containedType);
     return Optional.ofNullable(contained);
   }
 

@@ -19,7 +19,7 @@ public class Optional2ObjectConverter implements BiFunction<Optional, Bean2beanT
   }
 
   private Object convert(Object contained, Bean2beanTask task) {
-    return task.nestConversionFrom(contained, task.getTargetType());
+    return task.getDsl().convert().from(contained).to(task.getTargetType());
   }
 
   public static Optional2ObjectConverter create() {

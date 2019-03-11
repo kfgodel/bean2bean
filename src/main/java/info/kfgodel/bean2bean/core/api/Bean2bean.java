@@ -1,5 +1,6 @@
 package info.kfgodel.bean2bean.core.api;
 
+import info.kfgodel.bean2bean.core.api.exceptions.Bean2BeanException;
 import info.kfgodel.bean2bean.core.api.registry.Bean2BeanRegistry;
 
 /**
@@ -16,8 +17,9 @@ public interface Bean2bean {
    * @param task The task to process by this core
    * @param <O> The expected result type
    * @return The result of processing the task
+   * @throws Bean2BeanException If an exception is produced while processing
    */
-  <O> O process(Bean2beanTask task);
+  <O> O process(Bean2beanTask task) throws Bean2BeanException;
 
   /**
    * Allows access to the converter registry for this instance.<br>

@@ -4,8 +4,8 @@ import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import info.kfgodel.bean2bean.core.api.exceptions.ConversionException;
 import info.kfgodel.bean2bean.core.api.exceptions.CreationException;
+import info.kfgodel.bean2bean.core.api.exceptions.NestedConversionException;
 import info.kfgodel.bean2bean.dsl.impl.Dsl;
 import info.kfgodel.bean2bean.other.references.FunctionRef;
 import info.kfgodel.bean2bean.other.references.SupplierRef;
@@ -36,10 +36,11 @@ public class Collection2CollectionConverterTest extends JavaSpec<ConverterTestCo
 
       describe("by itself", () -> {
 
-        itThrows(CreationException.class, "if no creation converter is registered", () -> {
+        itThrows(NestedConversionException.class, "if no creation converter is registered", () -> {
           test().dsl().convert().from(listWith12And2()).to(setOfStrings());
         }, e -> {
-          assertThat(e).hasMessage("Creation of java.util.Set<java.lang.String> failed: No converter found from nothing ∈ {info.kfgodel.bean2bean.dsl.api.Nothing} to {java.util.Set<java.lang.String>}");
+          assertThat(e).hasMessage("Failed conversion from [1, 2, 2] ∈ {java.util.ArrayList} to {java.util.Set<java.lang.String>}\n" +
+            "\tdue to: No converter found from nothing ∈ {info.kfgodel.bean2bean.dsl.api.Nothing} to {java.util.Set<java.lang.String>}");
         });
 
         itThrows(CreationException.class, "if the registered creation converter doesn't produce a collection", () -> {
@@ -59,7 +60,7 @@ public class Collection2CollectionConverterTest extends JavaSpec<ConverterTestCo
           });
         });
 
-        itThrows(ConversionException.class, "if no element converter is registered", () -> {
+        itThrows(NestedConversionException.class, "if no element converter is registered", () -> {
           test().dsl().convert().from(listWith12And2()).to(setOfStrings());
         }, e -> {
           assertThat(e).hasMessage("Failed conversion from [1, 2, 2] ∈ {java.util.ArrayList} to {java.util.Set<java.lang.String>}\n" +
@@ -77,7 +78,7 @@ public class Collection2CollectionConverterTest extends JavaSpec<ConverterTestCo
             assertThat(result).isEqualTo(Sets.newHashSet("1", "2"));
           });
 
-          itThrows(ConversionException.class, "if a different element converter is needed", () -> {
+          itThrows(NestedConversionException.class, "if a different element converter is needed", () -> {
             test().dsl().convert().from(listWith12And2()).to(setOfNumber());
           }, e -> {
             assertThat(e).hasMessage("Failed conversion from [1, 2, 2] ∈ {java.util.ArrayList} to {java.util.Set<java.lang.Number>}\n" +

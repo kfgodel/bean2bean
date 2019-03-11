@@ -22,7 +22,7 @@ public class Collection2CollectionConverter implements BiFunction<Collection, Be
     Collection targetCollection = createTargetCollectionFor(task);
     Type expectedElementType = deduceExpectedElementTypeFor(task);
     for (Object sourceElement : sourceCollection) {
-      Object targetElement = task.nestConversionFrom(sourceElement, expectedElementType);
+      Object targetElement = task.getDsl().convert().from(sourceElement).to(expectedElementType);
       targetCollection.add(targetElement);
     }
     return targetCollection;

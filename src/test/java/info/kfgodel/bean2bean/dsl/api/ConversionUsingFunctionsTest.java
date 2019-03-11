@@ -4,6 +4,7 @@ import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
 import com.google.common.collect.Lists;
 import info.kfgodel.bean2bean.core.api.exceptions.ConversionException;
+import info.kfgodel.bean2bean.core.api.exceptions.NestedConversionException;
 import info.kfgodel.bean2bean.dsl.api.converters.ArrayListToListOfStringsConverter;
 import info.kfgodel.bean2bean.dsl.api.converters.ArrayListToListOfStringsNestedConverter;
 import info.kfgodel.bean2bean.dsl.impl.Dsl;
@@ -80,10 +81,11 @@ public class ConversionUsingFunctionsTest extends JavaSpec<B2bTestContext> {
 
         describe("and b2b doesn't have a converter for the part conversion", () -> {
 
-          itThrows(ConversionException.class, "when the conversion is attempted", () -> {
+          itThrows(NestedConversionException.class, "when the conversion is attempted", () -> {
             test().dsl().convert().from(Lists.newArrayList(8)).to(new TypeRef<List<String>>() {});
           }, e -> {
-            assertThat(e).hasMessage("No converter found from 8 ∈ {java.lang.Integer} to {java.lang.String}");
+            assertThat(e).hasMessage("Failed conversion from [8] ∈ {java.util.ArrayList} to {java.util.List<java.lang.String>}\n" +
+              "\tdue to: No converter found from 8 ∈ {java.lang.Integer} to {java.lang.String}");
           });
         });
 

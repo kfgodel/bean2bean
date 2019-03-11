@@ -1,11 +1,12 @@
 package info.kfgodel.bean2bean.core.impl.conversion;
 
+import info.kfgodel.bean2bean.core.api.Bean2bean;
 import info.kfgodel.bean2bean.core.api.Bean2beanTask;
-import info.kfgodel.bean2bean.core.api.exceptions.Bean2BeanException;
-import info.kfgodel.bean2bean.core.api.exceptions.ConversionException;
 import info.kfgodel.bean2bean.core.api.registry.DomainVector;
 import info.kfgodel.bean2bean.core.impl.descriptor.ObjectDescriptor;
+import info.kfgodel.bean2bean.core.impl.nesting.NestedBean2bean;
 import info.kfgodel.bean2bean.dsl.api.B2bDsl;
+import info.kfgodel.bean2bean.dsl.impl.Dsl;
 
 import java.lang.reflect.Type;
 
@@ -20,13 +21,13 @@ public class ObjectConversion implements Bean2beanTask {
   private Object source;
   private Type targetType;
   private DomainVector conversionVector;
-  private B2bDsl dsl;
+  private Bean2bean core;
 
-  public static ObjectConversion create(Object source, Type targetType, DomainVector conversionVector, B2bDsl dsl) {
+  public static ObjectConversion create(Object source, Type targetType, DomainVector conversionVector, Bean2bean core) {
     ObjectConversion conversion = new ObjectConversion();
     conversion.source = source;
     conversion.conversionVector = conversionVector;
-    conversion.dsl = dsl;
+    conversion.core = core;
     conversion.targetType = targetType;
     return conversion;
   }
@@ -43,18 +44,8 @@ public class ObjectConversion implements Bean2beanTask {
 
   @Override
   public B2bDsl getDsl() {
-    return dsl;
-  }
-
-  @Override
-  public Object nestConversionFrom(Object sourceElement, Type expectedElementType) {
-    try {
-      return this.getDsl().convert().from(sourceElement).to(expectedElementType);
-    } catch (Bean2BeanException e) {
-      String message = "Failed conversion from " + describeSource() + " to " + describeTarget() + "\n"
-        + "\tdue to: " + e.getMessage();
-      throw new ConversionException(message, this, e);
-    }
+    NestedBean2bean nestedCore = NestedBean2bean.create(core, this);
+    return Dsl.createFor(nestedCore);
   }
 
   @Override
