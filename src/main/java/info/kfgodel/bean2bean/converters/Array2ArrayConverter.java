@@ -18,7 +18,7 @@ public class Array2ArrayConverter implements BiFunction<Object, Bean2beanTask, O
   @Override
   public Object apply(Object source, Bean2beanTask task) {
     int sourceSize = calculateSourceSize(source, task);
-    Object created = task.getDsl().convert().from(sourceSize).to(task.getTargetType());
+    Object created = task.nestConversionFrom(sourceSize, task.getTargetType());
     Class expectedElementType = calculateElementTypeFrom(created);
 
     for (int i = 0; i < sourceSize; i++) {

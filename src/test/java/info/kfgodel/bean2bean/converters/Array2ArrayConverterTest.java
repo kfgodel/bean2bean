@@ -3,7 +3,6 @@ package info.kfgodel.bean2bean.converters;
 import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
 import info.kfgodel.bean2bean.core.api.exceptions.ConversionException;
-import info.kfgodel.bean2bean.core.api.exceptions.CreationException;
 import info.kfgodel.bean2bean.dsl.impl.Dsl;
 import info.kfgodel.bean2bean.other.references.FunctionRef;
 import org.junit.runner.RunWith;
@@ -55,7 +54,8 @@ public class Array2ArrayConverterTest extends JavaSpec<ConverterTestContext> {
         itThrows(ConversionException.class, "if no instantiator handles the array creation",()->{
           test().dsl().convert().from(new Integer[]{1,2}).to(String[].class);
         }, e->{
-          assertThat(e).hasMessage("No converter found from 2 ∈ {java.lang.Integer} to {java.lang.String[]}");
+          assertThat(e).hasMessage("Failed conversion from [1, 2] ∈ {java.lang.Integer[]} to {java.lang.String[]}\n" +
+            "\tdue to: No converter found from 2 ∈ {java.lang.Integer} to {java.lang.String[]}");
         });
 
 
@@ -83,7 +83,8 @@ public class Array2ArrayConverterTest extends JavaSpec<ConverterTestContext> {
         itThrows(ConversionException.class, "if no instantiator handles the array creation",()->{
           test().dsl().convert().from(new Integer[]{1,2}).to(Object.class);
         }, e->{
-          assertThat(e).hasMessage("Source is not an array: 2 ∈ {java.lang.Integer}");
+          assertThat(e).hasMessage("Failed conversion from [1, 2] ∈ {java.lang.Integer[]} to {java.lang.Object}\n" +
+            "\tdue to: Source is not an array: 2 ∈ {java.lang.Integer}");
         });
 
         describe("when a specific array instantiator is registered", () -> {
@@ -93,11 +94,12 @@ public class Array2ArrayConverterTest extends JavaSpec<ConverterTestContext> {
               .useConverter(ArrayInstantiator.create());
           });
 
-          itThrows(CreationException.class, "if target type is not an array",()->{
+          itThrows(ConversionException.class, "if target type is not an array",()->{
             test().dsl().configure().useConverter(ArrayInstantiator.create());
             test().dsl().convert().from(new Integer[]{1,2}).to(Object.class);
           }, e->{
-            assertThat(e).hasMessage("Can't instantiate array for non array type: class java.lang.Object");
+            assertThat(e).hasMessage("Failed conversion from [1, 2] ∈ {java.lang.Integer[]} to {java.lang.Object}\n" +
+              "\tdue to: Can't instantiate array for non array type: class java.lang.Object");
           });
 
           itThrows(ConversionException.class, "if no element converter is registered because it calls itself",()->{
