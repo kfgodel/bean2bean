@@ -32,9 +32,7 @@ public interface ExplicitScopeYetToBeDefinedDsl {
    * @param inputTypeRef Reference to the type of expected arguments
    * @return The partially defined configuration to complete the scope restriction
    */
-  default SourceDefinedExplicitScopeDsl accept(TypeRef<?> inputTypeRef){
-   return accept(inputTypeRef.getReference());
-  }
+  <I> ExplicitScopeWithDefinedSource<I> accept(TypeRef<I> inputTypeRef);
 
   /**
    * Limits the applicability of a converter by using its type parameters to restrict its usage to valid arguments

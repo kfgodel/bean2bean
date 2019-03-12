@@ -8,6 +8,7 @@ import info.kfgodel.bean2bean.dsl.api.scopes.ImplicitlyScopedConfigureDsl;
 import info.kfgodel.bean2bean.dsl.api.scopes.ScopedConfigureDsl;
 import info.kfgodel.bean2bean.dsl.api.scopes.SourceDefinedExplicitScopeDsl;
 import info.kfgodel.bean2bean.dsl.impl.ConfigureDslImpl;
+import info.kfgodel.bean2bean.other.references.TypeRef;
 
 import java.lang.reflect.Type;
 
@@ -34,6 +35,12 @@ public class ExplicitScopeYetToBeDefinedDslImpl implements ExplicitScopeYetToBeD
   @Override
   public <I> ExplicitScopeWithDefinedSource<I> accept(Class<I> inputType) {
     Domain inputDomain = calculateDomainFor(inputType);
+    return ExplicitScopeWithDefinedSourceImpl.create(inputDomain, this);
+  }
+
+  @Override
+  public <I> ExplicitScopeWithDefinedSource<I> accept(TypeRef<I> inputTypeRef) {
+    Domain inputDomain = calculateDomainFor(inputTypeRef.getReference());
     return ExplicitScopeWithDefinedSourceImpl.create(inputDomain, this);
   }
 
