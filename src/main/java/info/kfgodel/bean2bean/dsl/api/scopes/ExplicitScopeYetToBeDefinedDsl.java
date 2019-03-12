@@ -11,7 +11,7 @@ import java.lang.reflect.Type;
  *
  * Date: 05/03/19 - 19:10
  */
-public interface UndefinedExplicitScopeDsl {
+public interface ExplicitScopeYetToBeDefinedDsl {
 
   /**
    * Indicates the type of acceptable input for the converter
@@ -19,6 +19,13 @@ public interface UndefinedExplicitScopeDsl {
    * @return The partially defined configuration to complete the scope restriction
    */
   SourceDefinedExplicitScopeDsl accept(Type inputType);
+
+  /**
+   * Indicates the type of acceptable input by a class instance
+   * @param inputType The class that represents the type
+   * @return The partially defined configuration restricted to the input type
+   */
+  <I> ExplicitScopeWithDefinedSource<I> accept(Class<I> inputType);
 
   /**
    * Indicates the type of acceptable input for the converter through a type reference

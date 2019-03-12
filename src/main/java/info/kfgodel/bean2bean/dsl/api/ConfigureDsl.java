@@ -3,9 +3,9 @@ package info.kfgodel.bean2bean.dsl.api;
 import info.kfgodel.bean2bean.core.api.Bean2beanTask;
 import info.kfgodel.bean2bean.core.api.registry.DomainVector;
 import info.kfgodel.bean2bean.core.api.registry.definitions.ConverterDefinition;
+import info.kfgodel.bean2bean.dsl.api.scopes.ExplicitScopeYetToBeDefinedDsl;
 import info.kfgodel.bean2bean.dsl.api.scopes.ImplicitlyScopedConfigureDsl;
 import info.kfgodel.bean2bean.dsl.api.scopes.ScopedConfigureDsl;
-import info.kfgodel.bean2bean.dsl.api.scopes.UndefinedExplicitScopeDsl;
 import info.kfgodel.bean2bean.other.references.BiFunctionRef;
 import info.kfgodel.bean2bean.other.references.ConsumerRef;
 import info.kfgodel.bean2bean.other.references.FunctionRef;
@@ -49,7 +49,7 @@ public interface ConfigureDsl extends ImplicitlyScopedConfigureDsl {
    * the converter. The indicated types serve as the domain vector to be compared at on conversions
    * @return The starting definition of this configuration dsl scoped by the indicated domain vector
    */
-  UndefinedExplicitScopeDsl scopingTo();
+  ExplicitScopeYetToBeDefinedDsl scopingTo();
 
 
 

@@ -7,10 +7,10 @@ import info.kfgodel.bean2bean.core.impl.registry.domains.DomainCalculator;
 import info.kfgodel.bean2bean.core.impl.registry.domains.DomainVectorExtractor;
 import info.kfgodel.bean2bean.dsl.api.B2bDsl;
 import info.kfgodel.bean2bean.dsl.api.ConfigureDsl;
+import info.kfgodel.bean2bean.dsl.api.scopes.ExplicitScopeYetToBeDefinedDsl;
 import info.kfgodel.bean2bean.dsl.api.scopes.ScopedConfigureDsl;
-import info.kfgodel.bean2bean.dsl.api.scopes.UndefinedExplicitScopeDsl;
+import info.kfgodel.bean2bean.dsl.impl.scopes.ExplicitScopeYetToBeDefinedDslImpl;
 import info.kfgodel.bean2bean.dsl.impl.scopes.PredicateScopedConfigureDsl;
-import info.kfgodel.bean2bean.dsl.impl.scopes.UndefinedExplicitScopeDslImpl;
 import info.kfgodel.bean2bean.other.references.BiFunctionRef;
 import info.kfgodel.bean2bean.other.references.ConsumerRef;
 import info.kfgodel.bean2bean.other.references.FunctionRef;
@@ -44,8 +44,8 @@ public class ConfigureDslImpl implements ConfigureDsl {
   }
 
   @Override
-  public UndefinedExplicitScopeDsl scopingTo() {
-    return UndefinedExplicitScopeDslImpl.create(this);
+  public ExplicitScopeYetToBeDefinedDsl scopingTo() {
+    return ExplicitScopeYetToBeDefinedDslImpl.create(this);
   }
 
   @Override

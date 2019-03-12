@@ -13,13 +13,13 @@ import java.util.function.BiFunction;
  * This class implements the converter from a integer to an array instantiating it with the indicated integer size
  * Date: 03/03/19 - 17:32
  */
-public class ArrayInstantiator implements BiFunction<Integer, Bean2beanTask, Object> {
+public class ArrayInstantiator<E> implements BiFunction<Integer, Bean2beanTask, E[]> {
 
   @Override
-  public Object apply(Integer expectedArraySize, Bean2beanTask task) {
+  public E[] apply(Integer expectedArraySize, Bean2beanTask task) {
     Class elementType = deduceElementTypeFrom(task);
     Object createdArray = Array.newInstance(elementType, expectedArraySize);
-    return createdArray;
+    return (E[]) createdArray;
   }
 
   private Class deduceElementTypeFrom(Bean2beanTask task) {
@@ -29,8 +29,8 @@ public class ArrayInstantiator implements BiFunction<Integer, Bean2beanTask, Obj
       .orElseThrow(()-> new CreationException("Can't instantiate array for non array type: " + task.getTargetType(), task.getTargetType()));
   }
 
-  public static ArrayInstantiator create() {
-    ArrayInstantiator instantiator = new ArrayInstantiator();
+  public static <E> ArrayInstantiator<E> create() {
+    ArrayInstantiator<E> instantiator = new ArrayInstantiator<>();
     return instantiator;
   }
 

@@ -12,7 +12,7 @@ import java.lang.reflect.Type;
  */
 public class SourceDefinedExplicitScopeDslImpl implements SourceDefinedExplicitScopeDsl {
 
-  private UndefinedExplicitScopeDslImpl parentDsl;
+  private ExplicitScopeYetToBeDefinedDslImpl parentDsl;
 
   private Domain inputDomain;
 
@@ -23,7 +23,7 @@ public class SourceDefinedExplicitScopeDslImpl implements SourceDefinedExplicitS
     return parentDsl.vector(conversionVector);
   }
 
-  public static SourceDefinedExplicitScopeDslImpl create(Domain inputDomain, UndefinedExplicitScopeDslImpl explicitScopeDefinitionDsl) {
+  public static SourceDefinedExplicitScopeDslImpl create(Domain inputDomain, ExplicitScopeYetToBeDefinedDslImpl explicitScopeDefinitionDsl) {
     SourceDefinedExplicitScopeDslImpl dsl = new SourceDefinedExplicitScopeDslImpl();
     dsl.parentDsl = explicitScopeDefinitionDsl;
     dsl.inputDomain = inputDomain;
