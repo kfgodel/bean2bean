@@ -27,20 +27,20 @@ public class ExplicitScopeWithParameterizedSourceDslImpl<I> implements ExplicitS
 
   @Override
   public <O> ParameterizedScopeDsl<I, O> andProduce(Class<O> targetType) {
-    return this.andProduce((Type)targetType);
+    return andProduce((Type)targetType);
+  }
+
+  @Override
+  public <O> ParameterizedScopeDsl<I, O> andProduce(Type targetType) {
+    Domain targetDomain = parentDsl.calculateDomainFor(targetType);
+    DomainVector conversionVector = DomainVector.create(inputDomain, targetDomain);
+    return ParameterizedScopeDslImpl.<I,O>create(conversionVector, getConfigureDsl());
   }
 
   @Override
   public <O> ParameterizedScopeDsl<I, O> andProduce(TypeRef<O> targetTypeRef) {
     return andProduce(targetTypeRef.getReference());
   }
-
-  private <O> ParameterizedScopeDsl<I, O> andProduce(Type targetType) {
-    Domain targetDomain = parentDsl.calculateDomainFor(targetType);
-    DomainVector conversionVector = DomainVector.create(inputDomain, targetDomain);
-    return ParameterizedScopeDslImpl.<I,O>create(conversionVector, getConfigureDsl());
-  }
-
 
   private ConfigureDslImpl getConfigureDsl() {
     return this.parentDsl.getParentDsl();
