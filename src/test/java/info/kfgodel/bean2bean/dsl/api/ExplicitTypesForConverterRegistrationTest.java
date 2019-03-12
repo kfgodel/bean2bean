@@ -171,7 +171,7 @@ public class ExplicitTypesForConverterRegistrationTest extends JavaSpec<B2bTestC
 
             it("accepts a bifunction that takes the dsl as second arg as a converter",()->{
               test().configure()
-                .scopingTo().accept(new TypeRef<Object>(){}).andProduce(new TypeRef<Object>(){})
+                .scopingTo().accept(new TypeRef<Object>(){}).andProduce(getObjectType())
                 .useConverter((input, b2b)-> input);
               Object result = test().dsl().convert().from("an object").to(getObjectType());
               assertThat(result).isEqualTo("an object");
