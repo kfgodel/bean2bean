@@ -24,7 +24,6 @@ public interface Bean2BeanRegistry {
    */
   <O> Optional<Function<Bean2beanTask,O>> findBestConverterFor(DomainVector conversionVector);
 
-
   /**
    * Stores the given converter definition in this registry so the converter can be used later for conversions.<br>
    *   This method can be used when the type of definition is not previously known. It's a facility method for

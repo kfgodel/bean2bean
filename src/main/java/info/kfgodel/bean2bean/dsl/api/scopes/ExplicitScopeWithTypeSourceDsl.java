@@ -10,23 +10,23 @@ import java.lang.reflect.Type;
  *
  * Date: 05/03/19 - 19:15
  */
-public interface SourceDefinedExplicitScopeDsl {
+public interface ExplicitScopeWithTypeSourceDsl {
 
   /**
    * Completes the scope by defining the target type for the converter.<br>
-   *   The reistered converter should produce instances of t eh given type
+   *   The registered converter should produce instances of the given type
    * @param targetType The type of instances to expect out of the converter
    * @return The configuration dsl to register the scoped converter
    */
-  ScopedConfigureDsl andProduce(Type targetType);
+  ScopeDsl andProduce(Type targetType);
 
   /**
    * Completes the scope by defining the target type for the converter.<br>
-   *   The reistered converter should produce instances of t eh given type
+   *   The registered converter should produce instances of the given type
    * @param targetTypeRef The reference for the type of instances to expect out of the converter
    * @return The configuration dsl to register the scoped converter
    */
-  default ScopedConfigureDsl andProduce(TypeRef<?> targetTypeRef){
+  default ScopeDsl andProduce(TypeRef<?> targetTypeRef){
     return andProduce(targetTypeRef.getReference());
   }
 }
