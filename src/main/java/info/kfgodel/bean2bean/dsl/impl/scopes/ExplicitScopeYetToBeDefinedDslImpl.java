@@ -2,11 +2,11 @@ package info.kfgodel.bean2bean.dsl.impl.scopes;
 
 import info.kfgodel.bean2bean.core.api.registry.Domain;
 import info.kfgodel.bean2bean.core.api.registry.DomainVector;
-import info.kfgodel.bean2bean.dsl.api.scopes.ExplicitScopeWithDefinedSource;
+import info.kfgodel.bean2bean.dsl.api.scopes.ExplicitScopeWithParameterizedSourceDsl;
+import info.kfgodel.bean2bean.dsl.api.scopes.ExplicitScopeWithTypeSourceDsl;
 import info.kfgodel.bean2bean.dsl.api.scopes.ExplicitScopeYetToBeDefinedDsl;
-import info.kfgodel.bean2bean.dsl.api.scopes.ImplicitlyScopedConfigureDsl;
-import info.kfgodel.bean2bean.dsl.api.scopes.ScopedConfigureDsl;
-import info.kfgodel.bean2bean.dsl.api.scopes.SourceDefinedExplicitScopeDsl;
+import info.kfgodel.bean2bean.dsl.api.scopes.ImplicitScopeDsl;
+import info.kfgodel.bean2bean.dsl.api.scopes.ScopeDsl;
 import info.kfgodel.bean2bean.dsl.impl.ConfigureDslImpl;
 import info.kfgodel.bean2bean.other.references.TypeRef;
 
@@ -27,21 +27,21 @@ public class ExplicitScopeYetToBeDefinedDslImpl implements ExplicitScopeYetToBeD
   }
 
   @Override
-  public SourceDefinedExplicitScopeDsl accept(Type inputType) {
+  public ExplicitScopeWithTypeSourceDsl accept(Type inputType) {
     Domain inputDomain = calculateDomainFor(inputType);
-    return SourceDefinedExplicitScopeDslImpl.create(inputDomain, this);
+    return ExplicitScopeWithTypeSourceDslImpl.create(inputDomain, this);
   }
 
   @Override
-  public <I> ExplicitScopeWithDefinedSource<I> accept(Class<I> inputType) {
+  public <I> ExplicitScopeWithParameterizedSourceDsl<I> accept(Class<I> inputType) {
     Domain inputDomain = calculateDomainFor(inputType);
-    return ExplicitScopeWithDefinedSourceImpl.create(inputDomain, this);
+    return ExplicitScopeWithParameterizedSourceDslImpl.create(inputDomain, this);
   }
 
   @Override
-  public <I> ExplicitScopeWithDefinedSource<I> accept(TypeRef<I> inputTypeRef) {
+  public <I> ExplicitScopeWithParameterizedSourceDsl<I> accept(TypeRef<I> inputTypeRef) {
     Domain inputDomain = calculateDomainFor(inputTypeRef.getReference());
-    return ExplicitScopeWithDefinedSourceImpl.create(inputDomain, this);
+    return ExplicitScopeWithParameterizedSourceDslImpl.create(inputDomain, this);
   }
 
 
@@ -50,13 +50,13 @@ public class ExplicitScopeYetToBeDefinedDslImpl implements ExplicitScopeYetToBeD
   }
 
   @Override
-  public ScopedConfigureDsl vector(DomainVector conversionVector) {
-    return DomainVectorScopedConfigureDsl.create(conversionVector, this.parentDsl);
+  public ScopeDsl vector(DomainVector conversionVector) {
+    return DomainVectorScopeDsl.create(conversionVector, this.parentDsl);
   }
 
   @Override
-  public ImplicitlyScopedConfigureDsl implicitTypes() {
-    return ImplicitScopeConfigureDslImpl.create(this.parentDsl);
+  public ImplicitScopeDsl implicitTypes() {
+    return ImplicitScopeDslImpl.create(this.parentDsl);
   }
 
   public ConfigureDslImpl getParentDsl() {

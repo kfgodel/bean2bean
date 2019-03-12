@@ -18,21 +18,21 @@ public interface ExplicitScopeYetToBeDefinedDsl {
    * @param inputType type of expected arguments
    * @return The partially defined configuration to complete the scope restriction
    */
-  SourceDefinedExplicitScopeDsl accept(Type inputType);
+  ExplicitScopeWithTypeSourceDsl accept(Type inputType);
 
   /**
    * Indicates the type of acceptable input by a class instance
    * @param inputType The class that represents the type
    * @return The partially defined configuration restricted to the input type
    */
-  <I> ExplicitScopeWithDefinedSource<I> accept(Class<I> inputType);
+  <I> ExplicitScopeWithParameterizedSourceDsl<I> accept(Class<I> inputType);
 
   /**
    * Indicates the type of acceptable input for the converter through a type reference
    * @param inputTypeRef Reference to the type of expected arguments
    * @return The partially defined configuration to complete the scope restriction
    */
-  <I> ExplicitScopeWithDefinedSource<I> accept(TypeRef<I> inputTypeRef);
+  <I> ExplicitScopeWithParameterizedSourceDsl<I> accept(TypeRef<I> inputTypeRef);
 
   /**
    * Limits the applicability of a converter by using its type parameters to restrict its usage to valid arguments
@@ -45,12 +45,12 @@ public interface ExplicitScopeYetToBeDefinedDsl {
    *
    * @return The partial definition of this configuration dsl scoping to implicit types
    */
-  ImplicitlyScopedConfigureDsl implicitTypes();
+  ImplicitScopeDsl implicitTypes();
 
   /**
    * Indicates the explicit conversion vector fo which the converter can be used
    * @param conversionVector The vector that defines the scope of applicability for the converter
    * @return The configuration dsl to register the converter
    */
-  ScopedConfigureDsl vector(DomainVector conversionVector);
+  ScopeDsl vector(DomainVector conversionVector);
 }

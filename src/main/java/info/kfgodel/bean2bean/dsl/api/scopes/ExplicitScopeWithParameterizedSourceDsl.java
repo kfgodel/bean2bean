@@ -2,15 +2,11 @@ package info.kfgodel.bean2bean.dsl.api.scopes;
 
 import info.kfgodel.bean2bean.other.references.TypeRef;
 
-import java.lang.reflect.Type;
-
 /**
- * This type represents a partial configuration where the source type of an explicit scope is defined
- * and the target is yet to be defined
- *
- * Date: 05/03/19 - 19:15
+ * This type represents the parameterized interface for source defined scopes that need to define a target domain
+ * Date: 11/03/19 - 21:41
  */
-public interface SourceDefinedExplicitScopeDsl {
+public interface ExplicitScopeWithParameterizedSourceDsl<I> {
 
   /**
    * Completes the scope by defining the target type for the converter.<br>
@@ -18,7 +14,8 @@ public interface SourceDefinedExplicitScopeDsl {
    * @param targetType The type of instances to expect out of the converter
    * @return The configuration dsl to register the scoped converter
    */
-  ScopedConfigureDsl andProduce(Type targetType);
+  <O> ParameterizedScopeDsl<I,O> andProduce(Class<O> targetType);
+
 
   /**
    * Completes the scope by defining the target type for the converter.<br>
@@ -26,7 +23,5 @@ public interface SourceDefinedExplicitScopeDsl {
    * @param targetTypeRef The reference for the type of instances to expect out of the converter
    * @return The configuration dsl to register the scoped converter
    */
-  default ScopedConfigureDsl andProduce(TypeRef<?> targetTypeRef){
-    return andProduce(targetTypeRef.getReference());
-  }
+  <O> ParameterizedScopeDsl<I,O> andProduce(TypeRef<O> targetTypeRef);
 }

@@ -7,7 +7,8 @@ import info.kfgodel.bean2bean.core.impl.conversion.ConsumerAdapterConverter;
 import info.kfgodel.bean2bean.core.impl.conversion.FunctionAdapterConverter;
 import info.kfgodel.bean2bean.core.impl.conversion.SupplierAdapterConverter;
 import info.kfgodel.bean2bean.core.impl.registry.definitions.VectorDefinition;
-import info.kfgodel.bean2bean.dsl.api.scopes.ScopedRegistrationDsl;
+import info.kfgodel.bean2bean.dsl.api.ConfigureDsl;
+import info.kfgodel.bean2bean.dsl.api.scopes.ScopeDsl;
 import info.kfgodel.bean2bean.dsl.impl.ConfigureDslImpl;
 import info.kfgodel.bean2bean.other.references.BiFunctionRef;
 import info.kfgodel.bean2bean.other.references.ConsumerRef;
@@ -20,68 +21,67 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
- * Date: 11/03/19 - 22:16
+ * This class implements the explicit domain vector scoped configuration
+ * Date: 05/03/19 - 18:23
  */
-public class ScopedRegistrationDslImpl<I,O> implements ScopedRegistrationDsl<I,O> {
+public class DomainVectorScopeDsl implements ScopeDsl {
 
   private DomainVector domainVector;
   private ConfigureDslImpl parentDsl;
 
+  public static DomainVectorScopeDsl create(DomainVector domainVector, ConfigureDslImpl configureDsl) {
+    DomainVectorScopeDsl dsl = new DomainVectorScopeDsl();
+    dsl.domainVector = domainVector;
+    dsl.parentDsl = configureDsl;
+    return dsl;
+  }
+
   @Override
-  public ScopedRegistrationDsl<I, O> useConverter(Function<? super I, ? extends O> converterFunction) {
+  public <I, O> ScopeDsl useConverter(Function<I, O> converterFunction) {
     FunctionAdapterConverter converter = FunctionAdapterConverter.create(converterFunction);
     return usingConverterFor(converter);
   }
 
   @Override
-  public ScopedRegistrationDsl<I, O> useConverter(BiFunction<? super I, Bean2beanTask, ? extends O> converterFunction) {
+  public <I, O> ScopeDsl useConverter(BiFunction<I, Bean2beanTask, O> converterFunction) {
     BiFunctionAdapterConverter converter = BiFunctionAdapterConverter.create(converterFunction);
     return usingConverterFor(converter);
   }
 
   @Override
-  public ScopedRegistrationDsl<I, O> useConverter(Supplier<? extends O> converterFunction) {
+  public <O> ScopeDsl useConverter(Supplier<O> converterFunction) {
     SupplierAdapterConverter converter = SupplierAdapterConverter.create(converterFunction);
     return usingConverterFor(converter);
   }
 
   @Override
-  public ScopedRegistrationDsl<I, O> useConverter(Consumer<? super I> converterFunction) {
+  public <I> ScopeDsl useConverter(Consumer<I> converterFunction) {
     ConsumerAdapterConverter converter = ConsumerAdapterConverter.create(converterFunction);
     return usingConverterFor(converter);
   }
 
   @Override
-  public ScopedRegistrationDsl<I, O> useConverter(FunctionRef<? super I, ? extends O> converterFunctionRef) {
+  public <I, O> ScopeDsl useConverter(FunctionRef<I, O> converterFunctionRef) {
     return useConverter(converterFunctionRef.getFunction());
   }
 
   @Override
-  public ScopedRegistrationDsl<I, O> useConverter(BiFunctionRef<? super I, Bean2beanTask, ? extends O> converterFunction) {
+  public <I, O> ScopeDsl useConverter(BiFunctionRef<I, Bean2beanTask, O> converterFunction) {
     return useConverter(converterFunction.getBiFunction());
   }
 
   @Override
-  public ScopedRegistrationDsl<I, O> useConverter(SupplierRef<? extends O> converterFunction) {
+  public <O> ScopeDsl useConverter(SupplierRef<O> converterFunction) {
     return useConverter(converterFunction.getSupplier());
   }
 
   @Override
-  public ScopedRegistrationDsl<I, O> useConverter(ConsumerRef<? super I> converterFunction) {
+  public <I> ScopeDsl useConverter(ConsumerRef<I> converterFunction) {
     return useConverter(converterFunction.getConsumer());
   }
 
-  private ScopedRegistrationDslImpl<I, O> usingConverterFor(Function<Bean2beanTask, Object> converter) {
+  private ConfigureDsl usingConverterFor(Function<Bean2beanTask, Object> converter) {
     VectorDefinition definition = VectorDefinition.create(converter, domainVector);
-    parentDsl.useDefinition(definition);
-    return this;
+    return parentDsl.useDefinition(definition);
   }
-
-  public static <I,O> ScopedRegistrationDslImpl<I,O> create(DomainVector domainVector, ConfigureDslImpl parentDsl) {
-    ScopedRegistrationDslImpl<I,O> dsl = new ScopedRegistrationDslImpl<>();
-    dsl.domainVector = domainVector;
-    dsl.parentDsl = parentDsl;
-    return dsl;
-  }
-
 }

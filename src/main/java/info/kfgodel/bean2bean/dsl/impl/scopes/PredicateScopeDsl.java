@@ -8,7 +8,7 @@ import info.kfgodel.bean2bean.core.impl.conversion.FunctionAdapterConverter;
 import info.kfgodel.bean2bean.core.impl.conversion.SupplierAdapterConverter;
 import info.kfgodel.bean2bean.core.impl.registry.definitions.PredicateDefinition;
 import info.kfgodel.bean2bean.dsl.api.ConfigureDsl;
-import info.kfgodel.bean2bean.dsl.api.scopes.ScopedConfigureDsl;
+import info.kfgodel.bean2bean.dsl.api.scopes.ScopeDsl;
 import info.kfgodel.bean2bean.dsl.impl.ConfigureDslImpl;
 import info.kfgodel.bean2bean.other.references.BiFunctionRef;
 import info.kfgodel.bean2bean.other.references.ConsumerRef;
@@ -25,13 +25,13 @@ import java.util.function.Supplier;
  * This class implements the scoped configuration using a predicate
  * Date: 05/03/19 - 16:43
  */
-public class PredicateScopedConfigureDsl implements ScopedConfigureDsl {
+public class PredicateScopeDsl implements ScopeDsl {
 
   private Predicate<DomainVector> scopePredicate;
   private ConfigureDslImpl parentDsl;
 
-  public static PredicateScopedConfigureDsl create(Predicate<DomainVector> scopePredicate, ConfigureDslImpl configureDsl) {
-    PredicateScopedConfigureDsl dsl = new PredicateScopedConfigureDsl();
+  public static PredicateScopeDsl create(Predicate<DomainVector> scopePredicate, ConfigureDslImpl configureDsl) {
+    PredicateScopeDsl dsl = new PredicateScopeDsl();
     dsl.scopePredicate = scopePredicate;
     dsl.parentDsl = configureDsl;
     return dsl;
@@ -62,22 +62,22 @@ public class PredicateScopedConfigureDsl implements ScopedConfigureDsl {
   }
 
   @Override
-  public <I, O> ScopedConfigureDsl useConverter(FunctionRef<I, O> converterFunctionRef) {
+  public <I, O> ScopeDsl useConverter(FunctionRef<I, O> converterFunctionRef) {
     return useConverter(converterFunctionRef.getFunction());
   }
 
   @Override
-  public <I, O> ScopedConfigureDsl useConverter(BiFunctionRef<I, Bean2beanTask, O> converterFunction) {
+  public <I, O> ScopeDsl useConverter(BiFunctionRef<I, Bean2beanTask, O> converterFunction) {
     return useConverter(converterFunction.getBiFunction());
   }
 
   @Override
-  public <O> ScopedConfigureDsl useConverter(SupplierRef<O> converterFunction) {
+  public <O> ScopeDsl useConverter(SupplierRef<O> converterFunction) {
     return useConverter(converterFunction.getSupplier());
   }
 
   @Override
-  public <I> ScopedConfigureDsl useConverter(ConsumerRef<I> converterFunction) {
+  public <I> ScopeDsl useConverter(ConsumerRef<I> converterFunction) {
     return useConverter(converterFunction.getConsumer());
   }
 

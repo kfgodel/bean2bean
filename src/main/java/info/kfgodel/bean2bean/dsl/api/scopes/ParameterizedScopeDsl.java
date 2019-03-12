@@ -12,11 +12,11 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
- * This type represents a configuration that scopes the applicability of a converter to limit its usage
+ * This type defines the methods for registering a converter under a limited scope
  *
- * Date: 05/03/19 - 16:33
+ * Date: 11/03/19 - 21:50
  */
-public interface ScopedConfigureDsl {
+public interface ParameterizedScopeDsl<I,O> {
 
   /**
    * Registers a function to be used as converter between the function input-output types.<br>
@@ -24,7 +24,7 @@ public interface ScopedConfigureDsl {
    * @param converterFunction The function instance to use as a converter
    * @return This instance for method chaining
    */
-  <I,O> ScopedConfigureDsl useConverter(Function<I,O> converterFunction);
+  ParameterizedScopeDsl<I,O> useConverter(Function<? super I, ? extends O> converterFunction);
 
   /**
    * Registers a converter that will need access to the conversion task as part of the conversion
@@ -33,7 +33,7 @@ public interface ScopedConfigureDsl {
    * @param converterFunction The bi function to use as converter
    * @return This instance for method chaining
    */
-  <I,O> ScopedConfigureDsl useConverter(BiFunction<I, Bean2beanTask,O> converterFunction);
+  ParameterizedScopeDsl<I,O> useConverter(BiFunction<? super I, Bean2beanTask,? extends O> converterFunction);
 
   /**
    * Registers a converter function that requires no arguments as input for the conversion.<br>
@@ -41,7 +41,7 @@ public interface ScopedConfigureDsl {
    * @param converterFunction The supplier to use as generator
    * @return This instance for method chaining
    */
-  <O> ScopedConfigureDsl useConverter(Supplier<O> converterFunction);
+  ParameterizedScopeDsl<I,O> useConverter(Supplier<? extends O> converterFunction);
 
   /**
    * Registers a converter function that generates no output as result of the conversion.<br>
@@ -49,7 +49,7 @@ public interface ScopedConfigureDsl {
    * @param converterFunction The consumer to use as destructor
    * @return This instance for method chaining
    */
-  <I> ScopedConfigureDsl useConverter(Consumer<I> converterFunction);
+  ParameterizedScopeDsl<I,O> useConverter(Consumer<? super I> converterFunction);
 
   /**
    * Registers a function through its reference to be used as converter between the function input-output types.<br>
@@ -58,7 +58,7 @@ public interface ScopedConfigureDsl {
    * @param converterFunctionRef The reference to the function used as converter
    * @return This instance for method chaining
    */
-  <I,O> ScopedConfigureDsl useConverter(FunctionRef<I,O> converterFunctionRef);
+  ParameterizedScopeDsl<I,O> useConverter(FunctionRef<? super I,? extends O> converterFunctionRef);
 
   /**
    * Registers a converter function though its reference that will need access to b2b dsl as part of the conversion
@@ -66,7 +66,7 @@ public interface ScopedConfigureDsl {
    * @param converterFunction The function to use as converter
    * @return This instance for method chaining
    */
-  <I,O> ScopedConfigureDsl useConverter(BiFunctionRef<I,Bean2beanTask,O> converterFunction);
+  ParameterizedScopeDsl<I,O> useConverter(BiFunctionRef<? super I, Bean2beanTask, ? extends O> converterFunction);
 
   /**
    * Registers a converter lambda through its reference that requires no parameters as input for the conversion.<br>
@@ -74,7 +74,7 @@ public interface ScopedConfigureDsl {
    * @param converterFunction The function to use a generator
    * @return This instance for method chaining
    */
-  <O> ScopedConfigureDsl useConverter(SupplierRef<O> converterFunction);
+  ParameterizedScopeDsl<I,O> useConverter(SupplierRef<? extends O> converterFunction);
 
   /**
    * Registers a converter lambda through its reference that generates no output as result of the conversion.<br>
@@ -82,5 +82,5 @@ public interface ScopedConfigureDsl {
    * @param converterFunction The function to use as destructor
    * @return This instance for method chaining
    */
-  <I> ScopedConfigureDsl useConverter(ConsumerRef<I> converterFunction);
+  ParameterizedScopeDsl<I,O> useConverter(ConsumerRef<? super I> converterFunction);
 }
