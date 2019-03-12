@@ -52,4 +52,7 @@ public class ExplicitScopeYetToBeDefinedDslImpl implements ExplicitScopeYetToBeD
     return ImplicitScopeConfigureDslImpl.create(this.parentDsl);
   }
 
+  public ConfigureDslImpl getParentDsl() {
+    return parentDsl;
+  }
 }

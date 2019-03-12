@@ -8,6 +8,8 @@ import info.kfgodel.bean2bean.dsl.impl.Dsl;
 import info.kfgodel.bean2bean.other.references.FunctionRef;
 import org.junit.runner.RunWith;
 
+import java.util.function.BiFunction;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -92,7 +94,7 @@ public class Array2ArrayConverterTest extends JavaSpec<ConverterTestContext> {
           beforeEach(()->{
             // Force the instantiator to the specific conversion
             test().dsl().configure().scopingTo().accept(Integer.class).andProduce(String[].class)
-              .useConverter(ArrayInstantiator.create());
+              .useConverter((BiFunction) ArrayInstantiator.create());
           });
 
           itThrows(NestedConversionException.class, "if target type is not an array",()->{

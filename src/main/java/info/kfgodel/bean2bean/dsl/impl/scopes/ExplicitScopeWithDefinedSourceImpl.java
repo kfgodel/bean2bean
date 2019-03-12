@@ -4,6 +4,7 @@ import info.kfgodel.bean2bean.core.api.registry.Domain;
 import info.kfgodel.bean2bean.core.api.registry.DomainVector;
 import info.kfgodel.bean2bean.dsl.api.scopes.ExplicitScopeWithDefinedSource;
 import info.kfgodel.bean2bean.dsl.api.scopes.ScopedRegistrationDsl;
+import info.kfgodel.bean2bean.dsl.impl.ConfigureDslImpl;
 
 /**
  * Default implementation
@@ -25,6 +26,10 @@ public class ExplicitScopeWithDefinedSourceImpl<I> implements ExplicitScopeWithD
   public <O> ScopedRegistrationDsl<I, O> andProduce(Class<O> targetType) {
     Domain targetDomain = parentDsl.calculateDomainFor(targetType);
     DomainVector conversionVector = DomainVector.create(inputDomain, targetDomain);
-    return ScopedRegistrationDslImpl.<I,O>create(conversionVector, this);
+    return ScopedRegistrationDslImpl.<I,O>create(conversionVector, getConfigureDsl());
+  }
+
+  private ConfigureDslImpl getConfigureDsl() {
+    return this.parentDsl.getParentDsl();
   }
 }
