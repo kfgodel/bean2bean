@@ -10,6 +10,10 @@ import info.kfgodel.bean2bean.core.impl.registry.definitions.VectorDefinition;
 import info.kfgodel.bean2bean.dsl.api.ConfigureDsl;
 import info.kfgodel.bean2bean.dsl.api.scopes.ScopedConfigureDsl;
 import info.kfgodel.bean2bean.dsl.impl.ConfigureDslImpl;
+import info.kfgodel.bean2bean.other.references.BiFunctionRef;
+import info.kfgodel.bean2bean.other.references.ConsumerRef;
+import info.kfgodel.bean2bean.other.references.FunctionRef;
+import info.kfgodel.bean2bean.other.references.SupplierRef;
 
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -54,6 +58,26 @@ public class DomainVectorScopedConfigureDsl implements ScopedConfigureDsl {
   public <I> ScopedConfigureDsl useConverter(Consumer<I> converterFunction) {
     ConsumerAdapterConverter converter = ConsumerAdapterConverter.create(converterFunction);
     return usingConverterFor(converter);
+  }
+
+  @Override
+  public <I, O> ScopedConfigureDsl useConverter(FunctionRef<I, O> converterFunctionRef) {
+    return useConverter(converterFunctionRef.getFunction());
+  }
+
+  @Override
+  public <I, O> ScopedConfigureDsl useConverter(BiFunctionRef<I, Bean2beanTask, O> converterFunction) {
+    return useConverter(converterFunction.getBiFunction());
+  }
+
+  @Override
+  public <O> ScopedConfigureDsl useConverter(SupplierRef<O> converterFunction) {
+    return useConverter(converterFunction.getSupplier());
+  }
+
+  @Override
+  public <I> ScopedConfigureDsl useConverter(ConsumerRef<I> converterFunction) {
+    return useConverter(converterFunction.getConsumer());
   }
 
   private ConfigureDsl usingConverterFor(Function<Bean2beanTask, Object> converter) {
