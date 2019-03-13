@@ -376,8 +376,157 @@ public class ExplicitTypesForConverterRegistrationTest extends JavaSpec<B2bTestC
           });
 
         });
+        describe("from typeRef source to type target", () -> {
+          describe("for lambda instances", () -> {
+            it("accepts a function as converter", () -> {
+              test().configure()
+                .scopingTo().accept(new TypeRef<Object>(){}).andProduce(getObjectType())
+                .useConverter((in) -> in);
+              Object result = test().dsl().convert().from("an object").to(getObjectType());
+              assertThat(result).isEqualTo("an object");
+            });
+
+            it("accepts a bifunction that takes the dsl as second arg as a converter",()->{
+              test().configure()
+                .scopingTo().accept(new TypeRef<Object>(){}).andProduce(getObjectType())
+                .useConverter((input, b2b)-> input);
+              Object result = test().dsl().convert().from("an object").to(getObjectType());
+              assertThat(result).isEqualTo("an object");
+            });
+
+            it("accepts a supplier as a converter",()->{
+              test().configure()
+                .scopingTo().accept(new TypeRef<Nothing>(){}).andProduce(getObjectType())
+                .useConverter(() -> "a value");
+              Object result = test().dsl().convert().from(Nothing.INSTANCE).to(getObjectType());
+              assertThat(result).isEqualTo("a value");
+            });
+
+            it("accepts a consumer as a converter",()->{
+              AtomicReference<String> converterArgument = new AtomicReference<>();
+
+              test().configure()
+                .scopingTo().accept(new TypeRef<String>(){}).andProduce(getObjectType())
+                .useConverter(converterArgument::set);
+
+              assertThat(test().dsl().convert().from("an object").to(Nothing.class)).isNull();
+              assertThat(converterArgument.get()).isEqualTo("an object");
+            });
+          });
+          describe("for lambda references", () -> {
+            it("accepts a function as converter", () -> {
+              test().configure()
+                .scopingTo().accept(new TypeRef<Object>(){}).andProduce(getObjectType())
+                .useConverter(new FunctionRef<Object, Object>((in) -> in) {});
+              Object result = test().dsl().convert().from("an object").to(getObjectType());
+              assertThat(result).isEqualTo("an object");
+            });
+
+            it("accepts a bifunction that takes the dsl as second arg as a converter",()->{
+              test().configure()
+                .scopingTo().accept(new TypeRef<Object>(){}).andProduce(getObjectType())
+                .useConverter(new BiFunctionRef<Object, Bean2beanTask, Object>((input, b2b)-> input) {});
+              Object result = test().dsl().convert().from("an object").to(getObjectType());
+              assertThat(result).isEqualTo("an object");
+            });
+
+            it("accepts a supplier as a converter",()->{
+              test().configure()
+                .scopingTo().accept(new TypeRef<Nothing>(){}).andProduce(getObjectType())
+                .useConverter(new SupplierRef<Object>(() -> "a value") {});
+              Object result = test().dsl().convert().from(Nothing.INSTANCE).to(getObjectType());
+              assertThat(result).isEqualTo("a value");
+            });
+
+            it("accepts a consumer as a converter",()->{
+              AtomicReference<String> converterArgument = new AtomicReference<>();
+
+              test().configure()
+                .scopingTo().accept(new TypeRef<String>(){}).andProduce(getObjectType())
+                .useConverter(new ConsumerRef<String>(converterArgument::set) {});
+
+              assertThat(test().dsl().convert().from("an object").to(Nothing.class)).isNull();
+              assertThat(converterArgument.get()).isEqualTo("an object");
+            });
+          });
 
 
+        });
+        describe("from type source to typeRef target", () -> {
+          describe("for lambda instances", () -> {
+            it("accepts a function as converter", () -> {
+              test().configure()
+                .scopingTo().accept(getObjectType()).andProduce(new TypeRef<Object>(){})
+                .useConverter((in) -> in);
+              Object result = test().dsl().convert().from("an object").to(getObjectType());
+              assertThat(result).isEqualTo("an object");
+            });
+
+            it("accepts a bifunction that takes the dsl as second arg as a converter",()->{
+              test().configure()
+                .scopingTo().accept(getObjectType()).andProduce(new TypeRef<Object>(){})
+                .useConverter((input, b2b)-> input);
+              Object result = test().dsl().convert().from("an object").to(getObjectType());
+              assertThat(result).isEqualTo("an object");
+            });
+
+            it("accepts a supplier as a converter",()->{
+              test().configure()
+                .scopingTo().accept(getObjectType()).andProduce(new TypeRef<Object>(){})
+                .useConverter(() -> "a value");
+              Object result = test().dsl().convert().from(Nothing.INSTANCE).to(getObjectType());
+              assertThat(result).isEqualTo("a value");
+            });
+
+            it("accepts a consumer as a converter",()->{
+              AtomicReference<String> converterArgument = new AtomicReference<>();
+
+              test().configure()
+                .scopingTo().accept(getObjectType()).andProduce(new TypeRef<Nothing>(){})
+                .useConverter(converterArgument::set);
+
+              assertThat(test().dsl().convert().from("an object").to(Nothing.class)).isNull();
+              assertThat(converterArgument.get()).isEqualTo("an object");
+            });
+          });
+          describe("for lambda references", () -> {
+            it("accepts a function as converter", () -> {
+              test().configure()
+                .scopingTo().accept(getObjectType()).andProduce(new TypeRef<Object>(){})
+                .useConverter(new FunctionRef<Object, Object>((in) -> in) {});
+              Object result = test().dsl().convert().from("an object").to(getObjectType());
+              assertThat(result).isEqualTo("an object");
+            });
+
+            it("accepts a bifunction that takes the dsl as second arg as a converter",()->{
+              test().configure()
+                .scopingTo().accept(getObjectType()).andProduce(new TypeRef<Object>(){})
+                .useConverter(new BiFunctionRef<Object, Bean2beanTask, Object>((input, b2b)-> input) {});
+              Object result = test().dsl().convert().from("an object").to(getObjectType());
+              assertThat(result).isEqualTo("an object");
+            });
+
+            it("accepts a supplier as a converter",()->{
+              test().configure()
+                .scopingTo().accept(getObjectType()).andProduce(new TypeRef<Object>(){})
+                .useConverter(new SupplierRef<Object>(() -> "a value") {});
+              Object result = test().dsl().convert().from(Nothing.INSTANCE).to(getObjectType());
+              assertThat(result).isEqualTo("a value");
+            });
+
+            it("accepts a consumer as a converter",()->{
+              AtomicReference<String> converterArgument = new AtomicReference<>();
+
+              test().configure()
+                .scopingTo().accept(getObjectType()).andProduce(new TypeRef<Nothing>(){})
+                .useConverter(new ConsumerRef<String>(converterArgument::set) {});
+
+              assertThat(test().dsl().convert().from("an object").to(Nothing.class)).isNull();
+              assertThat(converterArgument.get()).isEqualTo("an object");
+            });
+          });
+
+        });
       });
     });
   }
