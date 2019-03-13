@@ -358,9 +358,9 @@ public class ExplicitTypesForConverterRegistrationTest extends JavaSpec<B2bTestC
             });
 
             it("accepts a supplier as a converter",()->{
-              test().configure().scopingTo().accept(getObjectType()).andProduce(String.class)
+              test().configure().scopingTo().accept(getObjectType()).andProduce(CharSequence.class)
                 .useConverter(new SupplierRef<String>(() -> "a value") {});
-              Object result = test().dsl().convert().from(Nothing.INSTANCE).to(String.class);
+              Object result = test().dsl().convert().from(Nothing.INSTANCE).to(CharSequence.class);
               assertThat(result).isEqualTo("a value");
             });
 
@@ -380,7 +380,7 @@ public class ExplicitTypesForConverterRegistrationTest extends JavaSpec<B2bTestC
           describe("for lambda instances", () -> {
             it("accepts a function as converter", () -> {
               test().configure()
-                .scopingTo().accept(new TypeRef<Object>(){}).andProduce(getObjectType())
+                .scopingTo().accept(new TypeRef<String>(){}).andProduce(getObjectType())
                 .useConverter((in) -> in);
               Object result = test().dsl().convert().from("an object").to(getObjectType());
               assertThat(result).isEqualTo("an object");
@@ -388,7 +388,7 @@ public class ExplicitTypesForConverterRegistrationTest extends JavaSpec<B2bTestC
 
             it("accepts a bifunction that takes the dsl as second arg as a converter",()->{
               test().configure()
-                .scopingTo().accept(new TypeRef<Object>(){}).andProduce(getObjectType())
+                .scopingTo().accept(new TypeRef<String>(){}).andProduce(getObjectType())
                 .useConverter((input, b2b)-> input);
               Object result = test().dsl().convert().from("an object").to(getObjectType());
               assertThat(result).isEqualTo("an object");
@@ -416,16 +416,16 @@ public class ExplicitTypesForConverterRegistrationTest extends JavaSpec<B2bTestC
           describe("for lambda references", () -> {
             it("accepts a function as converter", () -> {
               test().configure()
-                .scopingTo().accept(new TypeRef<Object>(){}).andProduce(getObjectType())
-                .useConverter(new FunctionRef<Object, Object>((in) -> in) {});
+                .scopingTo().accept(new TypeRef<String>(){}).andProduce(getObjectType())
+                .useConverter(new FunctionRef<String, Object>((in) -> in) {});
               Object result = test().dsl().convert().from("an object").to(getObjectType());
               assertThat(result).isEqualTo("an object");
             });
 
             it("accepts a bifunction that takes the dsl as second arg as a converter",()->{
               test().configure()
-                .scopingTo().accept(new TypeRef<Object>(){}).andProduce(getObjectType())
-                .useConverter(new BiFunctionRef<Object, Bean2beanTask, Object>((input, b2b)-> input) {});
+                .scopingTo().accept(new TypeRef<String>(){}).andProduce(getObjectType())
+                .useConverter(new BiFunctionRef<String, Bean2beanTask, Object>((input, b2b)-> input) {});
               Object result = test().dsl().convert().from("an object").to(getObjectType());
               assertThat(result).isEqualTo("an object");
             });
@@ -449,32 +449,30 @@ public class ExplicitTypesForConverterRegistrationTest extends JavaSpec<B2bTestC
               assertThat(converterArgument.get()).isEqualTo("an object");
             });
           });
-
-
         });
         describe("from type source to typeRef target", () -> {
           describe("for lambda instances", () -> {
             it("accepts a function as converter", () -> {
               test().configure()
-                .scopingTo().accept(getObjectType()).andProduce(new TypeRef<Object>(){})
+                .scopingTo().accept(getObjectType()).andProduce(new TypeRef<CharSequence>(){})
                 .useConverter((in) -> in);
-              Object result = test().dsl().convert().from("an object").to(getObjectType());
+              Object result = test().dsl().convert().from("an object").to(CharSequence.class);
               assertThat(result).isEqualTo("an object");
             });
 
             it("accepts a bifunction that takes the dsl as second arg as a converter",()->{
               test().configure()
-                .scopingTo().accept(getObjectType()).andProduce(new TypeRef<Object>(){})
+                .scopingTo().accept(getObjectType()).andProduce(new TypeRef<CharSequence>(){})
                 .useConverter((input, b2b)-> input);
-              Object result = test().dsl().convert().from("an object").to(getObjectType());
+              Object result = test().dsl().convert().from("an object").to(CharSequence.class);
               assertThat(result).isEqualTo("an object");
             });
 
             it("accepts a supplier as a converter",()->{
               test().configure()
-                .scopingTo().accept(getObjectType()).andProduce(new TypeRef<Object>(){})
+                .scopingTo().accept(getObjectType()).andProduce(new TypeRef<CharSequence>(){})
                 .useConverter(() -> "a value");
-              Object result = test().dsl().convert().from(Nothing.INSTANCE).to(getObjectType());
+              Object result = test().dsl().convert().from(Nothing.INSTANCE).to(CharSequence.class);
               assertThat(result).isEqualTo("a value");
             });
 
@@ -492,25 +490,25 @@ public class ExplicitTypesForConverterRegistrationTest extends JavaSpec<B2bTestC
           describe("for lambda references", () -> {
             it("accepts a function as converter", () -> {
               test().configure()
-                .scopingTo().accept(getObjectType()).andProduce(new TypeRef<Object>(){})
+                .scopingTo().accept(getObjectType()).andProduce(new TypeRef<CharSequence>(){})
                 .useConverter(new FunctionRef<Object, Object>((in) -> in) {});
-              Object result = test().dsl().convert().from("an object").to(getObjectType());
+              Object result = test().dsl().convert().from("an object").to(CharSequence.class);
               assertThat(result).isEqualTo("an object");
             });
 
             it("accepts a bifunction that takes the dsl as second arg as a converter",()->{
               test().configure()
-                .scopingTo().accept(getObjectType()).andProduce(new TypeRef<Object>(){})
+                .scopingTo().accept(getObjectType()).andProduce(new TypeRef<CharSequence>(){})
                 .useConverter(new BiFunctionRef<Object, Bean2beanTask, Object>((input, b2b)-> input) {});
-              Object result = test().dsl().convert().from("an object").to(getObjectType());
+              Object result = test().dsl().convert().from("an object").to(CharSequence.class);
               assertThat(result).isEqualTo("an object");
             });
 
             it("accepts a supplier as a converter",()->{
               test().configure()
-                .scopingTo().accept(getObjectType()).andProduce(new TypeRef<Object>(){})
+                .scopingTo().accept(getObjectType()).andProduce(new TypeRef<CharSequence>(){})
                 .useConverter(new SupplierRef<Object>(() -> "a value") {});
-              Object result = test().dsl().convert().from(Nothing.INSTANCE).to(getObjectType());
+              Object result = test().dsl().convert().from(Nothing.INSTANCE).to(CharSequence.class);
               assertThat(result).isEqualTo("a value");
             });
 
@@ -525,7 +523,6 @@ public class ExplicitTypesForConverterRegistrationTest extends JavaSpec<B2bTestC
               assertThat(converterArgument.get()).isEqualTo("an object");
             });
           });
-
         });
       });
     });
