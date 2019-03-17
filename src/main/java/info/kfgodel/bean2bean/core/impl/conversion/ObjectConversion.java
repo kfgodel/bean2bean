@@ -44,7 +44,12 @@ public class ObjectConversion implements Bean2beanTask {
 
   @Override
   public B2bDsl getDsl() {
-    NestedBean2bean nestedCore = NestedBean2bean.create(core, this);
+    Bean2bean realB2b = this.core;
+    if(core instanceof NestedBean2bean){
+      // Avoid nesting nested cores so errors are properly reported
+      realB2b = ((NestedBean2bean)this.core).getRealB2b();
+    }
+    NestedBean2bean nestedCore = NestedBean2bean.create(realB2b, this);
     return Dsl.createFor(nestedCore);
   }
 
@@ -69,4 +74,5 @@ public class ObjectConversion implements Bean2beanTask {
   public String toString() {
     return source + " -> " + targetType;
   }
+
 }

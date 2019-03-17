@@ -2,7 +2,6 @@ package info.kfgodel.bean2bean.core.impl.nesting;
 
 import info.kfgodel.bean2bean.core.api.Bean2bean;
 import info.kfgodel.bean2bean.core.api.Bean2beanTask;
-import info.kfgodel.bean2bean.core.api.exceptions.Bean2BeanException;
 import info.kfgodel.bean2bean.core.api.exceptions.NestedConversionException;
 import info.kfgodel.bean2bean.core.api.registry.Bean2BeanRegistry;
 
@@ -19,7 +18,7 @@ public class NestedBean2bean implements Bean2bean {
   public <O> O process(Bean2beanTask task) {
     try {
       return realB2b.process(task);
-    } catch (Bean2BeanException e) {
+    } catch (Exception e) {
       String message = createMessageFrom(e);
       throw new NestedConversionException(message, task, originalTask, e);
     }
@@ -33,6 +32,10 @@ public class NestedBean2bean implements Bean2bean {
   @Override
   public Bean2BeanRegistry getRegistry() {
     return realB2b.getRegistry();
+  }
+
+  public Bean2bean getRealB2b() {
+    return realB2b;
   }
 
   public static NestedBean2bean create(Bean2bean realB2b, Bean2beanTask originalTask) {
