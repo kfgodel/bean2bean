@@ -5,8 +5,8 @@ import info.kfgodel.bean2bean.core.api.registry.DomainVector;
 import info.kfgodel.bean2bean.dsl.api.scopes.ExplicitScopeWithParameterizedSourceDsl;
 import info.kfgodel.bean2bean.dsl.api.scopes.ExplicitScopeWithTypeSourceDsl;
 import info.kfgodel.bean2bean.dsl.api.scopes.ExplicitScopeYetToBeDefinedDsl;
-import info.kfgodel.bean2bean.dsl.api.scopes.ImplicitScopeDsl;
-import info.kfgodel.bean2bean.dsl.api.scopes.ScopeDsl;
+import info.kfgodel.bean2bean.dsl.api.scopes.ImplicitScopeRegistrationDsl;
+import info.kfgodel.bean2bean.dsl.api.scopes.ScopedRegistrationDsl;
 import info.kfgodel.bean2bean.dsl.impl.ConfigureDslImpl;
 import info.kfgodel.bean2bean.other.references.TypeRef;
 
@@ -50,13 +50,13 @@ public class ExplicitScopeYetToBeDefinedDslImpl implements ExplicitScopeYetToBeD
   }
 
   @Override
-  public ScopeDsl vector(DomainVector conversionVector) {
-    return DomainVectorScopeDsl.create(conversionVector, this.parentDsl);
+  public ScopedRegistrationDsl vector(DomainVector conversionVector) {
+    return DomainVectorScopeRegistrationDsl.create(conversionVector, this.parentDsl);
   }
 
   @Override
-  public ImplicitScopeDsl implicitTypes() {
-    return ImplicitScopeDslImpl.create(this.parentDsl);
+  public ImplicitScopeRegistrationDsl implicitTypes() {
+    return ImplicitScopeRegistrationDslImpl.create(this.parentDsl);
   }
 
   public ConfigureDslImpl getParentDsl() {

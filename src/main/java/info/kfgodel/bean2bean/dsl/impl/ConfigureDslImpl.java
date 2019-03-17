@@ -8,9 +8,9 @@ import info.kfgodel.bean2bean.core.impl.registry.domains.DomainVectorExtractor;
 import info.kfgodel.bean2bean.dsl.api.B2bDsl;
 import info.kfgodel.bean2bean.dsl.api.ConfigureDsl;
 import info.kfgodel.bean2bean.dsl.api.scopes.ExplicitScopeYetToBeDefinedDsl;
-import info.kfgodel.bean2bean.dsl.api.scopes.ScopeDsl;
+import info.kfgodel.bean2bean.dsl.api.scopes.ScopedRegistrationDsl;
 import info.kfgodel.bean2bean.dsl.impl.scopes.ExplicitScopeYetToBeDefinedDslImpl;
-import info.kfgodel.bean2bean.dsl.impl.scopes.PredicateScopeDsl;
+import info.kfgodel.bean2bean.dsl.impl.scopes.PredicateScopeRegistrationDsl;
 import info.kfgodel.bean2bean.other.references.BiFunctionRef;
 import info.kfgodel.bean2bean.other.references.ConsumerRef;
 import info.kfgodel.bean2bean.other.references.FunctionRef;
@@ -39,8 +39,8 @@ public class ConfigureDslImpl implements ConfigureDsl {
   }
 
   @Override
-  public ScopeDsl scopingWith(Predicate<DomainVector> scopePredicate) {
-    return PredicateScopeDsl.create(scopePredicate, this);
+  public ScopedRegistrationDsl scopingWith(Predicate<DomainVector> scopePredicate) {
+    return PredicateScopeRegistrationDsl.create(scopePredicate, this);
   }
 
   @Override

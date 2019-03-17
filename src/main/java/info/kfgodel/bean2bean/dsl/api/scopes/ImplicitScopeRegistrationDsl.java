@@ -18,7 +18,7 @@ import java.util.function.Supplier;
  *
  * Date: 05/03/19 - 17:38
  */
-public interface ImplicitScopeDsl extends ScopeDsl {
+public interface ImplicitScopeRegistrationDsl extends ScopedRegistrationDsl {
 
   /**
    * Registers a function to be used as converter between the function input-output types.<br>
@@ -31,7 +31,7 @@ public interface ImplicitScopeDsl extends ScopeDsl {
    * @param converterFunction The function instance to use as a converter
    * @return This instance for method chaining
    */
-  <I,O> ImplicitScopeDsl useConverter(Function<I,O> converterFunction);
+  <I,O> ImplicitScopeRegistrationDsl useConverter(Function<I,O> converterFunction);
 
   /**
    * Registers a converter that will need access to the task as part of the conversion process. Usually
@@ -46,7 +46,7 @@ public interface ImplicitScopeDsl extends ScopeDsl {
    * @param converterFunction The function to use as converter
    * @return This instance for method chaining
    */
-  <I,O> ImplicitScopeDsl useConverter(BiFunction<I, Bean2beanTask,O> converterFunction);
+  <I,O> ImplicitScopeRegistrationDsl useConverter(BiFunction<I, Bean2beanTask,O> converterFunction);
 
   /**
    * Registers a converter function that requires no parameters as input for the conversion.<br>
@@ -61,7 +61,7 @@ public interface ImplicitScopeDsl extends ScopeDsl {
    * @param converterFunction The function to use as generator
    * @return This instance for method chaining
    */
-  <O> ImplicitScopeDsl useConverter(Supplier<O> converterFunction);
+  <O> ImplicitScopeRegistrationDsl useConverter(Supplier<O> converterFunction);
 
   /**
    * Registers a converter function that generates no output as result of the conversion.<br>
@@ -76,7 +76,7 @@ public interface ImplicitScopeDsl extends ScopeDsl {
    * @param converterFunction The function to use as destructor
    * @return This instance for method chaining
    */
-  <I> ImplicitScopeDsl useConverter(Consumer<I> converterFunction);
+  <I> ImplicitScopeRegistrationDsl useConverter(Consumer<I> converterFunction);
 
   /**
    * Registers a function through its reference to be used as converter between the function input-output types.<br>
@@ -87,7 +87,7 @@ public interface ImplicitScopeDsl extends ScopeDsl {
    * @param converterFunctionRef The reference to the function used a s converter
    * @return This instance for method chaining
    */
-  <I,O> ImplicitScopeDsl useConverter(FunctionRef<I,O> converterFunctionRef);
+  <I,O> ImplicitScopeRegistrationDsl useConverter(FunctionRef<I,O> converterFunctionRef);
 
   /**
    * Registers a converter function though its reference that will need access to b2b dsl as part of
@@ -96,7 +96,7 @@ public interface ImplicitScopeDsl extends ScopeDsl {
    * @param converterFunction The function to use as converter
    * @return This instance for method chaining
    */
-  <I,O> ImplicitScopeDsl useConverter(BiFunctionRef<I,Bean2beanTask,O> converterFunction);
+  <I,O> ImplicitScopeRegistrationDsl useConverter(BiFunctionRef<I,Bean2beanTask,O> converterFunction);
 
   /**
    * Registers a converter function through its reference that requires no parameters as input for the conversion.<br>
@@ -105,7 +105,7 @@ public interface ImplicitScopeDsl extends ScopeDsl {
    * @param converterFunction The function to use a generator
    * @return This instance for method chaining
    */
-  <O> ImplicitScopeDsl useConverter(SupplierRef<O> converterFunction);
+  <O> ImplicitScopeRegistrationDsl useConverter(SupplierRef<O> converterFunction);
 
   /**
    * Registers a converter function through its reference that generates no output as result of the conversion.<br>
@@ -114,5 +114,5 @@ public interface ImplicitScopeDsl extends ScopeDsl {
    * @param converterFunction The function to use as destructor
    * @return This instance for method chaining
    */
-  <I> ImplicitScopeDsl useConverter(ConsumerRef<I> converterFunction);
+  <I> ImplicitScopeRegistrationDsl useConverter(ConsumerRef<I> converterFunction);
 }
