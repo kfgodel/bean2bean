@@ -45,12 +45,12 @@ public interface ExplicitScopeYetToBeDefinedDsl {
    *
    * @return The partial definition of this configuration dsl scoping to implicit types
    */
-  ImplicitScopeDsl implicitTypes();
+  ImplicitScopeRegistrationDsl implicitTypes();
 
   /**
    * Indicates the explicit conversion vector fo which the converter can be used
    * @param conversionVector The vector that defines the scope of applicability for the converter
    * @return The configuration dsl to register the converter
    */
-  ScopeDsl vector(DomainVector conversionVector);
+  ScopedRegistrationDsl vector(DomainVector conversionVector);
 }

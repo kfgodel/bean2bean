@@ -9,7 +9,7 @@ import info.kfgodel.bean2bean.core.impl.conversion.SupplierAdapterConverter;
 import info.kfgodel.bean2bean.core.impl.registry.definitions.VectorDefinition;
 import info.kfgodel.bean2bean.core.impl.registry.domains.DomainVectorExtractor;
 import info.kfgodel.bean2bean.dsl.api.ConfigureDsl;
-import info.kfgodel.bean2bean.dsl.api.scopes.ImplicitScopeDsl;
+import info.kfgodel.bean2bean.dsl.api.scopes.ImplicitScopeRegistrationDsl;
 import info.kfgodel.bean2bean.dsl.impl.ConfigureDslImpl;
 import info.kfgodel.bean2bean.other.references.BiFunctionRef;
 import info.kfgodel.bean2bean.other.references.ConsumerRef;
@@ -26,12 +26,12 @@ import java.util.function.Supplier;
  * conversion vectors for each converter
  * Date: 05/03/19 - 17:57
  */
-public class ImplicitScopeDslImpl implements ImplicitScopeDsl {
+public class ImplicitScopeRegistrationDslImpl implements ImplicitScopeRegistrationDsl {
 
   private ConfigureDslImpl parentDsl;
 
-  public static ImplicitScopeDslImpl create(ConfigureDslImpl configureDsl) {
-    ImplicitScopeDslImpl dsl = new ImplicitScopeDslImpl();
+  public static ImplicitScopeRegistrationDslImpl create(ConfigureDslImpl configureDsl) {
+    ImplicitScopeRegistrationDslImpl dsl = new ImplicitScopeRegistrationDslImpl();
     dsl.parentDsl = configureDsl;
     return dsl;
   }

@@ -18,7 +18,7 @@ public interface ExplicitScopeWithTypeSourceDsl {
    * @param targetType The type of instances to expect out of the converter
    * @return The configuration dsl to register the scoped converter
    */
-  ScopeDsl andProduce(Type targetType);
+  ScopedRegistrationDsl andProduce(Type targetType);
 
   /**
    * Completes the scope by defining the target type for the converter.<br>
@@ -26,7 +26,7 @@ public interface ExplicitScopeWithTypeSourceDsl {
    * @param targetTypeRef The reference for the type of instances to expect out of the converter
    * @return The configuration dsl to register the scoped converter
    */
-  default ScopeDsl andProduce(TypeRef<?> targetTypeRef){
+  default ScopedRegistrationDsl andProduce(TypeRef<?> targetTypeRef){
     return andProduce(targetTypeRef.getReference());
   }
 }

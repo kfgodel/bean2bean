@@ -16,7 +16,7 @@ import java.util.function.Supplier;
  *
  * Date: 05/03/19 - 16:33
  */
-public interface ScopeDsl {
+public interface ScopedRegistrationDsl {
 
   /**
    * Registers a function to be used as converter between the function input-output types.<br>
@@ -24,7 +24,7 @@ public interface ScopeDsl {
    * @param converterFunction The function instance to use as a converter
    * @return This instance for method chaining
    */
-  <I,O> ScopeDsl useConverter(Function<I,O> converterFunction);
+  <I,O> ScopedRegistrationDsl useConverter(Function<I,O> converterFunction);
 
   /**
    * Registers a converter that will need access to the conversion task as part of the conversion
@@ -33,7 +33,7 @@ public interface ScopeDsl {
    * @param converterFunction The bi function to use as converter
    * @return This instance for method chaining
    */
-  <I,O> ScopeDsl useConverter(BiFunction<I, Bean2beanTask,O> converterFunction);
+  <I,O> ScopedRegistrationDsl useConverter(BiFunction<I, Bean2beanTask,O> converterFunction);
 
   /**
    * Registers a converter function that requires no arguments as input for the conversion.<br>
@@ -41,7 +41,7 @@ public interface ScopeDsl {
    * @param converterFunction The supplier to use as generator
    * @return This instance for method chaining
    */
-  <O> ScopeDsl useConverter(Supplier<O> converterFunction);
+  <O> ScopedRegistrationDsl useConverter(Supplier<O> converterFunction);
 
   /**
    * Registers a converter function that generates no output as result of the conversion.<br>
@@ -49,7 +49,7 @@ public interface ScopeDsl {
    * @param converterFunction The consumer to use as destructor
    * @return This instance for method chaining
    */
-  <I> ScopeDsl useConverter(Consumer<I> converterFunction);
+  <I> ScopedRegistrationDsl useConverter(Consumer<I> converterFunction);
 
   /**
    * Registers a function through its reference to be used as converter between the function input-output types.<br>
@@ -58,7 +58,7 @@ public interface ScopeDsl {
    * @param converterFunctionRef The reference to the function used as converter
    * @return This instance for method chaining
    */
-  <I,O> ScopeDsl useConverter(FunctionRef<I,O> converterFunctionRef);
+  <I,O> ScopedRegistrationDsl useConverter(FunctionRef<I,O> converterFunctionRef);
 
   /**
    * Registers a converter function though its reference that will need access to b2b dsl as part of the conversion
@@ -66,7 +66,7 @@ public interface ScopeDsl {
    * @param converterFunction The function to use as converter
    * @return This instance for method chaining
    */
-  <I,O> ScopeDsl useConverter(BiFunctionRef<I,Bean2beanTask,O> converterFunction);
+  <I,O> ScopedRegistrationDsl useConverter(BiFunctionRef<I,Bean2beanTask,O> converterFunction);
 
   /**
    * Registers a converter lambda through its reference that requires no parameters as input for the conversion.<br>
@@ -74,7 +74,7 @@ public interface ScopeDsl {
    * @param converterFunction The function to use a generator
    * @return This instance for method chaining
    */
-  <O> ScopeDsl useConverter(SupplierRef<O> converterFunction);
+  <O> ScopedRegistrationDsl useConverter(SupplierRef<O> converterFunction);
 
   /**
    * Registers a converter lambda through its reference that generates no output as result of the conversion.<br>
@@ -82,5 +82,5 @@ public interface ScopeDsl {
    * @param converterFunction The function to use as destructor
    * @return This instance for method chaining
    */
-  <I> ScopeDsl useConverter(ConsumerRef<I> converterFunction);
+  <I> ScopedRegistrationDsl useConverter(ConsumerRef<I> converterFunction);
 }

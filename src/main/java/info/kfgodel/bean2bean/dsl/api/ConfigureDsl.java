@@ -4,8 +4,8 @@ import info.kfgodel.bean2bean.core.api.Bean2beanTask;
 import info.kfgodel.bean2bean.core.api.registry.DomainVector;
 import info.kfgodel.bean2bean.core.api.registry.definitions.ConverterDefinition;
 import info.kfgodel.bean2bean.dsl.api.scopes.ExplicitScopeYetToBeDefinedDsl;
-import info.kfgodel.bean2bean.dsl.api.scopes.ImplicitScopeDsl;
-import info.kfgodel.bean2bean.dsl.api.scopes.ScopeDsl;
+import info.kfgodel.bean2bean.dsl.api.scopes.ImplicitScopeRegistrationDsl;
+import info.kfgodel.bean2bean.dsl.api.scopes.ScopedRegistrationDsl;
 import info.kfgodel.bean2bean.other.references.BiFunctionRef;
 import info.kfgodel.bean2bean.other.references.ConsumerRef;
 import info.kfgodel.bean2bean.other.references.FunctionRef;
@@ -22,7 +22,7 @@ import java.util.function.Supplier;
  *   The scope of this instance is the default scope (all conversions)
  * Date: 10/02/19 - 23:05
  */
-public interface ConfigureDsl extends ImplicitScopeDsl {
+public interface ConfigureDsl extends ImplicitScopeRegistrationDsl {
 
   /**
    * Registers a converter function using its full definition.<br>
@@ -41,7 +41,7 @@ public interface ConfigureDsl extends ImplicitScopeDsl {
    *                       of a converter
    * @return The partial definition of this configuration dsl with the predicate defined
    */
-  ScopeDsl scopingWith(Predicate<DomainVector> scopePredicate);
+  ScopedRegistrationDsl scopingWith(Predicate<DomainVector> scopePredicate);
 
 
   /**
