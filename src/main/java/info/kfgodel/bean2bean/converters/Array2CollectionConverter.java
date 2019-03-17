@@ -2,31 +2,32 @@ package info.kfgodel.bean2bean.converters;
 
 import info.kfgodel.bean2bean.core.api.Bean2beanTask;
 import info.kfgodel.bean2bean.core.api.exceptions.CreationException;
+import info.kfgodel.bean2bean.core.api.registry.DomainVector;
 import info.kfgodel.bean2bean.core.impl.descriptor.ObjectDescriptor;
 import info.kfgodel.bean2bean.other.types.extraction.TypeArgumentExtractor;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.function.BiFunction;
 
 /**
- * This class implements a collection to collection converter that instantiates desired collection
- * using b2b creator converters and converts each element to the expected type
- *
- * Date: 28/02/19 - 19:42
+ * This type converts from any array to an expected collection
+ * Date: 17/03/19 - 15:20
  */
-public class Collection2CollectionConverter implements BiFunction<Collection, Bean2beanTask, Collection> {
-
+public class Array2CollectionConverter implements BiFunction<Object, Bean2beanTask, Collection> {
   @Override
-  public Collection apply(Collection sourceCollection, Bean2beanTask task) {
+  public Collection apply(Object source, Bean2beanTask task) {
     Collection targetCollection = createTargetCollectionFor(task);
     Type expectedElementType = deduceExpectedElementTypeFor(task);
-    addSourceElementsToTargetCollection(sourceCollection, targetCollection, expectedElementType, task);
+    addArrayElementsToCollection(source, expectedElementType, targetCollection, task);
     return targetCollection;
   }
 
-  private void addSourceElementsToTargetCollection(Collection sourceCollection, Collection targetCollection, Type expectedElementType, Bean2beanTask task) {
-    for (Object sourceElement : sourceCollection) {
+  private void addArrayElementsToCollection(Object source, Type expectedElementType, Collection targetCollection, Bean2beanTask task) {
+    final int arrayLength = Array.getLength(source);
+    for (int i = 0; i < arrayLength; i++) {
+      Object sourceElement = Array.get(source, i);
       Object targetElement = task.getDsl().convert().from(sourceElement).to(expectedElementType);
       targetCollection.add(targetElement);
     }
@@ -49,9 +50,19 @@ public class Collection2CollectionConverter implements BiFunction<Collection, Be
     return (Collection) created;
   }
 
-  public static Collection2CollectionConverter create() {
-    Collection2CollectionConverter converter = new Collection2CollectionConverter();
+  public static Array2CollectionConverter create() {
+    Array2CollectionConverter converter = new Array2CollectionConverter();
     return converter;
   }
 
+  public static boolean shouldBeUsed(DomainVector domainVector) {
+    String sourceDomainName = domainVector.getSource().getName();
+    if(!sourceDomainName.endsWith("[]")){
+      // Input is not an array
+      return false;
+    }
+    boolean aCollectionIsExpected = domainVector.getTarget().getHierarchy()
+      .anyMatch(targetDomain -> targetDomain.getName().equals(Collection.class.getTypeName()));
+    return aCollectionIsExpected;
+  }
 }
