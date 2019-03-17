@@ -39,19 +39,19 @@ public class GenericInstantiatorTest extends JavaSpec<ConverterTestContext> {
         itThrows(CreationException.class, "if a non instantiable class is used as target", ()->{
           test().dsl().generate().anInstanceOf(Iterable.class);
         }, e->{
-          assertThat(e).hasMessage("Type[interface java.lang.Iterable] is not instantiable using a niladic constructor");
+          assertThat(e).hasMessage("Creation of interface java.lang.Iterable failed: Type[interface java.lang.Iterable] is not instantiable using a niladic constructor");
         });
 
         itThrows(CreationException.class, "if a primitive type class is used as target", ()->{
           test().dsl().generate().anInstanceOf(int.class);
         }, e->{
-          assertThat(e).hasMessage("Type[int] is not instantiable using a niladic constructor");
+          assertThat(e).hasMessage("Creation of int failed: Type[int] is not instantiable using a niladic constructor");
         });
 
         itThrows(CreationException.class, "if an array class is used as target", ()->{
           test().dsl().generate().anInstanceOf(String[].class);
         }, e->{
-          assertThat(e).hasMessage("Type[class [Ljava.lang.String;] is not instantiable using a niladic constructor");
+          assertThat(e).hasMessage("Creation of class [Ljava.lang.String; failed: Type[class [Ljava.lang.String;] is not instantiable using a niladic constructor");
         });
       });
 
