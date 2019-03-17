@@ -56,8 +56,7 @@ public class Collection2CollectionConverterTest extends JavaSpec<ConverterTestCo
 
       describe("when the correct creator converter is registered", () -> {
         beforeEach(() -> {
-          test().dsl().configure().useConverter(new SupplierRef<Set>(HashSet::new) {
-          });
+          test().dsl().configure().useConverter(new SupplierRef<Set>(HashSet::new) {});
         });
 
         itThrows(NestedConversionException.class, "if no element converter is registered", () -> {
