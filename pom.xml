@@ -32,6 +32,7 @@
   </scm>
 
   <properties>
+    <version.primitons>0.0.1</version.primitons>
   </properties>
 
   <dependencies>
@@ -40,7 +41,7 @@
     <dependency>
       <groupId>info.kfgodel</groupId>
       <artifactId>primitons</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
+      <version>${version.primitons}</version>
     </dependency>
 
     <!-- Rspec like testing -->
