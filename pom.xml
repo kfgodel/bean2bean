@@ -32,9 +32,17 @@
   </scm>
 
   <properties>
+    <version.primitons>0.0.1</version.primitons>
   </properties>
 
   <dependencies>
+
+    <!-- adds primitive types conversions -->
+    <dependency>
+      <groupId>info.kfgodel</groupId>
+      <artifactId>primitons</artifactId>
+      <version>${version.primitons}</version>
+    </dependency>
 
     <!-- Rspec like testing -->
     <dependency>
