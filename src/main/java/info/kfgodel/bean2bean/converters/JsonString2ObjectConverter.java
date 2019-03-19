@@ -10,7 +10,8 @@ import java.lang.reflect.Type;
 import java.util.function.BiFunction;
 
 /**
- * This class interprets a JSON string input into the expected target type
+ * This class interprets a JSON string input into the expected target type.<br>
+ *   For this converter to work Jackson must be in the classpath. It's not included by default<br>
  * Date: 19/03/19 - 19:49
  */
 public class JsonString2ObjectConverter implements BiFunction<String, Bean2beanTask, Object> {

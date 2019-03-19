@@ -8,7 +8,8 @@ import info.kfgodel.bean2bean.core.impl.descriptor.ObjectDescriptor;
 import java.util.function.BiFunction;
 
 /**
- * This class converts any object into its JSON string representation
+ * This class converts any object into its JSON string representation.<br>
+ *    For this converter to work Jackson must be in the classpath. It's not included by default<br>
  * Date: 19/03/19 - 19:50
  */
 public class Object2JsonStringConverter implements BiFunction<Object, Bean2beanTask, String> {
