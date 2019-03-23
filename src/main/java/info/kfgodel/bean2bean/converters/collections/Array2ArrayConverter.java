@@ -1,4 +1,4 @@
-package info.kfgodel.bean2bean.converters;
+package info.kfgodel.bean2bean.converters.collections;
 
 import info.kfgodel.bean2bean.core.api.Bean2beanTask;
 import info.kfgodel.bean2bean.core.api.exceptions.ConversionException;

@@ -14,4 +14,11 @@ public interface ConverterTestContext extends TestContext {
   B2bDsl dsl();
   void dsl(Supplier<B2bDsl> definition);
 
+  Object source();
+  void source(Supplier<Object> definition);
+
+  Object result();
+  void result(Supplier<Object> definition);
+
+
 }

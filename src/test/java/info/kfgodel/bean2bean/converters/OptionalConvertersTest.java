@@ -2,6 +2,8 @@ package info.kfgodel.bean2bean.converters;
 
 import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
+import info.kfgodel.bean2bean.converters.optionals.Object2OptionalConverter;
+import info.kfgodel.bean2bean.converters.optionals.Optional2ObjectConverter;
 import info.kfgodel.bean2bean.core.api.exceptions.NestedConversionException;
 import info.kfgodel.bean2bean.dsl.impl.Dsl;
 import info.kfgodel.bean2bean.other.references.TypeRef;

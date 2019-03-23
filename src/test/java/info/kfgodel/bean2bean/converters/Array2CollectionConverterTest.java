@@ -3,6 +3,7 @@ package info.kfgodel.bean2bean.converters;
 import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
 import com.google.common.collect.Sets;
+import info.kfgodel.bean2bean.converters.collections.Array2CollectionConverter;
 import info.kfgodel.bean2bean.core.api.exceptions.ConversionException;
 import info.kfgodel.bean2bean.core.api.exceptions.CreationException;
 import info.kfgodel.bean2bean.core.api.exceptions.NestedConversionException;
