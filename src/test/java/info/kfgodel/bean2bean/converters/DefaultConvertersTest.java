@@ -40,6 +40,23 @@ public class DefaultConvertersTest extends JavaSpec<ConverterTestContext> {
         assertThat(result).isSameAs(source);
       });
 
+      describe("for numbers", () -> {
+        it("can convert between primitive numeric types",()->{
+          assertThat(test().dsl().convert().from(1).to(long.class)).isEqualTo(1L);
+          assertThat(test().dsl().convert().from((short)3).to(byte.class)).isEqualTo((byte)3);
+          assertThat(test().dsl().convert().from(2.5f).to(double.class)).isEqualTo(2.5);
+          assertThat(test().dsl().convert().from("v").to(char.class)).isEqualTo('v');
+          assertThat(test().dsl().convert().from("2.85").to(float.class)).isEqualTo(2.85f);
+        });
+        it("can convert between boxed numeric types",()->{
+          assertThat(test().dsl().convert().from(Integer.valueOf(1)).to(Long.class)).isEqualTo(Long.valueOf(1L));
+          assertThat(test().dsl().convert().from(Short.valueOf((short)3)).to(Byte.class)).isEqualTo(Byte.valueOf((byte)3));
+          assertThat(test().dsl().convert().from(Float.valueOf(2.5f)).to(Double.class)).isEqualTo(Double.valueOf(2.5));
+          assertThat(test().dsl().convert().from("v").to(Character.class)).isEqualTo(Character.valueOf('v'));
+          assertThat(test().dsl().convert().from("2.85").to(Float.class)).isEqualTo(Float.valueOf(2.85f));
+        });
+      });
+
       describe("for optionals", () -> {
         it("can extract the element inside an optional", () -> {
           String text = "Hello World!";
@@ -93,7 +110,33 @@ public class DefaultConvertersTest extends JavaSpec<ConverterTestContext> {
         it("can generate maps",()->{
           assertThat(test().dsl().generate().anInstanceOf(Map.class)).isInstanceOf(HashMap.class);
         });
+      });
 
+      describe("for json", () -> {
+        it("can convert an object to json string",()->{
+          List<Integer> source = Lists.newArrayList(1, 2, 3);
+          String result = test().dsl().convert().from(source).to(String.class);
+          assertThat(result).isEqualTo("[1,2,3]");
+        });
+
+        it("can convert a json string into an object",()->{
+          String source = "[1,2,3]";
+          List<Integer> result = test().dsl().convert().from(source).to(new TypeRef<List<Integer>>() {});
+          assertThat(result).isEqualTo(Lists.newArrayList(1, 2, 3));
+        });
+      });
+
+      describe("for enums", () -> {
+        it("can convert an enum value into its name",()->{
+          TestEnum source = TestEnum.SECOND_ENUM;
+          String result = test().dsl().convert().from(source).to(String.class);
+          assertThat(result).isEqualTo("SECOND_ENUM");
+        });
+        it("can convert an enum name into its value",()->{
+          String source = "SECOND_ENUM";
+          TestEnum result = test().dsl().convert().from(source).to(TestEnum.class);
+          assertThat(result).isEqualTo(TestEnum.SECOND_ENUM);
+        });
       });
 
 
