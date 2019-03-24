@@ -4,7 +4,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import info.kfgodel.bean2bean.core.api.Bean2beanTask;
 import info.kfgodel.bean2bean.core.api.exceptions.ConversionException;
+import info.kfgodel.bean2bean.core.api.registry.Domain;
+import info.kfgodel.bean2bean.core.api.registry.DomainVector;
 import info.kfgodel.bean2bean.core.impl.descriptor.ObjectDescriptor;
+import info.kfgodel.bean2bean.core.impl.registry.domains.DomainCalculator;
 
 import java.lang.reflect.Type;
 import java.util.function.BiFunction;
@@ -45,5 +48,17 @@ public class JsonString2ObjectConverter implements BiFunction<String, Bean2beanT
     JsonString2ObjectConverter converter = new JsonString2ObjectConverter();
     converter.jsonMapper = new ObjectMapper();
     return converter;
+  }
+
+  public static boolean shouldBeUsed(DomainVector domainVector) {
+    DomainCalculator calculator = DomainCalculator.create();
+
+    Domain stringDomain = calculator.forType(String.class);
+    if (!domainVector.getSource().isIncludedIn(stringDomain)) {
+      return false;
+    }
+
+    Domain objectDomain = calculator.forType(Object.class);
+    return domainVector.getTarget().isIncludedIn(objectDomain);
   }
 }

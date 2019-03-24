@@ -24,8 +24,8 @@ public class JsonConvertersTest extends JavaSpec<ConverterTestContext> {
   public void define() {
     describe("the Json converters", () -> {
       beforeEach(() -> {
-        test().dsl().configure().useConverter(JsonString2ObjectConverter.create());
-        test().dsl().configure().useConverter(Object2JsonStringConverter.create());
+        test().dsl().configure().scopingWith(Object2JsonStringConverter::shouldBeUsed).useConverter(Object2JsonStringConverter.create());
+        test().dsl().configure().scopingWith(JsonString2ObjectConverter::shouldBeUsed).useConverter(JsonString2ObjectConverter.create());
       });
       test().dsl(Dsl::create);
 

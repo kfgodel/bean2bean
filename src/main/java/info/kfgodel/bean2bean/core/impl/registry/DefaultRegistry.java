@@ -7,6 +7,8 @@ import info.kfgodel.bean2bean.core.api.registry.DomainVector;
 import info.kfgodel.bean2bean.core.api.registry.definitions.ConverterDefinition;
 import info.kfgodel.bean2bean.core.api.registry.definitions.PredicateScopedDefinition;
 import info.kfgodel.bean2bean.core.api.registry.definitions.VectorScopedDefinition;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,6 +23,7 @@ import java.util.function.Function;
  * Date: 12/02/19 - 00:30
  */
 public class DefaultRegistry implements Bean2BeanRegistry {
+  public static Logger LOG = LoggerFactory.getLogger(DefaultRegistry.class);
 
   private Map<DomainVector, ConverterDefinition> convertersByVector;
   private List<PredicateScopedDefinition> predicateDefinitions;
@@ -51,22 +54,23 @@ public class DefaultRegistry implements Bean2BeanRegistry {
 
   private <O> Optional<Function<Bean2beanTask, O>> calculateBestConverterFor(DomainVector vector) {
     Optional<ConverterDefinition> foundDefinition = this.lookForVectorBasedMatchingHierarchiesOf(vector);
-    if(!foundDefinition.isPresent()){
+    if (!foundDefinition.isPresent()) {
       // I can't find a better way to express this with native optionals
       foundDefinition = this.lookForPredicateBasedMatching(vector);
     }
+    foundDefinition.ifPresent(converterDefinition -> LOG.debug("Found for[{}]: {}", vector, converterDefinition));
     return foundDefinition
       .map(ConverterDefinition::getConverter);
   }
 
   private Optional<ConverterDefinition> lookForVectorBasedMatchingHierarchiesOf(DomainVector conversionVector) {
-    Iterator<Domain> targetDomainHierarchy = conversionVector.getTarget().getHierarchy().iterator();
-    while(targetDomainHierarchy.hasNext()){
-      Domain targetDomain = targetDomainHierarchy.next();
+    Iterator<Domain> sourceDomainHierarchy = conversionVector.getSource().getHierarchy().iterator();
+    while(sourceDomainHierarchy.hasNext()){
+      Domain sourceDomain = sourceDomainHierarchy.next();
 
-      Iterator<Domain> sourceDomainHierarchy = conversionVector.getSource().getHierarchy().iterator();
-      while(sourceDomainHierarchy.hasNext()){
-        Domain sourceDomain = sourceDomainHierarchy.next();
+      Iterator<Domain> targetDomainHierarchy = conversionVector.getTarget().getHierarchy().iterator();
+      while(targetDomainHierarchy.hasNext()){
+        Domain targetDomain = targetDomainHierarchy.next();
 
         DomainVector exploredVector = DomainVector.create(sourceDomain, targetDomain);
         Optional<ConverterDefinition> found = findExactConverterFor(exploredVector);

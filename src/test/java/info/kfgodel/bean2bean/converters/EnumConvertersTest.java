@@ -59,8 +59,4 @@ public class EnumConvertersTest extends JavaSpec<ConverterTestContext> {
     });
   }
 
-  public static enum TestEnum {
-    FIRST_ENUM,
-    SECOND_ENUM;
-  }
 }

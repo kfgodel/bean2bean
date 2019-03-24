@@ -19,6 +19,13 @@ public class FunctionAdapterConverter implements Function<Bean2beanTask, Object>
     return output;
   }
 
+  @Override
+  public String toString() {
+    return "FunctionAdapterConverter{" +
+      "function=" + function +
+      '}';
+  }
+
   public static FunctionAdapterConverter create(Function<?,?> function) {
     FunctionAdapterConverter process = new FunctionAdapterConverter();
     process.function = (Function<Object, Object>) function;

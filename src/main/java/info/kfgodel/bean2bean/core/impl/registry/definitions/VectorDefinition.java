@@ -25,6 +25,14 @@ public class VectorDefinition implements VectorScopedDefinition {
     return converter;
   }
 
+  @Override
+  public String toString() {
+    return "VectorDefinition{" +
+      "conversionVector=" + conversionVector +
+      ", converter=" + converter +
+      '}';
+  }
+
   public static VectorDefinition create(Function<Bean2beanTask, Object> converter, DomainVector conversionVector) {
     VectorDefinition definition = new VectorDefinition();
     definition.converter = converter;

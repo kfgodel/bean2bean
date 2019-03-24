@@ -16,7 +16,7 @@
 		</encoder>
 	</appender>
   
-	<logger name="net.sf.kfgodel.bean2bean" level="DEBUG" />
+	<logger name="info.kfgodel.bean2bean" level="DEBUG" />
 	
 	<root level="info">
 	  <appender-ref ref="STDOUT" />

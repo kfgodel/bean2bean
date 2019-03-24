@@ -1,5 +1,6 @@
 package info.kfgodel.bean2bean.dsl.impl;
 
+import info.kfgodel.bean2bean.converters.DefaultConfigurator;
 import info.kfgodel.bean2bean.core.api.Bean2beanTask;
 import info.kfgodel.bean2bean.core.api.registry.DomainVector;
 import info.kfgodel.bean2bean.core.api.registry.definitions.ConverterDefinition;
@@ -46,6 +47,12 @@ public class ConfigureDslImpl implements ConfigureDsl {
   @Override
   public ExplicitScopeYetToBeDefinedDsl scopingTo() {
     return ExplicitScopeYetToBeDefinedDslImpl.create(this);
+  }
+
+  @Override
+  public ConfigureDsl usingDefaultConverters() {
+    DefaultConfigurator.create().addAllTo(this);
+    return this;
   }
 
   @Override

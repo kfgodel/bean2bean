@@ -18,6 +18,13 @@ public class SupplierAdapterConverter implements Function<Bean2beanTask, Object>
     return function.get();
   }
 
+  @Override
+  public String toString() {
+    return "SupplierAdapterConverter{" +
+      "function=" + function +
+      '}';
+  }
+
   public static SupplierAdapterConverter create(Supplier<?> function) {
     SupplierAdapterConverter converter = new SupplierAdapterConverter();
     converter.function = (Supplier<Object>) function;
