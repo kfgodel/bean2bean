@@ -51,8 +51,11 @@ public interface ConfigureDsl extends ImplicitScopeRegistrationDsl {
    */
   ExplicitScopeYetToBeDefinedDsl scopingTo();
 
-
-
+  /**
+   * It adds all the builtin and default converters to this dsl configuration.
+   * This is equivalent of adding them one by one, or using the DefaultConfigurator
+   */
+  ConfigureDsl usingDefaultConverters();
 
   @Override
   <I, O> ConfigureDsl useConverter(Function<I, O> converterFunction);
@@ -77,5 +80,6 @@ public interface ConfigureDsl extends ImplicitScopeRegistrationDsl {
 
   @Override
   <I> ConfigureDsl useConverter(ConsumerRef<I> converterFunction);
+
 
 }
