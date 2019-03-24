@@ -17,7 +17,7 @@ public class String2ZonedDateTimeConverter implements BiFunction<String, Bean2be
     try {
       return ZonedDateTime.parse(source);
     } catch (Exception e) {
-      throw new ConversionException("Failed to parse [" + source + "] into a " + ZonedDateTime.class.getSimpleName() + ": " + e.getMessage(), task, e);
+      throw new ConversionException("Failed to parse [" + source + "] into a " + task.getTargetType().getTypeName() + ": " + e.getMessage(), task, e);
     }
   }
 

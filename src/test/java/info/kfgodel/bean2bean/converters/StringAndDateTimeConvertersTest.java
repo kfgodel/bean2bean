@@ -2,6 +2,9 @@ package info.kfgodel.bean2bean.converters;
 
 import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
+import info.kfgodel.bean2bean.converters.datetimes.String2LocalDateConverter;
+import info.kfgodel.bean2bean.converters.datetimes.String2LocalDateTimeConverter;
+import info.kfgodel.bean2bean.converters.datetimes.String2LocalTimeConverter;
 import info.kfgodel.bean2bean.converters.datetimes.String2ZonedDateTimeConverter;
 import info.kfgodel.bean2bean.converters.datetimes.Temporal2StringConverter;
 import info.kfgodel.bean2bean.core.api.exceptions.ConversionException;
@@ -28,6 +31,9 @@ public class StringAndDateTimeConvertersTest extends JavaSpec<ConverterTestConte
       beforeEach(() -> {
         test().dsl().configure().useConverter(Temporal2StringConverter.create());
         test().dsl().configure().useConverter(String2ZonedDateTimeConverter.create());
+        test().dsl().configure().useConverter(String2LocalDateTimeConverter.create());
+        test().dsl().configure().useConverter(String2LocalDateConverter.create());
+        test().dsl().configure().useConverter(String2LocalTimeConverter.create());
       });
       test().dsl(Dsl::create);
 
@@ -61,20 +67,58 @@ public class StringAndDateTimeConvertersTest extends JavaSpec<ConverterTestConte
             test().source(() -> "2000-01-01T12:30:20.000000010Z[UCT]");
             assertThat(test().result()).isEqualTo(ZonedDateTime.of(2000, 1, 1, 12, 30, 20, 10, ZoneId.of("UCT")));
           });
-          itThrows(ConversionException.class, "when the string doesn't representa a zonedDatetime",()->{
+          itThrows(ConversionException.class, "when the string doesn't represent a zonedDatetime",()->{
             test().source(() -> "2000-01-01T12:30");
             test().result(); // Excercise
           }, e ->{
-            assertThat(e).hasMessage("Failed to parse [2000-01-01T12:30] into a ZonedDateTime: Text '2000-01-01T12:30' could not be parsed at index 16");
+            assertThat(e).hasMessage("Failed to parse [2000-01-01T12:30] into a java.time.ZonedDateTime: Text '2000-01-01T12:30' could not be parsed at index 16");
           });
         });
 
+        describe("to LocalDateTime", () -> {
+          test().targetType(()-> LocalDateTime.class);
+          it("can convert an iso string into a LocalDateTime", () -> {
+            test().source(() -> "2000-01-01T12:30");
+            assertThat(test().result()).isEqualTo(LocalDateTime.of(2000, 1, 1, 12, 30, 0, 0));
+          });
+          itThrows(ConversionException.class, "when the string doesn't represent a LocalDateTime",()->{
+            test().source(() -> "2000-01-01");
+            test().result(); // Excercise
+          }, e ->{
+            assertThat(e).hasMessage("Failed to parse [2000-01-01] into a java.time.LocalDateTime: Text '2000-01-01' could not be parsed at index 10");
+          });
+        });
 
+        describe("to LocalDate", () -> {
+          test().targetType(()-> LocalDate.class);
+          it("can convert an iso string into a LocalDate", () -> {
+            test().source(() -> "2000-01-01");
+            assertThat(test().result()).isEqualTo(LocalDate.of(2000, 1, 1));
+          });
+          itThrows(ConversionException.class, "when the string doesn't represent a LocalDate",()->{
+            test().source(() -> "12:30:20");
+            test().result(); // Excercise
+          }, e ->{
+            assertThat(e).hasMessage("Failed to parse [12:30:20] into a java.time.LocalDate: Text '12:30:20' could not be parsed at index 0");
+          });
+        });
+
+        describe("to LocalTime", () -> {
+          test().targetType(()-> LocalTime.class);
+          it("can convert an iso string into a LocalTime", () -> {
+            test().source(() -> "12:30:20");
+            assertThat(test().result()).isEqualTo(LocalTime.of(12, 30, 20));
+          });
+          itThrows(ConversionException.class, "when the string doesn't represent a LocalTime",()->{
+            test().source(() -> "2000-01-01");
+            test().result(); // Excercise
+          }, e ->{
+            assertThat(e).hasMessage("Failed to parse [2000-01-01] into a java.time.LocalTime: Text '2000-01-01' could not be parsed at index 2");
+          });
+        });
 
       });
 
-
     });
-
   }
 }
