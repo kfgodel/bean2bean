@@ -32,7 +32,7 @@
   </scm>
 
   <properties>
-    <version.primitons>0.0.1</version.primitons>
+    <version.primitons>0.0.2-SNAPSHOT</version.primitons>
     <version.jackson>2.9.8</version.jackson>
   </properties>
 
