@@ -62,6 +62,18 @@ public class DefaultConvertersTest extends JavaSpec<ConverterTestContext> {
           assertThat(result).isEqualTo(Sets.newHashSet(1, 2, 3));
         });
 
+        it("can convert an array from one type to other",()->{
+          double[] source = new double[]{1.1, 2.2, 3.3};
+          int[] result = test().dsl().convert().from(source).to(new TypeRef<int[]>() {});
+          assertThat(result).isEqualTo(new int[]{1, 2, 3});
+        });
+
+        it("can convert an array into a collection",()->{
+          float[] source = new float[]{1.5f, 2.5f, 3.5f};
+          List<Double> result = test().dsl().convert().from(source).to(new TypeRef<List<Double>>() {});
+          assertThat(result).isEqualTo(Lists.newArrayList(1.5, 2.5, 3.5));
+        });
+
         it("can generate queues",()->{
           assertThat(test().dsl().generate().anInstanceOf(Queue.class)).isInstanceOf(ConcurrentLinkedQueue.class);
           assertThat(test().dsl().generate().anInstanceOf(Deque.class)).isInstanceOf(LinkedList.class);

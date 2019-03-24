@@ -21,9 +21,24 @@ public class PrimitonConverters {
   public static void registerOn(ConfigureDsl configure) {
     for (Class<?> sourceType : Primiton.types().allTypes()) {
       for (Class<?> targetType : Primiton.types().allTypes()) {
+        if(shouldBeIgnored(sourceType, targetType)){
+          continue;
+        }
         registerOn(configure, sourceType, targetType);
       }
     }
+  }
+
+  private static boolean shouldBeIgnored(Class<?> sourceType, Class<?> targetType) {
+    if (Object.class.equals(sourceType) && String.class.equals(targetType)) {
+      // We don't want the default Object.toString() conversion
+      return true;
+    }
+    if (Object.class.equals(sourceType) && Object.class.equals(targetType)) {
+      // We don't want the default identity function as a vector converter
+      return true;
+    }
+    return false;
   }
 
   private static void registerOn(ConfigureDsl configure, Class<?> sourceType, Class<?> targetType) {
