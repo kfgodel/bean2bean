@@ -17,6 +17,19 @@ import info.kfgodel.bean2bean.converters.json.Object2JsonStringConverter;
 import info.kfgodel.bean2bean.converters.optionals.Object2OptionalConverter;
 import info.kfgodel.bean2bean.converters.optionals.Optional2ObjectConverter;
 import info.kfgodel.bean2bean.dsl.api.ConfigureDsl;
+import info.kfgodel.bean2bean.dsl.api.Nothing;
+import info.kfgodel.bean2bean.other.references.SupplierRef;
+
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * This class represents the builtin converter configurator that knows how to add converters to a dsl
@@ -72,6 +85,16 @@ public class DefaultConfigurator {
   }
 
   private void addGeneratorsTo(ConfigureDsl configure) {
+    configure.scopingTo().accept(Nothing.class).andProduce(Set.class)
+      .useConverter(new SupplierRef<Set>(HashSet::new) {});
+    configure.scopingTo().accept(Nothing.class).andProduce(List.class)
+      .useConverter(new SupplierRef<List>(ArrayList::new) {});
+    configure.scopingTo().accept(Nothing.class).andProduce(Queue.class)
+      .useConverter(new SupplierRef<Queue>(ConcurrentLinkedQueue::new) {});
+    configure.scopingTo().accept(Nothing.class).andProduce(Deque.class)
+      .useConverter(new SupplierRef<Deque>(LinkedList::new) {});
+    configure.scopingTo().accept(Nothing.class).andProduce(Map.class)
+      .useConverter(new SupplierRef<Map>(HashMap::new) {});
     configure.useConverter(GenericInstantiator.create());
     configure.scopingWith(ArrayInstantiator::shouldBeUsed).useConverter(ArrayInstantiator.create());
   }
@@ -83,6 +106,6 @@ public class DefaultConfigurator {
   }
 
   private void addNoConversionTo(ConfigureDsl configure) {
-    configure.useConverter(NoConversionConverter.create());
+    configure.scopingWith(NoConversionConverter::shouldBeUsed).useConverter(NoConversionConverter.create());
   }
 }
