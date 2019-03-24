@@ -9,6 +9,7 @@ import info.kfgodel.bean2bean.other.references.TypeRef;
 import org.junit.runner.RunWith;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -65,6 +66,8 @@ public class DefaultConvertersTest extends JavaSpec<ConverterTestContext> {
         it("can convert to an iso string",()->{
           assertThat(test().dsl().convert().from(ZonedDateTime.of(2000,1,1,12,30,0,0, ZoneId.of("UCT"))).to(String.class))
             .isEqualTo("2000-01-01T12:30Z[UCT]");
+          assertThat(test().dsl().convert().from(LocalDateTime.of(2000,1,1,12,30,0)).to(String.class))
+            .isEqualTo("2000-01-01T12:30");
           assertThat(test().dsl().convert().from(LocalDate.of(2000,1,1)).to(String.class))
             .isEqualTo("2000-01-01");
           assertThat(test().dsl().convert().from(LocalTime.of(12,30,0)).to(String.class))
@@ -73,6 +76,8 @@ public class DefaultConvertersTest extends JavaSpec<ConverterTestContext> {
         it("can convert from an iso string",()->{
           assertThat(test().dsl().convert().from("2000-01-01T12:30Z[UCT]").to(ZonedDateTime.class))
             .isEqualTo(ZonedDateTime.of(2000,1,1,12,30,0,0, ZoneId.of("UCT")));
+          assertThat(test().dsl().convert().from("2000-01-01T12:30").to(LocalDateTime.class))
+            .isEqualTo(LocalDateTime.of(2000,1,1,12,30,0));
           assertThat(test().dsl().convert().from("2000-01-01").to(LocalDate.class))
             .isEqualTo(LocalDate.of(2000,1,1));
           assertThat(test().dsl().convert().from("12:30").to(LocalTime.class))
