@@ -3,6 +3,8 @@ package info.kfgodel.bean2bean.converters;
 import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
 import com.google.common.collect.Lists;
+import info.kfgodel.bean2bean.converters.json.JsonString2ObjectConverter;
+import info.kfgodel.bean2bean.converters.json.Object2JsonStringConverter;
 import info.kfgodel.bean2bean.core.api.exceptions.ConversionException;
 import info.kfgodel.bean2bean.dsl.impl.Dsl;
 import org.junit.runner.RunWith;

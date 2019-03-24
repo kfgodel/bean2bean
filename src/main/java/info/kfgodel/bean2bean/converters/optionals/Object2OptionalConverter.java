@@ -1,4 +1,4 @@
-package info.kfgodel.bean2bean.converters;
+package info.kfgodel.bean2bean.converters.optionals;
 
 import info.kfgodel.bean2bean.core.api.Bean2beanTask;
 import info.kfgodel.bean2bean.other.types.extraction.TypeArgumentExtractor;

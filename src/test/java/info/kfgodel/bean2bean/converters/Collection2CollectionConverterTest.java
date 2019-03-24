@@ -4,6 +4,7 @@ import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import info.kfgodel.bean2bean.converters.collections.Collection2CollectionConverter;
 import info.kfgodel.bean2bean.core.api.exceptions.CreationException;
 import info.kfgodel.bean2bean.core.api.exceptions.NestedConversionException;
 import info.kfgodel.bean2bean.dsl.impl.Dsl;

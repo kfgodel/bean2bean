@@ -1,4 +1,4 @@
-package info.kfgodel.bean2bean.converters;
+package info.kfgodel.bean2bean.converters.enums;
 
 import java.util.function.Function;
 

@@ -2,6 +2,7 @@ package info.kfgodel.bean2bean.converters;
 
 import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
+import info.kfgodel.bean2bean.converters.generators.GenericInstantiator;
 import info.kfgodel.bean2bean.core.api.exceptions.CreationException;
 import info.kfgodel.bean2bean.dsl.impl.Dsl;
 import info.kfgodel.bean2bean.other.references.TypeRef;

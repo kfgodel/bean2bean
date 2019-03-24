@@ -1,4 +1,4 @@
-package info.kfgodel.bean2bean.converters;
+package info.kfgodel.bean2bean.converters.json;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
