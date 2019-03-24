@@ -26,6 +26,14 @@ public class PredicateDefinition implements PredicateScopedDefinition {
     return converter;
   }
 
+  @Override
+  public String toString() {
+    return "PredicateDefinition{" +
+      "predicate=" + predicate +
+      ", converter=" + converter +
+      '}';
+  }
+
   public static PredicateDefinition create(Function<Bean2beanTask, Object> converter, Predicate<DomainVector> predicate) {
     PredicateDefinition definition = new PredicateDefinition();
     definition.predicate = predicate;

@@ -20,6 +20,13 @@ public class ConsumerAdapterConverter implements Function<Bean2beanTask, Object>
     return null;
   }
 
+  @Override
+  public String toString() {
+    return "ConsumerAdapterConverter{" +
+      "consumer=" + consumer +
+      '}';
+  }
+
   public static ConsumerAdapterConverter create(Consumer<?> consumer) {
     ConsumerAdapterConverter converter = new ConsumerAdapterConverter();
     converter.consumer = (Consumer<Object>) consumer;

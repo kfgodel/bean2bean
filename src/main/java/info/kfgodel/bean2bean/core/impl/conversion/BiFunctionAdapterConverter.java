@@ -22,6 +22,13 @@ public class BiFunctionAdapterConverter implements Function<Bean2beanTask, Objec
     return output;
   }
 
+  @Override
+  public String toString() {
+    return "BiFunctionAdapterConverter{" +
+      "biFunction=" + biFunction +
+      '}';
+  }
+
   public static BiFunctionAdapterConverter create(BiFunction<?, Bean2beanTask, ?> function) {
     BiFunctionAdapterConverter converter = new BiFunctionAdapterConverter();
     converter.biFunction = (BiFunction<Object, Bean2beanTask, Object>) function;

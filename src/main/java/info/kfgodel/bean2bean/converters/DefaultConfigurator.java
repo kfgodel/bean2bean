@@ -36,10 +36,10 @@ public class DefaultConfigurator {
     addCollectionsTo(configure);
     addOptionalsTo(configure);
     addEnumsTo(configure);
-    addJsonTo(configure);
     addGeneratorsTo(configure);
     addPrimitivesTo(configure);
-    addNoConversionTo(configure); // This should be last
+    addNoConversionTo(configure); // This should be one of the last
+    addJsonTo(configure);  // Due to it's generality we keep this to the very last
   }
 
   private void addPrimitivesTo(ConfigureDsl configure) {
@@ -47,8 +47,10 @@ public class DefaultConfigurator {
   }
 
   private void addJsonTo(ConfigureDsl configure) {
-    configure.useConverter(JsonString2ObjectConverter.create());
-    configure.useConverter(Object2JsonStringConverter.create());
+    configure.scopingWith(Object2JsonStringConverter::shouldBeUsed).useConverter(Object2JsonStringConverter.create());
+    // Because string is an object too, we want this to be after the previous- Doing that a string 2 string conversion
+    // is interpreted a conversion to json, and not backwards
+    configure.scopingWith(JsonString2ObjectConverter::shouldBeUsed).useConverter(JsonString2ObjectConverter.create());
   }
 
   private void addEnumsTo(ConfigureDsl configure) {
