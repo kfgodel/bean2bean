@@ -74,6 +74,17 @@ public class DefaultConvertersTest extends JavaSpec<ConverterTestContext> {
           assertThat(result).isEqualTo(Lists.newArrayList(1.5, 2.5, 3.5));
         });
 
+      });
+
+      describe("generators", () -> {
+        it("can instantiate any niladic constructor object",()->{
+          assertThat(test().dsl().generate().anInstanceOf(Object.class)).isInstanceOf(Object.class);
+        });
+
+        it("can generate arrays",()->{
+          assertThat(test().dsl().convert().from(0).to(new TypeRef<List<String>[]>() {})).isInstanceOf(List[].class);
+        });
+
         it("can generate queues",()->{
           assertThat(test().dsl().generate().anInstanceOf(Queue.class)).isInstanceOf(ConcurrentLinkedQueue.class);
           assertThat(test().dsl().generate().anInstanceOf(Deque.class)).isInstanceOf(LinkedList.class);
@@ -82,6 +93,7 @@ public class DefaultConvertersTest extends JavaSpec<ConverterTestContext> {
         it("can generate maps",()->{
           assertThat(test().dsl().generate().anInstanceOf(Map.class)).isInstanceOf(HashMap.class);
         });
+
       });
 
 
