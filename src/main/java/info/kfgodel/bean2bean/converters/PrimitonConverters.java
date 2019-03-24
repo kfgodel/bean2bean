@@ -2,7 +2,7 @@ package info.kfgodel.bean2bean.converters;
 
 import ar.com.kfgodel.nary.api.optionals.Optional;
 import ar.com.kfgodel.primitons.api.Primiton;
-import info.kfgodel.bean2bean.dsl.api.B2bDsl;
+import info.kfgodel.bean2bean.dsl.api.ConfigureDsl;
 
 import java.util.function.Function;
 
@@ -16,20 +16,20 @@ public class PrimitonConverters {
 
   /**
    * Registers all the available primiton converters on the given dsl
-   * @param dsl The dsl to register the converters on
+   * @param configure The dsl to register the converters on
    */
-  public static void registerOn(B2bDsl dsl) {
+  public static void registerOn(ConfigureDsl configure) {
     for (Class<?> sourceType : Primiton.types().allTypes()) {
       for (Class<?> targetType : Primiton.types().allTypes()) {
-        registerOn(dsl, sourceType, targetType);
+        registerOn(configure, sourceType, targetType);
       }
     }
   }
 
-  private static void registerOn(B2bDsl dsl, Class<?> sourceType, Class<?> targetType) {
+  private static void registerOn(ConfigureDsl configure, Class<?> sourceType, Class<?> targetType) {
     Optional<? extends Function<?, ?>> found = Primiton.converterFrom(sourceType, targetType);
     found.ifPresent((Function converterFunction) -> {
-      dsl.configure().scopingTo().accept(sourceType).andProduce(targetType)
+      configure.scopingTo().accept(sourceType).andProduce(targetType)
         .useConverter(converterFunction);
     });
   }

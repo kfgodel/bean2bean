@@ -16,7 +16,7 @@ public class PrimitonConvertersTest extends JavaSpec<ConverterTestContext> {
   public void define() {
     describe("primiton converter functions when registered", () -> {
       beforeEach(() -> {
-        PrimitonConverters.registerOn(test().dsl());
+        PrimitonConverters.registerOn(test().dsl().configure());
       });
       test().dsl(Dsl::create);
 
