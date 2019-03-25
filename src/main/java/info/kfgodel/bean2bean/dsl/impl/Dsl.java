@@ -18,6 +18,12 @@ public class Dsl implements B2bDsl {
   private Bean2bean b2b;
   private DomainCalculator calculator;
 
+  public static Dsl createWitDefaultConverters() {
+    Dsl dsl = create();
+    dsl.configure().usingDefaultConverters();
+    return dsl;
+  }
+
   public static Dsl create() {
     return createFor(Bean2BeanImpl.create());
   }
