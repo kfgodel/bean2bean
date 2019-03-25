@@ -15,8 +15,8 @@ public class TestAddress2AddressToConverter implements BiFunction<TestAddress, B
     AddressTo addressTo = task.getDsl().generate().anInstanceOf(AddressTo.class);
     addressTo.setCountry(source.getCountry());
     addressTo.setState(source.getState());
-    addressTo.setStreetName(source.getStreetName());
-    addressTo.setStreetNumber(source.getStreetNumber());
+    addressTo.setStreet(source.getStreetName());
+    addressTo.setNumber(source.getStreetNumber());
     return addressTo;
   }
 

@@ -55,13 +55,13 @@ public class DomainToTransferObjectConversionTest extends JavaSpec<B2bTestContex
               .hasFieldOrPropertyWithValue("birthday", "1985-10-11");
             assertThat(result.getAddresses()).hasSize(2);
             assertThat(result.getAddresses().get(0))
-              .hasFieldOrPropertyWithValue("streetName", "2 pines st.")
-              .hasFieldOrPropertyWithValue("streetNumber", 2)
+              .hasFieldOrPropertyWithValue("street", "2 pines st.")
+              .hasFieldOrPropertyWithValue("number", 2)
               .hasFieldOrPropertyWithValue("state", "IL")
               .hasFieldOrPropertyWithValue("country", "US");
             assertThat(result.getAddresses().get(1))
-              .hasFieldOrPropertyWithValue("streetName", "10 pines st.")
-              .hasFieldOrPropertyWithValue("streetNumber", 10)
+              .hasFieldOrPropertyWithValue("street", "10 pines st.")
+              .hasFieldOrPropertyWithValue("number", 10)
               .hasFieldOrPropertyWithValue("state", "CABA")
               .hasFieldOrPropertyWithValue("country", "AR");
           });
