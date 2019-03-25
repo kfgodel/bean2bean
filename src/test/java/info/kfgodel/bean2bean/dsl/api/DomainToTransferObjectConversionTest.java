@@ -2,16 +2,20 @@ package info.kfgodel.bean2bean.dsl.api;
 
 import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
+import info.kfgodel.bean2bean.converters.mapping.MappingConverter;
 import info.kfgodel.bean2bean.core.api.exceptions.ConversionException;
+import info.kfgodel.bean2bean.dsl.api.example.AddressTo;
 import info.kfgodel.bean2bean.dsl.api.example.PersonTo;
 import info.kfgodel.bean2bean.dsl.api.example.TestAddress;
 import info.kfgodel.bean2bean.dsl.api.example.TestAddress2AddressToConverter;
 import info.kfgodel.bean2bean.dsl.api.example.TestPerson;
 import info.kfgodel.bean2bean.dsl.api.example.TestPerson2PersonToConverter;
 import info.kfgodel.bean2bean.dsl.impl.Dsl;
+import info.kfgodel.bean2bean.other.references.TypeRef;
 import org.junit.runner.RunWith;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -48,23 +52,18 @@ public class DomainToTransferObjectConversionTest extends JavaSpec<B2bTestContex
             test().dsl().configure().useConverter(TestAddress2AddressToConverter.create());
           });
 
-          it("can convert the domain to a TO",()->{
-            PersonTo result = test().dsl().convert().from(test().person()).to(PersonTo.class);
-            assertThat(result)
-              .hasFieldOrPropertyWithValue("name", "John Doe")
-              .hasFieldOrPropertyWithValue("birthday", "1985-10-11");
-            assertThat(result.getAddresses()).hasSize(2);
-            assertThat(result.getAddresses().get(0))
-              .hasFieldOrPropertyWithValue("street", "2 pines st.")
-              .hasFieldOrPropertyWithValue("number", 2)
-              .hasFieldOrPropertyWithValue("state", "IL")
-              .hasFieldOrPropertyWithValue("country", "US");
-            assertThat(result.getAddresses().get(1))
-              .hasFieldOrPropertyWithValue("street", "10 pines st.")
-              .hasFieldOrPropertyWithValue("number", 10)
-              .hasFieldOrPropertyWithValue("state", "CABA")
-              .hasFieldOrPropertyWithValue("country", "AR");
+          it("can convert the domain to a TO", this::convertAndVerifyResult);
+        });
+
+        describe("when mapping converters are registered", () -> {
+          beforeEach(()->{
+            test().dsl().configure().scopingTo().accept(TestPerson.class).andProduce(PersonTo.class)
+              .useConverter(this.createPersonMappingConverter());
+            test().dsl().configure().scopingTo().accept(TestAddress.class).andProduce(AddressTo.class)
+              .useConverter(this.createAddressMappingConverter());
           });
+
+          it("can convert the domain to a TO", this::convertAndVerifyResult);
         });
 
 
@@ -73,5 +72,38 @@ public class DomainToTransferObjectConversionTest extends JavaSpec<B2bTestContex
 
     });
 
+  }
+
+  private MappingConverter<TestAddress, AddressTo> createAddressMappingConverter() {
+    return MappingConverter.<TestAddress, AddressTo>create()
+      .withMapping(TestAddress::getCountry, AddressTo::setCountry)
+      .withMapping(TestAddress::getState, AddressTo::setState)
+      .withMapping(TestAddress::getStreetName, AddressTo::setStreet)
+      .withMapping(TestAddress::getStreetNumber, AddressTo::setNumber);
+  }
+
+  private MappingConverter<TestPerson, PersonTo> createPersonMappingConverter() {
+    return MappingConverter.<TestPerson, PersonTo>create()
+      .withMapping(TestPerson::getName, PersonTo::setName)
+      .withMapping(TestPerson::getBirthday, String.class, PersonTo::setBirthday)
+      .withMapping(TestPerson::getAddresses, new TypeRef<List<AddressTo>>() {}, PersonTo::setAddresses);
+  }
+
+  private void convertAndVerifyResult() {
+    PersonTo result = test().dsl().convert().from(test().person()).to(PersonTo.class);
+    assertThat(result)
+      .hasFieldOrPropertyWithValue("name", "John Doe")
+      .hasFieldOrPropertyWithValue("birthday", "1985-10-11");
+    assertThat(result.getAddresses()).hasSize(2);
+    assertThat(result.getAddresses().get(0))
+      .hasFieldOrPropertyWithValue("street", "2 pines st.")
+      .hasFieldOrPropertyWithValue("number", 2)
+      .hasFieldOrPropertyWithValue("state", "IL")
+      .hasFieldOrPropertyWithValue("country", "US");
+    assertThat(result.getAddresses().get(1))
+      .hasFieldOrPropertyWithValue("street", "10 pines st.")
+      .hasFieldOrPropertyWithValue("number", 10)
+      .hasFieldOrPropertyWithValue("state", "CABA")
+      .hasFieldOrPropertyWithValue("country", "AR");
   }
 }
