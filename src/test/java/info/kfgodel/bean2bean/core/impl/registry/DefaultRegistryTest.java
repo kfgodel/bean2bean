@@ -177,6 +177,7 @@ public class DefaultRegistryTest extends JavaSpec<B2bTestContext> {
             test().registry().store(VectorDefinition.create((in) -> "Object -> List<String>", objectToListOfStrings()));
           });
 
+          // This is based on the assumption that input can be loosened but output should be strict
           it("finds the one that's more specific to the expected output", () -> {
             Optional<Function<Bean2beanTask, Object>> found = test().registry().findBestConverterFor(listOfIntegersToListOfStrings());
             Object converterResult = found.get().apply(null);
