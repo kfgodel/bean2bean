@@ -7,8 +7,10 @@ import info.kfgodel.bean2bean.core.impl.conversion.ConsumerAdapterConverter;
 import info.kfgodel.bean2bean.core.impl.conversion.FunctionAdapterConverter;
 import info.kfgodel.bean2bean.core.impl.conversion.SupplierAdapterConverter;
 import info.kfgodel.bean2bean.core.impl.registry.definitions.VectorDefinition;
+import info.kfgodel.bean2bean.dsl.api.mapper.MapperDsl;
 import info.kfgodel.bean2bean.dsl.api.scopes.ParameterizedScopeDsl;
 import info.kfgodel.bean2bean.dsl.impl.ConfigureDslImpl;
+import info.kfgodel.bean2bean.dsl.impl.mapper.MapperDslImpl;
 import info.kfgodel.bean2bean.other.references.BiFunctionRef;
 import info.kfgodel.bean2bean.other.references.ConsumerRef;
 import info.kfgodel.bean2bean.other.references.FunctionRef;
@@ -69,6 +71,14 @@ public class ParameterizedScopeDslImpl<I,O> implements ParameterizedScopeDsl<I,O
   @Override
   public ParameterizedScopeDsl<I, O> useConverter(ConsumerRef<? super I> converterFunction) {
     return useConverter(converterFunction.getConsumer());
+  }
+
+  @Override
+  public ParameterizedScopeDsl<I, O> useMapper(Function<MapperDsl<I, O>, MapperDsl> mappingConfiguration) {
+    MapperDslImpl<I, O> mapper = MapperDslImpl.create(this);
+    mappingConfiguration.apply(mapper);
+    this.useConverter(mapper.buildConverter());
+    return this;
   }
 
   private ParameterizedScopeDslImpl<I, O> usingConverterFor(Function<Bean2beanTask, Object> converter) {

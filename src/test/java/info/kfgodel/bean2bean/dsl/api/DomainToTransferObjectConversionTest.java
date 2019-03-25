@@ -46,7 +46,7 @@ public class DomainToTransferObjectConversionTest extends JavaSpec<B2bTestContex
           });
         });
 
-        describe("when manually tailored converters are registered", () -> {
+        describe("when custom made converters are registered", () -> {
           beforeEach(()->{
             test().dsl().configure().useConverter(TestPerson2PersonToConverter.create());
             test().dsl().configure().useConverter(TestAddress2AddressToConverter.create());
@@ -66,12 +66,39 @@ public class DomainToTransferObjectConversionTest extends JavaSpec<B2bTestContex
           it("can convert the domain to a TO", this::convertAndVerifyResult);
         });
 
+        describe("when using the dsl to define mapping converters", () -> {
+          beforeEach(()->{
+
+            test().dsl().configure().scopingTo().accept(TestPerson.class).andProduce(PersonTo.class)
+              .useMapper(aMapper -> aMapper
+                .getFrom(TestPerson::getName).setInto(PersonTo::setName)
+                .getFrom(TestPerson::getBirthday).convertTo(String.class).setInto(PersonTo::setBirthday)
+                .getFrom(TestPerson::getAddresses).convertTo(new TypeRef<List<AddressTo>>() {}).setInto(PersonTo::setAddresses)
+              );
+
+            test().dsl().configure().scopingTo().accept(TestAddress.class).andProduce(AddressTo.class)
+              .useMapper(aMapper -> aMapper
+                .getFrom(TestAddress::getCountry).setInto(AddressTo::setCountry)
+                .getFrom(TestAddress::getState).setInto(AddressTo::setState)
+                .getFrom(TestAddress::getStreetName).setInto(AddressTo::setStreet)
+                .getFrom(TestAddress::getStreetNumber).setInto(AddressTo::setNumber)
+              );
+          });
+
+          it("can convert the domain to a TO", this::convertAndVerifyResult);
+        });
+
 
       });
 
-
     });
+  }
 
+  private MappingConverter<TestPerson, PersonTo> createPersonMappingConverter() {
+    return MappingConverter.<TestPerson, PersonTo>create()
+      .withMapping(TestPerson::getName, PersonTo::setName)
+      .withMapping(TestPerson::getBirthday, String.class, PersonTo::setBirthday)
+      .withMapping(TestPerson::getAddresses, new TypeRef<List<AddressTo>>() {}, PersonTo::setAddresses);
   }
 
   private MappingConverter<TestAddress, AddressTo> createAddressMappingConverter() {
@@ -80,13 +107,6 @@ public class DomainToTransferObjectConversionTest extends JavaSpec<B2bTestContex
       .withMapping(TestAddress::getState, AddressTo::setState)
       .withMapping(TestAddress::getStreetName, AddressTo::setStreet)
       .withMapping(TestAddress::getStreetNumber, AddressTo::setNumber);
-  }
-
-  private MappingConverter<TestPerson, PersonTo> createPersonMappingConverter() {
-    return MappingConverter.<TestPerson, PersonTo>create()
-      .withMapping(TestPerson::getName, PersonTo::setName)
-      .withMapping(TestPerson::getBirthday, String.class, PersonTo::setBirthday)
-      .withMapping(TestPerson::getAddresses, new TypeRef<List<AddressTo>>() {}, PersonTo::setAddresses);
   }
 
   private void convertAndVerifyResult() {

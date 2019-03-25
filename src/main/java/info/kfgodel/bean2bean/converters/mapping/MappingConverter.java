@@ -35,21 +35,21 @@ public class MappingConverter<I,O> implements BiFunction<I, Bean2beanTask, O> {
   }
 
   public<T> MappingConverter<I,O> withMapping(Function<I,T> getter, BiConsumer<O,T> setter) {
-    this.addMapping(PropertyMapping.create(getter, setter));
+    this.addMapping(DirectPropertyMapping.create(getter, setter));
     return this;
   }
 
   public<T,U> MappingConverter<I,O> withMapping(Function<I,T> getter, Class<U> expectedType, BiConsumer<O,U> setter) {
-    this.addMapping(PropertyMapping.create(getter, expectedType, setter));
+    this.addMapping(ConvertedPropertyMapping.create(getter, expectedType, setter));
     return this;
   }
 
   public<T,U> MappingConverter<I,O> withMapping(Function<I,T> getter, TypeRef<U> typeRef, BiConsumer<O,U> setter) {
-    this.addMapping(PropertyMapping.create(getter, typeRef.getReference(), setter));
+    this.addMapping(ConvertedPropertyMapping.create(getter, typeRef.getReference(), setter));
     return this;
   }
 
-  private void addMapping(PropertyMapping aMapping) {
+  public void addMapping(PropertyMapping aMapping) {
     this.mappings.add(aMapping);
   }
 
