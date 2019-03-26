@@ -5,6 +5,7 @@ import info.kfgodel.bean2bean.core.api.registry.Bean2BeanRegistry;
 import info.kfgodel.bean2bean.core.api.registry.Domain;
 import info.kfgodel.bean2bean.core.impl.registry.LookupCache;
 import info.kfgodel.bean2bean.core.impl.registry.domains.DomainCalculator;
+import info.kfgodel.bean2bean.dsl.api.example.TestPerson;
 
 import java.util.function.Supplier;
 
@@ -31,6 +32,9 @@ public interface B2bTestContext extends TestContext {
 
   ConfigureDsl configure();
   void configure(Supplier<ConfigureDsl> definition);
+
+  TestPerson person();
+  void person(Supplier<TestPerson> definition);
 
 
 }

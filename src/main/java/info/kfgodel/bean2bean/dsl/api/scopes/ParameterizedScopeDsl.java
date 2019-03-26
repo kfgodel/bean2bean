@@ -1,6 +1,7 @@
 package info.kfgodel.bean2bean.dsl.api.scopes;
 
 import info.kfgodel.bean2bean.core.api.Bean2beanTask;
+import info.kfgodel.bean2bean.dsl.api.mapper.MapperDsl;
 import info.kfgodel.bean2bean.other.references.BiFunctionRef;
 import info.kfgodel.bean2bean.other.references.ConsumerRef;
 import info.kfgodel.bean2bean.other.references.FunctionRef;
@@ -83,4 +84,13 @@ public interface ParameterizedScopeDsl<I,O> {
    * @return This instance for method chaining
    */
   ParameterizedScopeDsl<I,O> useConverter(ConsumerRef<? super I> converterFunction);
+
+  /**
+   * Registers a mapping converter that will map properties from source to target object according to the
+   * mapping definition indicated in the consumer code
+   * @param mappingConfiguration The code to configure the mapper to be used on the conversion.<br>
+   *                             It's a function so you don't forget to end each mapping config
+   * @return This instance for method chaining
+   */
+  ParameterizedScopeDsl<I,O> useMapper(Function<MapperDsl<I,O>, MapperDsl> mappingConfiguration);
 }
