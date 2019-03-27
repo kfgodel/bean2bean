@@ -5,6 +5,7 @@ import info.kfgodel.bean2bean.dsl.api.B2bDsl;
 import info.kfgodel.bean2bean.other.types.descriptors.JavaTypeDescriptor;
 
 import java.lang.reflect.Type;
+import java.util.Optional;
 
 /**
  * This type represents a task that can be processed by a {@link Bean2bean} core
@@ -55,4 +56,16 @@ public interface Bean2beanTask {
    * @return A standard representation of the target type
    */
   String describeTarget();
+
+  /**
+   * If this is a nested task returns the parent task from which this conversion was needed
+   * @return The task that generated this nested conversion or empty if no parent task is found
+   */
+  Optional<Bean2beanTask> getParentTask();
+
+  /**
+   * Creates a relationship with its parent task
+   * @param originalTask The task that spawn this instance as part of it conversion process
+   */
+  void linkToParent(Bean2beanTask originalTask);
 }

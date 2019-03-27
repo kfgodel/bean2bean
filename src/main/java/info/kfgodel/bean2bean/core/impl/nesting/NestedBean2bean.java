@@ -16,6 +16,7 @@ public class NestedBean2bean implements Bean2bean {
 
   @Override
   public <O> O process(Bean2beanTask task) {
+    task.linkToParent(originalTask);
     try {
       return realB2b.process(task);
     } catch (Exception e) {

@@ -9,6 +9,7 @@ import info.kfgodel.bean2bean.dsl.api.B2bDsl;
 import info.kfgodel.bean2bean.dsl.impl.Dsl;
 
 import java.lang.reflect.Type;
+import java.util.Optional;
 
 /**
  * This class represents the task that {@link info.kfgodel.bean2bean.core.api.Bean2bean} can process
@@ -22,6 +23,7 @@ public class ObjectConversion implements Bean2beanTask {
   private Type targetType;
   private DomainVector conversionVector;
   private Bean2bean core;
+  private Optional<Bean2beanTask> parentTask;
 
   public static ObjectConversion create(Object source, Type targetType, DomainVector conversionVector, Bean2bean core) {
     ObjectConversion conversion = new ObjectConversion();
@@ -29,6 +31,7 @@ public class ObjectConversion implements Bean2beanTask {
     conversion.conversionVector = conversionVector;
     conversion.core = core;
     conversion.targetType = targetType;
+    conversion.parentTask = Optional.empty();
     return conversion;
   }
 
@@ -66,13 +69,25 @@ public class ObjectConversion implements Bean2beanTask {
   }
 
   @Override
+  public Optional<Bean2beanTask> getParentTask() {
+    return parentTask;
+  }
+
+  @Override
+  public void linkToParent(Bean2beanTask originalTask) {
+    this.parentTask = Optional.of(originalTask);
+  }
+
+  @Override
   public Type getTargetType() {
     return targetType;
   }
 
   @Override
   public String toString() {
-    return source + " -> " + targetType;
+    return source + " -> " + targetType + getParentTask()
+      .map(parent -> " part of (" + parent + ")")
+      .orElse("");
   }
 
 }

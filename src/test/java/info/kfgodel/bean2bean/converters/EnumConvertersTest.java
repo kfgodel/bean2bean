@@ -47,7 +47,7 @@ public class EnumConvertersTest extends JavaSpec<ConverterTestContext> {
         itThrows(ConversionException.class, "if the string value doesn't match an enum value name",()->{
           test().dsl().convert().from("not an enum name").to(TestEnum.class);
         }, e->{
-          assertThat(e).hasMessage("No enum value named \"not an enum name\" found in class info.kfgodel.bean2bean.converters.EnumConvertersTest$TestEnum");
+          assertThat(e).hasMessage("No enum value named \"not an enum name\" found in class info.kfgodel.bean2bean.converters.TestEnum");
         });
 
         itThrows(ConversionException.class, "if the target class is not an enum sub-type", ()->{

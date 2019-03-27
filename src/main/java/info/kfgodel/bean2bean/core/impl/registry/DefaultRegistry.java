@@ -64,17 +64,17 @@ public class DefaultRegistry implements Bean2BeanRegistry {
   }
 
   private Optional<ConverterDefinition> lookForVectorBasedMatchingHierarchiesOf(DomainVector conversionVector) {
-    Iterator<Domain> sourceDomainHierarchy = conversionVector.getSource().getHierarchy().iterator();
-    while(sourceDomainHierarchy.hasNext()){
-      Domain sourceDomain = sourceDomainHierarchy.next();
+    Iterator<Domain> targetDomainHierarchy = conversionVector.getTarget().getHierarchy().iterator();
+    while (targetDomainHierarchy.hasNext()) {
+      Domain targetDomain = targetDomainHierarchy.next();
 
-      Iterator<Domain> targetDomainHierarchy = conversionVector.getTarget().getHierarchy().iterator();
-      while(targetDomainHierarchy.hasNext()){
-        Domain targetDomain = targetDomainHierarchy.next();
+      Iterator<Domain> sourceDomainHierarchy = conversionVector.getSource().getHierarchy().iterator();
+      while (sourceDomainHierarchy.hasNext()) {
+        Domain sourceDomain = sourceDomainHierarchy.next();
 
         DomainVector exploredVector = DomainVector.create(sourceDomain, targetDomain);
         Optional<ConverterDefinition> found = findExactConverterFor(exploredVector);
-        if(found.isPresent()){
+        if (found.isPresent()) {
           return found;
         }
       }
