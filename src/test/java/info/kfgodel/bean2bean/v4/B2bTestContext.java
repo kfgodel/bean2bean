@@ -5,6 +5,7 @@ import info.kfgodel.bean2bean.v4.impl.engine.B2bEngine;
 import info.kfgodel.bean2bean.v4.impl.engine.ConversionIntent;
 import info.kfgodel.bean2bean.v4.impl.finder.ConverterFunctionFinder;
 import info.kfgodel.bean2bean.v4.impl.process.ConversionProcess;
+import info.kfgodel.bean2bean.v4.impl.store.ConverterStore;
 import info.kfgodel.bean2bean.v4.impl.vector.ConversionVector;
 
 import java.util.List;
@@ -40,5 +41,7 @@ public interface B2bTestContext extends TestContext {
   ConversionVector vector();
   void vector(Supplier<ConversionVector> definition);
 
+  ConverterStore store();
+  void store(Supplier<ConverterStore> definition);
 
 }
