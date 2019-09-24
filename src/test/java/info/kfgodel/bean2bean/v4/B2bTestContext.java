@@ -6,6 +6,7 @@ import info.kfgodel.bean2bean.v4.impl.engine.ConversionIntent;
 import info.kfgodel.bean2bean.v4.impl.finder.ConverterFunctionFinder;
 import info.kfgodel.bean2bean.v4.impl.process.ConversionProcess;
 
+import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -31,6 +32,9 @@ public interface B2bTestContext extends TestContext {
 
   RuntimeException exception();
   void exception(Supplier<RuntimeException> definition);
+
+  List<ConverterFunctionFinder> strategies();
+  void strategies(Supplier<List<ConverterFunctionFinder>> definition);
 
 
 }

@@ -20,4 +20,5 @@ public interface ConverterFunctionFinder {
    * @return The function that, when invoked, can make the conversion
    */
   <O> Optional<Function<ConversionProcess<O>, O>> findBestConverterFor(ConversionIntent<O> process);
+
 }
