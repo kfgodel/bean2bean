@@ -17,7 +17,7 @@ import static org.mockito.ArgumentMatchers.any;
  * Date: 23/9/19 - 16:37
  */
 @RunWith(JavaSpecRunner.class)
-public class B2bEngineTest extends JavaSpec<B2bTestContext> {
+public class DefaultEngineTest extends JavaSpec<B2bTestContext> {
   @Override
   public void define() {
     describe("a b2b engine", () -> {

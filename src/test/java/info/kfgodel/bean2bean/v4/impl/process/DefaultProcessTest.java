@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Date: 23/9/19 - 22:43
  */
 @RunWith(JavaSpecRunner.class)
-public class ConversionProcessTest extends JavaSpec<B2bTestContext> {
+public class DefaultProcessTest extends JavaSpec<B2bTestContext> {
   @Override
   public void define() {
     describe("a conversion process", () -> {
