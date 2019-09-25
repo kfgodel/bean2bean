@@ -37,7 +37,7 @@ public class DefaultStoreTest extends JavaSpec<B2bTestContext> {
         describe("when a converter is stored", () -> {
           test().converter(() -> anIrrelevant(Function.class));
           beforeEach(() -> {
-            test().store().storeFor(test().vector(), test().converter());
+            test().store().useFor(test().vector(), test().converter());
           });
 
           it("can retrieve the converter function", () -> {

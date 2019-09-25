@@ -14,5 +14,5 @@ public interface ConverterStore {
 
   <O> Optional<Function<ConversionProcess<O>, O>> retrieveFor(ConversionVector vector);
 
-  <O> ConverterStore storeFor(ConversionVector vector, Function<ConversionProcess<O>, O> converterFunction);
+  <O> ConverterStore useFor(ConversionVector vector, Function<ConversionProcess<O>, O> converterFunction);
 }

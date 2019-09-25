@@ -12,8 +12,17 @@ public interface ConversionIntent<O> {
 
   /**
    * Returns a vector that indicates the direction in which the conversion is expected to happen.<br>
-   *   From source to target
+   *   This vector is an abstract representation of the conversion, so the vector source and target
+   *   may be different from the actual intent's input and target
    * @return The vector in which the conversion is needed
    */
   ConversionVector getVector();
+
+  /**
+   * Returns the object that is the input of this intent conversion. The input represents a value that is to be
+   * transformed into the output.<br>
+   * @param <I> The type of expected input
+   * @return The input value
+   */
+  <I> I getInput();
 }

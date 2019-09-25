@@ -40,7 +40,7 @@ public class DirectStoreFinderTest extends JavaSpec<B2bTestContext> {
 
           describe("when the store has a converter that matches exactly the intent's vector", () -> {
             beforeEach(()->{
-              test().store().storeFor(Vector.create(1,2), anIrrelevant(Function.class));
+              test().store().useFor(Vector.create(1,2), anIrrelevant(Function.class));
             });
 
             it("finds the converter",()->{

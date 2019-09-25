@@ -37,4 +37,14 @@ public class Vector implements ConversionVector {
   public String toString() {
     return source + " -> " + target;
   }
+
+  @Override
+  public Object getSource() {
+    return source;
+  }
+
+  @Override
+  public Object getTarget() {
+    return target;
+  }
 }

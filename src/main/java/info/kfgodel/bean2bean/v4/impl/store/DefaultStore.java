@@ -28,7 +28,7 @@ public class DefaultStore implements ConverterStore {
   }
 
   @Override
-  public <O> ConverterStore storeFor(ConversionVector vector, Function<ConversionProcess<O>, O> converterFunction) {
+  public <O> ConverterStore useFor(ConversionVector vector, Function<ConversionProcess<O>, O> converterFunction) {
     convertersByVector.put(vector, converterFunction);
     return this;
   }

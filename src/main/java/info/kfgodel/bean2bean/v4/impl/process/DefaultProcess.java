@@ -34,4 +34,9 @@ public class DefaultProcess<O> implements ConversionProcess<O> {
       throw new B2bException("Converter function failed with: \"" + e.getMessage() + "\" when processing " + this, e);
     }
   }
+
+  @Override
+  public ConversionIntent<O> getIntent() {
+    return intent;
+  }
 }
