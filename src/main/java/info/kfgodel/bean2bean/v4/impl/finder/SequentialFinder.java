@@ -1,7 +1,7 @@
 package info.kfgodel.bean2bean.v4.impl.finder;
 
 import ar.com.kfgodel.nary.api.optionals.Optional;
-import info.kfgodel.bean2bean.v4.impl.engine.ConversionIntent;
+import info.kfgodel.bean2bean.v4.impl.intent.ConversionIntent;
 import info.kfgodel.bean2bean.v4.impl.process.ConversionProcess;
 
 import java.util.List;
@@ -18,9 +18,9 @@ public class SequentialFinder implements ConverterFunctionFinder {
   private List<ConverterFunctionFinder> strategies;
 
   @Override
-  public <O> Optional<Function<ConversionProcess<O>, O>> findBestConverterFor(ConversionIntent<O> process) {
+  public <O> Optional<Function<ConversionProcess<O>, O>> findBestConverterFor(ConversionIntent<O> intent) {
     for (ConverterFunctionFinder strategy : strategies) {
-      Optional<Function<ConversionProcess<O>, O>> found = strategy.findBestConverterFor(process);
+      Optional<Function<ConversionProcess<O>, O>> found = strategy.findBestConverterFor(intent);
       if(found.isPresent()){
         return found;
       }

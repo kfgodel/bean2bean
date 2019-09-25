@@ -2,7 +2,7 @@ package info.kfgodel.bean2bean.v4.impl.process;
 
 import info.kfgodel.bean2bean.v4.api.exceptions.B2bException;
 import info.kfgodel.bean2bean.v4.impl.engine.B2bEngine;
-import info.kfgodel.bean2bean.v4.impl.engine.ConversionIntent;
+import info.kfgodel.bean2bean.v4.impl.intent.ConversionIntent;
 
 import java.util.function.Function;
 

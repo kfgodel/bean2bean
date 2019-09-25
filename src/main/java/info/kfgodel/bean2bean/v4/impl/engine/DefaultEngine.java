@@ -2,6 +2,7 @@ package info.kfgodel.bean2bean.v4.impl.engine;
 
 import info.kfgodel.bean2bean.v4.api.exceptions.B2bException;
 import info.kfgodel.bean2bean.v4.impl.finder.ConverterFunctionFinder;
+import info.kfgodel.bean2bean.v4.impl.intent.ConversionIntent;
 import info.kfgodel.bean2bean.v4.impl.process.ConversionProcess;
 import info.kfgodel.bean2bean.v4.impl.process.DefaultProcess;
 

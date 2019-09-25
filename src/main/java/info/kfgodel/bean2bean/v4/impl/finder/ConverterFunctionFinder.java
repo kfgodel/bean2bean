@@ -1,7 +1,7 @@
 package info.kfgodel.bean2bean.v4.impl.finder;
 
 import ar.com.kfgodel.nary.api.optionals.Optional;
-import info.kfgodel.bean2bean.v4.impl.engine.ConversionIntent;
+import info.kfgodel.bean2bean.v4.impl.intent.ConversionIntent;
 import info.kfgodel.bean2bean.v4.impl.process.ConversionProcess;
 
 import java.util.function.Function;
@@ -14,11 +14,11 @@ import java.util.function.Function;
 public interface ConverterFunctionFinder {
 
   /**
-   * Looks into the store of converters to find the best suited for the given process
-   * @param process The process that needs a converter to be fulfilled
+   * Looks into the store of converters to find the best available one that is suited for the given intent
+   * @param intent The intent that needs a converter to be fulfilled
    * @param <O> The type of expected result
    * @return The function that, when invoked, can make the conversion
    */
-  <O> Optional<Function<ConversionProcess<O>, O>> findBestConverterFor(ConversionIntent<O> process);
+  <O> Optional<Function<ConversionProcess<O>, O>> findBestConverterFor(ConversionIntent<O> intent);
 
 }

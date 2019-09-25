@@ -1,6 +1,7 @@
 package info.kfgodel.bean2bean.v4.impl.engine;
 
 import info.kfgodel.bean2bean.v4.api.exceptions.B2bException;
+import info.kfgodel.bean2bean.v4.impl.intent.ConversionIntent;
 
 /**
  * This interface represents the core processing logic for Bean2Bean.<br>

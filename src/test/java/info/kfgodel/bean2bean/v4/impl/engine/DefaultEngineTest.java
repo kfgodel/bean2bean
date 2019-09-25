@@ -6,6 +6,7 @@ import ar.com.kfgodel.nary.api.optionals.Optional;
 import info.kfgodel.bean2bean.v4.B2bTestContext;
 import info.kfgodel.bean2bean.v4.api.exceptions.B2bException;
 import info.kfgodel.bean2bean.v4.impl.finder.ConverterFunctionFinder;
+import info.kfgodel.bean2bean.v4.impl.intent.ConversionIntent;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 
