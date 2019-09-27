@@ -8,6 +8,7 @@ import info.kfgodel.bean2bean.v4.impl.finder.ConverterFunctionFinder;
 import info.kfgodel.bean2bean.v4.impl.finder.DirectStoreFinder;
 import info.kfgodel.bean2bean.v4.impl.finder.SequentialFinder;
 import info.kfgodel.bean2bean.v4.impl.intent.ConversionIntent;
+import info.kfgodel.bean2bean.v4.impl.sets.TypeBasedSet;
 import info.kfgodel.bean2bean.v4.impl.store.DefaultStore;
 import info.kfgodel.bean2bean.v4.impl.vector.Vector;
 import org.junit.runner.RunWith;
@@ -32,16 +33,16 @@ public class EngineExampleTest extends JavaSpec<B2bTestContext> {
         });
         test().store(DefaultStore::create);
 
-        describe("when there's a matching converter on the store", () -> {
+        describe("when there's an exact matching converter on the store", () -> {
           beforeEach(()->{
-            test().store().useFor(Vector.create(String.class,Integer.class), (process)->{
+            test().store().useFor(Vector.create(TypeBasedSet.create(String.class),TypeBasedSet.create(Integer.class)), (process)->{
               String text = process.getIntent().getInput();
               return Integer.parseInt(text);
             });
           });
 
           it("converts an input value using the converter into an output",()->{
-            ConversionIntent<Integer> intent = TypeConversionIntent.create("88", Integer.class);
+            ConversionIntent<Integer> intent = TypeConversionIntent.create("88", TypeBasedSet.create(Integer.class));
             Integer result = test().engine().apply(intent);
             assertThat(result).isEqualTo(88);
           });

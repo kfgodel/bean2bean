@@ -1,6 +1,7 @@
 package info.kfgodel.bean2bean.v4.impl.engine;
 
 import info.kfgodel.bean2bean.v4.impl.intent.ConversionIntent;
+import info.kfgodel.bean2bean.v4.impl.sets.TypeBasedSet;
 import info.kfgodel.bean2bean.v4.impl.vector.ConversionVector;
 import info.kfgodel.bean2bean.v4.impl.vector.Vector;
 
@@ -13,11 +14,12 @@ import java.lang.reflect.Type;
 public class TypeConversionIntent<O> implements ConversionIntent<O> {
 
   private Object input;
-  private Type targetType;
+  private TypeBasedSet targetType;
 
   @Override
   public ConversionVector getVector() {
-    return Vector.create(input.getClass(), targetType);
+    final TypeBasedSet sourceType = TypeBasedSet.create(input.getClass());
+    return Vector.create(sourceType, targetType);
   }
 
   @Override
@@ -25,7 +27,7 @@ public class TypeConversionIntent<O> implements ConversionIntent<O> {
     return (I) input;
   }
 
-  public static <O> TypeConversionIntent<O> create(Object input, Class<O> targetType) {
+  public static <O> TypeConversionIntent<O> create(Object input, TypeBasedSet targetType) {
     TypeConversionIntent intent = new TypeConversionIntent();
     intent.input = input;
     intent.targetType = targetType;
