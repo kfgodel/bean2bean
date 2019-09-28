@@ -7,7 +7,7 @@ import info.kfgodel.bean2bean.v3.core.impl.descriptor.ObjectDescriptor;
 import info.kfgodel.bean2bean.v3.dsl.api.B2bDsl;
 import info.kfgodel.bean2bean.v3.dsl.api.CreateDsl;
 import info.kfgodel.bean2bean.v3.dsl.api.Nothing;
-import info.kfgodel.bean2bean.v3.other.references.TypeRef;
+import info.kfgodel.reflect.references.TypeRef;
 
 import java.lang.reflect.Type;
 

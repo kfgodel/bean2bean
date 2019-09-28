@@ -1,10 +1,10 @@
-package info.kfgodel.bean2bean.v3.other;
+package info.kfgodel.reflect.types;
 
 import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
 import com.google.common.collect.Lists;
-import info.kfgodel.bean2bean.v3.other.references.TypeRef;
-import info.kfgodel.bean2bean.v3.other.types.SupertypeSpliterator;
+import info.kfgodel.reflect.ReflectTestContext;
+import info.kfgodel.reflect.references.TypeRef;
 import org.junit.runner.RunWith;
 
 import java.lang.reflect.Type;
@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Date: 17/02/19 - 21:22
  */
 @RunWith(JavaSpecRunner.class)
-public class SupertypeSpliteratorTest<E> extends JavaSpec<TypeRefTestContext> {
+public class SupertypeSpliteratorTest<E> extends JavaSpec<ReflectTestContext> {
   @Override
   public void define() {
     describe("a supertype spliterator", () -> {

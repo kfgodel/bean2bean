@@ -2,8 +2,8 @@ package info.kfgodel.bean2bean.v4.impl.sets;
 
 import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
-import info.kfgodel.bean2bean.v3.other.references.TypeRef;
 import info.kfgodel.bean2bean.v4.B2bTestContext;
+import info.kfgodel.reflect.references.TypeRef;
 import org.junit.runner.RunWith;
 
 import java.lang.reflect.ParameterizedType;

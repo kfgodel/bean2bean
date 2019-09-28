@@ -7,7 +7,7 @@ import info.kfgodel.bean2bean.v3.other.references.BiFunctionRef;
 import info.kfgodel.bean2bean.v3.other.references.ConsumerRef;
 import info.kfgodel.bean2bean.v3.other.references.FunctionRef;
 import info.kfgodel.bean2bean.v3.other.references.SupplierRef;
-import info.kfgodel.bean2bean.v3.other.types.extraction.TypeArgumentExtractor;
+import info.kfgodel.reflect.types.extraction.TypeArgumentExtractor;
 
 import java.lang.reflect.Type;
 import java.util.List;

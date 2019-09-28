@@ -1,6 +1,6 @@
-package info.kfgodel.bean2bean.v3.other.types;
+package info.kfgodel.reflect.types;
 
-import info.kfgodel.bean2bean.v3.other.types.descriptors.JavaTypeDescriptor;
+import info.kfgodel.reflect.types.descriptors.JavaTypeDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -127,7 +127,7 @@ public class SupertypeSpliterator implements Spliterator<Type> {
 
   private void enqueue(Type pendingType){
     if(pendingType == null || // We deal with null here so we don't have to do it for every jdk method
-      Object.class.equals(pendingType) || // Object is a type we add to the end, no matter what
+      Object.class.equals(pendingType) || // Object is a type we add to the end, we ignore it here
       this.traversedTypes.contains(pendingType) || // No need to traverse it again
       this.pendingTypes.contains(pendingType) // It's already on the waiting list
     ){

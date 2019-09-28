@@ -1,6 +1,6 @@
 package info.kfgodel.bean2bean.v3.dsl.api.mapper;
 
-import info.kfgodel.bean2bean.v3.other.references.TypeRef;
+import info.kfgodel.reflect.references.TypeRef;
 
 /**
  * This type represents the operation available on a mapping once the source getter is defined

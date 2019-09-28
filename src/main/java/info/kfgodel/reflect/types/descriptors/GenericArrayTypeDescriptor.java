@@ -1,4 +1,4 @@
-package info.kfgodel.bean2bean.v3.other.types.descriptors;
+package info.kfgodel.reflect.types.descriptors;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.GenericArrayType;

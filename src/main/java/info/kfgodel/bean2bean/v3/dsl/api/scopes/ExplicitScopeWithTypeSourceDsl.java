@@ -1,6 +1,6 @@
 package info.kfgodel.bean2bean.v3.dsl.api.scopes;
 
-import info.kfgodel.bean2bean.v3.other.references.TypeRef;
+import info.kfgodel.reflect.references.TypeRef;
 
 import java.lang.reflect.Type;
 

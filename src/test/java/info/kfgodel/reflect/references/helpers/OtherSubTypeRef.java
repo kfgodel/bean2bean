@@ -1,6 +1,6 @@
-package info.kfgodel.bean2bean.v3.other;
+package info.kfgodel.reflect.references.helpers;
 
-import info.kfgodel.bean2bean.v3.other.references.TypeRef;
+import info.kfgodel.reflect.references.TypeRef;
 
 /**
  * This class serves only for test purposes as a middle class inheritance.<br>

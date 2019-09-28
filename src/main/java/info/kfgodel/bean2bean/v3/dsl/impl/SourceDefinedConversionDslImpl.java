@@ -8,7 +8,7 @@ import info.kfgodel.bean2bean.v3.core.impl.conversion.ObjectConversion;
 import info.kfgodel.bean2bean.v3.core.impl.registry.domains.DomainCalculator;
 import info.kfgodel.bean2bean.v3.dsl.api.B2bDsl;
 import info.kfgodel.bean2bean.v3.dsl.api.SourceDefinedConversionDsl;
-import info.kfgodel.bean2bean.v3.other.references.TypeRef;
+import info.kfgodel.reflect.references.TypeRef;
 
 import java.lang.reflect.Type;
 

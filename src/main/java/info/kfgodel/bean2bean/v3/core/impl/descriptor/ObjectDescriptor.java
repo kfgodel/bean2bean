@@ -1,7 +1,7 @@
 package info.kfgodel.bean2bean.v3.core.impl.descriptor;
 
 import info.kfgodel.bean2bean.v3.core.api.registry.Domain;
-import info.kfgodel.bean2bean.v3.other.types.descriptors.JavaTypeDescriptor;
+import info.kfgodel.reflect.types.descriptors.JavaTypeDescriptor;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;

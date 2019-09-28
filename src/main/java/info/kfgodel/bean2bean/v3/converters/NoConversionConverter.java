@@ -4,7 +4,7 @@ import info.kfgodel.bean2bean.v3.core.api.Bean2beanTask;
 import info.kfgodel.bean2bean.v3.core.api.exceptions.ConversionException;
 import info.kfgodel.bean2bean.v3.core.api.registry.Domain;
 import info.kfgodel.bean2bean.v3.core.api.registry.DomainVector;
-import info.kfgodel.bean2bean.v3.other.types.descriptors.JavaTypeDescriptor;
+import info.kfgodel.reflect.types.descriptors.JavaTypeDescriptor;
 
 import java.util.Optional;
 import java.util.function.BiFunction;

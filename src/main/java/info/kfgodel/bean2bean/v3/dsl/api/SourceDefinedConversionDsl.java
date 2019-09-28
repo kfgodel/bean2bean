@@ -1,7 +1,7 @@
 package info.kfgodel.bean2bean.v3.dsl.api;
 
 import info.kfgodel.bean2bean.v3.core.api.exceptions.Bean2BeanException;
-import info.kfgodel.bean2bean.v3.other.references.TypeRef;
+import info.kfgodel.reflect.references.TypeRef;
 
 import java.lang.reflect.Type;
 

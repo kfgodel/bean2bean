@@ -5,7 +5,7 @@ import info.kfgodel.bean2bean.v3.converters.mapping.PropertyMapping;
 import info.kfgodel.bean2bean.v3.dsl.api.mapper.MapperDsl;
 import info.kfgodel.bean2bean.v3.dsl.api.mapper.SourceDefinedMappingDsl;
 import info.kfgodel.bean2bean.v3.dsl.api.mapper.TargetDefinerMappingDsl;
-import info.kfgodel.bean2bean.v3.other.references.TypeRef;
+import info.kfgodel.reflect.references.TypeRef;
 
 import java.util.function.BiConsumer;
 import java.util.function.Function;

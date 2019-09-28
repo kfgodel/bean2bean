@@ -2,7 +2,7 @@ package info.kfgodel.bean2bean.v3.core.api;
 
 import info.kfgodel.bean2bean.v3.core.api.registry.DomainVector;
 import info.kfgodel.bean2bean.v3.dsl.api.B2bDsl;
-import info.kfgodel.bean2bean.v3.other.types.descriptors.JavaTypeDescriptor;
+import info.kfgodel.reflect.types.descriptors.JavaTypeDescriptor;
 
 import java.lang.reflect.Type;
 import java.util.Optional;

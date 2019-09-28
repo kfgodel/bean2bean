@@ -8,7 +8,7 @@ import info.kfgodel.bean2bean.v3.dsl.api.scopes.ExplicitScopeYetToBeDefinedDsl;
 import info.kfgodel.bean2bean.v3.dsl.api.scopes.ImplicitScopeRegistrationDsl;
 import info.kfgodel.bean2bean.v3.dsl.api.scopes.ScopedRegistrationDsl;
 import info.kfgodel.bean2bean.v3.dsl.impl.ConfigureDslImpl;
-import info.kfgodel.bean2bean.v3.other.references.TypeRef;
+import info.kfgodel.reflect.references.TypeRef;
 
 import java.lang.reflect.Type;
 

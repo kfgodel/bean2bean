@@ -1,4 +1,4 @@
-package info.kfgodel.bean2bean.v3.other.types.descriptors;
+package info.kfgodel.reflect.types.descriptors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

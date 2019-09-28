@@ -8,7 +8,7 @@ import info.kfgodel.bean2bean.v3.converters.collections.Collection2CollectionCon
 import info.kfgodel.bean2bean.v3.core.api.Bean2beanTask;
 import info.kfgodel.bean2bean.v3.dsl.impl.Dsl;
 import info.kfgodel.bean2bean.v3.other.references.SupplierRef;
-import info.kfgodel.bean2bean.v3.other.references.TypeRef;
+import info.kfgodel.reflect.references.TypeRef;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;

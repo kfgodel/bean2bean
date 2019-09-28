@@ -1,8 +1,9 @@
-package info.kfgodel.bean2bean.v3.other;
+package info.kfgodel.reflect.references;
 
 import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
-import info.kfgodel.bean2bean.v3.other.references.TypeRef;
+import info.kfgodel.reflect.ReflectTestContext;
+import info.kfgodel.reflect.references.helpers.OtherSubTypeRef;
 import org.junit.runner.RunWith;
 
 import java.lang.reflect.ParameterizedType;
@@ -16,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Date: 12/02/19 - 20:11
  */
 @RunWith(JavaSpecRunner.class)
-public class TypeRefTest extends JavaSpec<TypeRefTestContext> {
+public class TypeRefTest extends JavaSpec<ReflectTestContext> {
   @Override
   public void define() {
     describe("a type reference", () -> {

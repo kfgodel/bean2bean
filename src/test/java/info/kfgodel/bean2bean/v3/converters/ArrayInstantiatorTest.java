@@ -6,7 +6,7 @@ import info.kfgodel.bean2bean.v3.converters.generators.ArrayInstantiator;
 import info.kfgodel.bean2bean.v3.core.api.exceptions.ConversionException;
 import info.kfgodel.bean2bean.v3.core.api.exceptions.CreationException;
 import info.kfgodel.bean2bean.v3.dsl.impl.Dsl;
-import info.kfgodel.bean2bean.v3.other.references.TypeRef;
+import info.kfgodel.reflect.references.TypeRef;
 import org.junit.runner.RunWith;
 
 import java.util.List;

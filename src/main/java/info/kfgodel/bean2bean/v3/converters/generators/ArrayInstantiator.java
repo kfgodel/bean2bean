@@ -3,7 +3,7 @@ package info.kfgodel.bean2bean.v3.converters.generators;
 import info.kfgodel.bean2bean.v3.core.api.Bean2beanTask;
 import info.kfgodel.bean2bean.v3.core.api.exceptions.CreationException;
 import info.kfgodel.bean2bean.v3.core.api.registry.DomainVector;
-import info.kfgodel.bean2bean.v3.other.types.descriptors.JavaTypeDescriptor;
+import info.kfgodel.reflect.types.descriptors.JavaTypeDescriptor;
 
 import java.lang.reflect.Array;
 import java.util.Optional;

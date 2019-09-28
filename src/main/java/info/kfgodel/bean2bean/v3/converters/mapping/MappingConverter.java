@@ -1,7 +1,7 @@
 package info.kfgodel.bean2bean.v3.converters.mapping;
 
 import info.kfgodel.bean2bean.v3.core.api.Bean2beanTask;
-import info.kfgodel.bean2bean.v3.other.references.TypeRef;
+import info.kfgodel.reflect.references.TypeRef;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -11,7 +11,7 @@ import info.kfgodel.bean2bean.v3.dsl.api.example.TestAddress2AddressToConverter;
 import info.kfgodel.bean2bean.v3.dsl.api.example.TestPerson;
 import info.kfgodel.bean2bean.v3.dsl.api.example.TestPerson2PersonToConverter;
 import info.kfgodel.bean2bean.v3.dsl.impl.Dsl;
-import info.kfgodel.bean2bean.v3.other.references.TypeRef;
+import info.kfgodel.reflect.references.TypeRef;
 import org.junit.runner.RunWith;
 
 import java.time.LocalDate;

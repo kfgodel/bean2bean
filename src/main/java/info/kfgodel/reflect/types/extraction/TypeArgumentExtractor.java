@@ -1,4 +1,4 @@
-package info.kfgodel.bean2bean.v3.other.types.extraction;
+package info.kfgodel.reflect.types.extraction;
 
 import java.lang.reflect.Type;
 import java.util.Optional;

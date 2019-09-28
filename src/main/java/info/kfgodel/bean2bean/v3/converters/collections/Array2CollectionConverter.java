@@ -4,7 +4,7 @@ import info.kfgodel.bean2bean.v3.core.api.Bean2beanTask;
 import info.kfgodel.bean2bean.v3.core.api.exceptions.CreationException;
 import info.kfgodel.bean2bean.v3.core.api.registry.DomainVector;
 import info.kfgodel.bean2bean.v3.core.impl.descriptor.ObjectDescriptor;
-import info.kfgodel.bean2bean.v3.other.types.extraction.TypeArgumentExtractor;
+import info.kfgodel.reflect.types.extraction.TypeArgumentExtractor;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Type;

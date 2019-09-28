@@ -1,7 +1,7 @@
-package info.kfgodel.bean2bean.v3.other.types.extraction;
+package info.kfgodel.reflect.types.extraction;
 
-import info.kfgodel.bean2bean.v3.other.types.SupertypeSpliterator;
-import info.kfgodel.bean2bean.v3.other.types.descriptors.JavaTypeDescriptor;
+import info.kfgodel.reflect.types.SupertypeSpliterator;
+import info.kfgodel.reflect.types.descriptors.JavaTypeDescriptor;
 
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;

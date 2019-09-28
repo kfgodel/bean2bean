@@ -2,7 +2,7 @@ package info.kfgodel.bean2bean.v3.dsl.api.example;
 
 import info.kfgodel.bean2bean.v3.core.api.Bean2beanTask;
 import info.kfgodel.bean2bean.v3.dsl.api.B2bDsl;
-import info.kfgodel.bean2bean.v3.other.references.TypeRef;
+import info.kfgodel.reflect.references.TypeRef;
 
 import java.util.List;
 import java.util.function.BiFunction;
