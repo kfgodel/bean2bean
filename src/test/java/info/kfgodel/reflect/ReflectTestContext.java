@@ -7,6 +7,7 @@ import info.kfgodel.bean2bean.v3.other.references.FunctionRef;
 import info.kfgodel.bean2bean.v3.other.references.SupplierRef;
 import info.kfgodel.reflect.references.TypeRef;
 import info.kfgodel.reflect.types.SupertypeSpliterator;
+import info.kfgodel.reflect.types.binding.BoundType;
 import info.kfgodel.reflect.types.extraction.TypeArgumentExtractor;
 
 import java.lang.reflect.Type;
@@ -45,5 +46,8 @@ public interface ReflectTestContext extends TestContext {
 
   TypeArgumentExtractor argumentExtractor();
   void argumentExtractor(Supplier<TypeArgumentExtractor> definition);
+
+  BoundType boundType();
+  void boundType(Supplier<BoundType> definition);
 
 }
