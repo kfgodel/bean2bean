@@ -1,5 +1,6 @@
 package info.kfgodel.bean2bean.v4.impl.sets;
 
+import info.kfgodel.reflect.types.binding.BoundType;
 import info.kfgodel.reflect.types.binding.DefaultBoundType;
 
 import java.lang.reflect.ParameterizedType;
@@ -66,16 +67,18 @@ public class TypeBasedSet implements Set {
   public Stream<Set> getSuperSets() {
     return DefaultBoundType.create(rawType, typeArguments)
       .getUpwardHierarchy()
-      .flatMap(boundType -> {
-        final Type boundRawType = boundType.getRawType();
-        final Type[] boundArguments = boundType.getTypeArguments();
-        final TypeBasedSet typeSet = TypeBasedSet.create(boundRawType, boundArguments);
-        if(boundArguments.length > 0){
-          // It's a parameterized type which also implies the non parameterized type
-          return Stream.of(typeSet, TypeBasedSet.create(boundRawType));
-        }else{
-          return Stream.of(typeSet);
-        }
-      });
+      .flatMap(this::calculateImpliedSets);
+  }
+
+  private Stream<? extends Set> calculateImpliedSets(BoundType boundType) {
+    final Type boundRawType = boundType.getRawType();
+    final Type[] boundArguments = boundType.getTypeArguments();
+    final TypeBasedSet typeSet = TypeBasedSet.create(boundRawType, boundArguments);
+    if(boundArguments.length > 0){
+      // It's a parameterized type which also implies the non parameterized type set
+      return Stream.of(typeSet, TypeBasedSet.create(boundRawType));
+    }else{
+      return Stream.of(typeSet);
+    }
   }
 }
