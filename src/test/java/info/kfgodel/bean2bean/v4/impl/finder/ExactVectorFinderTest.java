@@ -19,11 +19,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Date: 24/9/19 - 19:34
  */
 @RunWith(JavaSpecRunner.class)
-public class DirectStoreFinderTest extends JavaSpec<B2bTestContext> {
+public class ExactVectorFinderTest extends JavaSpec<B2bTestContext> {
   @Override
   public void define() {
     describe("a direct store finder", () -> {
-      test().finder(()-> DirectStoreFinder.create(test().store()));
+      test().finder(()-> ExactVectorFinder.create(test().store()));
 
       describe("given a converter store", () -> {
         test().store(DefaultStore::create);

@@ -5,13 +5,16 @@ import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
 import com.google.common.collect.Lists;
 import info.kfgodel.bean2bean.v4.B2bTestContext;
 import info.kfgodel.bean2bean.v4.impl.finder.ConverterFunctionFinder;
-import info.kfgodel.bean2bean.v4.impl.finder.DirectStoreFinder;
+import info.kfgodel.bean2bean.v4.impl.finder.ExactVectorFinder;
 import info.kfgodel.bean2bean.v4.impl.finder.SequentialFinder;
+import info.kfgodel.bean2bean.v4.impl.finder.SetHierarchyFinder;
 import info.kfgodel.bean2bean.v4.impl.intent.ConversionIntent;
 import info.kfgodel.bean2bean.v4.impl.sets.TypeBasedSet;
 import info.kfgodel.bean2bean.v4.impl.store.DefaultStore;
 import info.kfgodel.bean2bean.v4.impl.vector.Vector;
 import org.junit.runner.RunWith;
+
+import java.util.Collection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -28,8 +31,9 @@ public class EngineExampleTest extends JavaSpec<B2bTestContext> {
 
       describe("given a finder with access to the store", () -> {
         test().finder(()->{
-          ConverterFunctionFinder directFinder = DirectStoreFinder.create(test().store());
-          return SequentialFinder.create(Lists.newArrayList(directFinder));
+          ConverterFunctionFinder directFinder = ExactVectorFinder.create(test().store());
+          ConverterFunctionFinder hierarchyFinder = SetHierarchyFinder.create(test().store());
+          return SequentialFinder.create(Lists.newArrayList(directFinder, hierarchyFinder));
         });
         test().store(DefaultStore::create);
 
@@ -47,6 +51,27 @@ public class EngineExampleTest extends JavaSpec<B2bTestContext> {
             assertThat(result).isEqualTo(88);
           });
         });
+
+        describe("when there's a matching supertype converter on the store", () -> {
+          beforeEach(()->{
+
+            // Replace line when type argument inference is correctly implemented
+            //test().store().useFor(Vector.create(TypeBasedSet.create(Collection.class, String.class),TypeBasedSet.create(Number.class)), (process)->{
+            test().store().useFor(Vector.create(TypeBasedSet.create(Collection.class),TypeBasedSet.create(Number.class)), (process)->{
+              // This converter takes the first element and parses it as double, just as an example for this test
+              Collection<String> collection = process.getIntent().getInput();
+              final String firstTextInTheCollection = collection.stream().findFirst().get();
+              return Double.parseDouble(firstTextInTheCollection);
+            });
+          });
+
+          it("converts a subtype input value using the converter",()->{
+            ConversionIntent<Double> intent = TypeConversionIntent.create(Lists.newArrayList("3.1459"), TypeBasedSet.create(Double.class));
+            Double result = test().engine().apply(intent);
+            assertThat(result).isEqualTo(3.1459);
+          });
+        });
+
       });
 
     });

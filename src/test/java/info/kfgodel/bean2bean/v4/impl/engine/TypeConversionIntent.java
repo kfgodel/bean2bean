@@ -5,8 +5,6 @@ import info.kfgodel.bean2bean.v4.impl.sets.TypeBasedSet;
 import info.kfgodel.bean2bean.v4.impl.vector.ConversionVector;
 import info.kfgodel.bean2bean.v4.impl.vector.Vector;
 
-import java.lang.reflect.Type;
-
 /**
  * This class intends to be example on how intent differ from vectors and use it as an example for simple conversions
  * Date: 25/9/19 - 19:24
@@ -34,4 +32,11 @@ public class TypeConversionIntent<O> implements ConversionIntent<O> {
     return intent;
   }
 
+  @Override
+  public String toString() {
+    return "TypeConversionIntent{" +
+      "input=" + input +
+      ", targetType=" + targetType +
+      '}';
+  }
 }

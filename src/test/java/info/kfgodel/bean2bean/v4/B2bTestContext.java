@@ -5,6 +5,7 @@ import info.kfgodel.bean2bean.v4.impl.engine.B2bEngine;
 import info.kfgodel.bean2bean.v4.impl.finder.ConverterFunctionFinder;
 import info.kfgodel.bean2bean.v4.impl.intent.ConversionIntent;
 import info.kfgodel.bean2bean.v4.impl.process.ConversionProcess;
+import info.kfgodel.bean2bean.v4.impl.sets.Set;
 import info.kfgodel.bean2bean.v4.impl.sets.TypeBasedSet;
 import info.kfgodel.bean2bean.v4.impl.store.ConverterStore;
 import info.kfgodel.bean2bean.v4.impl.vector.ConversionVector;
@@ -47,5 +48,9 @@ public interface B2bTestContext extends TestContext {
 
   TypeBasedSet typeSet();
   void typeSet(Supplier<TypeBasedSet> definition);
+
+  List<Set> supersets();
+  void supersets(Supplier<List<Set>> definition);
+
 
 }

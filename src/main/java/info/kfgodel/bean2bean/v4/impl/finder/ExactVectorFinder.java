@@ -12,7 +12,7 @@ import java.util.function.Function;
  * This finder looks in the store for the exact match of the conversion vector
  * Date: 24/9/19 - 19:27
  */
-public class DirectStoreFinder implements ConverterFunctionFinder {
+public class ExactVectorFinder implements ConverterFunctionFinder {
 
   private ConverterStore store;
 
@@ -22,8 +22,8 @@ public class DirectStoreFinder implements ConverterFunctionFinder {
     return store.retrieveFor(conversionVector);
   }
 
-  public static DirectStoreFinder create(ConverterStore store) {
-    DirectStoreFinder finder = new DirectStoreFinder();
+  public static ExactVectorFinder create(ConverterStore store) {
+    ExactVectorFinder finder = new ExactVectorFinder();
     finder.store = store;
     return finder;
   }

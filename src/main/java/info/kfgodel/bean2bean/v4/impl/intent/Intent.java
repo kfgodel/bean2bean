@@ -10,6 +10,7 @@ import info.kfgodel.bean2bean.v4.impl.vector.ConversionVector;
 public class Intent<O> implements ConversionIntent<O> {
 
   private ConversionVector vector;
+  private Object input;
 
   public ConversionVector getVector() {
     return vector;
@@ -17,12 +18,17 @@ public class Intent<O> implements ConversionIntent<O> {
 
   @Override
   public <I> I getInput() {
-    return (I) vector.getSource();
+    return (I) input;
   }
 
   public static Intent create(ConversionVector vector) {
+    return create(vector.getSource(), vector);
+  }
+
+  public static Intent create(Object input, ConversionVector vector) {
     Intent intent = new Intent();
     intent.vector = vector;
+    intent.input = input;
     return intent;
   }
 
