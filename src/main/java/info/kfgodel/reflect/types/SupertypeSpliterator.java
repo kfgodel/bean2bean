@@ -27,7 +27,7 @@ import java.util.stream.StreamSupport;
 public class SupertypeSpliterator implements Spliterator<Type> {
   public static Logger LOG = LoggerFactory.getLogger(SupertypeSpliterator.class);
 
-  private Set<Type> traversedTypes;
+  private Set<String> traversedTypeNames;
   private Queue<Type> pendingTypes;
 
   public static Stream<Type> createAsStream(Type startingType) {
@@ -36,7 +36,7 @@ public class SupertypeSpliterator implements Spliterator<Type> {
 
   public static SupertypeSpliterator create(Type startingType) {
     SupertypeSpliterator spliterator = new SupertypeSpliterator();
-    spliterator.traversedTypes = new HashSet<>();
+    spliterator.traversedTypeNames = new HashSet<>();
     spliterator.pendingTypes = new LinkedList<>();
     spliterator.enqueue(startingType);
     return spliterator;
@@ -46,18 +46,26 @@ public class SupertypeSpliterator implements Spliterator<Type> {
   public boolean tryAdvance(Consumer<? super Type> action) {
     while(!pendingTypes.isEmpty()){
       Type nextType = pendingTypes.remove();
-      traversedTypes.add(nextType);
+      markAsTraversed(nextType); // We use name bc parameterized type don't implement equals correctly
       action.accept(nextType);
       enqueueSupertypesOf(nextType);
       return true;
     }
-    if(!traversedTypes.contains(Object.class)){
+    if(!wasTraversed(Object.class)){
       // This exception ensures Object is last and present on interface hierarchies
-      traversedTypes.add(Object.class);
+      markAsTraversed(Object.class);
       action.accept(Object.class);
       return true;
     }
     return false;
+  }
+
+  private boolean markAsTraversed(Type nextType) {
+    return traversedTypeNames.add(nextType.getTypeName());
+  }
+
+  private boolean wasTraversed(Type type) {
+    return traversedTypeNames.contains(type.getTypeName());
   }
 
   @Override
@@ -127,12 +135,20 @@ public class SupertypeSpliterator implements Spliterator<Type> {
 
   private void enqueue(Type pendingType){
     if(pendingType == null || // We deal with null here so we don't have to do it for every jdk method
-      Object.class.equals(pendingType) || // Object is a type we add to the end, we ignore it here
-      this.traversedTypes.contains(pendingType) || // No need to traverse it again
-      this.pendingTypes.contains(pendingType) // It's already on the waiting list
+      wasTraversed(pendingType) || // No need to traverse it again
+      isPending(pendingType) || // It's already on the waiting list
+      Object.class.equals(pendingType) // Object is a type we add to the end, we ignore it here
     ){
       return; // Don't add it
     }
     this.pendingTypes.add(pendingType);
+  }
+
+  private boolean isPending(Type aType) {
+    // We need to look for name bc parameterized types don't implement equal correctly
+    final String aTypeName = aType.getTypeName();
+    return this.pendingTypes.stream()
+      .map(Type::getTypeName)
+      .anyMatch(pendingTypeName -> pendingTypeName.equals(aTypeName));
   }
 }

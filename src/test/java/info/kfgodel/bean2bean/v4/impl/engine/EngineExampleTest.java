@@ -31,6 +31,7 @@ public class EngineExampleTest extends JavaSpec<B2bTestContext> {
 
       describe("given a finder with access to the store", () -> {
         test().finder(()->{
+          // TODO: This won't be needed when correct type argument inference is implemented
           ConverterFunctionFinder directFinder = ExactVectorFinder.create(test().store());
           ConverterFunctionFinder hierarchyFinder = SetHierarchyFinder.create(test().store());
           return SequentialFinder.create(Lists.newArrayList(directFinder, hierarchyFinder));

@@ -8,6 +8,7 @@ import info.kfgodel.reflect.references.TypeRef;
 import org.junit.runner.RunWith;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -70,12 +71,21 @@ public class SupertypeSpliteratorTest<E> extends JavaSpec<ReflectTestContext> {
         });
 
         describe("given a parameterized type", () -> {
-          test().type(()-> new TypeRef<List<Integer>>(){}.getReference());
+          test().type(()-> new TypeRef<ArrayList<Integer>>(){}.getReference());
 
           it("allows access to its super type hierarchy including type arguments only for initial type",()->{
             assertThat(test().supertypes()).isEqualTo(Lists.newArrayList(
-              "java.util.List<java.lang.Integer>",
+              "java.util.ArrayList<java.lang.Integer>",
+              "java.util.ArrayList",
+              "java.util.AbstractList<E>",
+              "java.util.List<E>",
+              "java.util.RandomAccess",
+              "java.lang.Cloneable",
+              "java.io.Serializable",
+              "java.util.AbstractList",
               "java.util.List",
+              "java.util.AbstractCollection<E>",
+              "java.util.AbstractCollection",
               "java.util.Collection<E>",
               "java.util.Collection",
               "java.lang.Iterable<E>",
