@@ -1,6 +1,6 @@
 package info.kfgodel.bean2bean.v4.impl.sets;
 
-import info.kfgodel.reflect.types.SupertypeSpliterator;
+import info.kfgodel.reflect.types.binding.DefaultBoundType;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 /**
  * This class represents the set implicitly defined by a Java type.<br>
@@ -23,10 +22,6 @@ public class TypeBasedSet implements Set {
 
 
   public static TypeBasedSet create(Type rawType, Type... typeArguments) {
-    if(rawType instanceof ParameterizedType){
-      // TODO: take actual type arguments into consideration
-      return create((ParameterizedType) rawType);
-    }
     TypeBasedSet set = new TypeBasedSet();
     set.rawType = rawType;
     set.typeArguments = typeArguments;
@@ -69,7 +64,18 @@ public class TypeBasedSet implements Set {
 
   @Override
   public Stream<Set> getSuperSets() {
-    return StreamSupport.stream(SupertypeSpliterator.create(rawType), false)
-      .map(javaType -> TypeBasedSet.create(javaType));
+    return DefaultBoundType.create(rawType, typeArguments)
+      .getUpwardHierarchy()
+      .flatMap(boundType -> {
+        final Type boundRawType = boundType.getRawType();
+        final Type[] boundArguments = boundType.getTypeArguments();
+        final TypeBasedSet typeSet = TypeBasedSet.create(boundRawType, boundArguments);
+        if(boundArguments.length > 0){
+          // It's a parameterized type which also implies the non parameterized type
+          return Stream.of(typeSet, TypeBasedSet.create(boundRawType));
+        }else{
+          return Stream.of(typeSet);
+        }
+      });
   }
 }

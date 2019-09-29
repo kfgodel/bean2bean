@@ -24,10 +24,17 @@ public interface BoundType {
   Type[] getTypeArguments();
 
   /**
-   * Returns the suprtypes of this types bound to the inferred type arguments of this type.<br>
-   *   By following the replacement of type variables on this type the supertypes are parameterized with their actual
-   *   types.<br>
+   * Returns a stream of all the direct super types (suprclass, interfaces) bound to the inferred type arguments
+   * according to this type bounds<br>
+   *   The type variables of this type used to parameterizes its supertypes are replaced with the actual type arguments
    * @return The supertypes of this, usually including the superclass as the first element. Empty if there are nor super types
    */
-  Stream<BoundType> getSupertypes();
+  Stream<BoundType> getDirectSupertypes();
+
+  /**
+   * Returns a stream of all the supertypes of this type, direct and indirect up until Object.
+   * This stream doesn't contain duplicates, but it contains this type as the first type
+   * @return The stream of all the supertypes that are included in this type with the type arguments replaced
+   */
+  Stream<BoundType> getUpwardHierarchy();
 }

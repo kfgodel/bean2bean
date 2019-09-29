@@ -1,4 +1,4 @@
-package info.kfgodel.reflect.types;
+package info.kfgodel.reflect.types.spliterators;
 
 import ar.com.dgarcia.javaspec.api.JavaSpec;
 import ar.com.dgarcia.javaspec.api.JavaSpecRunner;

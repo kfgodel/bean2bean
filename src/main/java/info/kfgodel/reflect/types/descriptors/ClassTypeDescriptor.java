@@ -14,7 +14,6 @@ import java.util.stream.Stream;
  * Date: 02/03/19 - 18:34
  */
 public class ClassTypeDescriptor extends GeneralTypeDescriptor {
-
   private Class aClass;
 
   public static ClassTypeDescriptor create(Class aClass) {
@@ -42,16 +41,15 @@ public class ClassTypeDescriptor extends GeneralTypeDescriptor {
   @Override
   public Map<TypeVariable, Type> calculateTypeVariableBindingsFor(Type[] actualArguments) {
     TypeVariable[] typeParameters = aClass.getTypeParameters();
-    if(actualArguments.length != typeParameters.length){
-      throw new IllegalArgumentException(
-        "The class["+aClass+"] can't bind its parameters " + Arrays.toString(typeParameters)
-          + " to the arguments " + Arrays.toString(actualArguments) + ". Arrays don't match"
-      );
-    }
+
     Map<TypeVariable, Type> parameterValues = new LinkedHashMap<>();
     for (int i = 0; i < typeParameters.length; i++) {
       TypeVariable typeParameter = typeParameters[i];
-      Type typeArgument = actualArguments[i];
+      // If actual arguments is smaller than needed, we fill with the original type variable
+      Type typeArgument = typeParameter;
+      if(i < actualArguments.length){
+        typeArgument = actualArguments[i];
+      }
       parameterValues.put(typeParameter, typeArgument);
     }
     return parameterValues;

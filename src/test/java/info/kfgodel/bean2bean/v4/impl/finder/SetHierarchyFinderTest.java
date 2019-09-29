@@ -20,7 +20,6 @@ import static info.kfgodel.bean2bean.mockito.MockitoExtensions.anIrrelevant;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * TODO: Change this tests when actual type arguments are inferred correctly
  * Date: 28/9/19 - 20:55
  */
 @RunWith(JavaSpecRunner.class)
@@ -45,9 +44,7 @@ public class SetHierarchyFinderTest extends JavaSpec<B2bTestContext> {
 
           describe("when the store has a converter that matches exactly the intent's vector", () -> {
             beforeEach(()->{
-              // TODO: exact match doesn't work because of incorrect type arguments inference
-              // test().store().useFor(Vector.create(TypeBasedSet.create(List.class, String.class),TypeBasedSet.create(Double.class)), anIrrelevant(Function.class));
-              test().store().useFor(Vector.create(TypeBasedSet.create(List.class),TypeBasedSet.create(Double.class)), anIrrelevant(Function.class));
+              test().store().useFor(Vector.create(TypeBasedSet.create(List.class, String.class),TypeBasedSet.create(Double.class)), anIrrelevant(Function.class));
             });
 
             it("finds the converter",()->{

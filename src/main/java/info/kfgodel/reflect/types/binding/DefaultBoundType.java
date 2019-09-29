@@ -1,12 +1,14 @@
 package info.kfgodel.reflect.types.binding;
 
 import info.kfgodel.reflect.types.descriptors.JavaTypeDescriptor;
+import info.kfgodel.reflect.types.spliterators.BoundTypeSpliterator;
 
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * This class is the default implementation for a bound type
@@ -28,7 +30,7 @@ public class DefaultBoundType implements BoundType {
   }
 
   @Override
-  public Stream<BoundType> getSupertypes() {
+  public Stream<BoundType> getDirectSupertypes() {
     final Map<TypeVariable, Type> typeBindings = rawType.calculateTypeVariableBindingsFor(typeArguments);
     return rawType.getGenericSupertypes()
       .map(JavaTypeDescriptor::createFor)
@@ -39,6 +41,11 @@ public class DefaultBoundType implements BoundType {
           .orElseGet(supertype::getType);
         return DefaultBoundType.create(rawType, superTypeArguments);
       });
+  }
+
+  @Override
+  public Stream<BoundType> getUpwardHierarchy() {
+    return StreamSupport.stream(BoundTypeSpliterator.create(this), false);
   }
 
   public static DefaultBoundType create(Type rawType, Type... typeArguments) {

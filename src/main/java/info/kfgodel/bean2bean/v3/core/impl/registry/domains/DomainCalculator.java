@@ -1,7 +1,7 @@
 package info.kfgodel.bean2bean.v3.core.impl.registry.domains;
 
 import info.kfgodel.bean2bean.v3.core.api.registry.Domain;
-import info.kfgodel.reflect.types.SupertypeSpliterator;
+import info.kfgodel.reflect.types.spliterators.SupertypeSpliterator;
 
 import javax.lang.model.type.NullType;
 import java.lang.reflect.Type;

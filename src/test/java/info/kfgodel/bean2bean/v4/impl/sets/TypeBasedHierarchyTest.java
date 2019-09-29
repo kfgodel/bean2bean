@@ -31,7 +31,7 @@ public class TypeBasedHierarchyTest extends JavaSpec<B2bTestContext> {
         test().supersets(() -> test().typeSet().getSuperSets().collect(Collectors.toList()));
 
         it("includes itself as the first element", () -> {
-          assertThat(test().supersets()).startsWith(TypeBasedSet.create(ArrayList.class));
+          assertThat(test().supersets()).startsWith(TypeBasedSet.create(ArrayList.class, String.class));
         });
 
         it("includes includes Object as the last superset",()->{
@@ -39,47 +39,24 @@ public class TypeBasedHierarchyTest extends JavaSpec<B2bTestContext> {
         });
 
         it("includes all the superinterfaces and superclasses in the middle",()->{
-          assertThat(test().supersets()).contains(
+          assertThat(test().supersets()).isEqualTo(Lists.newArrayList(
+            TypeBasedSet.create(ArrayList.class, String.class),
             TypeBasedSet.create(ArrayList.class),
+            TypeBasedSet.create(AbstractList.class, String.class),
+            TypeBasedSet.create(AbstractList.class),
+            TypeBasedSet.create(List.class, String.class),
+            TypeBasedSet.create(List.class),
             TypeBasedSet.create(RandomAccess.class),
             TypeBasedSet.create(Cloneable.class),
             TypeBasedSet.create(Serializable.class),
-            TypeBasedSet.create(AbstractList.class),
-            TypeBasedSet.create(List.class),
+            TypeBasedSet.create(AbstractCollection.class, String.class),
             TypeBasedSet.create(AbstractCollection.class),
+            TypeBasedSet.create(Collection.class, String.class),
             TypeBasedSet.create(Collection.class),
+            TypeBasedSet.create(Iterable.class, String.class),
             TypeBasedSet.create(Iterable.class),
             TypeBasedSet.create(Object.class)
-          );
-        });
-
-        // TODO: Implement the tests that requiere type argument inference in the hiearchy
-        xdescribe("when type argument inference is implemented", () -> {
-
-          it("includes itself as the first element", () -> {
-            assertThat(test().supersets()).startsWith(TypeBasedSet.create(ArrayList.class, String.class));
-          });
-
-          it("includes all the superinterfaces and superclasses in the middle",()->{
-            assertThat(test().supersets()).isEqualTo(Lists.newArrayList(
-              TypeBasedSet.create(ArrayList.class, String.class),
-              TypeBasedSet.create(ArrayList.class),
-              TypeBasedSet.create(AbstractList.class, String.class),
-              TypeBasedSet.create(AbstractList.class),
-              TypeBasedSet.create(List.class, String.class),
-              TypeBasedSet.create(List.class),
-              TypeBasedSet.create(RandomAccess.class),
-              TypeBasedSet.create(Cloneable.class),
-              TypeBasedSet.create(Serializable.class),
-              TypeBasedSet.create(AbstractCollection.class, String.class),
-              TypeBasedSet.create(AbstractCollection.class),
-              TypeBasedSet.create(Collection.class, String.class),
-              TypeBasedSet.create(Collection.class),
-              TypeBasedSet.create(Iterable.class, String.class),
-              TypeBasedSet.create(Iterable.class),
-              TypeBasedSet.create(Object.class)
-            ));
-          });
+          ));
         });
 
       });

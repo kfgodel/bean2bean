@@ -1,4 +1,4 @@
-package info.kfgodel.reflect.types;
+package info.kfgodel.reflect.types.spliterators;
 
 import info.kfgodel.reflect.types.descriptors.JavaTypeDescriptor;
 import org.slf4j.Logger;

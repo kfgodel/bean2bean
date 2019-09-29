@@ -6,9 +6,9 @@ import info.kfgodel.bean2bean.v3.other.references.ConsumerRef;
 import info.kfgodel.bean2bean.v3.other.references.FunctionRef;
 import info.kfgodel.bean2bean.v3.other.references.SupplierRef;
 import info.kfgodel.reflect.references.TypeRef;
-import info.kfgodel.reflect.types.SupertypeSpliterator;
 import info.kfgodel.reflect.types.binding.BoundType;
 import info.kfgodel.reflect.types.extraction.TypeArgumentExtractor;
+import info.kfgodel.reflect.types.spliterators.SupertypeSpliterator;
 
 import java.lang.reflect.Type;
 import java.util.List;
