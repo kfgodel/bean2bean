@@ -20,6 +20,10 @@ public class TypeArgumentExtractor {
   /**
    * Facility method to get the only argument.<br>
    *   This is a variant of {@link #getArgumentsUsedFor(Class, Class)} where only the first argument is considered
+   * @param parametrizableClass Class that indicates the supertype that is parameterizable
+   * @param concreteSubclass  The concrete class that has an actual parametrization
+   * @param <T> Type of related classes
+   * @return The optional type parameter used to parameterize the parametrizable class extended by the concrete class
    */
   public <T> Optional<Type> getArgumentUsedFor(Class<T> parametrizableClass, Class<? extends T> concreteSubclass) {
     return getArgumentUsedFor(parametrizableClass, (Type) concreteSubclass);
@@ -28,6 +32,9 @@ public class TypeArgumentExtractor {
   /**
    * Facility method to get the only argument.<br>
    *   This is a variant of {@link #getArgumentsUsedFor(Class, Type)} where only the first argument is considered
+   * @param parametrizableClass Class that indicates the supertype that is parameterizable
+   * @param concreteSubclass  The concrete class that has an actual parametrization
+   * @return The optional type parameter used to parameterize the parametrizable class extended by the concrete class
    */
   public Optional<Type> getArgumentUsedFor(Class<?> parametrizableClass, Type concreteSubclass) {
     return getArgumentsUsedFor(parametrizableClass, concreteSubclass)
@@ -50,7 +57,6 @@ public class TypeArgumentExtractor {
    *   It returns empty if no argument was found, or the supertype doesn't have type parameters
    * @param parametrizableClass The supertype for which we want to know the actual type arguments
    * @param concreteType The concrete type that parameterizes the supertype
-   * @param <T> The parametrizable type
    * @return The stream of type arguments found or empty
    */
   public Stream<Type> getArgumentsUsedFor(Class<?> parametrizableClass, Type concreteType) {

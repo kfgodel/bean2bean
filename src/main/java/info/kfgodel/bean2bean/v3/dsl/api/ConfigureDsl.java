@@ -54,6 +54,7 @@ public interface ConfigureDsl extends ImplicitScopeRegistrationDsl {
   /**
    * It adds all the builtin and default converters to this dsl configuration.
    * This is equivalent of adding them one by one, or using the DefaultConfigurator
+   * @return This instance for chaining
    */
   ConfigureDsl usingDefaultConverters();
 

@@ -23,6 +23,7 @@ public interface ExplicitScopeYetToBeDefinedDsl {
   /**
    * Indicates the type of acceptable input by a class instance
    * @param inputType The class that represents the type
+   * @param <I> Type of expected input
    * @return The partially defined configuration restricted to the input type
    */
   <I> ExplicitScopeWithParameterizedSourceDsl<I> accept(Class<I> inputType);
@@ -30,6 +31,7 @@ public interface ExplicitScopeYetToBeDefinedDsl {
   /**
    * Indicates the type of acceptable input for the converter through a type reference
    * @param inputTypeRef Reference to the type of expected arguments
+   * @param <I> Type of expected input
    * @return The partially defined configuration to complete the scope restriction
    */
   <I> ExplicitScopeWithParameterizedSourceDsl<I> accept(TypeRef<I> inputTypeRef);

@@ -12,6 +12,7 @@ import java.util.function.Function;
 public interface ConverterDefinition {
 
   /**
+   * @param <O> Type of expected output
    * @return The function that can be used as converter to transform input into output
    */
   <O> Function<Bean2beanTask, O> getConverter();
