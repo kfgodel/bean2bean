@@ -11,6 +11,7 @@ pipeline {
 
   tools {
     maven 'Mvn_3.6.2'
+    jdk "Jdk_1.8.221"
   }
 
   stages {
@@ -21,13 +22,13 @@ pipeline {
     }
     stage('Deploy'){
       steps {
-        echo "mvn deploy source:jar -Dgpg.passphrase=$GPG_PASSPHRASE -e -U"
+        sh "mvn deploy source:jar -Dgpg.passphrase=$GPG_PASSPHRASE -e -U"
       }
     }
     stage('Sonar') {
       steps {
         withSonarQubeEnv(installationName: 'Sonar@IkariSrv02') {
-          echo "mvn $SONAR_MAVEN_GOAL -Dsonar.host.url=$SONAR_HOST_URL -e"
+          sh "mvn $SONAR_MAVEN_GOAL -Dsonar.host.url=$SONAR_HOST_URL -e"
         }
       }
     }
