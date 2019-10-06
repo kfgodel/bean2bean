@@ -17,25 +17,16 @@ pipeline {
 
   stages {
     stage('Clean') {
-      options {
-        timestamps() // Queremos que indique cuando empieza y termina cada cosa
-      }
       steps {
         sh 'mvn clean'
       }
     }
     stage('Build'){
-      options {
-        timestamps() // Queremos que indique cuando empieza y termina cada cosa
-      }
       steps {
         sh "mvn verify source:jar -Dgpg.passphrase=$GPG_PASSPHRASE -e -U"
       }
     }
     stage('Post-Build'){
-      options {
-        timestamps() // Queremos que indique cuando empieza y termina cada cosa
-      }
       parallel {
         stage('Deploy'){
           steps {
