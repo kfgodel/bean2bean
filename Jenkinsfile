@@ -7,6 +7,7 @@ pipeline {
   options {
     // Hace que si hay pasos en paralelo y uno falla, todo el bloque paralelo falle
     parallelsAlwaysFailFast()
+    buildDiscarder(logRotator(numToKeepStr: '3', artifactNumToKeepStr: '1')) // Conserva las ultimas 3 ejecuciones pero solo la ultima con su workspace
   }
 
   tools {
@@ -15,6 +16,9 @@ pipeline {
   }
 
   stages {
+    options {
+      timestamps() // Queremos que indique cuando empieza y termina cada cosa
+    }
     stage('Clean') {
       steps {
         sh 'mvn clean'
