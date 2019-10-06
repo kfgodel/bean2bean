@@ -76,7 +76,7 @@ public class TypeArgumentExtraction {
 
   public Stream<Type> getArgumentsFor(Type parametrizableClass) {
     Type[] actualArguments = argumentsByType.get(parametrizableClass);
-    if (argumentsByType == null) {
+    if (actualArguments == null) {
       return Stream.empty();
     }
     return Arrays.stream(actualArguments);
