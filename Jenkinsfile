@@ -34,10 +34,11 @@ pipeline {
             ok "Yes, we should."
             parameters {
               string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
+              choice(name: 'CHOICES', choices: ['one', 'two', 'three'], description: 'a choice')
             }
           }
           steps {
-            echo "sh mvn deploy -e ${PERSON} "
+            echo "sh mvn deploy -e ${PERSON} ${CHOICES}"
           }
         }
         stage('Sonar') {
