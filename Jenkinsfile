@@ -39,6 +39,9 @@ pipeline {
               choice(name: 'CHOICES', choices: ['Sí', 'No'], description: 'Decision de deploy')
             }
           }
+          options {
+            timeout(time: 1, unit: 'MINUTES') // Si no respondemos la confirmacion queremos que termine igual
+          }
           when {
             beforeInput false
             equals expected: 'Sí', actual: "${CHOICES}"
