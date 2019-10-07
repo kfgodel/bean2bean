@@ -26,8 +26,10 @@ pipeline {
         sh "mvn verify source:jar -Dgpg.passphrase=$GPG_PASSPHRASE -e -U"
       }
     }
+    // Despues de buildear podemos correr estas tareas en paralelo sin interferencia
     stage('Post-Build'){
       parallel {
+
         stage('Deploy'){
           input {
             id 'deployConfirmation'
@@ -45,12 +47,13 @@ pipeline {
             echo "sh mvn deploy -e ${CHOICES}"
           }
         }
+
         stage('Sonar') {
           tools {
             jdk 'Jdk_11' // SonarScanner will require Java 11+ to run starting in SonarQube 8.x
           }
           when {
-            branch 'master2'
+            branch 'master' // Sonar ignora el branch en su version community (por lo que solo se puede analizar uno)
           }
           steps {
             withSonarQubeEnv(installationName: 'Sonar@IkariSrv02') {
@@ -58,6 +61,7 @@ pipeline {
             }
           }
         }
+
       }
     }
   }
