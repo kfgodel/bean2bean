@@ -30,20 +30,27 @@ pipeline {
       parallel {
         stage('Deploy'){
           input {
-            message "Should we continue?"
-            ok "Yes, we should."
+            id 'deployConfirmation'
+            message "Deployar artefactos al repositorio?"
+            ok "Continuar"
             parameters {
-              string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
-              choice(name: 'CHOICES', choices: ['one', 'two', 'three'], description: 'a choice')
+              choice(name: 'CHOICES', choices: ['Sí', 'No'], description: 'Decision de deploy')
             }
           }
+          when {
+            beforeInput false
+            equals expected: 'Sí', actual: "${CHOICES}"
+          }
           steps {
-            echo "sh mvn deploy -e ${PERSON} ${CHOICES}"
+            echo "sh mvn deploy -e ${CHOICES}"
           }
         }
         stage('Sonar') {
           tools {
             jdk 'Jdk_11' // SonarScanner will require Java 11+ to run starting in SonarQube 8.x
+          }
+          when {
+            branch 'master2'
           }
           steps {
             withSonarQubeEnv(installationName: 'Sonar@IkariSrv02') {
