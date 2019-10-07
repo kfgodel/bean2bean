@@ -40,14 +40,14 @@ pipeline {
             }
           }
           options {
-            timeout(time: 1, unit: 'MINUTES') // Si no respondemos la confirmacion queremos que termine igual
+            timeout(time: 3, unit: 'MINUTES') // Si no respondemos la confirmacion queremos que termine igual
           }
           when {
             beforeInput false
             equals expected: 'Sí', actual: "${CHOICES}"
           }
           steps {
-            echo "sh mvn deploy -e ${CHOICES}"
+            sh "mvn deploy -e"
           }
         }
 
