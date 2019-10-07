@@ -7,7 +7,7 @@ pipeline {
   options {
     // Hace que si hay pasos en paralelo y uno falla, todo el bloque paralelo falle
     parallelsAlwaysFailFast()
-    buildDiscarder(logRotator(numToKeepStr: '3', artifactNumToKeepStr: '1')) // Conserva las ultimas 3 ejecuciones pero solo la ultima con su workspace
+    buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '1')) // Conserva las ultimas 10 ejecuciones pero solo la ultima con su workspace
   }
 
   tools {
@@ -29,8 +29,15 @@ pipeline {
     stage('Post-Build'){
       parallel {
         stage('Deploy'){
+          input {
+            message "Should we continue?"
+            ok "Yes, we should."
+            parameters {
+              string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
+            }
+          }
           steps {
-            sh "mvn deploy -e"
+            echo "sh mvn deploy -e ${PERSON} "
           }
         }
         stage('Sonar') {
