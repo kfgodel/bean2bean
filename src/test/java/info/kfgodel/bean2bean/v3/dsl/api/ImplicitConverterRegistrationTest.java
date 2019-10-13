@@ -1,13 +1,13 @@
 package info.kfgodel.bean2bean.v3.dsl.api;
 
-import ar.com.dgarcia.javaspec.api.JavaSpec;
-import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
 import info.kfgodel.bean2bean.v3.core.api.Bean2beanTask;
 import info.kfgodel.bean2bean.v3.dsl.impl.Dsl;
 import info.kfgodel.bean2bean.v3.other.references.BiFunctionRef;
 import info.kfgodel.bean2bean.v3.other.references.ConsumerRef;
 import info.kfgodel.bean2bean.v3.other.references.FunctionRef;
 import info.kfgodel.bean2bean.v3.other.references.SupplierRef;
+import info.kfgodel.jspek.api.JavaSpec;
+import info.kfgodel.jspek.api.JavaSpecRunner;
 import org.junit.runner.RunWith;
 
 import java.lang.reflect.Type;

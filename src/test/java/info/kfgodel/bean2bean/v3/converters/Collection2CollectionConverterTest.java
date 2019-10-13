@@ -1,7 +1,5 @@
 package info.kfgodel.bean2bean.v3.converters;
 
-import ar.com.dgarcia.javaspec.api.JavaSpec;
-import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import info.kfgodel.bean2bean.v3.converters.collections.Collection2CollectionConverter;
@@ -10,6 +8,8 @@ import info.kfgodel.bean2bean.v3.core.api.exceptions.NestedConversionException;
 import info.kfgodel.bean2bean.v3.dsl.impl.Dsl;
 import info.kfgodel.bean2bean.v3.other.references.FunctionRef;
 import info.kfgodel.bean2bean.v3.other.references.SupplierRef;
+import info.kfgodel.jspek.api.JavaSpec;
+import info.kfgodel.jspek.api.JavaSpecRunner;
 import info.kfgodel.reflect.references.TypeRef;
 import org.junit.runner.RunWith;
 

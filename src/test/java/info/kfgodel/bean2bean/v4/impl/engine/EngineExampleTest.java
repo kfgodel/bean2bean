@@ -1,7 +1,5 @@
 package info.kfgodel.bean2bean.v4.impl.engine;
 
-import ar.com.dgarcia.javaspec.api.JavaSpec;
-import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
 import com.google.common.collect.Lists;
 import info.kfgodel.bean2bean.v4.B2bTestContext;
 import info.kfgodel.bean2bean.v4.impl.finder.ConverterFunctionFinder;
@@ -12,6 +10,8 @@ import info.kfgodel.bean2bean.v4.impl.intent.Intent;
 import info.kfgodel.bean2bean.v4.impl.sets.TypeBasedSet;
 import info.kfgodel.bean2bean.v4.impl.store.DefaultStore;
 import info.kfgodel.bean2bean.v4.impl.vector.Vector;
+import info.kfgodel.jspek.api.JavaSpec;
+import info.kfgodel.jspek.api.JavaSpecRunner;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;

@@ -1,8 +1,8 @@
 package info.kfgodel.bean2bean.v4.impl.vector;
 
-import ar.com.dgarcia.javaspec.api.JavaSpec;
-import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
 import info.kfgodel.bean2bean.v4.B2bTestContext;
+import info.kfgodel.jspek.api.JavaSpec;
+import info.kfgodel.jspek.api.JavaSpecRunner;
 import org.junit.runner.RunWith;
 
 import static org.assertj.core.api.Assertions.assertThat;

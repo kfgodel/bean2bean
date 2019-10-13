@@ -1,7 +1,7 @@
 package info.kfgodel.reflect.types.binding;
 
-import ar.com.dgarcia.javaspec.api.JavaSpec;
-import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
+import info.kfgodel.jspek.api.JavaSpec;
+import info.kfgodel.jspek.api.JavaSpecRunner;
 import info.kfgodel.reflect.ReflectTestContext;
 import info.kfgodel.reflect.types.binding.helpers.Level0;
 import info.kfgodel.reflect.types.binding.helpers.Level1;

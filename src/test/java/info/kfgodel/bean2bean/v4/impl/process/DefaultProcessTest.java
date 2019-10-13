@@ -1,11 +1,11 @@
 package info.kfgodel.bean2bean.v4.impl.process;
 
-import ar.com.dgarcia.javaspec.api.JavaSpec;
-import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
 import info.kfgodel.bean2bean.v4.B2bTestContext;
 import info.kfgodel.bean2bean.v4.api.exceptions.B2bException;
 import info.kfgodel.bean2bean.v4.impl.engine.B2bEngine;
 import info.kfgodel.bean2bean.v4.impl.intent.ConversionIntent;
+import info.kfgodel.jspek.api.JavaSpec;
+import info.kfgodel.jspek.api.JavaSpecRunner;
 import org.junit.runner.RunWith;
 
 import static info.kfgodel.bean2bean.mockito.MockitoExtensions.anIrrelevant;

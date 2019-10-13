@@ -1,7 +1,5 @@
 package info.kfgodel.bean2bean.v3.core.impl.registry;
 
-import ar.com.dgarcia.javaspec.api.JavaSpec;
-import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
 import info.kfgodel.bean2bean.v3.core.api.Bean2beanTask;
 import info.kfgodel.bean2bean.v3.core.api.registry.Domain;
 import info.kfgodel.bean2bean.v3.core.api.registry.DomainVector;
@@ -9,6 +7,8 @@ import info.kfgodel.bean2bean.v3.core.impl.registry.definitions.PredicateDefinit
 import info.kfgodel.bean2bean.v3.core.impl.registry.definitions.VectorDefinition;
 import info.kfgodel.bean2bean.v3.core.impl.registry.domains.DomainCalculator;
 import info.kfgodel.bean2bean.v3.dsl.api.B2bTestContext;
+import info.kfgodel.jspek.api.JavaSpec;
+import info.kfgodel.jspek.api.JavaSpecRunner;
 import info.kfgodel.reflect.references.TypeRef;
 import org.junit.runner.RunWith;
 

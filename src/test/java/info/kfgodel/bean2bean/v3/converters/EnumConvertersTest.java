@@ -1,11 +1,11 @@
 package info.kfgodel.bean2bean.v3.converters;
 
-import ar.com.dgarcia.javaspec.api.JavaSpec;
-import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
 import info.kfgodel.bean2bean.v3.converters.enums.Enum2StringConverter;
 import info.kfgodel.bean2bean.v3.converters.enums.String2EnumConverter;
 import info.kfgodel.bean2bean.v3.core.api.exceptions.ConversionException;
 import info.kfgodel.bean2bean.v3.dsl.impl.Dsl;
+import info.kfgodel.jspek.api.JavaSpec;
+import info.kfgodel.jspek.api.JavaSpecRunner;
 import org.junit.runner.RunWith;
 
 import static org.assertj.core.api.Assertions.assertThat;

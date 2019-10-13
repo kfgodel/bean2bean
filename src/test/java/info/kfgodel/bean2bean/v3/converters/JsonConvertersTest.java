@@ -1,12 +1,12 @@
 package info.kfgodel.bean2bean.v3.converters;
 
-import ar.com.dgarcia.javaspec.api.JavaSpec;
-import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
 import com.google.common.collect.Lists;
 import info.kfgodel.bean2bean.v3.converters.json.JsonString2ObjectConverter;
 import info.kfgodel.bean2bean.v3.converters.json.Object2JsonStringConverter;
 import info.kfgodel.bean2bean.v3.core.api.exceptions.ConversionException;
 import info.kfgodel.bean2bean.v3.dsl.impl.Dsl;
+import info.kfgodel.jspek.api.JavaSpec;
+import info.kfgodel.jspek.api.JavaSpecRunner;
 import org.junit.runner.RunWith;
 
 import java.util.HashMap;

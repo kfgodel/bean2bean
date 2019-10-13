@@ -1,11 +1,11 @@
 package info.kfgodel.bean2bean.v4.impl.finder;
 
-import ar.com.dgarcia.javaspec.api.JavaSpec;
-import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
 import ar.com.kfgodel.nary.api.optionals.Optional;
 import info.kfgodel.bean2bean.v4.B2bTestContext;
 import info.kfgodel.bean2bean.v4.impl.intent.ConversionIntent;
 import info.kfgodel.bean2bean.v4.impl.process.ConversionProcess;
+import info.kfgodel.jspek.api.JavaSpec;
+import info.kfgodel.jspek.api.JavaSpecRunner;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.util.Lists;
 import org.junit.runner.RunWith;

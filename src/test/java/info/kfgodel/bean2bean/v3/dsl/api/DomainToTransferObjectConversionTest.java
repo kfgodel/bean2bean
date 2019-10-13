@@ -1,7 +1,5 @@
 package info.kfgodel.bean2bean.v3.dsl.api;
 
-import ar.com.dgarcia.javaspec.api.JavaSpec;
-import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
 import info.kfgodel.bean2bean.v3.converters.mapping.MappingConverter;
 import info.kfgodel.bean2bean.v3.core.api.exceptions.ConversionException;
 import info.kfgodel.bean2bean.v3.dsl.api.example.AddressTo;
@@ -11,6 +9,8 @@ import info.kfgodel.bean2bean.v3.dsl.api.example.TestAddress2AddressToConverter;
 import info.kfgodel.bean2bean.v3.dsl.api.example.TestPerson;
 import info.kfgodel.bean2bean.v3.dsl.api.example.TestPerson2PersonToConverter;
 import info.kfgodel.bean2bean.v3.dsl.impl.Dsl;
+import info.kfgodel.jspek.api.JavaSpec;
+import info.kfgodel.jspek.api.JavaSpecRunner;
 import info.kfgodel.reflect.references.TypeRef;
 import org.junit.runner.RunWith;
 

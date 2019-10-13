@@ -1,10 +1,10 @@
 package info.kfgodel.bean2bean.v3.other;
 
-import ar.com.dgarcia.javaspec.api.contexts.TestContext;
 import info.kfgodel.bean2bean.v3.other.references.BiFunctionRef;
 import info.kfgodel.bean2bean.v3.other.references.ConsumerRef;
 import info.kfgodel.bean2bean.v3.other.references.FunctionRef;
 import info.kfgodel.bean2bean.v3.other.references.SupplierRef;
+import info.kfgodel.jspek.api.contexts.TestContext;
 import info.kfgodel.reflect.references.TypeRef;
 import info.kfgodel.reflect.types.extraction.TypeArgumentExtractor;
 import info.kfgodel.reflect.types.spliterators.SupertypeSpliterator;

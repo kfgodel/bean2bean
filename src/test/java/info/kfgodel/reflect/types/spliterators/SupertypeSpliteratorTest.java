@@ -1,8 +1,8 @@
 package info.kfgodel.reflect.types.spliterators;
 
-import ar.com.dgarcia.javaspec.api.JavaSpec;
-import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
 import com.google.common.collect.Lists;
+import info.kfgodel.jspek.api.JavaSpec;
+import info.kfgodel.jspek.api.JavaSpecRunner;
 import info.kfgodel.reflect.ReflectTestContext;
 import info.kfgodel.reflect.references.TypeRef;
 import org.junit.runner.RunWith;

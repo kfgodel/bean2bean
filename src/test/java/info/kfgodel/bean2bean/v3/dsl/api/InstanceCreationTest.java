@@ -1,12 +1,12 @@
 package info.kfgodel.bean2bean.v3.dsl.api;
 
-import ar.com.dgarcia.javaspec.api.JavaSpec;
-import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
 import info.kfgodel.bean2bean.v3.core.api.exceptions.CreationException;
 import info.kfgodel.bean2bean.v3.dsl.api.converters.ArrayListGenerator;
 import info.kfgodel.bean2bean.v3.dsl.api.converters.StringArrayGenerator;
 import info.kfgodel.bean2bean.v3.dsl.impl.Dsl;
 import info.kfgodel.bean2bean.v3.other.references.SupplierRef;
+import info.kfgodel.jspek.api.JavaSpec;
+import info.kfgodel.jspek.api.JavaSpecRunner;
 import org.junit.runner.RunWith;
 
 import java.util.List;

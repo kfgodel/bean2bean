@@ -1,7 +1,5 @@
 package info.kfgodel.bean2bean.v3.converters;
 
-import ar.com.dgarcia.javaspec.api.JavaSpec;
-import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
 import info.kfgodel.bean2bean.v3.converters.datetimes.String2LocalDateConverter;
 import info.kfgodel.bean2bean.v3.converters.datetimes.String2LocalDateTimeConverter;
 import info.kfgodel.bean2bean.v3.converters.datetimes.String2LocalTimeConverter;
@@ -9,6 +7,8 @@ import info.kfgodel.bean2bean.v3.converters.datetimes.String2ZonedDateTimeConver
 import info.kfgodel.bean2bean.v3.converters.datetimes.Temporal2StringConverter;
 import info.kfgodel.bean2bean.v3.core.api.exceptions.ConversionException;
 import info.kfgodel.bean2bean.v3.dsl.impl.Dsl;
+import info.kfgodel.jspek.api.JavaSpec;
+import info.kfgodel.jspek.api.JavaSpecRunner;
 import org.junit.runner.RunWith;
 
 import java.time.LocalDate;

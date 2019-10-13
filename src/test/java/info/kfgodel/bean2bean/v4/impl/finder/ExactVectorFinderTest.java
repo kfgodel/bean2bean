@@ -1,13 +1,13 @@
 package info.kfgodel.bean2bean.v4.impl.finder;
 
-import ar.com.dgarcia.javaspec.api.JavaSpec;
-import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
 import ar.com.kfgodel.nary.api.optionals.Optional;
 import info.kfgodel.bean2bean.v4.B2bTestContext;
 import info.kfgodel.bean2bean.v4.impl.intent.ConversionIntent;
 import info.kfgodel.bean2bean.v4.impl.intent.Intent;
 import info.kfgodel.bean2bean.v4.impl.store.DefaultStore;
 import info.kfgodel.bean2bean.v4.impl.vector.Vector;
+import info.kfgodel.jspek.api.JavaSpec;
+import info.kfgodel.jspek.api.JavaSpecRunner;
 import org.junit.runner.RunWith;
 
 import java.util.function.Function;

@@ -1,6 +1,5 @@
 package info.kfgodel.bean2bean.v4;
 
-import ar.com.dgarcia.javaspec.api.contexts.TestContext;
 import info.kfgodel.bean2bean.v4.impl.engine.B2bEngine;
 import info.kfgodel.bean2bean.v4.impl.finder.ConverterFunctionFinder;
 import info.kfgodel.bean2bean.v4.impl.intent.ConversionIntent;
@@ -9,6 +8,7 @@ import info.kfgodel.bean2bean.v4.impl.sets.Set;
 import info.kfgodel.bean2bean.v4.impl.sets.TypeBasedSet;
 import info.kfgodel.bean2bean.v4.impl.store.ConverterStore;
 import info.kfgodel.bean2bean.v4.impl.vector.ConversionVector;
+import info.kfgodel.jspek.api.contexts.TestContext;
 
 import java.util.List;
 import java.util.function.Function;

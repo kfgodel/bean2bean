@@ -1,9 +1,9 @@
 package info.kfgodel.bean2bean.v4.impl.sets;
 
-import ar.com.dgarcia.javaspec.api.JavaSpec;
-import ar.com.dgarcia.javaspec.api.JavaSpecRunner;
 import com.google.common.collect.Lists;
 import info.kfgodel.bean2bean.v4.B2bTestContext;
+import info.kfgodel.jspek.api.JavaSpec;
+import info.kfgodel.jspek.api.JavaSpecRunner;
 import org.junit.runner.RunWith;
 
 import java.io.Serializable;

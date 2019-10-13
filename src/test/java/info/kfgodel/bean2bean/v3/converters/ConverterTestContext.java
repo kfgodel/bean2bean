@@ -1,7 +1,7 @@
 package info.kfgodel.bean2bean.v3.converters;
 
-import ar.com.dgarcia.javaspec.api.contexts.TestContext;
 import info.kfgodel.bean2bean.v3.dsl.api.B2bDsl;
+import info.kfgodel.jspek.api.contexts.TestContext;
 
 import java.lang.reflect.Type;
 import java.util.function.Supplier;
