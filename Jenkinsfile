@@ -23,7 +23,7 @@ pipeline {
     }
     stage('Build'){
       steps {
-        sh "mvn verify source:jar -Dgpg.passphrase=$GPG_PASSPHRASE -e -U -X"
+        sh "mvn verify source:jar -Dgpg.passphrase=$GPG_PASSPHRASE -e -U"
       }
     }
     // Despues de buildear podemos correr estas tareas en paralelo sin interferencia
