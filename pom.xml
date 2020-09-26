@@ -1,0 +1,197 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>net.sf.kfgodel</groupId>
+  <artifactId>bean2bean</artifactId>
+  <version>1.1.5-SNAPSHOT</version>
+
+  <description>Proyecto para transformacion de beans usando annotations y conversion entre tipos de datos</description>
+
+  <scm>
+    <developerConnection>scm:git:ssh://github.com/kfgodel/bean2bean.git</developerConnection>
+    <connection>${project.scm.developerConnection}</connection>
+    <url>${project.url}</url>
+  </scm>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.jdk>1.5</project.jdk>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.3.1</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.3.1</version>
+        <configuration>
+          <source>${project.jdk}</source>
+          <target>${project.jdk}</target>
+          <debug>true</debug>
+          <encoding>UTF-8</encoding>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>2.1.2</version>
+        <executions>
+          <execution>
+            <id>attach-source</id>
+            <goals>
+              <goal>jar</goal>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>ibiblio</id>
+      <url>http://www.ibiblio.org/maven</url>
+    </pluginRepository>
+    <pluginRepository>
+      <id>sourceforge</id>
+      <url>http://maven-plugins.sourceforge.net/repository</url>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <dependencies>
+
+    <!-- Mandatory dependencies -->
+    <dependency>
+      <!-- Needed for basic type conversions -->
+      <groupId>com.opensymphony</groupId>
+      <artifactId>xwork</artifactId>
+      <version>2.1.0</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>ognl</artifactId>
+          <groupId>opensymphony</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <!-- Logging -->
+    <dependency>
+      <!-- Facade para todo lo que es logueo -->
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.6.1</version>
+    </dependency>
+    <dependency>
+      <!-- Implementación nativa de slf4j -->
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-core</artifactId>
+      <version>0.9.28</version>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>0.9.28</version>
+    </dependency>
+    <dependency>
+      <!-- Adapter que las llamadas a commons-logging pasen por Slf4j-->
+      <groupId>org.slf4j</groupId>
+      <artifactId>jcl-over-slf4j</artifactId>
+      <version>1.6.1</version>
+    </dependency>
+    <dependency>
+      <!-- Adapter que las llamadas a log4j pasen por Slf4j-->
+      <groupId>org.slf4j</groupId>
+      <artifactId>log4j-over-slf4j</artifactId>
+      <version>1.6.1</version>
+    </dependency>
+
+    <!-- Add this if you want to be able to convert to/from JSON strings -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.9.10</version>
+      <scope>provided</scope>
+    </dependency>
+
+
+    <!-- Language dependencies -->
+    <dependency>
+      <!-- OGNL language -->
+      <groupId>ognl</groupId>
+      <artifactId>ognl</artifactId>
+      <version>2.7</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <!-- Groovy language -->
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy</artifactId>
+      <version>2.1.5</version>
+      <type>jar</type>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- Test dependencies -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring</artifactId>
+      <version>2.0.6</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-mock</artifactId>
+      <version>2.0.6</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+
+  </dependencies>
+
+  <distributionManagement>
+    <snapshotRepository>
+      <id>kfgodel_mosquito</id>
+      <name>kfgodel_mosquito</name>
+      <url>http://kfgodel.info:8081/nexus/repository/repoJars/</url>
+    </snapshotRepository>
+    <repository>
+      <id>kfgodel_mosquito</id>
+      <name>kfgodel_mosquito</name>
+      <url>http://kfgodel.info:8081/nexus/repository/repoJars/</url>
+    </repository>
+  </distributionManagement>
+
+</project>
