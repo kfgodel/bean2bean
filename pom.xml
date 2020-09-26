@@ -1,13 +1,43 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>net.sf.kfgodel</groupId>
+  <parent>
+    <groupId>info.kfgodel</groupId>
+    <artifactId>java-pom</artifactId>
+    <version>0.1.8</version>
+  </parent>
+
   <artifactId>bean2bean</artifactId>
   <version>1.1.5-SNAPSHOT</version>
 
-  <description>Proyecto para transformacion de beans usando annotations y conversion entre tipos de datos</description>
+  <name>Bean2Bean</name>
+  <description>Object conversion library based on transformations to map properties and more</description>
+  <url>https://github.com/kfgodel/bean2bean</url>
+
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <id>dlgarcia</id>
+      <name>Dario L Garcia</name>
+      <email>dario.garcia@10pines.com</email>
+      <organization>10Pines SRL</organization>
+      <organizationUrl>https://www.10pines.com/</organizationUrl>
+      <roles>
+        <role>architect</role>
+        <role>developer</role>
+      </roles>
+    </developer>
+  </developers>
 
   <scm>
     <developerConnection>scm:git:ssh://github.com/kfgodel/bean2bean.git</developerConnection>
@@ -16,62 +46,12 @@
   </scm>
 
   <properties>
+    <!-- Sonar properties to prevent unintentional id changes (Reference: https://docs.sonarqube.org/latest/analysis/analysis-parameters/) -->
+    <sonar.projectKey>net.sf.kfgodel:bean2bean</sonar.projectKey>
+
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.jdk>1.5</project.jdk>
   </properties>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>2.3.1</version>
-        <configuration>
-          <archive>
-            <manifest>
-              <addClasspath>true</addClasspath>
-            </manifest>
-          </archive>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.3.1</version>
-        <configuration>
-          <source>${project.jdk}</source>
-          <target>${project.jdk}</target>
-          <debug>true</debug>
-          <encoding>UTF-8</encoding>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-source-plugin</artifactId>
-        <version>2.1.2</version>
-        <executions>
-          <execution>
-            <id>attach-source</id>
-            <goals>
-              <goal>jar</goal>
-              <goal>test-jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
-
-  <pluginRepositories>
-    <pluginRepository>
-      <id>ibiblio</id>
-      <url>http://www.ibiblio.org/maven</url>
-    </pluginRepository>
-    <pluginRepository>
-      <id>sourceforge</id>
-      <url>http://maven-plugins.sourceforge.net/repository</url>
-    </pluginRepository>
-  </pluginRepositories>
 
   <dependencies>
 
@@ -178,20 +158,6 @@
       </exclusions>
     </dependency>
 
-
   </dependencies>
-
-  <distributionManagement>
-    <snapshotRepository>
-      <id>kfgodel_mosquito</id>
-      <name>kfgodel_mosquito</name>
-      <url>http://kfgodel.info:8081/nexus/repository/repoJars/</url>
-    </snapshotRepository>
-    <repository>
-      <id>kfgodel_mosquito</id>
-      <name>kfgodel_mosquito</name>
-      <url>http://kfgodel.info:8081/nexus/repository/repoJars/</url>
-    </repository>
-  </distributionManagement>
 
 </project>
