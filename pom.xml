@@ -81,23 +81,20 @@
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-core</artifactId>
       <version>0.9.28</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
       <version>0.9.28</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
-      <!-- Adapter que las llamadas a commons-logging pasen por Slf4j-->
+      <!-- Adapter de commons logging usado indirectamente por clases de spring-->
       <groupId>org.slf4j</groupId>
       <artifactId>jcl-over-slf4j</artifactId>
       <version>1.6.1</version>
-    </dependency>
-    <dependency>
-      <!-- Adapter que las llamadas a log4j pasen por Slf4j-->
-      <groupId>org.slf4j</groupId>
-      <artifactId>log4j-over-slf4j</artifactId>
-      <version>1.6.1</version>
+      <scope>provided</scope>
     </dependency>
 
     <!-- Add this if you want to be able to convert to/from JSON strings -->

@@ -15,9 +15,10 @@ package net.sf.kfgodel.bean2bean;
 import junit.framework.Assert;
 import net.sf.kfgodel.bean2bean.interpreters.InterpreterType;
 import net.sf.kfgodel.bean2bean.testbeans.GroovyInitBean;
-import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class test how groovy doesn't slows down the conversion when initialized
@@ -25,7 +26,7 @@ import org.junit.Test;
  * @author D. García
  */
 public class GroovyInitializedTest {
-	private static final Logger logger = Logger.getLogger(GroovyInitializedTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(GroovyInitializedTest.class);
 
 	private Bean2Bean bean2Bean;
 

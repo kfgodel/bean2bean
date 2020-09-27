@@ -44,7 +44,8 @@ import net.sf.kfgodel.bean2bean.population.conversion.TypeConverterCall.Speciali
 import net.sf.kfgodel.dgarcia.colecciones.maps.DoubleKeyMap;
 import net.sf.kfgodel.dgarcia.colecciones.maps.impl.DoubleKeyHashMap;
 import net.sf.kfgodel.dgarcia.lang.reflection.iterators.SuperTypeIterator;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
@@ -64,7 +65,7 @@ import java.util.Map;
  * @author D. Garcia
  */
 public class DefaultTypeConverter implements TypeConverter {
-	private static final Logger logger = Logger.getLogger(DefaultTypeConverter.class);
+	private static final Logger logger = LoggerFactory.getLogger(DefaultTypeConverter.class);
 
 	private Map<String, GeneralTypeConverter<Object, Object>> generalRegistry;
 
